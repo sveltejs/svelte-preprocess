@@ -1,0 +1,13 @@
+{
+  "root": true,
+  "extends": ["standard"],
+  "env": {
+    "browser": true,
+    "jest": true
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "modules": true
+    }
+  }
+}
