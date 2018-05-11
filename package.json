@@ -1,7 +1,16 @@
 {
   "name": "svelte-smart-preprocess",
-  "version": "0.1.0",
-  "description": "Smart svelte preprocess wrapper",
+  "version": "1.0.0",
+  "description": "Smart svelte preprocess wrapper with baked in support for some preprocessors",
+  "keywords": [
+    "svelte",
+    "preprocess",
+    "less",
+    "stylus",
+    "scss",
+    "pug",
+    "coffeescript"
+  ],
   "main": "src/index.js",
   "types": "src/index.d.ts",
   "repository": "https://github.com/kaisermann/svelte-smart-preprocess",
@@ -9,7 +18,8 @@
   "license": "MIT",
   "scripts": {
     "test": "jest --no-cache --verbose",
-    "test:watch": "jest --no-cache --verbose --watchAll"
+    "test:watch": "jest --no-cache --verbose --watchAll",
+    "prepublishOnly": "npm run test"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
