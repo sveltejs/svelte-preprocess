@@ -241,48 +241,18 @@ describe('options', () => {
   })
 })
 
-describe('passthrough preprocess methods', () => {
-  it('should accept markup passthrough method with html', async () => {
-    const input = `<template src="./fixtures/template.html"></template>`
+describe('hook methods', () => {
+  it('should execute a onBefore method before preprocessing', async () => {
+    const input = ``
+    smartPreprocess({
+    })
     const opts = smartPreprocess({
-      markup ({content, filename}) {
-        return { code: 'transformed' }
+      onBefore({ content }) {
+        return '<template src="./fixtures/template.pug"></template>'
       }
     })
     const preprocessed = (await preprocess(input, opts)).trim()
-    expect(preprocessed).toBe('transformed')
-  })
+    expect(preprocessed).toBe(parsedMarkup)
 
-  it('should accept markup passthrough method with pug', async () => {
-    const input = `<template src="./fixtures/template.pug"></template>`
-    const opts = smartPreprocess({
-      markup ({content, filename}) {
-        return { code: 'transformed' }
-      }
-    })
-    const preprocessed = (await preprocess(input, opts)).trim()
-    expect(preprocessed).toBe('transformed')
-  })
-
-  it('should accept script passthrough method with script', async () => {
-    const input = `<template src="./fixtures/template.html"></template><script></script>`
-    const opts = smartPreprocess({
-      script ({content, filename}) {
-        return { code: 'transformed' }
-      }
-    })
-    const preprocessed = (await preprocess(input, opts)).trim()
-    expect(preprocessed).toBe('<div>Hey</div><script>transformed</script>')
-  })
-
-  it('should accept style passthrough method with css', async () => {
-    const input = `<template src="./fixtures/template.html"></template><style></style>`
-    const opts = smartPreprocess({
-      style ({content, filename}) {
-        return { code: 'transformed' }
-      }
-    })
-    const preprocessed = (await preprocess(input, opts)).trim()
-    expect(preprocessed).toBe('<div>Hey</div><style>transformed</style>')
   })
 })

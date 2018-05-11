@@ -1,14 +1,34 @@
 # Svelte Smart Preprocess (WIP)
 
-> A smart svelte preprocessor wrapper
+> A smart svelte preprocessor wrapper baked with SCSS, Less, Stylus, Coffeescript and Pug support.
 
 ## Usage
 
 ```js
-const preprocessOptions = smartPreprocess({
-  [language]: false | true | fn(content,filename): { code, map }
-})
+const smartOpts = {
+  /** Transform the whole markup before preprocessing */
+  onBefore({ content,filename }) {
+    return content.replace('something', 'someotherthing')
+  },
+  languages: {
+    /** Disable a language by setting it to 'false' */
+    scss: false,
 
+    /**  Pass options to the default preprocessor an object */
+    stylus: {
+      paths: ['node_modules']
+    },
+
+    /** Use a custom preprocess method by passing a function. */
+    pug(content, filename) {
+        const code = pug.render(content)
+
+        return { code, map: null }
+      }
+  }
+}
+
+const preprocessOptions = smartPreprocess(smartOpts)
 svelte.preprocess(input, preprocessOptions).then(...)
 ```
 
@@ -58,29 +78,4 @@ Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Co
   div
     color: $color
 </style>
-```
-
-## Example
-
-```js
-  const svelte = require('svelte')
-  const smartPreprocess = require('svelte-smart-preprocess')
-
-  const input = '...'
-
-  const preprocessOptions = smartPreprocess({
-    /** Use included scss compiler */
-    scss: true
-    /**
-     * Pass a function which returns an object { code, map }
-     * or a promise that resolves to one.
-     */
-    pug: function (content, filename, options) {
-      const code = pug.render(content)
-
-      return { code, map: null }
-    }
-  })
-
-  svelte.preprocess(input, preprocessOptions).then(...)
 ```

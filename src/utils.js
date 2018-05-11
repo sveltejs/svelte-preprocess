@@ -48,11 +48,9 @@ exports.runPreprocessor = (lang, maybeFn, content, filename) => {
     return maybeFn(content, filename)
   }
 
-  let preprocessOpts = {}
-
-  if (maybeFn && maybeFn.constructor === Object) {
-    preprocessOpts = maybeFn
-  }
+  let preprocessOpts = (maybeFn && maybeFn.constructor === Object)
+    ? maybeFn
+    : {}
 
   try {
     preprocessorModules[lang] = preprocessorModules[lang] || require(`./langs/${lang}.js`)
