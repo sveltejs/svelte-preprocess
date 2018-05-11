@@ -25,6 +25,8 @@ const LANG_DICT = new Map([
   ['coffee', 'coffeescript']
 ])
 
+exports.appendLanguageAliases = entries => entries.forEach(entry => LANG_DICT.set(...entry))
+
 exports.getLanguage = (attributes, defaultLang) => {
   let lang
 

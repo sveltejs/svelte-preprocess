@@ -1,6 +1,7 @@
 const stripIndent = require('strip-indent')
 
 const {
+  appendLanguageAliases,
   getLanguage,
   runPreprocessor,
   isPromise,
@@ -17,8 +18,14 @@ const templateTagPattern = new RegExp('(<template([\\s\\S]*?)>([\\s\\S]*?)<\\/te
 
 module.exports = ({
   onBefore,
-  languages = {}
+  languages = {},
+  aliases = undefined
 } = {}) => {
+
+  if(aliases) {
+    appendLanguageAliases(aliases)
+  }
+
   const getAssetParser = (targetLanguage) => {
     return ({ content = '', attributes, filename }) => {
       const lang = getLanguage(attributes, targetLanguage)

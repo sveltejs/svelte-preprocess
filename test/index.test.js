@@ -214,8 +214,7 @@ div Hey
 
 describe('options', () => {
   it('should accept custom preprocess method for a language', async () => {
-    const input = `<template src="./fixtures/template.pug"></template>
-    `
+    const input = `<template src="./fixtures/template.pug"></template>`
     const opts = magicalPreprocess({
       pug: (content, filename) => {
         const code = require('pug').render(content, opts)
@@ -239,13 +238,9 @@ describe('options', () => {
     const compiled = (await compile(input, opts))
     expect(compiled.css.code).toMatch(cssRegExp)
   })
-})
 
-describe('hook methods', () => {
   it('should execute a onBefore method before preprocessing', async () => {
     const input = ``
-    magicalPreprocess({
-    })
     const opts = magicalPreprocess({
       onBefore({ content }) {
         return '<template src="./fixtures/template.pug"></template>'
@@ -253,6 +248,15 @@ describe('hook methods', () => {
     })
     const preprocessed = (await preprocess(input, opts)).trim()
     expect(preprocessed).toBe(parsedMarkup)
+  })
 
+  it('should append a custom language alias to the language alias dictionary', async () => {
+    const input = `<div></div><style lang="customLanguage"></style>`
+    const opts = magicalPreprocess({
+      aliases: [
+        ['customLanguage', 'css']
+      ]
+    })
+    expect(await doesThrow(input, opts)).toBe(false)
   })
 })

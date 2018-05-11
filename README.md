@@ -16,7 +16,7 @@ const magicOpts = {
     /** Disable a language by setting it to 'false' */
     scss: false,
 
-    /**  Pass options to the default preprocessor an object */
+    /**  Pass options to the default preprocessor method */
     stylus: {
       paths: ['node_modules']
     },
@@ -26,8 +26,28 @@ const magicOpts = {
         const code = pug.render(content)
 
         return { code, map: null }
-      }
-  }
+    },
+
+    /** Add a custom language preprocessor */
+    customLanguage(content, filename) {
+      const { code, map } = require('custom-language-compiler')(content)
+      return { code, map }
+    }
+  },
+  /**
+   * Extend the default language alias dictionary.
+   * Each entry must follow: ['alias', 'languageName']
+   */
+  aliases: [
+    /**
+     * Means
+     * <... src="file.cst"> or
+     * <... lang="cst"> or
+     * <... type="text/cst">
+     * will be treated as the language 'customLanguage'
+    */
+    ['cst', 'customLanguage']
+  ],
 }
 
 svelte.preprocess(input, magicalPreprocess(magicOpts)).then(...)
