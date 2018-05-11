@@ -1,144 +1,110 @@
-const { readFileSync } = require('fs')
-const { dirname, resolve } = require('path')
 const stripIndent = require('strip-indent')
 
-const { findPackageJson, getLanguage, runPreprocessor } = require('./utils.js')
+const {
+  getLanguage,
+  runPreprocessor,
+  isPromise,
+  isFn,
+  parseXMLAttrString,
+  getSrcContent
+} = require('./utils.js')
 
 const throwError = (msg) => { throw new Error(`[svelte-smart-preprocess] ${msg}`) }
 const throwUnsupportedError = (lang, filename) =>
   throwError(`Unsupported script language '${lang}' in file '${filename}'`)
 
-module.exports = (languages = {}) => {
+const templateTagPattern = new RegExp('(<template([\\s\\S]*?)>([\\s\\S]*?)<\\/template>)')
+
+module.exports = ({ style, script, markup, languages = {} } = {}) => {
+  const getAssetPreprocessMethod = (targetLanguage, passthroughMethod) => {
+    return ({ content = '', attributes, filename }) => {
+      const lang = getLanguage(attributes, targetLanguage)
+      let processedMap
+
+      if (attributes.src) {
+        content = getSrcContent(filename, attributes.src)
+      }
+
+      if (lang !== targetLanguage) {
+        if (languages[lang] === false) {
+          throwUnsupportedError(lang, filename)
+        }
+
+        const preProcessedContent = runPreprocessor(lang, languages[lang], content, filename)
+
+        if (isPromise(preProcessedContent)) {
+          /** If passthrough method is defined, wait for the promise to resolve and pass it to the method */
+          if (isFn(passthroughMethod)) {
+            return preProcessedContent.then(({ code, map }) => {
+              return passthroughMethod({ content: code, attributes, filename })
+            })
+          }
+          /** If no passthrough method, return the preprocess promise */
+          return preProcessedContent
+        }
+
+        content = preProcessedContent.code
+        processedMap = preProcessedContent.map
+      }
+
+      if (isFn(passthroughMethod)) {
+        return passthroughMethod({ content, attributes, filename })
+      }
+
+      return { code: content, map: processedMap }
+    }
+  }
+
   return {
+    script: getAssetPreprocessMethod('javascript', script),
+    style: getAssetPreprocessMethod('css', style),
     markup: ({content, filename}) => {
-      const templateMatch = content.match(/(<template([\s\S]*?)>([\s\S]*?)<\/template>)/)
+      const templateMatch = content.match(templateTagPattern)
 
       /** If no <template> was found, just return the original markup */
-      if (!templateMatch) {
-        return { code: content }
-      }
+      if (templateMatch) {
+        let [, wholeTemplateTag, unparsedAttrs, templateCode] = templateMatch
 
-      let [, wholeTemplateTag, unparsedAttrs, templateCode] = templateMatch
+        const attributes = parseXMLAttrString(unparsedAttrs)
+        const lang = getLanguage(attributes, 'html')
 
-      /** Transform the <template> attributes into a consumable object */
-      unparsedAttrs = unparsedAttrs.trim()
-      const attributes = unparsedAttrs.length > 0
-        ? unparsedAttrs.split(' ').reduce((acc, entry) => {
-          const [key, value] = entry.split('=')
-          acc[key] = value.replace(/['"]/g, '')
-          return acc
-        }, {})
-        : {}
-
-      const lang = getLanguage(attributes, 'html')
-      const componentDir = dirname(filename)
-
-      /** If src="" is allowed and was defined, let's get the referenced file content */
-      if (attributes.src) {
-        templateCode = readFileSync(resolve(componentDir, attributes.src)).toString()
-      }
-
-      /** If language is HTML, just remove the <template></template> tags */
-      if (lang === 'html') {
-        return {
-          code: content.replace(wholeTemplateTag, templateCode)
-        }
-      }
-
-      if (languages[lang]) {
-        const processedContent = runPreprocessor(lang,
-          languages[lang],
-          stripIndent(templateCode),
-          filename
-        )
-
-        /** It may return a promise, let's check for that */
-        if (Promise.resolve(processedContent) === processedContent) {
-          return processedContent.then(({ code }) => {
-            return {
-              code: content.replace(wholeTemplateTag, code)
-            }
-          })
+        if (attributes.src) {
+          templateCode = getSrcContent(filename, attributes.src)
         }
 
-        /** Remove the <template> tag with the actual template code */
-        return {
-          code: content.replace(wholeTemplateTag, processedContent.code)
-        }
-      }
+        /** If language is HTML, just remove the <template></template> tags */
+        if (languages[lang] === false) {
+          throwUnsupportedError(lang, filename)
+        } else if (lang !== 'html') {
+          const preProcessedContent = runPreprocessor(lang,
+            languages[lang],
+            stripIndent(templateCode),
+            filename
+          )
 
-      throwUnsupportedError(lang, filename)
-    },
-    script: ({ content = '', attributes, filename }) => {
-      const lang = getLanguage(attributes, 'javascript')
-      const componentDir = dirname(filename)
-
-      /** If src="" is allowed and was defined, let's get the referenced file content */
-      if (attributes.src) {
-        content = readFileSync(resolve(componentDir, attributes.src)).toString()
-      }
-
-      if (lang === 'javascript') {
-        return { code: content }
-      }
-
-      if (languages[lang]) {
-        return runPreprocessor(lang, languages[lang], content, filename)
-      }
-
-      throwUnsupportedError(lang, filename)
-    },
-    style: ({ content = '', attributes, filename }) => {
-      const lang = getLanguage(attributes, 'css')
-      const componentDir = dirname(filename)
-
-      /** If src="" is allowed and was defined, let's get the referenced file content */
-      if (attributes.src) {
-        content = readFileSync(resolve(componentDir, attributes.src)).toString()
-      }
-
-      if (lang === 'css') {
-        return { code: content }
-      }
-
-      /** If the build step is supporting the used language, run it's preprocessor */
-      if (languages[lang]) {
-        return runPreprocessor(lang, languages[lang], content, filename)
-      } else {
-        throwUnsupportedError(lang, filename)
-        /**
-           * If including a uncompiled svelte component which uses a not supported style language,
-           * search for it's package.json to see if there's a valid css file defined with 'svelte.style' or 'style'.
-           * */
-        const { data: pkgData, filename: pkgFilepath } = findPackageJson(
-          componentDir
-        )
-
-        /** Found any package data? Is it a svelte component? */
-        if (pkgData && pkgData.svelte) {
-          const pkgDir = dirname(pkgFilepath)
-          const svelteStyle = pkgData['svelte.style'] || pkgData.style
-
-          /**
-             * If there's a valid style definition, get the defined file's content.
-             *
-             * TODO - This is broken when the css has global styles. Disabled for now.
-             * */
-            if (false && svelteStyle) { // eslint-disable-line
-            // log(
-            //   'info',
-            //   `Using precompiled css (${svelteStyle}) in component "${
-            //     pkgData.name
-            //   }"`
-            // )
-            content = readFileSync(resolve(pkgDir, svelteStyle))
-              .toString()
-              .replace(/\.svelte-\w{4,7}/, '')
-          } else {
-            throwUnsupportedError(lang, filename)
+          /** It may return a promise, let's check for that */
+          if (isPromise(preProcessedContent)) {
+            return preProcessedContent.then(({ code }) => {
+              content = content.replace(wholeTemplateTag, code)
+              if (isFn(markup)) {
+                return markup({ content, filename })
+              }
+              return { code: content }
+            })
           }
+
+          /** Replace the <template> tag with the actual template code */
+          templateCode = preProcessedContent.code
         }
+
+        content = content.replace(wholeTemplateTag, templateCode)
       }
+
+      if (isFn(markup)) {
+        return markup({ content, filename })
+      }
+
+      return { code: content }
     }
   }
 }

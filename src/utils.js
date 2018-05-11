@@ -1,24 +1,21 @@
 const { existsSync, readFileSync } = require('fs')
-const { resolve } = require('path')
+const { resolve, dirname } = require('path')
 
-exports.findPackageJson = function (startDir) {
-  let dir
-  let nextDir = startDir
+exports.isFn = maybeFn => typeof maybeFn === 'function'
 
-  do {
-    dir = nextDir
-    const pkgfile = resolve(dir, 'package.json')
+exports.isPromise = maybePromise => Promise.resolve(maybePromise) === maybePromise
 
-    if (existsSync(pkgfile)) {
-      return {
-        filename: pkgfile,
-        data: JSON.parse(readFileSync(pkgfile))
-      }
-    }
-    nextDir = resolve(dir, '..')
-  } while (dir !== nextDir)
+exports.getSrcContent = (rootFile, path) => readFileSync(resolve(dirname(rootFile), path)).toString()
 
-  return null
+exports.parseXMLAttrString = unparsedAttrStr => {
+  unparsedAttrStr = unparsedAttrStr.trim()
+  return unparsedAttrStr.length > 0
+    ? unparsedAttrStr.split(' ').reduce((acc, entry) => {
+      const [key, value] = entry.split('=')
+      acc[key] = value.replace(/['"]/g, '')
+      return acc
+    }, {})
+    : {}
 }
 
 const LANG_DICT = new Map([
@@ -53,7 +50,7 @@ exports.runPreprocessor = (lang, maybeFn, content, filename) => {
 
   let preprocessOpts = {}
 
-  if (maybeFn.constructor === Object) {
+  if (maybeFn && maybeFn.constructor === Object) {
     preprocessOpts = maybeFn
   }
 
@@ -67,4 +64,24 @@ exports.runPreprocessor = (lang, maybeFn, content, filename) => {
       }`
     )
   }
+}
+
+exports.findPackageJson = function (startDir) {
+  let dir
+  let nextDir = startDir
+
+  do {
+    dir = nextDir
+    const pkgfile = resolve(dir, 'package.json')
+
+    if (existsSync(pkgfile)) {
+      return {
+        filename: pkgfile,
+        data: JSON.parse(readFileSync(pkgfile))
+      }
+    }
+    nextDir = resolve(dir, '..')
+  } while (dir !== nextDir)
+
+  return null
 }

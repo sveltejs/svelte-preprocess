@@ -63,19 +63,19 @@ describe('template tag', () => {
   <div></div>
   <style src="./fixtures/style.css"></style>
   `
-    const opts = smartPreprocess({ pug: true })
+    const opts = smartPreprocess()
     const compiled = await compile(input, opts)
     expect(compiled.css.code).toMatch(cssRegExp)
   })
 })
 
 describe('preprocessors', () => {
-  it('should throw parsing pug when { pug: falsy }', async () => {
-    const input = `
-  <div></div>
-  <style lang="pug">${getFixtureContent('template.pug')}</style>
-  `
-    const opts = smartPreprocess()
+  it('should throw parsing pug when { pug: false }', async () => {
+    const input = `<template lang="pug">
+    div Hey
+    </template>
+    `
+    const opts = smartPreprocess({ languages: { pug: false } })
     expect(await doesThrow(input, opts)).toBe(true)
   })
 
@@ -84,23 +84,23 @@ describe('preprocessors', () => {
 div Hey
 </template>
   `
-    const opts = smartPreprocess({ pug: true })
+    const opts = smartPreprocess()
     const preprocessed = (await preprocess(input, opts)).trim()
     expect(preprocessed).toBe(parsedMarkup)
   })
 
   it('should parse external pug', async () => {
     const input = `<template src="./fixtures/template.pug"></template>`
-    const opts = smartPreprocess({ pug: true })
+    const opts = smartPreprocess()
     expect(await preprocess(input, opts)).toBe(parsedMarkup)
   })
 
-  it('should throw parsing scss when { scss: falsy }', async () => {
+  it('should throw parsing scss when { scss: false }', async () => {
     const input = `
   <div></div>
   <style lang="scss">${getFixtureContent('style.scss')}</style>
   `
-    const opts = smartPreprocess()
+    const opts = smartPreprocess({ languages: { scss: false } })
     expect(await doesThrow(input, opts)).toBe(true)
   })
 
@@ -109,7 +109,7 @@ div Hey
   <div></div>
   <style lang="scss">${getFixtureContent('style.scss')}</style>
   `
-    const opts = smartPreprocess({ scss: true })
+    const opts = smartPreprocess()
     const compiled = await compile(input, opts)
     expect(compiled.css.code).toMatch(cssRegExp)
   })
@@ -119,17 +119,17 @@ div Hey
   <div></div>
   <style src="./fixtures/style.scss"></style>
   `
-    const opts = smartPreprocess({ scss: true })
+    const opts = smartPreprocess()
     const compiled = await compile(input, opts)
     expect(compiled.css.code).toMatch(cssRegExp)
   })
 
-  it('should throw parsing less when { less: falsy }', async () => {
+  it('should throw parsing less when { less: false }', async () => {
     const input = `
   <div></div>
   <style lang="less">${getFixtureContent('style.less')}</style>
   `
-    const opts = smartPreprocess()
+    const opts = smartPreprocess({ languages: { less: false } })
     expect(await doesThrow(input, opts)).toBe(true)
   })
 
@@ -138,7 +138,7 @@ div Hey
   <div></div>
   <style lang="less">${getFixtureContent('style.less')}</style>
   `
-    const opts = smartPreprocess({ less: true })
+    const opts = smartPreprocess()
     const compiled = await compile(input, opts)
     expect(compiled.css.code).toMatch(cssRegExp)
   })
@@ -148,17 +148,17 @@ div Hey
   <div></div>
   <style src="./fixtures/style.less"></style>
   `
-    const opts = smartPreprocess({ less: true })
+    const opts = smartPreprocess()
     const compiled = await compile(input, opts)
     expect(compiled.css.code).toMatch(cssRegExp)
   })
 
-  it('should throw parsing stylus when { stylus: falsy }', async () => {
+  it('should throw parsing stylus when { stylus: false }', async () => {
     const input = `
   <div></div>
   <style lang="styl">${getFixtureContent('style.styl')}</style>
   `
-    const opts = smartPreprocess()
+    const opts = smartPreprocess({ languages: { stylus: false } })
     expect(await doesThrow(input, opts)).toBe(true)
   })
 
@@ -167,7 +167,7 @@ div Hey
   <div></div>
   <style lang="styl">${getFixtureContent('style.styl')}</style>
   `
-    const opts = smartPreprocess({ stylus: true })
+    const opts = smartPreprocess()
     const compiled = await compile(input, opts)
     expect(compiled.css.code).toMatch(cssRegExp)
   })
@@ -177,17 +177,17 @@ div Hey
   <div></div>
   <style src="./fixtures/style.styl"></style>
   `
-    const opts = smartPreprocess({ stylus: true })
+    const opts = smartPreprocess()
     const compiled = await compile(input, opts)
     expect(compiled.css.code).toMatch(cssRegExp)
   })
 
-  it('should throw parsing coffeescript when { coffeescript: falsy }', async () => {
+  it('should throw parsing coffeescript when { coffeescript: false }', async () => {
     const input = `
   <div></div>
   <script src="./fixtures/script.coffee"></script>
   `
-    const opts = smartPreprocess()
+    const opts = smartPreprocess({ languages: { coffeescript: false } })
     expect(await doesThrow(input, opts)).toBe(true)
   })
 
@@ -196,7 +196,7 @@ div Hey
   <div></div>
   <script lang="coffeescript">${getFixtureContent('script.coffee')}</script>
   `
-    const opts = smartPreprocess({ coffeescript: true })
+    const opts = smartPreprocess()
     const preprocessed = await preprocess(input, opts)
     expect(preprocessed).toContain(parsedJs)
   })
@@ -206,7 +206,7 @@ div Hey
   <div></div>
   <script src="./fixtures/script.coffee"></script>
   `
-    const opts = smartPreprocess({ coffeescript: true })
+    const opts = smartPreprocess()
     const preprocessed = await preprocess(input, opts)
     expect(preprocessed).toContain(parsedJs)
   })
@@ -238,5 +238,51 @@ describe('options', () => {
     })
     const compiled = (await compile(input, opts))
     expect(compiled.css.code).toMatch(cssRegExp)
+  })
+})
+
+describe('passthrough preprocess methods', () => {
+  it('should accept markup passthrough method with html', async () => {
+    const input = `<template src="./fixtures/template.html"></template>`
+    const opts = smartPreprocess({
+      markup ({content, filename}) {
+        return { code: 'transformed' }
+      }
+    })
+    const preprocessed = (await preprocess(input, opts)).trim()
+    expect(preprocessed).toBe('transformed')
+  })
+
+  it('should accept markup passthrough method with pug', async () => {
+    const input = `<template src="./fixtures/template.pug"></template>`
+    const opts = smartPreprocess({
+      markup ({content, filename}) {
+        return { code: 'transformed' }
+      }
+    })
+    const preprocessed = (await preprocess(input, opts)).trim()
+    expect(preprocessed).toBe('transformed')
+  })
+
+  it('should accept script passthrough method with script', async () => {
+    const input = `<template src="./fixtures/template.html"></template><script></script>`
+    const opts = smartPreprocess({
+      script ({content, filename}) {
+        return { code: 'transformed' }
+      }
+    })
+    const preprocessed = (await preprocess(input, opts)).trim()
+    expect(preprocessed).toBe('<div>Hey</div><script>transformed</script>')
+  })
+
+  it('should accept style passthrough method with css', async () => {
+    const input = `<template src="./fixtures/template.html"></template><style></style>`
+    const opts = smartPreprocess({
+      style ({content, filename}) {
+        return { code: 'transformed' }
+      }
+    })
+    const preprocessed = (await preprocess(input, opts)).trim()
+    expect(preprocessed).toBe('<div>Hey</div><style>transformed</style>')
   })
 })
