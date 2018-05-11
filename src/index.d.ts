@@ -11,7 +11,7 @@ type PreprocessedObj = {
 
 
 
-type SmartSvelteOptions = {
+type MagicSvelteOptions = {
   onBefore?({ content, filename }: { content: string, filename: string }): string;
   languages?: {
     [language: string]: boolean | object | (({ content, filename }: { content: string, filename?: string }) =>
@@ -19,8 +19,8 @@ type SmartSvelteOptions = {
   }
 }
 
-declare function smartPreprocess(config: SmartSvelteOptions): SveltePreprocessObj;
+declare function magicalPreprocess(config: MagicSvelteOptions): SveltePreprocessObj;
 
-declare module "svelte-smart-preprocess" {
-  export = smartPreprocess;
+declare module "svelte-preprocess" {
+  export = magicalPreprocess;
 }

@@ -1,11 +1,13 @@
-# Svelte Smart Preprocess (WIP)
+# Svelte (Magical) Preprocess
 
-> A smart svelte preprocessor wrapper baked with SCSS, Less, Stylus, Coffeescript and Pug support.
+> A magical and customizable [Svelte](https://svelte.technology) preprocessor with support for: SCSS, Less, Stylus, Coffeescript and Pug.
 
 ## Usage
 
 ```js
-const smartOpts = {
+const svelte = require('svelte')
+const magicalPreprocess = require('svelte-preprocess')
+const magicOpts = {
   /** Transform the whole markup before preprocessing */
   onBefore({ content,filename }) {
     return content.replace('something', 'someotherthing')
@@ -28,8 +30,7 @@ const smartOpts = {
   }
 }
 
-const preprocessOptions = smartPreprocess(smartOpts)
-svelte.preprocess(input, preprocessOptions).then(...)
+svelte.preprocess(input, magicalPreprocess(magicOpts)).then(...)
 ```
 
 ## Features

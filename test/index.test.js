@@ -1,7 +1,7 @@
 const { readFileSync } = require('fs')
 const { resolve } = require('path')
 const svelte = require('svelte')
-const smartPreprocess = require('../src')
+const magicalPreprocess = require('../src')
 
 const getFixtureContent = (file) => readFileSync(resolve(__dirname, 'fixtures', file)).toString().trim()
 
@@ -10,7 +10,7 @@ const doesThrow = async (input, opts) => {
   try {
     await preprocess(input, opts)
   } catch (err) {
-    didThrow = err.message.includes('svelte-smart-preprocess')
+    didThrow = err.message.includes('svelte-preprocess')
   }
   return didThrow
 }
@@ -19,16 +19,16 @@ const cssRegExp = /div\.svelte-\w{4,7}\{color:(red|#f00)\}/
 const parsedMarkup = getFixtureContent('template.html')
 const parsedJs = getFixtureContent('script.js')
 
-const preprocess = async (input, smartOpts) => {
+const preprocess = async (input, magicOpts) => {
   const preprocessed = await svelte.preprocess(input, {
     filename: resolve(__dirname, 'App.svelte'),
-    ...smartOpts
+    ...magicOpts
   })
   return preprocessed.toString()
 }
 
-const compile = async (input, smartOpts) => {
-  const preprocessed = await preprocess(input, smartOpts)
+const compile = async (input, magicOpts) => {
+  const preprocessed = await preprocess(input, magicOpts)
   const { js, css } = svelte.compile(preprocessed.toString(), {
     css: true
   })
@@ -38,13 +38,13 @@ const compile = async (input, smartOpts) => {
 describe('template tag', () => {
   it('should parse HTML between <template></template>', async () => {
     const input = `<template><div>Hey</div></template>`
-    const opts = smartPreprocess()
+    const opts = magicalPreprocess()
     expect(await preprocess(input, opts)).toBe(parsedMarkup)
   })
 
   it('should parse external HTML', async () => {
     const input = `<template src="./fixtures/template.html"></template>`
-    const opts = smartPreprocess()
+    const opts = magicalPreprocess()
     expect(await preprocess(input, opts)).toBe(parsedMarkup)
   })
 
@@ -53,7 +53,7 @@ describe('template tag', () => {
     <div></div>
     <script src="./fixtures/script.js"></script>
     `
-    const opts = smartPreprocess()
+    const opts = magicalPreprocess()
     const preprocessed = await preprocess(input, opts)
     expect(preprocessed).toContain(parsedJs)
   })
@@ -63,7 +63,7 @@ describe('template tag', () => {
   <div></div>
   <style src="./fixtures/style.css"></style>
   `
-    const opts = smartPreprocess()
+    const opts = magicalPreprocess()
     const compiled = await compile(input, opts)
     expect(compiled.css.code).toMatch(cssRegExp)
   })
@@ -75,7 +75,7 @@ describe('preprocessors', () => {
     div Hey
     </template>
     `
-    const opts = smartPreprocess({ languages: { pug: false } })
+    const opts = magicalPreprocess({ languages: { pug: false } })
     expect(await doesThrow(input, opts)).toBe(true)
   })
 
@@ -84,14 +84,14 @@ describe('preprocessors', () => {
 div Hey
 </template>
   `
-    const opts = smartPreprocess()
+    const opts = magicalPreprocess()
     const preprocessed = (await preprocess(input, opts)).trim()
     expect(preprocessed).toBe(parsedMarkup)
   })
 
   it('should parse external pug', async () => {
     const input = `<template src="./fixtures/template.pug"></template>`
-    const opts = smartPreprocess()
+    const opts = magicalPreprocess()
     expect(await preprocess(input, opts)).toBe(parsedMarkup)
   })
 
@@ -100,7 +100,7 @@ div Hey
   <div></div>
   <style lang="scss">${getFixtureContent('style.scss')}</style>
   `
-    const opts = smartPreprocess({ languages: { scss: false } })
+    const opts = magicalPreprocess({ languages: { scss: false } })
     expect(await doesThrow(input, opts)).toBe(true)
   })
 
@@ -109,7 +109,7 @@ div Hey
   <div></div>
   <style lang="scss">${getFixtureContent('style.scss')}</style>
   `
-    const opts = smartPreprocess()
+    const opts = magicalPreprocess()
     const compiled = await compile(input, opts)
     expect(compiled.css.code).toMatch(cssRegExp)
   })
@@ -119,7 +119,7 @@ div Hey
   <div></div>
   <style src="./fixtures/style.scss"></style>
   `
-    const opts = smartPreprocess()
+    const opts = magicalPreprocess()
     const compiled = await compile(input, opts)
     expect(compiled.css.code).toMatch(cssRegExp)
   })
@@ -129,7 +129,7 @@ div Hey
   <div></div>
   <style lang="less">${getFixtureContent('style.less')}</style>
   `
-    const opts = smartPreprocess({ languages: { less: false } })
+    const opts = magicalPreprocess({ languages: { less: false } })
     expect(await doesThrow(input, opts)).toBe(true)
   })
 
@@ -138,7 +138,7 @@ div Hey
   <div></div>
   <style lang="less">${getFixtureContent('style.less')}</style>
   `
-    const opts = smartPreprocess()
+    const opts = magicalPreprocess()
     const compiled = await compile(input, opts)
     expect(compiled.css.code).toMatch(cssRegExp)
   })
@@ -148,7 +148,7 @@ div Hey
   <div></div>
   <style src="./fixtures/style.less"></style>
   `
-    const opts = smartPreprocess()
+    const opts = magicalPreprocess()
     const compiled = await compile(input, opts)
     expect(compiled.css.code).toMatch(cssRegExp)
   })
@@ -158,7 +158,7 @@ div Hey
   <div></div>
   <style lang="styl">${getFixtureContent('style.styl')}</style>
   `
-    const opts = smartPreprocess({ languages: { stylus: false } })
+    const opts = magicalPreprocess({ languages: { stylus: false } })
     expect(await doesThrow(input, opts)).toBe(true)
   })
 
@@ -167,7 +167,7 @@ div Hey
   <div></div>
   <style lang="styl">${getFixtureContent('style.styl')}</style>
   `
-    const opts = smartPreprocess()
+    const opts = magicalPreprocess()
     const compiled = await compile(input, opts)
     expect(compiled.css.code).toMatch(cssRegExp)
   })
@@ -177,7 +177,7 @@ div Hey
   <div></div>
   <style src="./fixtures/style.styl"></style>
   `
-    const opts = smartPreprocess()
+    const opts = magicalPreprocess()
     const compiled = await compile(input, opts)
     expect(compiled.css.code).toMatch(cssRegExp)
   })
@@ -187,7 +187,7 @@ div Hey
   <div></div>
   <script src="./fixtures/script.coffee"></script>
   `
-    const opts = smartPreprocess({ languages: { coffeescript: false } })
+    const opts = magicalPreprocess({ languages: { coffeescript: false } })
     expect(await doesThrow(input, opts)).toBe(true)
   })
 
@@ -196,7 +196,7 @@ div Hey
   <div></div>
   <script lang="coffeescript">${getFixtureContent('script.coffee')}</script>
   `
-    const opts = smartPreprocess()
+    const opts = magicalPreprocess()
     const preprocessed = await preprocess(input, opts)
     expect(preprocessed).toContain(parsedJs)
   })
@@ -206,7 +206,7 @@ div Hey
   <div></div>
   <script src="./fixtures/script.coffee"></script>
   `
-    const opts = smartPreprocess()
+    const opts = magicalPreprocess()
     const preprocessed = await preprocess(input, opts)
     expect(preprocessed).toContain(parsedJs)
   })
@@ -216,7 +216,7 @@ describe('options', () => {
   it('should accept custom preprocess method for a language', async () => {
     const input = `<template src="./fixtures/template.pug"></template>
     `
-    const opts = smartPreprocess({
+    const opts = magicalPreprocess({
       pug: (content, filename) => {
         const code = require('pug').render(content, opts)
         return { code }
@@ -231,7 +231,7 @@ describe('options', () => {
     <div></div>
     <style src="./fixtures/style.scss"></style>
     `
-    const opts = smartPreprocess({
+    const opts = magicalPreprocess({
       scss: {
         includedPaths: ['node_modules']
       }
@@ -244,9 +244,9 @@ describe('options', () => {
 describe('hook methods', () => {
   it('should execute a onBefore method before preprocessing', async () => {
     const input = ``
-    smartPreprocess({
+    magicalPreprocess({
     })
-    const opts = smartPreprocess({
+    const opts = magicalPreprocess({
       onBefore({ content }) {
         return '<template src="./fixtures/template.pug"></template>'
       }

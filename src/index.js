@@ -9,7 +9,7 @@ const {
   getSrcContent
 } = require('./utils.js')
 
-const throwError = (msg) => { throw new Error(`[svelte-smart-preprocess] ${msg}`) }
+const throwError = (msg) => { throw new Error(`[svelte-preprocess] ${msg}`) }
 const throwUnsupportedError = (lang, filename) =>
   throwError(`Unsupported script language '${lang}' in file '${filename}'`)
 

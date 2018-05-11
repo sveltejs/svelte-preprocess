@@ -57,7 +57,7 @@ exports.runPreprocessor = (lang, maybeFn, content, filename) => {
     return preprocessorModules[lang](content, filename, preprocessOpts)
   } catch (e) {
     throw new Error(
-      `[svelte-smart-preprocess] Error processing '${lang}'. Message:\n${
+      `[svelte-preprocess] Error processing '${lang}'. Message:\n${
         e.message
       }`
     )
