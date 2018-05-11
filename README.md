@@ -4,6 +4,17 @@
 
 ## Usage
 
+### Basic
+
+```js
+const svelte = require('svelte')
+const magicalPreprocess = require('svelte-preprocess')
+
+svelte.preprocess(input, magicalPreprocess()).then(...)
+```
+
+### Advanced
+
 ```js
 const svelte = require('svelte')
 const magicalPreprocess = require('svelte-preprocess')
