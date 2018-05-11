@@ -1,6 +1,6 @@
 {
   "name": "svelte-preprocess",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "license": "MIT",
   "main": "src/index.js",
   "types": "src/index.d.ts",
@@ -40,7 +40,7 @@
     "stylus": "^0.54.5"
   },
   "peerDependencies": {
-    "svelte": "^2.5.1"
+    "svelte": "^1.44.0"
   },
   "optionalPeerDependencies": {
     "coffeescript": "^2.3.0",
