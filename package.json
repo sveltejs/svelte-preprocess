@@ -3,15 +3,17 @@
   "version": "0.1.0",
   "description": "Smart svelte preprocess wrapper",
   "main": "src/index.js",
+  "types": "src/index.d.ts",
   "repository": "https://github.com/kaisermann/svelte-smart-preprocess",
   "author": "Christian Kaisermann <christian@kaisermann.me>",
   "license": "MIT",
   "scripts": {
     "test": "jest --no-cache --verbose",
-    "test:watch": "jest --no-cache --verbose --watch"
+    "test:watch": "jest --no-cache --verbose --watchAll"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
+    "eslint-config-prettier": "^2.9.0",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-node": "^6.0.1",
@@ -20,7 +22,12 @@
     "eslint-plugin-standard": "^3.1.0",
     "jest": "^22.4.3",
     "prettier": "^1.12.1",
-    "svelte": "^2.5.1"
+    "svelte": "^2.5.1",
+    "coffeescript": "^2.3.0",
+    "less": "^3.0.4",
+    "node-sass": "^4.9.0",
+    "pug": "^2.0.3",
+    "stylus": "^0.54.5"
   },
   "peerDependencies": {
     "svelte": "^2.5.1"

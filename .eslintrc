@@ -1,6 +1,6 @@
 {
   "root": true,
-  "extends": ["standard"],
+  "extends": ["standard", "prettier", "prettier/standard"],
   "env": {
     "browser": true,
     "jest": true
