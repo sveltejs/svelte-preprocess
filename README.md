@@ -20,7 +20,7 @@ const svelte = require('svelte')
 const magicalPreprocess = require('svelte-preprocess')
 const magicOpts = {
   /** Transform the whole markup before preprocessing */
-  onBefore({ content,filename }) {
+  onBefore({ content, filename }) {
     return content.replace('something', 'someotherthing')
   },
   languages: {
@@ -54,7 +54,7 @@ const magicOpts = {
      * Means
      * <... src="file.cst"> or
      * <... lang="cst"> or
-     * <... type="text/cst">
+     * <... type="text/customLanguage">
      * will be treated as the language 'customLanguage'
     */
     ['cst', 'customLanguage']
@@ -91,11 +91,25 @@ svelte.preprocess(input, magicalPreprocess(magicOpts)).then(...)
 Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Coffeescript`, `Pug`.
 
 ```html
-<div>Hey</div>
+
+<template lang="pug">
+  div Hey
+</template>
+
+<script type="text/coffeescript">
+  export default
+    methods:
+      foo: () ->
+        console.log('Hey')
+</script>
 
 <style src="./style.scss"></style>
 
+<!-- Or -->
+
 <style src="./style.styl"></style>
+
+<!-- Or -->
 
 <style lang="scss">
   $color: red;
@@ -103,6 +117,8 @@ Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Co
     color: $color;
   }
 </style>
+
+<!-- Or -->
 
 <style type="text/stylus">
   $color = red
