@@ -7,26 +7,25 @@ const {
   isPromise,
   isFn,
   parseXMLAttrString,
-  getSrcContent
+  getSrcContent,
 } = require('./utils.js')
 
-const throwError = (msg) => { throw new Error(`[svelte-preprocess] ${msg}`) }
+const throwError = msg => {
+  throw new Error(`[svelte-preprocess] ${msg}`)
+}
 const throwUnsupportedError = (lang, filename) =>
   throwError(`Unsupported script language '${lang}' in file '${filename}'`)
 
-const templateTagPattern = new RegExp('(<template([\\s\\S]*?)>([\\s\\S]*?)<\\/template>)')
+const templateTagPattern = new RegExp(
+  '(<template([\\s\\S]*?)>([\\s\\S]*?)<\\/template>)',
+)
 
-module.exports = ({
-  onBefore,
-  languages = {},
-  aliases = undefined
-} = {}) => {
-
-  if(aliases) {
+module.exports = ({ onBefore, languages = {}, aliases = undefined } = {}) => {
+  if (aliases) {
     appendLanguageAliases(aliases)
   }
 
-  const getAssetParser = (targetLanguage) => {
+  const getAssetParser = targetLanguage => {
     return ({ content = '', attributes, filename }) => {
       const lang = getLanguage(attributes, targetLanguage)
       let processedMap
@@ -40,7 +39,12 @@ module.exports = ({
           throwUnsupportedError(lang, filename)
         }
 
-        const preProcessedContent = runPreprocessor(lang, languages[lang], content, filename)
+        const preProcessedContent = runPreprocessor(
+          lang,
+          languages[lang],
+          content,
+          filename,
+        )
 
         if (isPromise(preProcessedContent)) {
           return preProcessedContent
@@ -54,9 +58,9 @@ module.exports = ({
     }
   }
 
-  const markupParser = ({content, filename}) => {
+  const markupParser = ({ content, filename }) => {
     if (isFn(onBefore)) {
-      content = onBefore({content, filename})
+      content = onBefore({ content, filename })
     }
     const templateMatch = content.match(templateTagPattern)
 
@@ -75,10 +79,11 @@ module.exports = ({
       if (languages[lang] === false) {
         throwUnsupportedError(lang, filename)
       } else if (lang !== 'html') {
-        const preProcessedContent = runPreprocessor(lang,
+        const preProcessedContent = runPreprocessor(
+          lang,
           languages[lang],
           stripIndent(templateCode),
-          filename
+          filename,
         )
 
         /** It may return a promise, let's check for that */
@@ -102,6 +107,6 @@ module.exports = ({
   return {
     script: getAssetParser('javascript'),
     style: getAssetParser('css'),
-    markup: markupParser
+    markup: markupParser,
   }
 }
