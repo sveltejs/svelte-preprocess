@@ -19,6 +19,7 @@
   "scripts": {
     "test": "jest --no-cache --verbose",
     "test:watch": "jest --no-cache --verbose --watchAll",
+    "release": "npm test && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm publish",
     "prepublishOnly": "npm run test"
   },
   "devDependencies": {
