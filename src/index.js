@@ -57,10 +57,7 @@ module.exports = ({
 
   const markupTransformer = ({ content, filename }) => {
     if (isFn(onBefore)) {
-      content = onBefore({
-        content,
-        filename,
-      })
+      content = onBefore(content, filename)
     }
 
     const templateMatch = content.match(templateTagPattern)
