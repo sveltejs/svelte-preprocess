@@ -1,6 +1,6 @@
 const coffeescript = require('coffeescript')
 
-module.exports = function(content, filename, opts) {
+module.exports = function({ content, filename, opts }) {
   const { js: code, sourceMap: map } = coffeescript.compile(content, {
     filename,
     sourceMap: true,

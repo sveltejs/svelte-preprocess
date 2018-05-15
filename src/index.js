@@ -47,17 +47,15 @@ module.exports = ({
       throwUnsupportedError(lang, filename)
     }
 
-    return runTransformer(
-      lang,
-      transformers[lang],
-      stripIndent(content),
+    return runTransformer(lang, transformers[lang], {
+      content: stripIndent(content),
       filename,
-    )
+    })
   }
 
   const markupTransformer = ({ content, filename }) => {
     if (isFn(onBefore)) {
-      content = onBefore(content, filename)
+      content = onBefore({ content, filename })
     }
 
     const templateMatch = content.match(templateTagPattern)
@@ -85,12 +83,10 @@ module.exports = ({
       throwUnsupportedError(lang, filename)
     }
 
-    const preProcessedContent = runTransformer(
-      lang,
-      transformers[lang],
-      stripIndent(templateCode),
+    const preProcessedContent = runTransformer(lang, transformers[lang], {
+      content: stripIndent(templateCode),
       filename,
-    )
+    })
 
     return Promise.resolve(preProcessedContent).then(({ code }) => {
       return {
@@ -105,13 +101,12 @@ module.exports = ({
     const transformedCSS = cssTransformer(assetInfo)
 
     if (transformers.postcss) {
-      return Promise.resolve(transformedCSS).then(({ code }) => {
-        return runTransformer(
-          'postcss',
-          transformers.postcss,
-          code,
-          assetInfo.filename,
-        )
+      return Promise.resolve(transformedCSS).then(({ code, map }) => {
+        return runTransformer('postcss', transformers.postcss, {
+          content: code,
+          filename: assetInfo.filename,
+          map,
+        })
       })
     }
 

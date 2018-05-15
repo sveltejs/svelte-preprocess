@@ -268,7 +268,7 @@ describe('options', () => {
   it('should execute a onBefore method before transforming markup', async () => {
     const input = `what`
     const opts = magicalPreprocess({
-      onBefore(content) {
+      onBefore({ content }) {
         return content.replace('what', '<template src="./fixtures/template.pug"></template>')
       }
     })

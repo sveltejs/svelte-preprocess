@@ -33,7 +33,7 @@ const svelte = require('svelte')
 const getSveltePreprocessor = require('svelte-preprocess')
 const options = {
   /** Transform the whole markup before preprocessing */
-  onBefore(content, filename) {
+  onBefore({ content, filename }) {
     return content.replace('something', 'someotherthing')
   },
   transformers: {
@@ -53,14 +53,14 @@ const options = {
     },
 
     /** Use a custom preprocess method by passing a function. */
-    pug(content, filename) {
+    pug({ content, filename }) {
         const code = pug.render(content)
 
         return { code, map: null }
     },
 
     /** Add a custom language preprocessor */
-    customLanguage(content, filename) {
+    customLanguage({ content, filename }) {
       const { code, map } = require('custom-language-compiler')(content)
       return { code, map }
     }

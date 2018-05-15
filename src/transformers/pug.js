@@ -1,6 +1,6 @@
 const pug = require('pug')
 
-module.exports = function(content, filename, opts) {
-  const code = pug.render(content, opts)
+module.exports = function({ content, filename, options }) {
+  const code = pug.render(content, options)
   return { code }
 }

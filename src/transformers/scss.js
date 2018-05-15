@@ -2,20 +2,20 @@ const sass = require('node-sass')
 
 const { getIncludePaths } = require('../utils.js')
 
-module.exports = function(
+module.exports = function({
   content,
   filename,
-  opts = {
+  options = {
     includePaths: getIncludePaths(filename),
   },
-) {
+}) {
   return new Promise((resolve, reject) => {
     sass.render(
       {
         data: content,
         sourceMap: true,
         outFile: filename + '.css',
-        ...opts,
+        ...options,
       },
       (err, result) => {
         if (err) return reject(err)

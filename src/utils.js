@@ -59,9 +59,9 @@ exports.getLanguage = (attributes, defaultLang) => {
 
 const transformers = {}
 
-exports.runTransformer = (name, maybeFn, content, filename) => {
+exports.runTransformer = (name, maybeFn, { content, filename }) => {
   if (exports.isFn(maybeFn)) {
-    return maybeFn(content, filename)
+    return maybeFn({ content, filename })
   }
 
   try {
@@ -69,10 +69,10 @@ exports.runTransformer = (name, maybeFn, content, filename) => {
       transformers[name] = require(`./transformers/${name}.js`)
     }
 
-    const transformOpts =
+    const options =
       maybeFn && maybeFn.constructor === Object ? maybeFn : undefined
 
-    return transformers[name](content, filename, transformOpts)
+    return transformers[name]({ content, filename, options })
   } catch (e) {
     throw new Error(
       `[svelte-preprocess] Error transforming '${name}'. Message:\n${
