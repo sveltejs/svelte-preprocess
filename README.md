@@ -1,6 +1,6 @@
 # Svelte Preprocess
 
-> A magical and customizable [Svelte](https://svelte.technology) preprocessor with support for: SCSS, Less, Stylus, Coffeescript and Pug.
+> A customizable [Svelte](https://svelte.technology) preprocessor with support for: PostCSS, SCSS, Less, Stylus, Coffeescript and Pug.
 
 ## Installation
 
@@ -8,6 +8,7 @@
 
 The preprocessor module installation is up to the developer since we don't have a `optionalPeerDependencies`.
 
+- `postcss`: `npm install --save-dev postcss`
 - `coffeescript`: `npm install --save-dev coffeescript`
 - `less`: `npm install --save-dev less`
 - `sass`: `npm install --save-dev node-sass`
@@ -20,28 +21,35 @@ The preprocessor module installation is up to the developer since we don't have 
 
 ```js
 const svelte = require('svelte')
-const magicalPreprocess = require('svelte-preprocess')
+const getSveltePreprocessor = require('svelte-preprocess')
 
-svelte.preprocess(input, magicalPreprocess()).then(...)
+svelte.preprocess(input, getSveltePreprocessor()).then(...)
 ```
 
 ### Advanced
 
 ```js
 const svelte = require('svelte')
-const magicalPreprocess = require('svelte-preprocess')
-const magicOpts = {
+const getSveltePreprocessor = require('svelte-preprocess')
+const options = {
   /** Transform the whole markup before preprocessing */
-  onBefore({ content, filename }) {
+  onBefore(content, filename) {
     return content.replace('something', 'someotherthing')
   },
-  languages: {
+  transformers: {
     /** Disable a language by setting it to 'false' */
     scss: false,
 
     /**  Pass options to the default preprocessor method */
     stylus: {
       paths: ['node_modules']
+    },
+
+    /** Post process css with PostCSS by defining 'transformers.postcss' */
+    postcss: {
+      plugins: [
+        require('autoprefixer')({ browsers: 'last 2 versions' })
+      ]
     },
 
     /** Use a custom preprocess method by passing a function. */
@@ -73,7 +81,7 @@ const magicOpts = {
   ],
 }
 
-svelte.preprocess(input, magicalPreprocess(magicOpts)).then(...)
+svelte.preprocess(input, getSveltePreprocessor(options)).then(...)
 ```
 
 ## Features

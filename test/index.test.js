@@ -1,7 +1,12 @@
-const { readFileSync } = require('fs')
-const { resolve } = require('path')
+const {
+  readFileSync
+} = require('fs')
+const {
+  resolve
+} = require('path')
 const svelte = require('svelte')
 const magicalPreprocess = require('../src')
+const { getLanguage } = require('../src/utils.js')
 
 const getFixtureContent = (file) => readFileSync(resolve(__dirname, 'fixtures', file)).toString().trim()
 
@@ -29,11 +34,17 @@ const preprocess = async (input, magicOpts) => {
 
 const compile = async (input, magicOpts) => {
   const preprocessed = await preprocess(input, magicOpts)
-  const { js, css } = svelte.compile(preprocessed.toString(), {
+  const {
+    js,
+    css
+  } = svelte.compile(preprocessed.toString(), {
     css: true
   })
 
-  return { js, css }
+  return {
+    js,
+    css
+  }
 }
 
 const LANGS = {
@@ -88,13 +99,13 @@ describe('template tag', () => {
 
 
 LANGS.MARKUP.forEach(([lang, ext]) => {
-  describe(`preprocessor - ${lang}`, () => {
+  describe(`markup - preprocessor - ${lang}`, () => {
     const template = `<template lang="${lang}">${getFixtureContent('template.' + ext)}</template>`
     const templateExternal = `<template src="./fixtures/template.${ext}"></template>`
 
     it(`should throw parsing ${lang} when { ${lang}: false }`, async () => {
       const opts = magicalPreprocess({
-        languages: {
+        transformers: {
           pug: false
         }
       })
@@ -115,7 +126,7 @@ LANGS.MARKUP.forEach(([lang, ext]) => {
 })
 
 LANGS.SCRIPT.forEach(([lang, ext]) => {
-  describe(`preprocessor - ${lang}`, () => {
+  describe(`script - preprocessor - ${lang}`, () => {
 
     const template = `
       <div></div>
@@ -133,7 +144,7 @@ LANGS.SCRIPT.forEach(([lang, ext]) => {
         <script src="./fixtures/script.${ext}"></script>
       `
       const opts = magicalPreprocess({
-        languages: {
+        transformers: {
           [lang]: false
         }
       })
@@ -155,7 +166,7 @@ LANGS.SCRIPT.forEach(([lang, ext]) => {
 })
 
 LANGS.STYLE.forEach(([lang, ext]) => {
-  describe(`preprocessor - ${lang}`, () => {
+  describe(`style - preprocessor - ${lang}`, () => {
     const template = `
       <div></div>
       <style lang="${lang}">${getFixtureContent('style.' + ext)}</style>
@@ -168,7 +179,7 @@ LANGS.STYLE.forEach(([lang, ext]) => {
 
     it(`should throw parsing ${lang} when { ${lang}: false }`, async () => {
       const opts = magicalPreprocess({
-        languages: {
+        transformers: {
           [lang]: false
         }
       })
@@ -189,8 +200,44 @@ LANGS.STYLE.forEach(([lang, ext]) => {
   })
 })
 
+describe('style - postcss', () => {
+  const template = `<div></div><style>div{appearance:none;}</style>`
+  const templateSass = `<div></div><style lang="scss">div{appearance:none;}</style>`
+  const opts = magicalPreprocess({
+    transformers: {
+      postcss: {
+        plugins: [
+          require('autoprefixer')({
+            browsers: 'Safari >= 5.1'
+          })
+        ]
+      }
+    }
+  })
+
+  it('should parse text/postcss and lang="postcss" as css', async () => {
+    expect(getLanguage({ type:'text/postcss' }, 'css')).toBe('css')
+    expect(getLanguage({ lang:'postcss' }, 'css')).toBe('css')
+  })
+
+  it('should not transform plain css with postcss if { postcss: falsy }', async () => {
+    const compiled = await compile(template, magicalPreprocess())
+    expect(compiled.css.code).not.toMatch(/-webkit-/)
+  })
+
+  it('should transform plain css with postcss if { postcss: true }', async () => {
+    const compiled = await compile(template, opts)
+    expect(compiled.css.code).toMatch(/-webkit-/)
+  })
+
+  it('should transform async preprocessed css with postcss if { postcss: true }', async () => {
+    const compiled = await compile(templateSass, opts)
+    expect(compiled.css.code).toMatch(/-webkit-/)
+  })
+})
+
 describe('options', () => {
-  it('should accept custom preprocess method for a language', async () => {
+  it('should accept custom method for a transformer', async () => {
     const input = `<template src="./fixtures/template.pug"></template>`
     const opts = magicalPreprocess({
       pug: (content, filename) => {
@@ -204,7 +251,7 @@ describe('options', () => {
     expect(preprocessed).toBe(parsedMarkup)
   })
 
-  it('should accept an options object as language value', async () => {
+  it('should accept an options object as transformer value', async () => {
     const input = `
     <div></div>
     <style src="./fixtures/style.scss"></style>
@@ -218,7 +265,7 @@ describe('options', () => {
     expect(compiled.css.code).toMatch(cssRegExp)
   })
 
-  it('should execute a onBefore method before preprocessing', async () => {
+  it('should execute a onBefore method before transforming markup', async () => {
     const input = ``
     const opts = magicalPreprocess({
       onBefore({
@@ -231,7 +278,7 @@ describe('options', () => {
     expect(preprocessed).toBe(parsedMarkup)
   })
 
-  it('should append a custom language alias to the language alias dictionary', async () => {
+  it('should append aliases to the language alias dictionary', async () => {
     const input = `<div></div><style lang="customLanguage"></style>`
     const opts = magicalPreprocess({
       aliases: [

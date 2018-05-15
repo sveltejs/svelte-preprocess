@@ -1,10 +1,9 @@
 const stripIndent = require('strip-indent')
 
 const {
-  appendLanguageAliases,
+  addLanguageAlias,
   getLanguage,
-  runPreprocessor,
-  isPromise,
+  runTransformer,
   isFn,
   parseXMLAttrString,
   getSrcContent,
@@ -20,93 +19,111 @@ const templateTagPattern = new RegExp(
   '(<template([\\s\\S]*?)>([\\s\\S]*?)<\\/template>)',
 )
 
-module.exports = ({ onBefore, languages = {}, aliases = undefined } = {}) => {
+module.exports = ({
+  onBefore,
+  transformers = {},
+  aliases = undefined,
+} = {}) => {
   if (aliases) {
-    appendLanguageAliases(aliases)
+    addLanguageAlias(aliases)
   }
 
-  const getAssetParser = targetLanguage => {
-    return ({ content = '', attributes, filename }) => {
-      const lang = getLanguage(attributes, targetLanguage)
-      let processedMap
+  const getTransformerTo = targetLanguage => ({
+    content = '',
+    attributes,
+    filename,
+  }) => {
+    const lang = getLanguage(attributes, targetLanguage)
 
-      if (attributes.src) {
-        content = getSrcContent(filename, attributes.src)
-      }
-
-      if (lang !== targetLanguage) {
-        if (languages[lang] === false) {
-          throwUnsupportedError(lang, filename)
-        }
-
-        const preProcessedContent = runPreprocessor(
-          lang,
-          languages[lang],
-          content,
-          filename,
-        )
-
-        if (isPromise(preProcessedContent)) {
-          return preProcessedContent
-        }
-
-        content = preProcessedContent.code
-        processedMap = preProcessedContent.map
-      }
-
-      return { code: content, map: processedMap }
+    if (attributes.src) {
+      content = getSrcContent(filename, attributes.src)
     }
+
+    if (lang === targetLanguage) {
+      return { code: content }
+    }
+
+    if (transformers[lang] === false) {
+      throwUnsupportedError(lang, filename)
+    }
+
+    return runTransformer(
+      lang,
+      transformers[lang],
+      stripIndent(content),
+      filename,
+    )
   }
 
-  const markupParser = ({ content, filename }) => {
+  const markupTransformer = ({ content, filename }) => {
     if (isFn(onBefore)) {
-      content = onBefore({ content, filename })
+      content = onBefore({
+        content,
+        filename,
+      })
     }
+
     const templateMatch = content.match(templateTagPattern)
 
     /** If no <template> was found, just return the original markup */
-    if (templateMatch) {
-      let [, wholeTemplateTag, unparsedAttrs, templateCode] = templateMatch
-
-      const attributes = parseXMLAttrString(unparsedAttrs)
-      const lang = getLanguage(attributes, 'html')
-
-      if (attributes.src) {
-        templateCode = getSrcContent(filename, attributes.src)
-      }
-
-      /** If language is HTML, just remove the <template></template> tags */
-      if (languages[lang] === false) {
-        throwUnsupportedError(lang, filename)
-      } else if (lang !== 'html') {
-        const preProcessedContent = runPreprocessor(
-          lang,
-          languages[lang],
-          stripIndent(templateCode),
-          filename,
-        )
-
-        /** It may return a promise, let's check for that */
-        if (isPromise(preProcessedContent)) {
-          return preProcessedContent.then(({ code }) => {
-            content = content.replace(wholeTemplateTag, code)
-            return { code: content }
-          })
-        }
-
-        /** Replace the <template> tag with the actual template code */
-        templateCode = preProcessedContent.code
-      }
-
-      content = content.replace(wholeTemplateTag, templateCode)
+    if (!templateMatch) {
+      return { code: content }
     }
 
-    return { code: content }
+    let [, wholeTemplateTag, unparsedAttrs, templateCode] = templateMatch
+
+    const attributes = parseXMLAttrString(unparsedAttrs)
+    const lang = getLanguage(attributes, 'html')
+
+    if (attributes.src) {
+      templateCode = getSrcContent(filename, attributes.src)
+    }
+
+    /** If language is HTML, just remove the <template></template> tags */
+    if (lang === 'html') {
+      return { code: content.replace(wholeTemplateTag, templateCode) }
+    }
+
+    if (transformers[lang] === false) {
+      throwUnsupportedError(lang, filename)
+    }
+
+    const preProcessedContent = runTransformer(
+      lang,
+      transformers[lang],
+      stripIndent(templateCode),
+      filename,
+    )
+
+    return Promise.resolve(preProcessedContent).then(({ code }) => {
+      return {
+        code: content.replace(wholeTemplateTag, code),
+      }
+    })
+  }
+
+  const scriptTransformer = getTransformerTo('javascript')
+  const cssTransformer = getTransformerTo('css')
+  const styleTransformer = assetInfo => {
+    const transformedCSS = cssTransformer(assetInfo)
+
+    if (transformers.postcss) {
+      return Promise.resolve(transformedCSS).then(({ code }) => {
+        return runTransformer(
+          'postcss',
+          transformers.postcss,
+          code,
+          assetInfo.filename,
+        )
+      })
+    }
+
+    return transformedCSS
   }
 
   return {
-    script: getAssetParser('javascript'),
-    style: getAssetParser('css'),
-    markup: markupParser,
+    markup: markupTransformer,
+    script: scriptTransformer,
+    style: styleTransformer,
   }
 }
