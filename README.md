@@ -1,6 +1,18 @@
-# Svelte (Magical) Preprocess
+# Svelte Preprocess
 
 > A magical and customizable [Svelte](https://svelte.technology) preprocessor with support for: SCSS, Less, Stylus, Coffeescript and Pug.
+
+## Installation
+
+`npm install --save-dev svelte-preprocess`
+
+The preprocessor module installation is up to the developer since we don't have a `optionalPeerDependencies`.
+
+- `coffeescript`: `npm install --save-dev coffeescript`
+- `less`: `npm install --save-dev less`
+- `sass`: `npm install --save-dev node-sass`
+- `pug`: `npm install --save-dev pug`
+- `stylus`: `npm install --save-dev stylus`
 
 ## Usage
 
