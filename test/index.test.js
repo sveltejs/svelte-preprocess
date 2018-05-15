@@ -32,8 +32,25 @@ const compile = async (input, magicOpts) => {
   const { js, css } = svelte.compile(preprocessed.toString(), {
     css: true
   })
+
   return { js, css }
 }
+
+const LANGS = {
+  /** ['languageName', 'fixtureExtension'] */
+  MARKUP: [
+    ['pug', 'pug']
+  ],
+  SCRIPT: [
+    ['coffeescript', 'coffee']
+  ],
+  STYLE: [
+    ['less', 'less'],
+    ['scss', 'scss'],
+    ['stylus', 'styl']
+  ]
+}
+
 
 describe('template tag', () => {
   it('should parse HTML between <template></template>', async () => {
@@ -50,8 +67,8 @@ describe('template tag', () => {
 
   it('should parse external javascript', async () => {
     const input = `
-    <div></div>
-    <script src="./fixtures/script.js"></script>
+      <div></div>
+      <script src="./fixtures/script.js"></script>
     `
     const opts = magicalPreprocess()
     const preprocessed = await preprocess(input, opts)
@@ -60,155 +77,115 @@ describe('template tag', () => {
 
   it('should parse external css', async () => {
     const input = `
-  <div></div>
-  <style src="./fixtures/style.css"></style>
-  `
+      <div></div>
+      <style src="./fixtures/style.css"></style>
+    `
     const opts = magicalPreprocess()
     const compiled = await compile(input, opts)
     expect(compiled.css.code).toMatch(cssRegExp)
   })
 })
 
-describe('preprocessors', () => {
-  it('should throw parsing pug when { pug: false }', async () => {
-    const input = `<template lang="pug">
-    div Hey
-    </template>
+
+LANGS.MARKUP.forEach(([lang, ext]) => {
+  describe(`preprocessor - ${lang}`, () => {
+    const template = `<template lang="${lang}">${getFixtureContent('template.' + ext)}</template>`
+    const templateExternal = `<template src="./fixtures/template.${ext}"></template>`
+
+    it(`should throw parsing ${lang} when { ${lang}: false }`, async () => {
+      const opts = magicalPreprocess({
+        languages: {
+          pug: false
+        }
+      })
+      expect(await doesThrow(template, opts)).toBe(true)
+    })
+
+    it(`should parse ${lang}`, async () => {
+      const opts = magicalPreprocess()
+      const preprocessed = (await preprocess(template, opts)).trim()
+      expect(preprocessed).toBe(parsedMarkup)
+    })
+
+    it(`should parse external ${lang}`, async () => {
+      const opts = magicalPreprocess()
+      expect(await preprocess(templateExternal, opts)).toBe(parsedMarkup)
+    })
+  })
+})
+
+LANGS.SCRIPT.forEach(([lang, ext]) => {
+  describe(`preprocessor - ${lang}`, () => {
+
+    const template = `
+      <div></div>
+      <script lang="${lang}">${getFixtureContent('script.' + ext)}</script>
     `
-    const opts = magicalPreprocess({ languages: { pug: false } })
-    expect(await doesThrow(input, opts)).toBe(true)
-  })
 
-  it('should parse pug', async () => {
-    const input = `<template lang="pug">
-div Hey
-</template>
-  `
-    const opts = magicalPreprocess()
-    const preprocessed = (await preprocess(input, opts)).trim()
-    expect(preprocessed).toBe(parsedMarkup)
-  })
+    const templateExternal = `
+      <div></div>
+      <script src="./fixtures/script.${ext}"></script>
+    `
 
-  it('should parse external pug', async () => {
-    const input = `<template src="./fixtures/template.pug"></template>`
-    const opts = magicalPreprocess()
-    expect(await preprocess(input, opts)).toBe(parsedMarkup)
-  })
+    it(`should throw parsing ${lang} when { ${lang}: false }`, async () => {
+      const input = `
+        <div></div>
+        <script src="./fixtures/script.${ext}"></script>
+      `
+      const opts = magicalPreprocess({
+        languages: {
+          [lang]: false
+        }
+      })
+      expect(await doesThrow(input, opts)).toBe(true)
+    })
 
-  it('should throw parsing scss when { scss: false }', async () => {
-    const input = `
-  <div></div>
-  <style lang="scss">${getFixtureContent('style.scss')}</style>
-  `
-    const opts = magicalPreprocess({ languages: { scss: false } })
-    expect(await doesThrow(input, opts)).toBe(true)
-  })
+    it(`should parse ${lang}`, async () => {
+      const opts = magicalPreprocess()
+      const preprocessed = await preprocess(template, opts)
+      expect(preprocessed).toContain(parsedJs)
+    })
 
-  it('should parse scss', async () => {
-    const input = `
-  <div></div>
-  <style lang="scss">${getFixtureContent('style.scss')}</style>
-  `
-    const opts = magicalPreprocess()
-    const compiled = await compile(input, opts)
-    expect(compiled.css.code).toMatch(cssRegExp)
+    it(`should parse external ${lang}`, async () => {
+      const opts = magicalPreprocess()
+      const preprocessed = await preprocess(templateExternal, opts)
+      expect(preprocessed).toContain(parsedJs)
+    })
   })
+})
 
-  it('should parse external scss', async () => {
-    const input = `
-  <div></div>
-  <style src="./fixtures/style.scss"></style>
-  `
-    const opts = magicalPreprocess()
-    const compiled = await compile(input, opts)
-    expect(compiled.css.code).toMatch(cssRegExp)
-  })
+LANGS.STYLE.forEach(([lang, ext]) => {
+  describe(`preprocessor - ${lang}`, () => {
+    const template = `
+      <div></div>
+      <style lang="${lang}">${getFixtureContent('style.' + ext)}</style>
+    `
 
-  it('should throw parsing less when { less: false }', async () => {
-    const input = `
-  <div></div>
-  <style lang="less">${getFixtureContent('style.less')}</style>
-  `
-    const opts = magicalPreprocess({ languages: { less: false } })
-    expect(await doesThrow(input, opts)).toBe(true)
-  })
+    const templateExternal = `
+      <div></div>
+      <style src="./fixtures/style.${ext}"></style>
+    `
 
-  it('should parse less', async () => {
-    const input = `
-  <div></div>
-  <style lang="less">${getFixtureContent('style.less')}</style>
-  `
-    const opts = magicalPreprocess()
-    const compiled = await compile(input, opts)
-    expect(compiled.css.code).toMatch(cssRegExp)
-  })
+    it(`should throw parsing ${lang} when { ${lang}: false }`, async () => {
+      const opts = magicalPreprocess({
+        languages: {
+          [lang]: false
+        }
+      })
+      expect(await doesThrow(template, opts)).toBe(true)
+    })
 
-  it('should parse external less', async () => {
-    const input = `
-  <div></div>
-  <style src="./fixtures/style.less"></style>
-  `
-    const opts = magicalPreprocess()
-    const compiled = await compile(input, opts)
-    expect(compiled.css.code).toMatch(cssRegExp)
-  })
+    it(`should parse ${lang}`, async () => {
+      const opts = magicalPreprocess()
+      const compiled = await compile(template, opts)
+      expect(compiled.css.code).toMatch(cssRegExp)
+    })
 
-  it('should throw parsing stylus when { stylus: false }', async () => {
-    const input = `
-  <div></div>
-  <style lang="styl">${getFixtureContent('style.styl')}</style>
-  `
-    const opts = magicalPreprocess({ languages: { stylus: false } })
-    expect(await doesThrow(input, opts)).toBe(true)
-  })
-
-  it('should parse stylus', async () => {
-    const input = `
-  <div></div>
-  <style lang="styl">${getFixtureContent('style.styl')}</style>
-  `
-    const opts = magicalPreprocess()
-    const compiled = await compile(input, opts)
-    expect(compiled.css.code).toMatch(cssRegExp)
-  })
-
-  it('should parse external stylus', async () => {
-    const input = `
-  <div></div>
-  <style src="./fixtures/style.styl"></style>
-  `
-    const opts = magicalPreprocess()
-    const compiled = await compile(input, opts)
-    expect(compiled.css.code).toMatch(cssRegExp)
-  })
-
-  it('should throw parsing coffeescript when { coffeescript: false }', async () => {
-    const input = `
-  <div></div>
-  <script src="./fixtures/script.coffee"></script>
-  `
-    const opts = magicalPreprocess({ languages: { coffeescript: false } })
-    expect(await doesThrow(input, opts)).toBe(true)
-  })
-
-  it('should parse coffeescript', async () => {
-    const input = `
-  <div></div>
-  <script lang="coffeescript">${getFixtureContent('script.coffee')}</script>
-  `
-    const opts = magicalPreprocess()
-    const preprocessed = await preprocess(input, opts)
-    expect(preprocessed).toContain(parsedJs)
-  })
-
-  it('should parse external coffeescript', async () => {
-    const input = `
-  <div></div>
-  <script src="./fixtures/script.coffee"></script>
-  `
-    const opts = magicalPreprocess()
-    const preprocessed = await preprocess(input, opts)
-    expect(preprocessed).toContain(parsedJs)
+    it(`should parse external ${lang}`, async () => {
+      const opts = magicalPreprocess()
+      const compiled = await compile(templateExternal, opts)
+      expect(compiled.css.code).toMatch(cssRegExp)
+    })
   })
 })
 
@@ -218,7 +195,9 @@ describe('options', () => {
     const opts = magicalPreprocess({
       pug: (content, filename) => {
         const code = require('pug').render(content, opts)
-        return { code }
+        return {
+          code
+        }
       }
     })
     const preprocessed = (await preprocess(input, opts)).trim()
@@ -242,7 +221,9 @@ describe('options', () => {
   it('should execute a onBefore method before preprocessing', async () => {
     const input = ``
     const opts = magicalPreprocess({
-      onBefore({ content }) {
+      onBefore({
+        content
+      }) {
         return '<template src="./fixtures/template.pug"></template>'
       }
     })
