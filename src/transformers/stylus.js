@@ -15,6 +15,7 @@ module.exports = function(
       sourcemap: true,
       ...opts,
     })
+
     style.render((err, css) => {
       if (err) reject(err)
 
