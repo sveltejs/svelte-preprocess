@@ -1,6 +1,6 @@
 # Svelte Preprocess
 
-> A customizable [Svelte](https://svelte.technology) preprocessor with support for: PostCSS, SCSS, Less, Stylus, Coffeescript and Pug.
+> A [Svelte](https://svelte.technology) preprocessor wrapper with support for: PostCSS, SCSS, Less, Stylus, Coffeescript and Pug.
 
 ## Installation
 
