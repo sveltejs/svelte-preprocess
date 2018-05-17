@@ -5,19 +5,13 @@ const {
   getLanguage,
   runTransformer,
   isFn,
-  parseXMLAttrString,
+  parseAttributes,
   getSrcContent,
+  throwUnsupportedError,
+  getTagPattern
 } = require('./utils.js')
 
-const throwError = msg => {
-  throw new Error(`[svelte-preprocess] ${msg}`)
-}
-const throwUnsupportedError = (lang, filename) =>
-  throwError(`Unsupported script language '${lang}' in file '${filename}'`)
-
-const templateTagPattern = new RegExp(
-  '(<template([\\s\\S]*?)>([\\s\\S]*?)<\\/template>)',
-)
+const TEMPLATE_PATTERN = getTagPattern('template')
 
 module.exports = ({
   onBefore,
@@ -58,7 +52,7 @@ module.exports = ({
       content = onBefore({ content, filename })
     }
 
-    const templateMatch = content.match(templateTagPattern)
+    const templateMatch = content.match(TEMPLATE_PATTERN)
 
     /** If no <template> was found, just return the original markup */
     if (!templateMatch) {
@@ -67,7 +61,7 @@ module.exports = ({
 
     let [, wholeTemplateTag, unparsedAttrs, templateCode] = templateMatch
 
-    const attributes = parseXMLAttrString(unparsedAttrs)
+    const attributes = parseAttributes(unparsedAttrs)
     const lang = getLanguage(attributes, 'html')
 
     if (attributes.src) {

@@ -1,6 +1,11 @@
 const { readFileSync } = require('fs')
 const { resolve, dirname } = require('path')
 
+const CWD = process.cwd()
+const PATHS = {
+  CWD,
+  MODULES: resolve(CWD, 'node_modules'),
+}
 const LANG_DICT = new Map([
   ['postcss', 'css'],
   ['sass', 'scss'],
@@ -9,35 +14,32 @@ const LANG_DICT = new Map([
   ['coffee', 'coffeescript'],
 ])
 
-const cwd = process.cwd()
-const paths = {
-  cwd,
-  modules: resolve(cwd, 'node_modules'),
-}
+/** Gets a pattern for mathing <(tag) (attrs="values")>(content)</tag> */
+exports.getTagPattern = type =>
+  new RegExp(`(<${type}([\\s\\S]*?)>([\\s\\S]*?)<\\/${type}>)`)
 
 /** Paths used by preprocessors to resolve @imports */
 exports.getIncludePaths = fromFilename =>
   [
-    paths.cwd,
+    PATHS.CWD,
     fromFilename.length && dirname(fromFilename),
-    paths.modules,
+    PATHS.MODULES,
   ].filter(Boolean)
 
 exports.isFn = maybeFn => typeof maybeFn === 'function'
 
-exports.getSrcContent = (rootFile, path) =>
-  readFileSync(resolve(dirname(rootFile), path)).toString()
+exports.getSrcContent = (importerFile, srcPath) =>
+  readFileSync(resolve(dirname(importerFile), srcPath)).toString()
 
-exports.parseXMLAttrString = unparsedAttrStr => {
-  unparsedAttrStr = unparsedAttrStr.trim()
-  return unparsedAttrStr.length > 0
-    ? unparsedAttrStr.split(' ').reduce((acc, entry) => {
-        const [key, value] = entry.split('=')
-        acc[key] = value.replace(/['"]/g, '')
-        return acc
-      }, {})
-    : {}
-}
+exports.parseAttributes = attrsStr =>
+  attrsStr
+    .split(/\s+/)
+    .filter(Boolean)
+    .reduce((acc, attr) => {
+      const [name, value] = attr.split('=')
+      acc[name] = value ? value.replace(/['"]/g, '') : true
+      return acc
+    }, {})
 
 exports.addLanguageAlias = entries =>
   entries.forEach(entry => LANG_DICT.set(...entry))
@@ -57,6 +59,15 @@ exports.getLanguage = (attributes, defaultLang) => {
   return LANG_DICT.get(lang) || lang
 }
 
+exports.throwError = msg => {
+  throw new Error(`[svelte-preprocess] ${msg}`)
+}
+
+exports.throwUnsupportedError = (lang, filename) =>
+  exports.throwError(
+    `Unsupported script language '${lang}' in file '${filename}'`,
+  )
+
 const transformers = {}
 
 exports.runTransformer = (name, maybeFn, { content, filename }) => {
@@ -74,10 +85,6 @@ exports.runTransformer = (name, maybeFn, { content, filename }) => {
 
     return transformers[name]({ content, filename, options })
   } catch (e) {
-    throw new Error(
-      `[svelte-preprocess] Error transforming '${name}'. Message:\n${
-        e.message
-      }`,
-    )
+    exports.throwError(`Error transforming '${name}'. Message:\n${e.message}`)
   }
 }
