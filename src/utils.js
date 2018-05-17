@@ -1,6 +1,7 @@
 const { readFileSync } = require('fs')
 const { resolve, dirname } = require('path')
 
+const transformers = {}
 const CWD = process.cwd()
 const PATHS = {
   CWD,
@@ -14,19 +15,26 @@ const LANG_DICT = new Map([
   ['coffee', 'coffeescript'],
 ])
 
-/** Gets a pattern for mathing <(tag) (attrs="values")>(content)</tag> */
-exports.getTagPattern = type =>
-  new RegExp(`(<${type}([\\s\\S]*?)>([\\s\\S]*?)<\\/${type}>)`)
+exports.throwError = msg => {
+  throw new Error(`[svelte-preprocess] ${msg}`)
+}
 
-/** Paths used by preprocessors to resolve @imports */
-exports.getIncludePaths = fromFilename =>
-  [
-    PATHS.CWD,
-    fromFilename.length && dirname(fromFilename),
-    PATHS.MODULES,
-  ].filter(Boolean)
+exports.throwUnsupportedError = (lang, filename) =>
+  exports.throwError(
+    `Unsupported script language '${lang}' in file '${filename}'`,
+  )
 
 exports.isFn = maybeFn => typeof maybeFn === 'function'
+
+/** Gets a pattern for mathing <(tag) (attrs="values")>(content)</tag> */
+exports.getTagPattern = type =>
+  new RegExp(`<${type}([\\s\\S]*?)>([\\s\\S]*?)<\\/${type}>`)
+
+/** Replace a string with another value by slicing it based on a regexp match */
+exports.sliceReplace = (match, str, replaceValue) =>
+  str.slice(0, match.index) +
+  replaceValue +
+  str.slice(match.index + match[0].length)
 
 exports.getSrcContent = (importerFile, srcPath) =>
   readFileSync(resolve(dirname(importerFile), srcPath)).toString()
@@ -59,16 +67,13 @@ exports.getLanguage = (attributes, defaultLang) => {
   return LANG_DICT.get(lang) || lang
 }
 
-exports.throwError = msg => {
-  throw new Error(`[svelte-preprocess] ${msg}`)
-}
-
-exports.throwUnsupportedError = (lang, filename) =>
-  exports.throwError(
-    `Unsupported script language '${lang}' in file '${filename}'`,
-  )
-
-const transformers = {}
+/** Paths used by preprocessors to resolve @imports */
+exports.getIncludePaths = fromFilename =>
+  [
+    PATHS.CWD,
+    fromFilename.length && dirname(fromFilename),
+    PATHS.MODULES,
+  ].filter(Boolean)
 
 exports.runTransformer = (name, maybeFn, { content, filename }) => {
   if (exports.isFn(maybeFn)) {

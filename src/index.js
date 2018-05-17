@@ -8,17 +8,14 @@ const {
   parseAttributes,
   getSrcContent,
   throwUnsupportedError,
-  getTagPattern
+  getTagPattern,
+  sliceReplace,
 } = require('./utils.js')
 
 const TEMPLATE_PATTERN = getTagPattern('template')
 
-module.exports = ({
-  onBefore,
-  transformers = {},
-  aliases = undefined,
-} = {}) => {
-  if (aliases) {
+module.exports = ({ onBefore, transformers = {}, aliases } = {}) => {
+  if (aliases && aliases.length) {
     addLanguageAlias(aliases)
   }
 
@@ -34,7 +31,9 @@ module.exports = ({
     }
 
     if (lang === targetLanguage) {
-      return { code: content }
+      return {
+        code: content,
+      }
     }
 
     if (transformers[lang] === false) {
@@ -59,9 +58,9 @@ module.exports = ({
       return { code: content }
     }
 
-    let [, wholeTemplateTag, unparsedAttrs, templateCode] = templateMatch
+    let [, attributes, templateCode] = templateMatch
 
-    const attributes = parseAttributes(unparsedAttrs)
+    attributes = parseAttributes(attributes)
     const lang = getLanguage(attributes, 'html')
 
     if (attributes.src) {
@@ -70,7 +69,9 @@ module.exports = ({
 
     /** If language is HTML, just remove the <template></template> tags */
     if (lang === 'html') {
-      return { code: content.replace(wholeTemplateTag, templateCode) }
+      return {
+        code: sliceReplace(templateMatch, content, templateCode),
+      }
     }
 
     if (transformers[lang] === false) {
@@ -84,7 +85,7 @@ module.exports = ({
 
     return Promise.resolve(preProcessedContent).then(({ code }) => {
       return {
-        code: content.replace(wholeTemplateTag, code),
+        code: sliceReplace(templateMatch, content, code),
       }
     })
   }
