@@ -1,6 +1,6 @@
 {
   "name": "svelte-preprocess",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "license": "MIT",
   "main": "src/index.js",
   "types": "src/index.d.ts",
@@ -27,6 +27,7 @@
   "devDependencies": {
     "autoprefixer": "^8.5.0",
     "coffeescript": "^2.3.0",
+    "cosmiconfig": "^5.0.5",
     "eslint": "^4.19.1",
     "eslint-config-prettier": "^2.9.0",
     "eslint-config-standard": "^11.0.0",

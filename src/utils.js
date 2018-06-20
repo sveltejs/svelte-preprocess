@@ -7,8 +7,6 @@ const PATHS = {
   CWD,
   MODULES: resolve(CWD, 'node_modules'),
 }
-exports.PATHS = PATHS
-
 const LANG_DICT = new Map([
   ['postcss', 'css'],
   ['sass', 'scss'],

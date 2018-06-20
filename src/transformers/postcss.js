@@ -1,15 +1,11 @@
 const postcss = require('postcss')
-const { PATHS } = require('../utils.js')
-const { existsSync } = require('fs')
-const { resolve } = require('path')
-
-const postcssConfigPath = resolve(PATHS.CWD, 'postcss.config.js')
-const hasPostcssConfig = existsSync(postcssConfigPath)
+const cosmiconfig = require('cosmiconfig')
+const postcssConfig = cosmiconfig('postcss').searchSync()
 
 module.exports = ({ content, filename, options, map = false }) => {
   /** Try to use postcss.config.js if no config was passed */
-  if (!options && hasPostcssConfig) {
-    options = require(postcssConfigPath)
+  if (!options && postcssConfig) {
+    options = require(postcssConfig.filepath)
   }
 
   return postcss(options.plugins || options.use || [])
