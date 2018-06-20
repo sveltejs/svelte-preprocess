@@ -40,12 +40,19 @@ const options = {
     /** Disable a language by setting it to 'false' */
     scss: false,
 
+    /** Enable a language's default transformer by setting it to 'true' */
+    less: true,
+
     /**  Pass options to the default preprocessor method */
     stylus: {
       paths: ['node_modules']
     },
 
-    /** Post process css with PostCSS by defining 'transformers.postcss' */
+    /**
+     * Post process css with PostCSS by defining 'transformers.postcss'
+     * Pass 'true' to activate PostCSS transforms and use the `postcss.config.js`
+     */
+    postcss: true,
     postcss: {
       plugins: [
         require('autoprefixer')({ browsers: 'last 2 versions' })

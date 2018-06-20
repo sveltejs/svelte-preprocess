@@ -94,7 +94,6 @@ module.exports = ({ onBefore, transformers = {}, aliases } = {}) => {
   const cssTransformer = getTransformerTo('css')
   const styleTransformer = assetInfo => {
     const transformedCSS = cssTransformer(assetInfo)
-
     if (transformers.postcss) {
       return Promise.resolve(transformedCSS).then(({ code, map }) => {
         return runTransformer('postcss', transformers.postcss, {
