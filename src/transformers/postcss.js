@@ -4,14 +4,12 @@ const { existsSync } = require('fs')
 const { resolve } = require('path')
 
 const postcssConfigPath = resolve(PATHS.CWD, 'postcss.config.js')
-const postcssConfig = existsSync(postcssConfigPath)
-  ? require(postcssConfigPath)
-  : null
+const hasPostcssConfig = existsSync(postcssConfigPath)
 
 module.exports = ({ content, filename, options, map = false }) => {
   /** Try to use postcss.config.js if no config was passed */
-  if (!options && postcssConfig) {
-    options = postcssConfig
+  if (!options && hasPostcssConfig) {
+    options = require(postcssConfigPath)
   }
 
   return postcss(options.plugins || options.use || [])
