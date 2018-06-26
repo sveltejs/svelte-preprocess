@@ -97,7 +97,7 @@ module.exports = ({ onBefore, transformers = {}, aliases } = {}) => {
     if (transformers.postcss) {
       return Promise.resolve(transformedCSS).then(({ code, map }) => {
         return runTransformer('postcss', transformers.postcss, {
-          content: code,
+          content: stripIndent(code),
           filename: assetInfo.filename,
           map,
         })
