@@ -21,16 +21,16 @@ The preprocessor module installation is up to the developer since we don't have 
 
 ```js
 const svelte = require('svelte')
-const getSveltePreprocessor = require('svelte-preprocess')
+const preprocess = require('svelte-preprocess')
 
-svelte.preprocess(input, getSveltePreprocessor()).then(...)
+svelte.preprocess(input, preprocess({ /* options */ })).then(...)
 ```
 
 ### Advanced
 
 ```js
 const svelte = require('svelte')
-const getSveltePreprocessor = require('svelte-preprocess')
+const preprocess = require('svelte-preprocess')
 const options = {
   /** Transform the whole markup before preprocessing */
   onBefore({ content, filename }) {
@@ -88,7 +88,30 @@ const options = {
   ],
 }
 
-svelte.preprocess(input, getSveltePreprocessor(options)).then(...)
+svelte.preprocess(input, preprocess(options)).then(...)
+```
+
+### With `svelte-loader`
+
+```js
+  ...
+  module: {
+    rules: [
+      ...
+      {
+        test: /\.(html|svelte)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'svelte-loader',
+          options: {
+            preprocess: require('svelte-preprocess')({ /* options */ })
+          },
+        },
+      },
+      ...
+    ]
+  }
+  ...
 ```
 
 ## Features
