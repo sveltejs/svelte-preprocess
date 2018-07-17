@@ -1,14 +1,8 @@
 const postcss = require('postcss')
-const cosmiconfig = require('cosmiconfig')
-const postcssConfig = cosmiconfig('postcss').searchSync()
+const postcssLoadConfig = require(`postcss-load-config`)
 
-module.exports = ({ content, filename, options, map = false }) => {
-  /** Try to use postcss.config.js if no config was passed */
-  if (!options && postcssConfig) {
-    options = require(postcssConfig.filepath)
-  }
-
-  return postcss(options.plugins || options.use || [])
+const process = (plugins, content, filename, map) =>
+  postcss(plugins)
     .process(content, {
       from: filename,
       prev: map,
@@ -17,4 +11,10 @@ module.exports = ({ content, filename, options, map = false }) => {
       code: css,
       map,
     }))
+
+/** Adapted from https://github.com/TehShrike/svelte-preprocess-postcss */
+module.exports = ({ content, filename, options = {}, map = false }) => {
+  return postcssLoadConfig(options, options.configFilePath)
+    .then(options => process(options.plugins || [], content, filename, map))
+    .catch(e => process(options.plugins || [], content, filename, map))
 }
