@@ -231,7 +231,7 @@ describe('style - postcss', () => {
     expect(compiled.css.code).not.toMatch(/-webkit-/)
   })
 
-  it('should transform plain css with postcss if { postcss: { useConfigFile: false, plugins... } }', async () => {
+  it('should transform plain css with postcss if { postcss: { plugins... } }', async () => {
     const compiled = await compile(template, optsWithoutConfigFile)
     expect(compiled.css.code).toMatch(/-webkit-/)
   })
@@ -241,7 +241,7 @@ describe('style - postcss', () => {
     expect(compiled.css.code).toMatch(/-webkit-/)
   })
 
-  it('should transform plain css with postcss if { postcss: { useConfigFile: true, configFilePath: ... } }', async () => {
+  it('should transform plain css with postcss if { postcss: { configFilePath: ... } }', async () => {
     const compiled = await compile(template, optsWithConfigFile)
     expect(compiled.css.code).toMatch(/-webkit-/)
   })
