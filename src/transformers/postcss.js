@@ -21,5 +21,10 @@ module.exports = ({ content, filename, options = {}, map = undefined }) => {
       postcssLoadConfig(options, options.configFilePath)
         .then(options => process(options.plugins || [], content, filename, map))
         /** No config object passed and no config file found, do nothing */
-        .catch(e => ({ code: content, map }))
+        .catch(e => {
+          console.warn('\x1b[33m%s\x1b[0m',
+            "[svelte-preprocess] Passed 'transformers.postcss: true' but no 'postcss.config.js' was found.",
+          )
+          return { code: content, map }
+        })
 }
