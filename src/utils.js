@@ -64,7 +64,10 @@ exports.getLanguage = (attributes, defaultLang) => {
       : attributes.lang || defaultLang
   }
 
-  return LANG_DICT.get(lang) || lang
+  return {
+    lang: LANG_DICT.get(lang) || lang,
+    alias: lang,
+  }
 }
 
 /** Paths used by preprocessors to resolve @imports */
@@ -85,8 +88,7 @@ exports.runTransformer = (name, maybeFn, { content, filename }) => {
       transformers[name] = require(`./transformers/${name}.js`)
     }
 
-    const options =
-      maybeFn && maybeFn.constructor === Object ? maybeFn : undefined
+    const options = typeof maybeFn === 'object' ? maybeFn : {}
 
     return transformers[name]({ content, filename, options })
   } catch (e) {

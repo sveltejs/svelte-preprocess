@@ -19,12 +19,27 @@ module.exports = ({ onBefore, transformers = {}, aliases } = {}) => {
     addLanguageAlias(aliases)
   }
 
+  const getTransformerOpts = (lang, alias) => {
+    if (isFn(transformers[alias])) {
+      return transformers[alias]
+    }
+    let opts = transformers[lang] || {}
+
+    if (lang !== alias && typeof transformerOpts !== 'function') {
+      opts = {
+        ...opts,
+        ...(transformers[alias] || {}),
+      }
+    }
+    return opts
+  }
+
   const getTransformerTo = targetLanguage => ({
     content = '',
     attributes,
     filename,
   }) => {
-    const lang = getLanguage(attributes, targetLanguage)
+    const { lang, alias } = getLanguage(attributes, targetLanguage)
 
     if (attributes.src) {
       content = getSrcContent(filename, attributes.src)
@@ -37,10 +52,10 @@ module.exports = ({ onBefore, transformers = {}, aliases } = {}) => {
     }
 
     if (transformers[lang] === false) {
-      throwUnsupportedError(lang, filename)
+      throwUnsupportedError(alias, filename)
     }
 
-    return runTransformer(lang, transformers[lang], {
+    return runTransformer(lang, getTransformerOpts(lang, alias), {
       content: stripIndent(content),
       filename,
     })
@@ -61,7 +76,7 @@ module.exports = ({ onBefore, transformers = {}, aliases } = {}) => {
     let [, attributes, templateCode] = templateMatch
 
     attributes = parseAttributes(attributes)
-    const lang = getLanguage(attributes, 'html')
+    const { lang, alias } = getLanguage(attributes, 'html')
 
     if (attributes.src) {
       templateCode = getSrcContent(filename, attributes.src)
@@ -78,10 +93,14 @@ module.exports = ({ onBefore, transformers = {}, aliases } = {}) => {
       throwUnsupportedError(lang, filename)
     }
 
-    const preProcessedContent = runTransformer(lang, transformers[lang], {
-      content: stripIndent(templateCode),
-      filename,
-    })
+    const preProcessedContent = runTransformer(
+      lang,
+      getTransformerOpts(lang, alias),
+      {
+        content: stripIndent(templateCode),
+        filename,
+      },
+    )
 
     return Promise.resolve(preProcessedContent).then(({ code }) => {
       return {

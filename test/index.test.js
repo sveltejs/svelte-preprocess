@@ -12,9 +12,9 @@ const getFixtureContent = file =>
 const doesThrow = async (input, opts) => {
   let didThrow = false
   try {
-    await preprocess(input, opts)
+    await compile(input, opts)
   } catch (err) {
-    didThrow = err.message.includes('svelte-preprocess')
+    didThrow = true
   }
   return didThrow
 }
@@ -47,7 +47,12 @@ const LANGS = {
   /** ['languageName', 'fixtureExtension'] */
   MARKUP: [['pug', 'pug']],
   SCRIPT: [['coffeescript', 'coffee']],
-  STYLE: [['less', 'less'], ['scss', 'scss'], ['stylus', 'styl']],
+  STYLE: [
+    ['sass', 'sass', { indentedSyntax: true }],
+    ['less', 'less'],
+    ['scss', 'scss'],
+    ['stylus', 'styl'],
+  ],
 }
 
 describe('template tag', () => {
@@ -84,7 +89,7 @@ describe('template tag', () => {
   })
 })
 
-LANGS.MARKUP.forEach(([lang, ext]) => {
+LANGS.MARKUP.forEach(([lang, ext, langOptions]) => {
   describe(`markup - preprocessor - ${lang}`, () => {
     const template = `<template lang="${lang}">${getFixtureContent(
       'template.' + ext,
@@ -101,19 +106,19 @@ LANGS.MARKUP.forEach(([lang, ext]) => {
     })
 
     it(`should parse ${lang}`, async () => {
-      const opts = getPreprocess()
+      const opts = getPreprocess({ transformers: { [lang]: langOptions } })
       const preprocessed = (await preprocess(template, opts)).trim()
       expect(preprocessed).toBe(parsedMarkup)
     })
 
     it(`should parse external ${lang}`, async () => {
-      const opts = getPreprocess()
+      const opts = getPreprocess({ transformers: { [lang]: langOptions } })
       expect(await preprocess(templateExternal, opts)).toBe(parsedMarkup)
     })
   })
 })
 
-LANGS.SCRIPT.forEach(([lang, ext]) => {
+LANGS.SCRIPT.forEach(([lang, ext, langOptions]) => {
   describe(`script - preprocessor - ${lang}`, () => {
     const template = `
       <div></div>
@@ -139,20 +144,20 @@ LANGS.SCRIPT.forEach(([lang, ext]) => {
     })
 
     it(`should parse ${lang}`, async () => {
-      const opts = getPreprocess()
+      const opts = getPreprocess({ transformers: { [lang]: langOptions } })
       const preprocessed = await preprocess(template, opts)
       expect(preprocessed).toContain(parsedJs)
     })
 
     it(`should parse external ${lang}`, async () => {
-      const opts = getPreprocess()
+      const opts = getPreprocess({ transformers: { [lang]: langOptions } })
       const preprocessed = await preprocess(templateExternal, opts)
       expect(preprocessed).toContain(parsedJs)
     })
   })
 })
 
-LANGS.STYLE.forEach(([lang, ext]) => {
+LANGS.STYLE.forEach(([lang, ext, langOptions]) => {
   describe(`style - preprocessor - ${lang}`, () => {
     const template = `
       <div></div>
@@ -174,13 +179,13 @@ LANGS.STYLE.forEach(([lang, ext]) => {
     })
 
     it(`should parse ${lang}`, async () => {
-      const opts = getPreprocess()
+      const opts = getPreprocess({ transformers: { [lang]: langOptions } })
       const compiled = await compile(template, opts)
       expect(compiled.css.code).toMatch(cssRegExp)
     })
 
     it(`should parse external ${lang}`, async () => {
-      const opts = getPreprocess()
+      const opts = getPreprocess({ transformers: { [lang]: langOptions } })
       const compiled = await compile(templateExternal, opts)
       expect(compiled.css.code).toMatch(cssRegExp)
     })
@@ -210,14 +215,20 @@ describe('style - postcss', () => {
   const optsWithConfigFile = getPreprocess({
     transformers: {
       postcss: {
-        configFilePath: './test/fixtures/'
+        configFilePath: './test/fixtures/',
       },
     },
   })
 
   it('should parse text/postcss and lang="postcss" as css', async () => {
-    expect(getLanguage({ type: 'text/postcss' }, 'css')).toBe('css')
-    expect(getLanguage({ lang: 'postcss' }, 'css')).toBe('css')
+    expect(getLanguage({ type: 'text/postcss' }, 'css')).toEqual({
+      lang: 'css',
+      alias: 'postcss',
+    })
+    expect(getLanguage({ lang: 'postcss' }, 'css')).toEqual({
+      lang: 'css',
+      alias: 'postcss',
+    })
   })
 
   it('should not transform plain css with postcss if { postcss: falsy }', async () => {
@@ -295,6 +306,23 @@ describe('options', () => {
     const opts = getPreprocess({
       aliases: [['customLanguage', 'css']],
     })
+    expect(await doesThrow(input, opts)).toBe(false)
+  })
+
+  it('should allow to pass specific options to alias', async () => {
+    const input = `
+      <div></div>
+      <style lang="sass">${getFixtureContent('style.sass')}</style>
+    `
+
+    const opts = getPreprocess({
+      transformers: {
+        sass: {
+          indentedSyntax: true,
+        },
+      },
+    })
+
     expect(await doesThrow(input, opts)).toBe(false)
   })
 })

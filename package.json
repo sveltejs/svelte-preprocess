@@ -1,6 +1,6 @@
 {
   "name": "svelte-preprocess",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "license": "MIT",
   "main": "src/index.js",
   "types": "src/index.d.ts",
@@ -12,6 +12,7 @@
     "preprocess",
     "less",
     "stylus",
+    "sass",
     "scss",
     "pug",
     "coffeescript"
