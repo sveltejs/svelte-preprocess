@@ -10,11 +10,14 @@ const {
   throwUnsupportedError,
   getTagPattern,
   sliceReplace,
+  aliasOverrides,
 } = require('./utils.js')
 
 const TEMPLATE_PATTERN = getTagPattern('template')
 
 module.exports = ({ onBefore, transformers = {}, aliases } = {}) => {
+  const optionsCache = {}
+
   if (aliases && aliases.length) {
     addLanguageAlias(aliases)
   }
@@ -23,15 +26,22 @@ module.exports = ({ onBefore, transformers = {}, aliases } = {}) => {
     if (isFn(transformers[alias])) {
       return transformers[alias]
     }
-    let opts = transformers[lang] || {}
 
-    if (lang !== alias && typeof transformerOpts !== 'function') {
-      opts = {
-        ...opts,
-        ...(transformers[alias] || {}),
+    if (typeof optionsCache[alias] === 'undefined') {
+      let opts = transformers[lang] || {}
+
+      if (lang !== alias) {
+        opts = {
+          ...opts,
+          ...(aliasOverrides[alias] || {}),
+          ...(transformers[alias] || {}),
+        }
       }
+
+      optionsCache[alias] = opts
     }
-    return opts
+
+    return optionsCache[alias]
   }
 
   const getTransformerTo = targetLanguage => ({
@@ -51,7 +61,10 @@ module.exports = ({ onBefore, transformers = {}, aliases } = {}) => {
       }
     }
 
-    if (transformers[lang] === false) {
+    if (
+      transformers[lang] === false ||
+      (lang !== alias && transformers[alias] === false)
+    ) {
       throwUnsupportedError(alias, filename)
     }
 

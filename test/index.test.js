@@ -48,7 +48,7 @@ const LANGS = {
   MARKUP: [['pug', 'pug']],
   SCRIPT: [['coffeescript', 'coffee']],
   STYLE: [
-    ['sass', 'sass', { indentedSyntax: true }],
+    ['sass', 'sass'],
     ['less', 'less'],
     ['scss', 'scss'],
     ['stylus', 'styl'],
@@ -106,13 +106,13 @@ LANGS.MARKUP.forEach(([lang, ext, langOptions]) => {
     })
 
     it(`should parse ${lang}`, async () => {
-      const opts = getPreprocess({ transformers: { [lang]: langOptions } })
+      const opts = getPreprocess()
       const preprocessed = (await preprocess(template, opts)).trim()
       expect(preprocessed).toBe(parsedMarkup)
     })
 
     it(`should parse external ${lang}`, async () => {
-      const opts = getPreprocess({ transformers: { [lang]: langOptions } })
+      const opts = getPreprocess()
       expect(await preprocess(templateExternal, opts)).toBe(parsedMarkup)
     })
   })
@@ -144,13 +144,13 @@ LANGS.SCRIPT.forEach(([lang, ext, langOptions]) => {
     })
 
     it(`should parse ${lang}`, async () => {
-      const opts = getPreprocess({ transformers: { [lang]: langOptions } })
+      const opts = getPreprocess()
       const preprocessed = await preprocess(template, opts)
       expect(preprocessed).toContain(parsedJs)
     })
 
     it(`should parse external ${lang}`, async () => {
-      const opts = getPreprocess({ transformers: { [lang]: langOptions } })
+      const opts = getPreprocess()
       const preprocessed = await preprocess(templateExternal, opts)
       expect(preprocessed).toContain(parsedJs)
     })
@@ -179,13 +179,13 @@ LANGS.STYLE.forEach(([lang, ext, langOptions]) => {
     })
 
     it(`should parse ${lang}`, async () => {
-      const opts = getPreprocess({ transformers: { [lang]: langOptions } })
+      const opts = getPreprocess()
       const compiled = await compile(template, opts)
       expect(compiled.css.code).toMatch(cssRegExp)
     })
 
     it(`should parse external ${lang}`, async () => {
-      const opts = getPreprocess({ transformers: { [lang]: langOptions } })
+      const opts = getPreprocess()
       const compiled = await compile(templateExternal, opts)
       expect(compiled.css.code).toMatch(cssRegExp)
     })
@@ -318,11 +318,11 @@ describe('options', () => {
     const opts = getPreprocess({
       transformers: {
         sass: {
-          indentedSyntax: true,
+          indentedSyntax: false,
         },
       },
     })
 
-    expect(await doesThrow(input, opts)).toBe(false)
+    expect(await doesThrow(input, opts)).toBe(true)
   })
 })

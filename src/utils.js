@@ -15,6 +15,12 @@ const LANG_DICT = new Map([
   ['coffee', 'coffeescript'],
 ])
 
+exports.aliasOverrides = {
+  sass: {
+    indentedSyntax: true,
+  },
+}
+
 exports.throwError = msg => {
   throw new Error(`[svelte-preprocess] ${msg}`)
 }

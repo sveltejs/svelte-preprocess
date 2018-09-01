@@ -1,10 +1,10 @@
 {
   "name": "svelte-preprocess",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "license": "MIT",
   "main": "src/index.js",
   "types": "src/index.d.ts",
-  "description": "A Svelte preprocess wrapper with baked in support for some preprocessors",
+  "description": "A Svelte preprocessor wrapper with baked in support for common used preprocessors",
   "author": "Christian Kaisermann <christian@kaisermann.me>",
   "repository": "https://github.com/kaisermann/svelte-preprocess",
   "keywords": [
