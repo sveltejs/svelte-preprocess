@@ -2,20 +2,17 @@ const stylus = require('stylus')
 
 const { getIncludePaths } = require('../utils.js')
 
-module.exports = function({
-  content,
-  filename,
-  options = {},
-}) {
-  let opts = Object.assign({
+module.exports = function({ content, filename, options }) {
+  options = {
     includePaths: getIncludePaths(filename),
-  }, options);
+    ...options,
+  }
 
   return new Promise((resolve, reject) => {
     const style = stylus(content, {
       filename,
       sourcemap: true,
-      ...opts,
+      ...options,
     })
 
     style.render((err, css) => {

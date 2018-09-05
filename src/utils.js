@@ -84,17 +84,15 @@ exports.getIncludePaths = fromFilename =>
     PATHS.MODULES,
   ].filter(Boolean)
 
-exports.runTransformer = (name, maybeFn, { content, filename }) => {
-  if (exports.isFn(maybeFn)) {
-    return maybeFn({ content, filename })
+exports.runTransformer = (name, options, { content, filename }) => {
+  if (exports.isFn(options)) {
+    return options({ content, filename })
   }
 
   try {
     if (!transformers[name]) {
       transformers[name] = require(`./transformers/${name}.js`)
     }
-
-    const options = typeof maybeFn === 'object' ? maybeFn : {}
 
     return transformers[name]({ content, filename, options })
   } catch (e) {

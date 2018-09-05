@@ -13,10 +13,10 @@ const process = (plugins, content, filename, map) =>
     }))
 
 /** Adapted from https://github.com/TehShrike/svelte-preprocess-postcss */
-module.exports = ({ content, filename, options = {}, map = undefined }) => {
+module.exports = ({ content, filename, options, map = undefined }) => {
   /** If manually passed a plugins array, use it as the postcss config */
   return typeof options.plugins !== 'undefined'
-    ? process(options.plugins || [], content, filename, map)
+    ? process(options.plugins, content, filename, map)
     : /** If not, look for a postcss config file */
       postcssLoadConfig(options, options.configFilePath)
         .then(options => process(options.plugins || [], content, filename, map))
