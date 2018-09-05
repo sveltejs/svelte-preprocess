@@ -1,11 +1,12 @@
 const pug = require('pug')
 
-module.exports = function({ content, filename, options = {} }) {
-  let opts = Object.assign({
+module.exports = function({ content, filename, options }) {
+  options = {
     doctype: 'html',
     filename,
-  }, options);
+    ...options,
+  }
 
-  const code = pug.render(content, opts)
+  const code = pug.render(content, options)
   return { code }
 }
