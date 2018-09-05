@@ -5,17 +5,19 @@ const { getIncludePaths } = require('../utils.js')
 module.exports = function({
   content,
   filename,
-  options = {
-    includePaths: getIncludePaths(filename),
-  },
+  options = {},
 }) {
+  let opts = Object.assign({
+    includePaths: getIncludePaths(filename),
+  }, options);
+
   return new Promise((resolve, reject) => {
     sass.render(
       {
         data: content,
         sourceMap: true,
         outFile: filename + '.css',
-        ...options,
+        ...opts,
       },
       (err, result) => {
         if (err) return reject(err)
