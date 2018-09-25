@@ -6,7 +6,7 @@
 
 `npm install --save-dev svelte-preprocess`
 
-The preprocessor module installation is up to the developer since we don't have a `optionalPeerDependencies`.
+The preprocessor module installation is up to the developer.
 
 - `postcss`: `npm install --save-dev postcss`
 - `coffeescript`: `npm install --save-dev coffeescript`
