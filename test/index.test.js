@@ -258,6 +258,27 @@ describe('style - postcss', () => {
   })
 })
 
+describe('externally hosted files', () => {
+  const EXTERNALJS = [
+    'https://www.example.com/some/externally/delivered/content.js',
+    'http://www.example.com/some/externally/delivered/content.js',
+    '//www.example.com/some/externally/delivered/content.js'
+  ]
+
+  EXTERNALJS.forEach((url) => {
+    it(`should not attempt to locally resolve ${url}`, async () => {
+      const input = `
+      <div></div>
+      <script src="${url}"></script>
+      `
+
+      const opts = getPreprocess()
+      const preprocessed = await preprocess(input, opts)
+      expect(preprocessed).toContain(input)
+    })
+  })
+})
+
 describe('options', () => {
   it('should accept custom method for a transformer', async () => {
     const input = `<template src="./fixtures/template.pug"></template>`

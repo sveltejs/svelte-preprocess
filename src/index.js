@@ -52,6 +52,10 @@ module.exports = ({ onBefore, transformers = {}, aliases } = {}) => {
     const { lang, alias } = getLanguage(attributes, targetLanguage)
 
     if (attributes.src) {
+      if (attributes.src.match(/^(https?)?:?\/\/.*$/)) {
+        return
+      }
+
       content = getSrcContent(filename, attributes.src)
     }
 
