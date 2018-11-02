@@ -258,6 +258,22 @@ describe('style - postcss', () => {
   })
 })
 
+describe('detect - mimetype', () => {
+  const MIMETYPES = [
+    { type: 'application/ld+json', parser: 'ld+json' },
+    { type: 'text/some-other', parser: 'some-other' },
+    { lang: 'stylus', parser: 'stylus' }
+  ]
+   MIMETYPES.forEach(({ type, lang, parser }) => {
+    it(`should detect ${type || lang} as ${parser}`, async () => {
+      expect(getLanguage({ type, lang }, 'javascript')).toEqual({
+        lang: parser,
+        alias: parser,
+      })
+    })
+  })
+})
+
 describe('externally hosted files', () => {
   const EXTERNALJS = [
     'https://www.example.com/some/externally/delivered/content.js',
@@ -338,7 +354,7 @@ describe('options', () => {
           return { code: content, map: '' }
         },
       },
-      aliases: [['application/ld+json', 'structuredData']],
+      aliases: [['ld+json', 'structuredData']],
     })
     const preprocessed = await preprocess(input, opts)
     expect(preprocessed).toContain(`{"json":true}`)
