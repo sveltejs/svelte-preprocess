@@ -262,10 +262,10 @@ describe('externally hosted files', () => {
   const EXTERNALJS = [
     'https://www.example.com/some/externally/delivered/content.js',
     'http://www.example.com/some/externally/delivered/content.js',
-    '//www.example.com/some/externally/delivered/content.js'
+    '//www.example.com/some/externally/delivered/content.js',
   ]
 
-  EXTERNALJS.forEach((url) => {
+  EXTERNALJS.forEach(url => {
     it(`should not attempt to locally resolve ${url}`, async () => {
       const input = `
       <div></div>
@@ -328,6 +328,20 @@ describe('options', () => {
       aliases: [['customLanguage', 'css']],
     })
     expect(await doesThrow(input, opts)).toBe(false)
+  })
+
+  it('should support custom language transformers', async () => {
+    const input = `<div></div><script type="application/ld+json">{"json":true}</script>`
+    const opts = getPreprocess({
+      transformers: {
+        structuredData({ content }) {
+          return { code: content, map: '' }
+        },
+      },
+      aliases: [['application/ld+json', 'structuredData']],
+    })
+    const preprocessed = await preprocess(input, opts)
+    expect(preprocessed).toContain(`{"json":true}`)
   })
 
   it('should allow to pass specific options to alias', async () => {
