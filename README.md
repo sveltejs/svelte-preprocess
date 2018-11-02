@@ -86,6 +86,14 @@ const options = {
     */
     ['cst', 'customLanguage']
   ],
+  preserve: [
+    /**
+     * Using the same matching algorithm as above, don't parse,
+     * modify, or remove from the markup, tags which match the 
+     * language / types listed below.
+     * **/
+    'ld+json'
+  ]
 }
 
 svelte.preprocess(input, preprocess(options)).then(...)
