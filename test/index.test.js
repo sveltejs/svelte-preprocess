@@ -360,6 +360,20 @@ describe('options', () => {
     expect(preprocessed).toContain(`{"json":true}`)
   })
 
+  it('should support custom language transformers', async () => {
+    const input = `<div></div><script type="application/ld+json">{"json":true}</script>`
+    const opts = getPreprocess({
+      preserve: [ 'ld+json' ],
+      transformers: {
+        structuredData({ content }) {
+          return { code: content, map: '' }
+        },
+      }
+    })
+    const preprocessed = await preprocess(input, opts)
+    expect(preprocessed).toContain(`<script type="application/ld+json">{"json":true}</script>`)
+  })
+
   it('should allow to pass specific options to alias', async () => {
     const input = `
       <div></div>

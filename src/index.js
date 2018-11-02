@@ -15,7 +15,12 @@ const {
 
 const TEMPLATE_PATTERN = getTagPattern('template')
 
-module.exports = ({ onBefore, transformers = {}, aliases } = {}) => {
+module.exports = ({
+  onBefore,
+  transformers = {},
+  aliases,
+  preserve = []
+} = {}) => {
   const optionsCache = {}
 
   if (aliases && aliases.length) {
@@ -49,6 +54,10 @@ module.exports = ({ onBefore, transformers = {}, aliases } = {}) => {
     filename,
   }) => {
     const { lang, alias } = getLanguage(attributes, targetLanguage)
+
+    if (preserve.indexOf(lang) > -1) {
+      return
+    }
 
     if (attributes.src) {
       if (attributes.src.match(/^(https?)?:?\/\/.*$/)) {
