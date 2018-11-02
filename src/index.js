@@ -23,9 +23,8 @@ module.exports = ({ onBefore, transformers = {}, aliases } = {}) => {
   }
 
   const getTransformerOpts = (lang, alias) => {
-    if (isFn(transformers[alias])) {
-      return transformers[alias]
-    }
+    if (isFn(transformers[alias])) return transformers[alias]
+    if (isFn(transformers[lang])) return transformers[lang]
 
     if (typeof optionsCache[alias] === 'undefined') {
       let opts = transformers[lang] || {}
