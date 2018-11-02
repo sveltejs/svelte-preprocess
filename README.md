@@ -82,6 +82,7 @@ const options = {
      * <... src="file.cst"> or
      * <... lang="cst"> or
      * <... type="text/customLanguage">
+     * <... type="application/customLanguage">
      * will be treated as the language 'customLanguage'
     */
     ['cst', 'customLanguage']

@@ -66,7 +66,7 @@ exports.getLanguage = (attributes, defaultLang) => {
     lang = lang ? lang[1] : defaultLang
   } else {
     lang = attributes.type
-      ? attributes.type.replace('text/', '')
+      ? attributes.type.replace(/^(text|application)\/(.*)$/, '$2')
       : attributes.lang || defaultLang
   }
 
