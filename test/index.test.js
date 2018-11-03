@@ -346,7 +346,7 @@ describe('options', () => {
     expect(await doesThrow(input, opts)).toBe(false)
   })
 
-  it('should support custom language transformers', async () => {
+  it('should not preprocess preserved languages', async () => {
     const input = `<div></div><script type="application/ld+json">{"json":true}</script>`
     const opts = getPreprocess({
       transformers: {

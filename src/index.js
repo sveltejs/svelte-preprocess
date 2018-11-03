@@ -19,7 +19,7 @@ module.exports = ({
   onBefore,
   transformers = {},
   aliases,
-  preserve = []
+  preserve = [],
 } = {}) => {
   const optionsCache = {}
 
@@ -55,7 +55,7 @@ module.exports = ({
   }) => {
     const { lang, alias } = getLanguage(attributes, targetLanguage)
 
-    if (preserve.indexOf(lang) > -1) {
+    if (preserve.includes(lang) || preserve.includes(alias)) {
       return
     }
 
