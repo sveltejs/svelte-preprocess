@@ -316,9 +316,12 @@ describe('options', () => {
     <style src="./fixtures/style.scss"></style>
     `
     const opts = getPreprocess({
-      scss: {
-        includedPaths: ['node_modules'],
-      },
+      transformers: {
+        scss: {
+          sourceMap: false,
+          includedPaths: ['node_modules'],
+        },
+      }
     })
     const compiled = await compile(input, opts)
     expect(compiled.css.code).toMatch(cssRegExp)

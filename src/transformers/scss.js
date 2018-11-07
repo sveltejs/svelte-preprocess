@@ -21,7 +21,7 @@ module.exports = function({ content, filename, options }) {
 
         resolve({
           code: result.css.toString(),
-          map: result.map.toString(),
+          map: result.map ? result.map.toString() : undefined,
         })
       },
     )
