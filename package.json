@@ -22,7 +22,7 @@
     "test:watch": "jest --no-cache --verbose --watchAll",
     "lint": "eslint \"src/**/*.js\"",
     "format": "prettier --loglevel silent --write \"src/**/*.js\" && eslint --fix \"src/**/*.js\"",
-    "prepublishOnly": "npm run format && npm run test && auto-changelog",
+    "prepublishOnly": "npm run format && npm run test",
     "postinstall": "node -e \"console.log('\\u001b[36m\\u001b[1m[svelte-preprocess] Don\\'t forget to install the preprocessors packages that will be used: \\u001b[22m\\u001b[39m\\u001b[34mnode-sass, stylus, less, postcss, coffesscript, pug, etc...\\u001b[0m')\""
   },
   "devDependencies": {
