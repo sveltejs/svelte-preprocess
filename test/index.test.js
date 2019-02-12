@@ -262,9 +262,9 @@ describe('detect - mimetype', () => {
   const MIMETYPES = [
     { type: 'application/ld+json', parser: 'ld+json' },
     { type: 'text/some-other', parser: 'some-other' },
-    { lang: 'stylus', parser: 'stylus' }
+    { lang: 'stylus', parser: 'stylus' },
   ]
-   MIMETYPES.forEach(({ type, lang, parser }) => {
+  MIMETYPES.forEach(({ type, lang, parser }) => {
     it(`should detect ${type || lang} as ${parser}`, async () => {
       expect(getLanguage({ type, lang }, 'javascript')).toEqual({
         lang: parser,
@@ -274,7 +274,40 @@ describe('detect - mimetype', () => {
   })
 })
 
-describe('externally hosted files', () => {
+describe('external files', () => {
+  it('should add a external file as a dependency', async () => {
+    const content = `
+    <template src="./fixtures/template.html"></template>
+    <style src="./fixtures/style.css"></style>
+    <script src="./fixtures/script.js"></script>
+  `
+
+    const getBaseObj = src => ({
+      content,
+      filename: resolve(__dirname, 'App.svelte'),
+      attributes: { src: `./fixtures/${src}` },
+    })
+
+    const { markup, script, style } = getPreprocess()
+    const [markupResult, scriptResult, styleResult] = [
+      await markup(getBaseObj('template.html')),
+      await script(getBaseObj('script.js')),
+      await style(getBaseObj('style.css')),
+    ]
+
+    expect(markupResult.dependencies).toContain(
+      resolve(__dirname, './fixtures/template.html'),
+    )
+
+    expect(scriptResult.dependencies).toContain(
+      resolve(__dirname, './fixtures/script.js'),
+    )
+
+    expect(styleResult.dependencies).toContain(
+      resolve(__dirname, './fixtures/style.css'),
+    )
+  })
+
   const EXTERNALJS = [
     'https://www.example.com/some/externally/delivered/content.js',
     'http://www.example.com/some/externally/delivered/content.js',
@@ -321,7 +354,7 @@ describe('options', () => {
           sourceMap: false,
           includedPaths: ['node_modules'],
         },
-      }
+      },
     })
     const compiled = await compile(input, opts)
     expect(compiled.css.code).toMatch(cssRegExp)
@@ -366,15 +399,17 @@ describe('options', () => {
   it('should support custom language transformers', async () => {
     const input = `<div></div><script type="application/ld+json">{"json":true}</script>`
     const opts = getPreprocess({
-      preserve: [ 'ld+json' ],
+      preserve: ['ld+json'],
       transformers: {
         structuredData({ content }) {
           return { code: content, map: '' }
         },
-      }
+      },
     })
     const preprocessed = await preprocess(input, opts)
-    expect(preprocessed).toContain(`<script type="application/ld+json">{"json":true}</script>`)
+    expect(preprocessed).toContain(
+      `<script type="application/ld+json">{"json":true}</script>`,
+    )
   })
 
   it('should allow to pass specific options to alias', async () => {
