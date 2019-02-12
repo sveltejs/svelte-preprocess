@@ -45,7 +45,7 @@ exports.sliceReplace = (match, str, replaceValue) =>
 exports.resolveSrc = (importerFile, srcPath) =>
   resolve(dirname(importerFile), srcPath)
 
-exports.getSrcContent = (file) => {
+exports.getSrcContent = file => {
   return new Promise((resolve, reject) => {
     readFile(file, (error, data) => {
       if (error) reject(error)

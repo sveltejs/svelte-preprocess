@@ -1,6 +1,6 @@
 {
   "name": "svelte-preprocess",
-  "version": "2.4.3",
+  "version": "2.5.0",
   "license": "MIT",
   "main": "src/index.js",
   "types": "src/index.d.ts",
@@ -26,25 +26,25 @@
     "postinstall": "node -e \"console.log('\\u001b[36m\\u001b[1m[svelte-preprocess] Don\\'t forget to install the preprocessors packages that will be used: \\u001b[22m\\u001b[39m\\u001b[34mnode-sass, stylus, less, postcss, coffesscript, pug, etc...\\u001b[0m')\""
   },
   "devDependencies": {
-    "auto-changelog": "^1.8.1",
-    "autoprefixer": "^9.3.1",
+    "auto-changelog": "^1.11.0",
+    "autoprefixer": "^9.4.7",
     "coffeescript": "^2.3.2",
-    "eslint": "^5.7.0",
-    "eslint-config-prettier": "^3.1.0",
+    "eslint": "^5.13.0",
+    "eslint-config-prettier": "^4.0.0",
     "eslint-config-standard": "^12.0.0",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-node": "^7.0.1",
-    "eslint-plugin-prettier": "^3.0.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
-    "jest": "^23.6.0",
-    "less": "^3.8.1",
-    "node-sass": "^4.9.4",
-    "postcss": "^7.0.5",
-    "prettier": "^1.14.3",
+    "jest": "^24.1.0",
+    "less": "^3.9.0",
+    "node-sass": "^4.11.0",
+    "postcss": "^7.0.14",
+    "prettier": "^1.16.4",
     "pug": "^2.0.3",
     "stylus": "^0.54.5",
-    "svelte": "^2.14.3"
+    "svelte": "^2.16.1"
   },
   "peerDependencies": {
     "svelte": "^1.44.0 || ^2.0.0"
