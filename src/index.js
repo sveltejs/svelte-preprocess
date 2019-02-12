@@ -7,6 +7,7 @@ const {
   isFn,
   parseAttributes,
   getSrcContent,
+  resolveSrc,
   throwUnsupportedError,
   getTagPattern,
   sliceReplace,
@@ -48,12 +49,13 @@ module.exports = ({
     return optionsCache[alias]
   }
 
-  const getTransformerTo = targetLanguage => ({
+  const getTransformerTo = targetLanguage => async ({
     content = '',
     attributes,
     filename,
   }) => {
     const { lang, alias } = getLanguage(attributes, targetLanguage)
+    const dependencies = []
 
     if (preserve.includes(lang) || preserve.includes(alias)) {
       return
@@ -63,13 +65,15 @@ module.exports = ({
       if (attributes.src.match(/^(https?)?:?\/\/.*$/)) {
         return
       }
-
-      content = getSrcContent(filename, attributes.src)
+      const file = resolveSrc(filename, attributes.src)
+      content = await getSrcContent(file)
+      dependencies.push(file)
     }
 
     if (lang === targetLanguage) {
       return {
         code: content,
+        dependencies,
       }
     }
 
@@ -80,13 +84,15 @@ module.exports = ({
       throwUnsupportedError(alias, filename)
     }
 
-    return runTransformer(lang, getTransformerOpts(lang, alias), {
+    const result = await runTransformer(lang, getTransformerOpts(lang, alias), {
       content: stripIndent(content),
       filename,
     })
+    result.dependencies = dependencies
+    return result
   }
 
-  const markupTransformer = ({ content, filename }) => {
+  const markupTransformer = async ({ content, filename }) => {
     if (isFn(onBefore)) {
       content = onBefore({ content, filename })
     }
@@ -95,22 +101,26 @@ module.exports = ({
 
     /** If no <template> was found, just return the original markup */
     if (!templateMatch) {
-      return { code: content }
+      return { code: content, }
     }
 
     let [, attributes, templateCode] = templateMatch
 
     attributes = parseAttributes(attributes)
     const { lang, alias } = getLanguage(attributes, 'html')
+    const dependencies = []
 
     if (attributes.src) {
-      templateCode = getSrcContent(filename, attributes.src)
+      const file = resolveSrc(filename, attributes.src)
+      templateCode = await getSrcContent(file)
+      dependencies.push(file)
     }
 
     /** If language is HTML, just remove the <template></template> tags */
     if (lang === 'html') {
       return {
         code: sliceReplace(templateMatch, content, templateCode),
+        dependencies,
       }
     }
 
@@ -118,7 +128,7 @@ module.exports = ({
       throwUnsupportedError(lang, filename)
     }
 
-    const preProcessedContent = runTransformer(
+    const { code } = await runTransformer(
       lang,
       getTransformerOpts(lang, alias),
       {
@@ -127,11 +137,10 @@ module.exports = ({
       },
     )
 
-    return Promise.resolve(preProcessedContent).then(({ code }) => {
-      return {
-        code: sliceReplace(templateMatch, content, code),
-      }
-    })
+    return {
+      code: sliceReplace(templateMatch, content, code),
+      dependencies,
+    }
   }
 
   const scriptTransformer = getTransformerTo('javascript')

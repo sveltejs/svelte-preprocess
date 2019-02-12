@@ -1,4 +1,4 @@
-const { readFileSync } = require('fs')
+const { readFile } = require('fs')
 const { resolve, dirname } = require('path')
 
 const transformers = {}
@@ -42,8 +42,17 @@ exports.sliceReplace = (match, str, replaceValue) =>
   replaceValue +
   str.slice(match.index + match[0].length)
 
-exports.getSrcContent = (importerFile, srcPath) =>
-  readFileSync(resolve(dirname(importerFile), srcPath)).toString()
+exports.resolveSrc = (importerFile, srcPath) =>
+  resolve(dirname(importerFile), srcPath)
+
+exports.getSrcContent = (file) => {
+  return new Promise((resolve, reject) => {
+    readFile(file, (error, data) => {
+      if (error) reject(error)
+      else resolve(data.toString())
+    })
+  })
+}
 
 exports.parseAttributes = attrsStr =>
   attrsStr
