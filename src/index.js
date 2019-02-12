@@ -101,7 +101,7 @@ module.exports = ({
 
     /** If no <template> was found, just return the original markup */
     if (!templateMatch) {
-      return { code: content, }
+      return { code: content }
     }
 
     let [, attributes, templateCode] = templateMatch
