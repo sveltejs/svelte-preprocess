@@ -68,15 +68,15 @@ exports.addLanguageAlias = entries =>
   entries.forEach(entry => LANG_DICT.set(...entry))
 
 exports.getLanguage = (attributes, defaultLang) => {
-  let lang
+  let lang = defaultLang
 
-  if (attributes.src) {
+  if (attributes.lang) {
+    lang = attributes.lang
+  } else if (attributes.type) {
+    lang = attributes.type.replace(/^(text|application)\/(.*)$/, '$2')
+  } else if (attributes.src) {
     lang = attributes.src.match(/\.([^/.]+)$/)
     lang = lang ? lang[1] : defaultLang
-  } else {
-    lang = attributes.type
-      ? attributes.type.replace(/^(text|application)\/(.*)$/, '$2')
-      : attributes.lang || defaultLang
   }
 
   return {

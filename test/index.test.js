@@ -263,10 +263,11 @@ describe('detect - mimetype', () => {
     { type: 'application/ld+json', parser: 'ld+json' },
     { type: 'text/some-other', parser: 'some-other' },
     { lang: 'stylus', parser: 'stylus' },
+    { src: '../foo.custom', lang: 'customLanguage', parser: 'customLanguage' },
   ]
-  MIMETYPES.forEach(({ type, lang, parser }) => {
-    it(`should detect ${type || lang} as ${parser}`, async () => {
-      expect(getLanguage({ type, lang }, 'javascript')).toEqual({
+  MIMETYPES.forEach(({ type, lang, src, parser }) => {
+    it(`should detect '${src || type || lang}' as '${parser}'`, async () => {
+      expect(getLanguage({ type, lang, src }, 'javascript')).toEqual({
         lang: parser,
         alias: parser,
       })
@@ -330,17 +331,19 @@ describe('external files', () => {
 
 describe('options', () => {
   it('should accept custom method for a transformer', async () => {
-    const input = `<template src="./fixtures/template.pug"></template>`
+    const input = `<template lang="customTransformer">${getFixtureContent(
+      'template.custom',
+    )}</template>`
     const opts = getPreprocess({
-      pug: (content, filename) => {
-        const code = require('pug').render(content, opts)
-        return {
-          code,
-        }
+      transformers: {
+        customTransformer({ content, filename }) {
+          content = content.replace('foo', 'bar')
+          return { code: content, map: null }
+        },
       },
     })
     const preprocessed = (await preprocess(input, opts)).trim()
-    expect(preprocessed).toBe(parsedMarkup)
+    expect(preprocessed).toBe('bar')
   })
 
   it('should accept an options object as transformer value', async () => {
