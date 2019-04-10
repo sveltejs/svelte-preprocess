@@ -1,6 +1,9 @@
 const { readFileSync } = require('fs')
 const { resolve } = require('path')
-const svelte = require('svelte')
+const {
+  compile: svelteCompile,
+  preprocess: sveltePreprocess,
+} = require('svelte/compiler.js')
 const getPreprocess = require('../src')
 const { getLanguage } = require('../src/utils.js')
 
@@ -24,7 +27,7 @@ const parsedMarkup = getFixtureContent('template.html')
 const parsedJs = getFixtureContent('script.js')
 
 const preprocess = async (input, magicOpts) => {
-  const preprocessed = await svelte.preprocess(input, {
+  const preprocessed = await sveltePreprocess(input, {
     filename: resolve(__dirname, 'App.svelte'),
     ...magicOpts,
   })
@@ -33,7 +36,7 @@ const preprocess = async (input, magicOpts) => {
 
 const compile = async (input, magicOpts) => {
   const preprocessed = await preprocess(input, magicOpts)
-  const { js, css } = svelte.compile(preprocessed.toString(), {
+  const { js, css } = svelteCompile(preprocessed.toString(), {
     css: true,
   })
 

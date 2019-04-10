@@ -15,6 +15,9 @@ const LANG_DICT = new Map([
   ['coffee', 'coffeescript'],
 ])
 
+/** Caches the attributes for processed markups (svelte doesn't accept attributes on markup) */
+exports.processedMarkupAttrs = {}
+
 exports.aliasOverrides = {
   sass: {
     indentedSyntax: true,
@@ -31,10 +34,6 @@ exports.throwUnsupportedError = (lang, filename) =>
   )
 
 exports.isFn = maybeFn => typeof maybeFn === 'function'
-
-/** Gets a pattern for mathing <(tag) (attrs="values")>(content)</tag> */
-exports.getTagPattern = type =>
-  new RegExp(`<${type}([\\s\\S]*?)>([\\s\\S]*?)<\\/${type}>`)
 
 /** Replace a string with another value by slicing it based on a regexp match */
 exports.sliceReplace = (match, str, replaceValue) =>
