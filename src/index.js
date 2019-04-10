@@ -94,7 +94,7 @@ module.exports = ({
 
   const markupTransformer = async ({ content, filename }) => {
     if (isFn(onBefore)) {
-      content = onBefore({ content, filename })
+      content = await onBefore({ content, filename })
     }
 
     const templateMatch = content.match(TEMPLATE_PATTERN)

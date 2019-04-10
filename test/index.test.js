@@ -377,6 +377,24 @@ describe('options', () => {
     expect(preprocessed).toBe(parsedMarkup)
   })
 
+  it('should execute a async onBefore method before transforming markup', async () => {
+    const input = `what`
+    const opts = getPreprocess({
+      onBefore({ content }) {
+        return new Promise(resolve => {
+          resolve(
+            content.replace(
+              'what',
+              '<template src="./fixtures/template.pug"></template>',
+            ),
+          )
+        })
+      },
+    })
+    const preprocessed = (await preprocess(input, opts)).trim()
+    expect(preprocessed).toBe(parsedMarkup)
+  })
+
   it('should append aliases to the language alias dictionary', async () => {
     const input = `<div></div><style lang="customLanguage"></style>`
     const opts = getPreprocess({
