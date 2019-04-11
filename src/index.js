@@ -1,27 +1,19 @@
 const autoProcess = require('./autoProcess.js')
 
-const coffeescript = require('./processors/coffeescript.js')
-const less = require('./processors/less.js')
-const postcss = require('./processors/postcss.js')
-const pug = require('./processors/pug.js')
-const scss = require('./processors/scss.js')
-const stylus = require('./processors/stylus.js')
-
 /** default auto processor */
 module.exports = autoProcess
 
 /** stand-alone processors to be included manually */
-
 /** Markup */
-exports.pug = pug
+exports.pug = opts => require(`./processors/pug.js`)(opts)
 
 /** Script */
-exports.coffeescript = coffeescript
-exports.coffee = coffeescript
+exports.coffeescript = opts => require(`./processors/coffeescript.js`)(opts)
+exports.coffee = opts => require(`./processors/coffeescript.js`)(opts)
 
 /** Style */
-exports.less = less
-exports.scss = scss
-exports.sass = scss
-exports.stylus = stylus
-exports.postcss = postcss
+exports.less = opts => require(`./processors/less.js`)(opts)
+exports.scss = opts => require(`./processors/scss.js`)(opts)
+exports.sass = opts => require(`./processors/scss.js`)(opts)
+exports.stylus = opts => require(`./processors/stylus.js`)(opts)
+exports.postcss = opts => require(`./processors/postcss.js`)(opts)
