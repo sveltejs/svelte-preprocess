@@ -17,7 +17,9 @@ The preprocessor module installation is up to the developer.
 
 ## Usage
 
-### Basic
+### Auto Preprocessing
+
+#### Basic
 
 ```js
 const svelte = require('svelte')
@@ -26,7 +28,7 @@ const preprocess = require('svelte-preprocess')
 svelte.preprocess(input, preprocess({ /* options */ })).then(...)
 ```
 
-### Advanced
+#### Advanced
 
 ```js
 const svelte = require('svelte')
@@ -90,7 +92,7 @@ const options = {
   preserve: [
     /**
      * Using the same matching algorithm as above, don't parse,
-     * modify, or remove from the markup, tags which match the 
+     * modify, or remove from the markup, tags which match the
      * language / types listed below.
      * **/
     'ld+json'
@@ -99,6 +101,33 @@ const options = {
 
 svelte.preprocess(input, preprocess(options)).then(...)
 ```
+
+### Standalone processors
+
+Instead of a single processor, [Svelte v3 has added support for multiple processors](https://v3.svelte.technology/docs#svelte-preprocess). In case you want to manually configure your preprocessing step, `svelte-preprocess` exports these named processors: `pug`, `coffeescript` or `coffee`, `less`, `scss` or `sass`, `stylus`, `postcss`.
+
+```js
+svelte.preprocess(input, [
+  pug(),
+  coffee(),
+  scss(),
+]).then(...)
+```
+
+Every processor accepts an option object which is passed to its respective underlying tool.
+
+```js
+svelte.preprocess(input, [
+  scss(),
+  postcss({
+    plugins: [
+      require('autoprefixer')({ browsers: 'last 2 versions' })
+    ]
+  }),
+])
+```
+
+***Note:** there's no built-in support for \<template\> tag or external files when using standalone processors.*
 
 ### With `svelte-loader`
 
@@ -125,7 +154,9 @@ svelte.preprocess(input, preprocess(options)).then(...)
 
 ## Features
 
-### Template (a la Vue) tag support
+### Template tag support
+
+*Note: only for auto preprocessing*
 
 ```html
 <template>
@@ -139,6 +170,8 @@ svelte.preprocess(input, preprocess(options)).then(...)
 
 ## External files support
 
+*Note: only for auto preprocessing*
+
 ```html
 <template src="template.html"></template>
 <script src="./script.js"></script>
@@ -147,10 +180,9 @@ svelte.preprocess(input, preprocess(options)).then(...)
 
 ## Preprocessors support
 
-Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Coffeescript`, `Pug`.
+Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Coffeescript`, `Pug` and `PostCSS`.
 
 ```html
-
 <template lang="pug">
   div Hey
 </template>
@@ -183,6 +215,6 @@ Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Co
   $color = red
 
   div
-    color: $color
+    color: $color;
 </style>
 ```
