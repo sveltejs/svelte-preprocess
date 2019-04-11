@@ -2,7 +2,7 @@ const stylus = require('stylus')
 
 const { getIncludePaths } = require('../utils.js')
 
-module.exports = function({ content, filename, options }) {
+module.exports = ({ content, filename, options }) => {
   options = {
     includePaths: getIncludePaths(filename),
     ...options,
