@@ -168,7 +168,7 @@ svelte.preprocess(input, [
 <script></script>
 ```
 
-## External files support
+### External files support
 
 *Note: only for auto preprocessing*
 
@@ -178,7 +178,7 @@ svelte.preprocess(input, [
 <style src="./style.css"></style>
 ```
 
-## Preprocessors support
+### Preprocessors support
 
 Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Coffeescript`, `Pug` and `PostCSS`.
 
