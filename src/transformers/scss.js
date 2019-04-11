@@ -2,7 +2,7 @@ const sass = require('node-sass')
 
 const { getIncludePaths } = require('../utils.js')
 
-module.exports = function({ content, filename, options }) {
+module.exports = ({ content, filename, options }) => {
   options = {
     includePaths: getIncludePaths(filename),
     ...options,
@@ -22,6 +22,7 @@ module.exports = function({ content, filename, options }) {
         resolve({
           code: result.css.toString(),
           map: result.map ? result.map.toString() : undefined,
+          dependencies: result.stats.includedFiles,
         })
       },
     )

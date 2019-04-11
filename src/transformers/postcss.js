@@ -1,28 +1,30 @@
 const postcss = require('postcss')
 const postcssLoadConfig = require(`postcss-load-config`)
 
-const process = (plugins, content, filename, map) =>
-  postcss(plugins)
-    .process(content, {
-      from: filename,
-      prev: map,
-    })
-    .then(({ css, map }) => ({
-      code: css,
-      map,
-    }))
+const process = async (plugins, content, filename, sourceMap) => {
+  const { css, map } = await postcss(plugins).process(content, {
+    from: filename,
+    prev: sourceMap,
+  })
+
+  return { code: css, map }
+}
 
 /** Adapted from https://github.com/TehShrike/svelte-preprocess-postcss */
-module.exports = ({ content, filename, options, map = undefined }) => {
+module.exports = async ({ content, filename, options, map = undefined }) => {
   /** If manually passed a plugins array, use it as the postcss config */
-  return typeof options.plugins !== 'undefined'
-    ? process(options.plugins, content, filename, map)
-    : /** If not, look for a postcss config file */
-      postcssLoadConfig(options, options.configFilePath)
-        .then(options => process(options.plugins || [], content, filename, map))
-        /** Something went wrong, do nothing */
-        .catch(e => {
-          console.error(e.message)
-          return { code: content, map }
-        })
+  if (options && options.plugins) {
+    return process(options.plugins, content, filename, map)
+  }
+
+  try {
+    /** If not, look for a postcss config file */
+    options = await postcssLoadConfig(options, options.configFilePath)
+  } catch (e) {
+    /** Something went wrong, do nothing */
+    console.error(e.message)
+    return { code: content, map }
+  }
+
+  return process(options.plugins || [], content, filename, map)
 }

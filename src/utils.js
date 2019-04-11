@@ -1,12 +1,6 @@
 const { readFile } = require('fs')
 const { resolve, dirname } = require('path')
 
-const transformers = {}
-const CWD = process.cwd()
-const PATHS = {
-  CWD,
-  MODULES: resolve(CWD, 'node_modules'),
-}
 const LANG_DICT = new Map([
   ['postcss', 'css'],
   ['sass', 'scss'],
@@ -15,32 +9,14 @@ const LANG_DICT = new Map([
   ['coffee', 'coffeescript'],
 ])
 
-exports.aliasOverrides = {
-  sass: {
-    indentedSyntax: true,
-  },
-}
-
-exports.throwError = msg => {
+const throwError = msg => {
   throw new Error(`[svelte-preprocess] ${msg}`)
 }
 
 exports.throwUnsupportedError = (lang, filename) =>
-  exports.throwError(
-    `Unsupported script language '${lang}' in file '${filename}'`,
-  )
+  throwError(`Unsupported script language '${lang}' in file '${filename}'`)
 
 exports.isFn = maybeFn => typeof maybeFn === 'function'
-
-/** Gets a pattern for mathing <(tag) (attrs="values")>(content)</tag> */
-exports.getTagPattern = type =>
-  new RegExp(`<${type}([\\s\\S]*?)>([\\s\\S]*?)<\\/${type}>`)
-
-/** Replace a string with another value by slicing it based on a regexp match */
-exports.sliceReplace = (match, str, replaceValue) =>
-  str.slice(0, match.index) +
-  replaceValue +
-  str.slice(match.index + match[0].length)
 
 exports.resolveSrc = (importerFile, srcPath) =>
   resolve(dirname(importerFile), srcPath)
@@ -54,18 +30,16 @@ exports.getSrcContent = file => {
   })
 }
 
-exports.parseAttributes = attrsStr =>
-  attrsStr
-    .split(/\s+/)
-    .filter(Boolean)
-    .reduce((acc, attr) => {
-      const [name, value] = attr.split('=')
-      acc[name] = value ? value.replace(/['"]/g, '') : true
-      return acc
-    }, {})
-
 exports.addLanguageAlias = entries =>
   entries.forEach(entry => LANG_DICT.set(...entry))
+
+/** Paths used by preprocessors to resolve @imports */
+exports.getIncludePaths = fromFilename =>
+  [
+    process.cwd(),
+    fromFilename.length && dirname(fromFilename),
+    resolve(process.cwd(), 'node_modules'),
+  ].filter(Boolean)
 
 exports.getLanguage = (attributes, defaultLang) => {
   let lang = defaultLang
@@ -85,13 +59,7 @@ exports.getLanguage = (attributes, defaultLang) => {
   }
 }
 
-/** Paths used by preprocessors to resolve @imports */
-exports.getIncludePaths = fromFilename =>
-  [
-    PATHS.CWD,
-    fromFilename.length && dirname(fromFilename),
-    PATHS.MODULES,
-  ].filter(Boolean)
+const TRANSFORMERS = {}
 
 exports.runTransformer = (name, options, { content, filename }) => {
   if (exports.isFn(options)) {
@@ -99,12 +67,12 @@ exports.runTransformer = (name, options, { content, filename }) => {
   }
 
   try {
-    if (!transformers[name]) {
-      transformers[name] = require(`./transformers/${name}.js`)
+    if (!TRANSFORMERS[name]) {
+      TRANSFORMERS[name] = require(`./transformers/${name}.js`)
     }
 
-    return transformers[name]({ content, filename, options })
+    return TRANSFORMERS[name]({ content, filename, options })
   } catch (e) {
-    exports.throwError(`Error transforming '${name}'. Message:\n${e.message}`)
+    throwError(`Error transforming '${name}'. Message:\n${e.message}`)
   }
 }

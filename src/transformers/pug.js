@@ -1,6 +1,6 @@
 const pug = require('pug')
 
-module.exports = function({ content, filename, options }) {
+module.exports = ({ content, filename, options }) => {
   options = {
     doctype: 'html',
     filename,
