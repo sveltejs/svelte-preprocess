@@ -18,10 +18,7 @@ module.exports = ({ content, filename, options }) => {
     style.render((err, css) => {
       if (err) reject(err)
 
-      resolve({
-        code: css,
-        map: style.sourcemap,
-      })
+      resolve({ code: css, map: style.sourcemap })
     })
   })
 }
