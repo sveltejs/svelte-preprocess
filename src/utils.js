@@ -76,3 +76,12 @@ exports.runTransformer = (name, options, { content, filename }) => {
     throwError(`Error transforming '${name}'. Message:\n${e.message}`)
   }
 }
+
+exports.requireAny = (...modules) => {
+  for (let m of modules) {
+    try {
+      return require(m)
+    } catch(e) {}
+  }
+  throw new Error(`Cannot find any of modules: ${modules}`)
+}
