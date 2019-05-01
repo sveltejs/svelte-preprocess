@@ -81,7 +81,7 @@ exports.requireAny = (...modules) => {
   for (let m of modules) {
     try {
       return require(m)
-    } catch(e) {}
+    } catch (e) {}
   }
   throw new Error(`Cannot find any of modules: ${modules}`)
 }

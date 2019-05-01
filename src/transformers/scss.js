@@ -1,4 +1,4 @@
-const {requireAny} = require('../utils')
+const { requireAny } = require('../utils')
 const sass = requireAny('node-sass', 'sass')
 
 const { getIncludePaths } = require('../utils.js')
