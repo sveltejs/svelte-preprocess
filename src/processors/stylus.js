@@ -1,4 +1,4 @@
-const transformer = require('../transformers/scss.js')
+const transformer = require('../transformers/stylus.js')
 
 const { getIncludePaths, getLanguage } = require('../utils.js')
 
