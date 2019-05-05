@@ -1,5 +1,5 @@
 const { getLanguage } = require('../utils.js')
-const transformer = require('../transformers/coffeescript.js')
+const transformer = require('../transformers/less.js')
 
 module.exports = options => ({
   style({ content, attributes, filename }) {
