@@ -5,15 +5,15 @@ module.exports = autoProcess
 
 /** stand-alone processors to be included manually */
 /** Markup */
-exports.pug = opts => require(`./processors/pug.js`)(opts)
+module.exports.pug = opts => require(`./processors/pug.js`)(opts)
 
 /** Script */
-exports.coffeescript = opts => require(`./processors/coffeescript.js`)(opts)
-exports.coffee = opts => require(`./processors/coffeescript.js`)(opts)
+module.exports.coffeescript = opts => require(`./processors/coffeescript.js`)(opts)
+module.exports.coffee = opts => require(`./processors/coffeescript.js`)(opts)
 
 /** Style */
-exports.less = opts => require(`./processors/less.js`)(opts)
-exports.scss = opts => require(`./processors/scss.js`)(opts)
-exports.sass = opts => require(`./processors/scss.js`)(opts)
-exports.stylus = opts => require(`./processors/stylus.js`)(opts)
-exports.postcss = opts => require(`./processors/postcss.js`)(opts)
+module.exports.less = opts => require(`./processors/less.js`)(opts)
+module.exports.scss = opts => require(`./processors/scss.js`)(opts)
+module.exports.sass = opts => require(`./processors/scss.js`)(opts)
+module.exports.stylus = opts => require(`./processors/stylus.js`)(opts)
+module.exports.postcss = opts => require(`./processors/postcss.js`)(opts)
