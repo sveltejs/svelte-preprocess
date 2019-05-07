@@ -129,6 +129,37 @@ svelte.preprocess(input, [
 
 ***Note:** there's no built-in support for \<template\> tag or external files when using standalone processors.*
 
+### With `rollup-plugin-svelte`
+
+```js
+// rollup.config.js
+import svelte from 'rollup-plugin-svelte';
+import autoPreprocess from 'svelte-preprocess'
+import { scss, coffeescript, pug } from 'svelte-preprocess'
+
+export default {
+  ...,
+  plugins: [
+    svelte({
+      /**
+       * Auto preprocess supported languages with
+       * '<template>'/'external src files' support
+       **/
+      preprocess: autoPreprocess({ /* options */ })
+      /**
+       * It is also possible to manually enqueue
+       * stand-alone processors
+       * */
+      preprocess: [
+        pug({ /* pug options */ }),
+        scss({ /* scss options */ }),
+        coffeescript({ /* coffeescript options */ })
+      ]
+    })
+  ]
+}
+```
+
 ### With `svelte-loader`
 
 ```js
