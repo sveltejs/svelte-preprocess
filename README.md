@@ -15,6 +15,73 @@ The preprocessor module installation is up to the developer.
 - `pug`: `npm install --save-dev pug`
 - `stylus`: `npm install --save-dev stylus`
 
+## Features
+
+### Template tag support
+
+_Note: only for auto preprocessing_
+
+```html
+<template>
+  <div>Hey</div>
+</template>
+
+<style></style>
+
+<script></script>
+```
+
+### External files support
+
+_Note: only for auto preprocessing_
+
+```html
+<template src="template.html"></template>
+<script src="./script.js"></script>
+<style src="./style.css"></style>
+```
+
+### Preprocessors support
+
+Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Coffeescript`, `Pug` and `PostCSS`.
+
+```html
+<template lang="pug">
+  div Hey
+</template>
+
+<script type="text/coffeescript">
+  export default
+    methods:
+      foo: () ->
+        console.log('Hey')
+</script>
+
+<style src="./style.scss"></style>
+
+<!-- Or -->
+
+<style src="./style.styl"></style>
+
+<!-- Or -->
+
+<style lang="scss">
+  $color: red;
+  div {
+    color: $color;
+  }
+</style>
+
+<!-- Or -->
+
+<style type="text/stylus">
+  $color= red
+
+  div
+    color: $color;
+</style>
+```
+
 ## Usage
 
 ### Auto Preprocessing
@@ -120,14 +187,12 @@ Every processor accepts an option object which is passed to its respective under
 svelte.preprocess(input, [
   scss(),
   postcss({
-    plugins: [
-      require('autoprefixer')({ browsers: 'last 2 versions' })
-    ]
+    plugins: [require('autoprefixer')({ browsers: 'last 2 versions' })],
   }),
 ])
 ```
 
-***Note:** there's no built-in support for \<template\> tag or external files when using standalone processors.*
+**\*Note:** there's no built-in support for \<template\> tag or external files when using standalone processors.\*
 
 ### With `rollup-plugin-svelte`
 
@@ -181,71 +246,4 @@ export default {
     ]
   }
   ...
-```
-
-## Features
-
-### Template tag support
-
-*Note: only for auto preprocessing*
-
-```html
-<template>
-  <div>Hey</div>
-</template>
-
-<style></style>
-
-<script></script>
-```
-
-### External files support
-
-*Note: only for auto preprocessing*
-
-```html
-<template src="template.html"></template>
-<script src="./script.js"></script>
-<style src="./style.css"></style>
-```
-
-### Preprocessors support
-
-Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Coffeescript`, `Pug` and `PostCSS`.
-
-```html
-<template lang="pug">
-  div Hey
-</template>
-
-<script type="text/coffeescript">
-  export default
-    methods:
-      foo: () ->
-        console.log('Hey')
-</script>
-
-<style src="./style.scss"></style>
-
-<!-- Or -->
-
-<style src="./style.styl"></style>
-
-<!-- Or -->
-
-<style lang="scss">
-  $color: red;
-  div {
-    color: $color;
-  }
-</style>
-
-<!-- Or -->
-
-<style type="text/stylus">
-  $color = red
-
-  div
-    color: $color;
-</style>
 ```
