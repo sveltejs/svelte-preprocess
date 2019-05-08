@@ -2,12 +2,16 @@ const postcss = require('postcss')
 const postcssLoadConfig = require(`postcss-load-config`)
 
 const process = async (plugins, content, filename, sourceMap) => {
-  const { css, map } = await postcss(plugins).process(content, {
+  const { css, map, messages } = await postcss(plugins).process(content, {
     from: filename,
     prev: sourceMap,
   })
 
-  return { code: css, map }
+  const dependencies = messages
+    .filter(msg => msg.type === 'dependency')
+    .map(msg => msg.file)
+
+  return { code: css, map, dependencies }
 }
 
 /** Adapted from https://github.com/TehShrike/svelte-preprocess-postcss */

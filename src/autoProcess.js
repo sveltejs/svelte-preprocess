@@ -151,6 +151,7 @@ module.exports = ({
 
         code = result.code
         map = result.map
+        dependencies = dependencies.concat(result.dependencies)
       }
 
       return { code, map, dependencies }
