@@ -11,6 +11,7 @@ module.exports.pug = opts => require(`./processors/pug.js`)(opts)
 module.exports.coffeescript = opts =>
   require(`./processors/coffeescript.js`)(opts)
 module.exports.coffee = opts => require(`./processors/coffeescript.js`)(opts)
+module.exports.typescript = opts => require(`./processors/typescript.js`)(opts)
 
 /** Style */
 module.exports.less = opts => require(`./processors/less.js`)(opts)

@@ -7,6 +7,7 @@ const LANG_DICT = new Map([
   ['styl', 'stylus'],
   ['js', 'javascript'],
   ['coffee', 'coffeescript'],
+  ['ts', 'typescript'],
 ])
 
 const throwError = msg => {

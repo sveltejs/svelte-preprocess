@@ -10,7 +10,7 @@ type PreprocessResult = {
 }
 
 type SveltePreprocessOptions = {
-  onBefore?({ content, filename } = { content: string, filename: string }): string;
+  onBefore?({ content, filename }: { content: string, filename: string }): string;
   transformers?: {
     [languageName: string]: boolean | object | (({ content, filename }: { content: string, filename?: string }) =>
     PreprocessResult | Promise<PreprocessResult>)

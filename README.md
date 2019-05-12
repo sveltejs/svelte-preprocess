@@ -1,6 +1,6 @@
 # Svelte Preprocess
 
-> A [Svelte](https://svelte.technology) preprocessor wrapper with support for: PostCSS, SCSS, Less, Stylus, Coffeescript and Pug.
+> A [Svelte](https://svelte.technology) preprocessor wrapper with support for: PostCSS, SCSS, Less, Stylus, Coffeescript, TypeScript and Pug.
 
 ## Installation
 
@@ -10,6 +10,7 @@ The preprocessor module installation is up to the developer.
 
 - `postcss`: `npm install --save-dev postcss`
 - `coffeescript`: `npm install --save-dev coffeescript`
+- `typescript`: `npm install --save-dev typescript`
 - `less`: `npm install --save-dev less`
 - `sass`: `npm install --save-dev node-sass`
 - `pug`: `npm install --save-dev pug`
@@ -43,7 +44,7 @@ _Note: only for auto preprocessing_
 
 ### Preprocessors support
 
-Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Coffeescript`, `Pug` and `PostCSS`.
+Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Coffeescript`, `TypeScript`, `Pug` and `PostCSS`.
 
 ```html
 <template lang="pug">
@@ -55,6 +56,10 @@ Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Co
     methods:
       foo: () ->
         console.log('Hey')
+</script>
+
+<script lang="typescript">
+  export const hello: string = 'world';
 </script>
 
 <style src="./style.scss"></style>
@@ -126,6 +131,26 @@ const options = {
       plugins: [
         require('autoprefixer')({ browsers: 'last 2 versions' })
       ]
+    },
+
+    typescript: {
+      /**
+       * Optionally specify the directory to load the tsconfig from
+       */
+      tsconfigDirectory: './configs',
+
+      /**
+       * Optionally specify the full path to the tsconfig
+       */
+      tsconfigFile: './tsconfig.app.json',
+
+      /**
+       * Optionally specify compiler options.
+       * These will be merged with options from the tsconfig if found.
+       */
+      compilerOptions: {
+        module: 'es2015'
+      }
     },
 
     /** Use a custom preprocess method by passing a function. */
