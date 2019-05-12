@@ -1,4 +1,1 @@
-export default
-  methods:
-    foo: () ->
-      console.log('Hey')
+export hello = 'world';
