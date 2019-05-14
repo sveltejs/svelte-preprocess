@@ -21,7 +21,7 @@ MARKUP_LANGS.forEach(([lang, ext]) => {
     )}</template>`
 
     it(`should throw parsing ${lang} when { ${lang}: false }`, async () => {
-      const opts = getAutoPreprocess({ transformers: { pug: false } })
+      const opts = getAutoPreprocess({ pug: false })
       expect(await doesCompileThrow(template, opts)).toBe(true)
     })
 
