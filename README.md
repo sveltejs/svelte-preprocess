@@ -124,13 +124,11 @@ const options = {
 
     /**
      * Post process css with PostCSS by defining 'transformers.postcss' property,
-     * either
-     * Pass 'true' to activate PostCSS transforms and use the `postcss.config.js`*/
-     
+     * either pass 'true' to activate PostCSS transforms and use the `postcss.config.js`
+     */
     postcss: true,
     
-    /**
-     * or pass in an object with postcss plugins and their options directly.*/
+    /** or pass an object with postcss plugins and their options directly. */
     postcss: {
       plugins: [
         require('autoprefixer')({ browsers: 'last 2 versions' })
