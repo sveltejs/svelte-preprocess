@@ -22,9 +22,7 @@ STYLE_LANGS.forEach(([lang, ext, langOptions]) => {
 
     it(`should throw parsing ${lang} when { ${lang}: false }`, async () => {
       const opts = getAutoPreprocess({
-        transformers: {
-          [lang]: false,
-        },
+        [lang]: false,
       })
       expect(await doesCompileThrow(template, opts)).toBe(true)
     })
@@ -47,14 +45,12 @@ describe('style - postcss', () => {
   const template = `<div></div><style>div{appearance:none;}</style>`
   const templateSass = `<div></div><style lang="scss">div{appearance:none;}</style>`
   const optsWithoutConfigFile = getAutoPreprocess({
-    transformers: {
-      postcss: {
-        plugins: [
-          require('autoprefixer')({
-            browsers: 'Safari >= 5.1',
-          }),
-        ],
-      },
+    postcss: {
+      plugins: [
+        require('autoprefixer')({
+          browsers: 'Safari >= 5.1',
+        }),
+      ],
     },
   })
 
@@ -67,9 +63,7 @@ describe('style - postcss', () => {
     const preprocessed = await preprocess(
       template,
       getAutoPreprocess({
-        transformers: {
-          postcss: true,
-        },
+        postcss: true,
       }),
     )
     expect(preprocessed.toString()).not.toMatch(/-webkit-/)
@@ -89,10 +83,8 @@ describe('style - postcss', () => {
     const preprocessed = await preprocess(
       template,
       getAutoPreprocess({
-        transformers: {
-          postcss: {
-            configFilePath: './test/fixtures/',
-          },
+        postcss: {
+          configFilePath: './test/fixtures/',
         },
       }),
     )

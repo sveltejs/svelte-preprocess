@@ -30,14 +30,12 @@ describe('options', () => {
       'template.custom',
     )}</template>`
     const opts = getAutoPreprocess({
-      transformers: {
-        customTransformer({ content, filename }) {
-          content = content
-            .replace('foo', 'bar')
-            .toString()
-            .trim()
-          return { code: content, map: null }
-        },
+      customTransformer({ content, filename }) {
+        content = content
+          .replace('foo', 'bar')
+          .toString()
+          .trim()
+        return { code: content, map: null }
       },
     })
     const preprocessed = await preprocess(input, opts)
@@ -49,11 +47,9 @@ describe('options', () => {
     const preprocessed = await preprocess(
       input,
       getAutoPreprocess({
-        transformers: {
-          scss: {
-            sourceMap: false,
-            includedPaths: ['node_modules'],
-          },
+        scss: {
+          sourceMap: false,
+          includedPaths: ['node_modules'],
         },
       }),
     )
@@ -84,10 +80,8 @@ describe('options', () => {
     const opts = getAutoPreprocess({
       preserve: ['ld+json'],
       aliases: [['ld+json', 'structuredData']],
-      transformers: {
-        structuredData() {
-          return { code: '', map: '' }
-        },
+      structuredData() {
+        return { code: '', map: '' }
       },
     })
     const preprocessed = await preprocess(input, opts)
@@ -102,13 +96,22 @@ describe('options', () => {
     )}</style>`
 
     const opts = getAutoPreprocess({
-      transformers: {
-        sass: {
-          indentedSyntax: false,
-        },
+      sass: {
+        indentedSyntax: false,
       },
     })
 
     expect(await doesCompileThrow(input, opts)).toBe(true)
+  })
+
+  it('should support the old `transformers` option', async () => {
+    const input = `<script lang="mock"></script>`
+    const opts = getAutoPreprocess({
+      transformers: {
+        mock: () => ({ code: 'mock' }),
+      },
+    })
+    const preprocessed = await preprocess(input, opts)
+    expect(preprocessed.toString()).toBe(`<script lang="mock">mock</script>`)
   })
 })
