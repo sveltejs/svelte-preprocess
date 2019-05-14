@@ -80,7 +80,7 @@ Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Co
 <!-- Or -->
 
 <style type="text/stylus">
-  $color= red
+  $color = red
 
   div
     color: $color;
@@ -110,64 +110,7 @@ const options = {
   onBefore({ content, filename }) {
     return content.replace('something', 'someotherthing')
   },
-  transformers: {
-    /** Disable a language by setting it to 'false' */
-    scss: false,
 
-    /** Enable a language's default transformer by setting it to 'true' */
-    less: true,
-
-    /**  Pass options to the default preprocessor method */
-    stylus: {
-      paths: ['node_modules']
-    },
-
-    /**
-     * Post process css with PostCSS by defining 'transformers.postcss' property,
-     * either pass 'true' to activate PostCSS transforms and use the `postcss.config.js`
-     */
-    postcss: true,
-    
-    /** or pass an object with postcss plugins and their options directly. */
-    postcss: {
-      plugins: [
-        require('autoprefixer')({ browsers: 'last 2 versions' })
-      ]
-    },
-
-    typescript: {
-      /**
-       * Optionally specify the directory to load the tsconfig from
-       */
-      tsconfigDirectory: './configs',
-
-      /**
-       * Optionally specify the full path to the tsconfig
-       */
-      tsconfigFile: './tsconfig.app.json',
-
-      /**
-       * Optionally specify compiler options.
-       * These will be merged with options from the tsconfig if found.
-       */
-      compilerOptions: {
-        module: 'es2015'
-      }
-    },
-
-    /** Use a custom preprocess method by passing a function. */
-    pug({ content, filename }) {
-        const code = pug.render(content)
-
-        return { code, map: null }
-    },
-
-    /** Add a custom language preprocessor */
-    customLanguage({ content, filename }) {
-      const { code, map } = require('custom-language-compiler')(content)
-      return { code, map }
-    }
-  },
   /**
    * Extend the default language alias dictionary.
    * Each entry must follow: ['alias', 'languageName']
@@ -183,6 +126,7 @@ const options = {
     */
     ['cst', 'customLanguage']
   ],
+
   preserve: [
     /**
      * Using the same matching algorithm as above, don't parse,
@@ -190,7 +134,60 @@ const options = {
      * language / types listed below.
      * **/
     'ld+json'
-  ]
+  ],
+
+  /** Disable a language by setting it to 'false' */
+  scss: false,
+
+  /**  Pass options to the default preprocessor method */
+  stylus: {
+    paths: ['node_modules']
+  },
+
+  /**
+   * Post process css with PostCSS by defining 'transformers.postcss' property,
+   * either pass 'true' to activate PostCSS transforms and use the `postcss.config.js`
+   */
+  postcss: true,
+
+  /** or pass an object with postcss plugins and their options directly. */
+  postcss: {
+    plugins: [
+      require('autoprefixer')({ browsers: 'last 2 versions' })
+    ]
+  },
+
+  typescript: {
+    /**
+     * Optionally specify the directory to load the tsconfig from
+     */
+    tsconfigDirectory: './configs',
+
+    /**
+     * Optionally specify the full path to the tsconfig
+     */
+    tsconfigFile: './tsconfig.app.json',
+
+    /**
+     * Optionally specify compiler options.
+     * These will be merged with options from the tsconfig if found.
+     */
+    compilerOptions: {
+      module: 'es2015'
+    }
+  },
+
+  /** Use a custom preprocess method by passing a function. */
+  pug({ content, filename }) {
+      const code = pug.render(content)
+      return { code, map: null }
+  },
+
+  /** Add a custom language preprocessor */
+  customLanguage({ content, filename }) {
+    const { code, map } = require('custom-language-compiler')(content)
+    return { code, map }
+  },
 }
 
 svelte.preprocess(input, preprocess(options)).then(...)
@@ -201,9 +198,11 @@ svelte.preprocess(input, preprocess(options)).then(...)
 Instead of a single processor, [Svelte v3 has added support for multiple processors](https://v3.svelte.technology/docs#svelte-preprocess). In case you want to manually configure your preprocessing step, `svelte-preprocess` exports these named processors: `pug`, `coffeescript` or `coffee`, `less`, `scss` or `sass`, `stylus`, `postcss`.
 
 ```js
+import { scss, coffeescript, pug } from 'svelte-preprocess'
+
 svelte.preprocess(input, [
   pug(),
-  coffee(),
+  coffeescript(),
   scss(),
 ]).then(...)
 ```
@@ -211,6 +210,8 @@ svelte.preprocess(input, [
 Every processor accepts an option object which is passed to its respective underlying tool.
 
 ```js
+import { scss, postcss } from 'svelte-preprocess'
+
 svelte.preprocess(input, [
   scss(),
   postcss({

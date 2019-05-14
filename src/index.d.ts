@@ -1,24 +1,33 @@
-type SveltePreprocessObject = {
-  markup: Function,
-  script: Function,
+type PreprocessObject = {
+  markup: Function
+  script: Function
   style: Function
 }
 
-type PreprocessResult = {
-  code: string;
-  map?: object;
+type Result = {
+  code: string
+  map?: object
 }
 
-type SveltePreprocessOptions = {
-  onBefore?({ content, filename }: { content: string, filename: string }): string;
-  transformers?: {
-    [languageName: string]: boolean | object | (({ content, filename }: { content: string, filename?: string }) =>
-    PreprocessResult | Promise<PreprocessResult>)
-  }
+type Transformer = ({
+  content,
+  filename,
+}: {
+  content: string
+  filename?: string
+}) => Result | Promise<Result>
+
+type TransformersOptions = {
+  [languageName: string]: boolean | object | Transformer
 }
 
-declare function getSveltePreprocessor(config: SveltePreprocessOptions): SveltePreprocessObject;
+type Options<TransformersOptions> = {
+  onBefore?: Transformer
+  transformers?: TransformersOptions
+  aliases: Array<[string, string]>
+  preserve: Array<string>
+}
 
-declare module "svelte-preprocess" {
-  export = getSveltePreprocessor;
+declare module 'svelte-preprocess' {
+  export default function preprocess(config: Options): PreprocessObject
 }

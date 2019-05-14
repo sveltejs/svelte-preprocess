@@ -19,13 +19,9 @@ const TEMPLATE_PATTERN = new RegExp(
   `<template([\\s\\S]*?)>([\\s\\S]*?)<\\/template>`,
 )
 
-module.exports = ({
-  onBefore,
-  transformers = {},
-  aliases,
-  preserve = [],
-} = {}) => {
+module.exports = ({ onBefore, aliases, preserve = [], ...rest } = {}) => {
   const optionsCache = {}
+  const transformers = rest.transformers || rest
 
   const getTransformerOptions = (lang, alias) => {
     if (isFn(transformers[alias])) return transformers[alias]

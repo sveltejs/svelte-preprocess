@@ -23,18 +23,14 @@ SCRIPT_LANGS.forEach(([lang, ext, langOptions]) => {
         <script src="./fixtures/script.${ext}"></script>
       `
       const opts = getAutoPreprocess({
-        transformers: {
-          [lang]: false,
-        },
+        [lang]: false,
       })
       expect(await doesCompileThrow(input, opts)).toBe(true)
     })
 
     it(`should parse ${lang}`, async () => {
       const opts = getAutoPreprocess({
-        transformers: {
-          [lang]: langOptions,
-        },
+        [lang]: langOptions,
       })
       const preprocessed = await preprocess(template, opts)
       expect(preprocessed.toString()).toContain(EXPECTED_SCRIPT)
@@ -55,10 +51,8 @@ describe('script - preprocessor - typescript', () => {
 
   it('should work with tsconfigDirectory', async () => {
     const opts = getAutoPreprocess({
-      transformers: {
-        typescript: {
-          tsconfigDirectory: './test/fixtures',
-        },
+      typescript: {
+        tsconfigDirectory: './test/fixtures',
       },
     })
     const preprocessed = await preprocess(template, opts)
@@ -67,10 +61,8 @@ describe('script - preprocessor - typescript', () => {
 
   it('should work with tsconfigPath', async () => {
     const opts = getAutoPreprocess({
-      transformers: {
-        typescript: {
-          tsconfigPath: './test/fixtures/tsconfig.json',
-        },
+      typescript: {
+        tsconfigPath: './test/fixtures/tsconfig.json',
       },
     })
     const preprocessed = await preprocess(template, opts)
@@ -79,10 +71,8 @@ describe('script - preprocessor - typescript', () => {
 
   it('should report syntactic errors in tsconfig file', () => {
     const opts = getAutoPreprocess({
-      transformers: {
-        typescript: {
-          tsconfigPath: './test/fixtures/tsconfig.syntactic.json',
-        },
+      typescript: {
+        tsconfigPath: './test/fixtures/tsconfig.syntactic.json',
       },
     })
     return expect(preprocess(template, opts)).rejects.toThrow('TS1005')
@@ -90,10 +80,8 @@ describe('script - preprocessor - typescript', () => {
 
   it('should report semantic errors in tsconfig file', () => {
     const opts = getAutoPreprocess({
-      transformers: {
-        typescript: {
-          tsconfigPath: './test/fixtures/tsconfig.semantic.json',
-        },
+      typescript: {
+        tsconfigPath: './test/fixtures/tsconfig.semantic.json',
       },
     })
     return expect(preprocess(template, opts)).rejects.toThrow('TS6046')
