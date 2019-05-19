@@ -9,9 +9,9 @@
     "rollup-plugin-node-resolve": "^4.2.3",
     "rollup-plugin-svelte": "^5.0.3",
     "rollup-plugin-terser": "^4.0.4",
-    "svelte-preprocess": "^2.6.5",
     "sirv-cli": "^0.4.0",
-    "svelte": "^3.0.0"
+    "svelte": "^3.0.0",
+    "svelte-preprocess": "^2.9.0"
   },
   "scripts": {
     "build": "rollup -c",
