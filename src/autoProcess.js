@@ -1,4 +1,5 @@
 const stripIndent = require('strip-indent')
+const { version } = require('svelte/package.json')
 const {
   addLanguageAlias,
   getLanguage,
@@ -8,6 +9,8 @@ const {
   resolveSrc,
   throwUnsupportedError,
 } = require('./utils.js')
+
+const SVELTE_MAJOR_VERSION = +version[0]
 
 const ALIAS_OPTION_OVERRIDES = {
   sass: {
@@ -27,6 +30,7 @@ module.exports = ({ onBefore, aliases, preserve = [], ...rest } = {}) => {
     if (isFn(transformers[alias])) return transformers[alias]
     if (isFn(transformers[lang])) return transformers[lang]
 
+    // istanbul ignore else
     if (typeof optionsCache[alias] === 'undefined') {
       let opts = transformers[lang] || {}
 
@@ -100,6 +104,12 @@ module.exports = ({ onBefore, aliases, preserve = [], ...rest } = {}) => {
   return {
     async markup({ content, filename }) {
       if (isFn(onBefore)) {
+        // istanbul ignore next
+        if (SVELTE_MAJOR_VERSION >= 3) {
+          console.warn(
+            '[svelte-preprocess] For svelte >= v3, instead of onBefore(), prefer to prepend a preprocess object to your array of preprocessors',
+          )
+        }
         content = await onBefore({ content, filename })
       }
 
