@@ -122,17 +122,19 @@ module.exports = ({ onBefore, aliases, preserve = [], ...rest } = {}) => {
           return acc
         }, {})
 
-      /** Remove the <template></template> */
-      content =
+      /** Transform the found template code */
+      let { code, map, dependencies } = await markupTransformer({
+        content: templateCode,
+        attributes,
+        filename,
+      })
+
+      code =
         content.slice(0, templateMatch.index) +
-        templateCode +
+        code +
         content.slice(templateMatch.index + fullMatch.length)
 
-      /** Remove extra indentation */
-      content = stripIndent(content)
-
-      /** If language is HTML, just remove the <template></template> tags */
-      return markupTransformer({ content, attributes, filename })
+      return { code, map, dependencies }
     },
     script: scriptTransformer,
     async style(assetInfo) {
