@@ -8,10 +8,25 @@ const {
 const EXPECTED_MARKUP = getFixtureContent('template.html')
 const MARKUP_LANGS = [['pug', 'pug']]
 
-it('should parse HTML between <template></template>', async () => {
-  const input = `<template><div>Hey</div></template>`
+it('should transform HTML between <template></template>', async () => {
+  const input = `<script></script><template><div>Hey</div></template><style></style>`
   const preprocessed = await preprocess(input, getAutoPreprocess())
-  expect(preprocessed.toString()).toBe(EXPECTED_MARKUP)
+  expect(preprocessed.toString()).toBe(
+    `<script></script>${EXPECTED_MARKUP}<style></style>`,
+  )
+})
+
+it('should transform a custom language between <template lang="..."></template>', async () => {
+  const input = `<script></script><template lang="test"><div>Hey</div></template><style></style>`
+  const preprocessed = await preprocess(
+    input,
+    getAutoPreprocess({
+      test({ content }) {
+        return { code: '' }
+      },
+    }),
+  )
+  expect(preprocessed.toString()).toBe('<script></script><style></style>')
 })
 
 MARKUP_LANGS.forEach(([lang, ext]) => {
