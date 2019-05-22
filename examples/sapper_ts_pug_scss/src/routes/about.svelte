@@ -1,7 +1,8 @@
-<svelte:head>
-	<title>About</title>
-</svelte:head>
+<template lang="pug">
+  svelte:head
+  	title About
 
-<h1>About this site</h1>
+  h1 About this site
 
-<p>This is the 'about' page. There's not much here.</p>
+  p This is the 'about' page. There's not much here.
+</template>
