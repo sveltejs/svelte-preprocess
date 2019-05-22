@@ -6,8 +6,14 @@
 	}
 </script>
 
-<script>
-	export let posts;
+<script lang="typescript">
+  interface Post {
+    title: string;
+    slug: string;
+    html: string;
+  }
+
+	export let posts: Post[];
 </script>
 
 <style>
