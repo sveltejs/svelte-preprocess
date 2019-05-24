@@ -1,15 +1,16 @@
-<template lang="pug">
+<template type="text/pug">
 	h1 Hello {name}
+  br
   input(bind:value="{name}")
 </template>
 
-<script lang="ts">
+<script type="text/typescript">
   export let name: string = ''
 
   $: console.log(name)
 </script>
 
-<style lang="stylus">
+<style type="text/stylus">
 	h1
 		color blue
 </style>
