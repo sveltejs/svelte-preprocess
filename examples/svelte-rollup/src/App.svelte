@@ -2,8 +2,10 @@
 	h1 Hello
 </template>
 
-<script>
-	export let name;
+<script lang="ts">
+  export let name: number = 'abc'
+
+  $: console.log(name)
 </script>
 
 <style lang="stylus">
