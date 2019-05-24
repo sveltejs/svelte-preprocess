@@ -1,9 +1,10 @@
 <template lang="pug">
-	h1 Hello
+	h1 Hello {name}
+  input(bind:value="{name}")
 </template>
 
 <script lang="ts">
-  export let name: number = 'ab'
+  export let name: string = ''
 
   $: console.log(name)
 </script>

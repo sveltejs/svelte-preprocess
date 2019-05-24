@@ -1,5 +1,5 @@
 const ts = require('typescript')
-const path = require('path')
+const { dirname } = require('path')
 
 function createFormatDiagnosticsHost(cwd) {
   return {
@@ -9,30 +9,101 @@ function createFormatDiagnosticsHost(cwd) {
   }
 }
 
+function formatDiagnostics(diagnostics, basePath) {
+  return ts.formatDiagnosticsWithColorAndContext(
+    diagnostics,
+    createFormatDiagnosticsHost(basePath),
+  )
+}
+
+function compileFileFromMemory(compilerOptions, { filename, content }) {
+  let code = content
+  let map
+
+  const realHost = ts.createCompilerHost(compilerOptions, true)
+  const dummyFilePath = filename.replace(/\..*$/, '.ts')
+  const dummySourceFile = ts.createSourceFile(
+    dummyFilePath,
+    code,
+    ts.ScriptTarget.Latest,
+  )
+
+  const host = {
+    fileExists: filePath =>
+      filePath === dummyFilePath || realHost.fileExists(filePath),
+    directoryExists:
+      realHost.directoryExists && realHost.directoryExists.bind(realHost),
+    getCurrentDirectory: realHost.getCurrentDirectory.bind(realHost),
+    getDirectories: realHost.getDirectories.bind(realHost),
+    getCanonicalFileName: fileName => realHost.getCanonicalFileName(fileName),
+    getNewLine: realHost.getNewLine.bind(realHost),
+    getDefaultLibFileName: realHost.getDefaultLibFileName.bind(realHost),
+    getSourceFile: (
+      fileName,
+      languageVersion,
+      onError,
+      shouldCreateNewSourceFile,
+    ) =>
+      fileName === dummyFilePath
+        ? dummySourceFile
+        : realHost.getSourceFile(
+            fileName,
+            languageVersion,
+            onError,
+            shouldCreateNewSourceFile,
+          ),
+    readFile: filePath =>
+      filePath === dummyFilePath ? content : realHost.readFile(filePath),
+    useCaseSensitiveFileNames: () => realHost.useCaseSensitiveFileNames(),
+    writeFile: (fileName, data) => {
+      if (fileName.endsWith('.map')) {
+        map = data
+      } else {
+        code = data
+      }
+    },
+  }
+
+  const program = ts.createProgram([dummyFilePath], compilerOptions, host)
+  const emitResult = program.emit()
+
+  const diagnostics = [
+    ...emitResult.diagnostics,
+    ...ts.getPreEmitDiagnostics(program),
+  ].map(({ file, ...diagnostic }) => {
+    return {
+      file: {
+        fileName: filename,
+        text: content,
+      },
+      ...diagnostic,
+    }
+  })
+
+  return { code, map, diagnostics }
+}
+
 module.exports = ({ content, filename, options }) => {
-  console.log(content)
-  const fileDirectory = options.tsconfigDirectory || path.dirname(filename)
+  const fileDirectory = options.tsconfigDirectory || dirname(filename)
   const tsconfigPath =
     options.tsconfigPath || ts.findConfigFile(fileDirectory, ts.sys.fileExists)
-  const basePath = tsconfigPath ? path.dirname(tsconfigPath) : process.cwd()
+  const basePath = tsconfigPath ? dirname(tsconfigPath) : process.cwd()
 
   let compilerOptionsJSON = options.compilerOptions || {}
   if (tsconfigPath) {
     const { error, config } = ts.readConfigFile(tsconfigPath, ts.sys.readFile)
     if (error) {
-      const err = ts.formatDiagnostic(
-        error,
-        createFormatDiagnosticsHost(basePath),
-      )
-      throw new Error(err)
+      throw new Error(formatDiagnostics(error, basePath))
     }
+
     compilerOptionsJSON = {
-      ...(config.compilerOptions || {}),
-      ...compilerOptionsJSON,
       target: 'es5',
       strict: true,
       module: 'es2015',
       moduleResolution: 'node',
+      sourceMap: true,
+      ...(config.compilerOptions || {}),
+      ...compilerOptionsJSON,
     }
   }
 
@@ -41,84 +112,23 @@ module.exports = ({ content, filename, options }) => {
     options: compilerOptions,
   } = ts.convertCompilerOptionsFromJson(compilerOptionsJSON, basePath)
   if (errors.length) {
-    const err = ts.formatDiagnostics(
-      errors,
-      createFormatDiagnosticsHost(basePath),
-    )
+    const err = formatDiagnostics(errors, basePath)
     throw new Error(err)
   }
 
-  function compileTypeScriptCode(code, realFilename) {
-    const realHost = ts.createCompilerHost(compilerOptions, true)
+  const { code, map, diagnostics } = compileFileFromMemory(compilerOptions, {
+    filename,
+    content,
+  })
 
-    const dummyFilePath = realFilename.replace(/\..*$/, '.ts')
-
-    const dummySourceFile = ts.createSourceFile(
-      dummyFilePath,
-      code,
-      ts.ScriptTarget.Latest,
-    )
-    let outputCode
-
-    const host = {
-      fileExists: filePath =>
-        filePath === dummyFilePath || realHost.fileExists(filePath),
-      directoryExists:
-        realHost.directoryExists && realHost.directoryExists.bind(realHost),
-      getCurrentDirectory: realHost.getCurrentDirectory.bind(realHost),
-      getDirectories: realHost.getDirectories.bind(realHost),
-      getCanonicalFileName: fileName => realHost.getCanonicalFileName(fileName),
-      getNewLine: realHost.getNewLine.bind(realHost),
-      getDefaultLibFileName: realHost.getDefaultLibFileName.bind(realHost),
-      getSourceFile: (
-        fileName,
-        languageVersion,
-        onError,
-        shouldCreateNewSourceFile,
-      ) =>
-        fileName === dummyFilePath
-          ? dummySourceFile
-          : realHost.getSourceFile(
-              fileName,
-              languageVersion,
-              onError,
-              shouldCreateNewSourceFile,
-            ),
-      readFile: filePath =>
-        filePath === dummyFilePath ? code : realHost.readFile(filePath),
-      useCaseSensitiveFileNames: () => realHost.useCaseSensitiveFileNames(),
-      writeFile: (fileName, data) => (outputCode = data),
-    }
-
-    const program = ts.createProgram([dummyFilePath], compilerOptions, host)
-    const emitResult = program.emit()
-    const diagnostics = [
-      ...emitResult.diagnostics,
-      ...ts.getPreEmitDiagnostics(program),
-    ].map(({ file, ...diagnostic }) => {
-      console.log(file)
-      return {
-        file: {
-          fileName: filename,
-          text: content,
-        },
-        ...diagnostic,
-      }
-    })
-
-    if (diagnostics.length > 0) {
-      const formattedDiagnostics = ts.formatDiagnosticsWithColorAndContext(
-        diagnostics,
-        host,
-      )
-      console.log(formattedDiagnostics)
-    }
-
-    return {
-      code: outputCode,
-      diagnostics,
-    }
+  if (diagnostics.length > 0) {
+    const formattedDiagnostics = formatDiagnostics(diagnostics, basePath)
+    console.log(formattedDiagnostics)
   }
 
-  return compileTypeScriptCode(content, filename)
+  return {
+    code,
+    map,
+    diagnostics,
+  }
 }
