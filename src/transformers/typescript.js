@@ -9,6 +9,10 @@ function createFormatDiagnosticsHost(cwd) {
   }
 }
 
+function formatDiagnostic(error, basePath) {
+  return ts.formatDiagnostic(error, createFormatDiagnosticsHost(basePath))
+}
+
 function formatDiagnostics(diagnostics, basePath) {
   return ts.formatDiagnosticsWithColorAndContext(
     diagnostics,
@@ -93,7 +97,7 @@ module.exports = ({ content, filename, options }) => {
   if (tsconfigPath) {
     const { error, config } = ts.readConfigFile(tsconfigPath, ts.sys.readFile)
     if (error) {
-      throw new Error(formatDiagnostics(error, basePath))
+      throw new Error(formatDiagnostic(error, basePath))
     }
 
     compilerOptionsJSON = {
@@ -112,8 +116,7 @@ module.exports = ({ content, filename, options }) => {
     options: compilerOptions,
   } = ts.convertCompilerOptionsFromJson(compilerOptionsJSON, basePath)
   if (errors.length) {
-    const err = formatDiagnostics(errors, basePath)
-    throw new Error(err)
+    throw new Error(formatDiagnostics(errors, basePath))
   }
 
   const { code, map, diagnostics } = compileFileFromMemory(compilerOptions, {
