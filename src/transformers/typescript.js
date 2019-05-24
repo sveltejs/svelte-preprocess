@@ -1,7 +1,16 @@
 const ts = require('typescript')
 const path = require('path')
 
+function createFormatDiagnosticsHost(cwd) {
+  return {
+    getCanonicalFileName: fileName => fileName,
+    getCurrentDirectory: () => cwd,
+    getNewLine: () => ts.sys.newLine,
+  }
+}
+
 module.exports = ({ content, filename, options }) => {
+  console.log(content)
   const fileDirectory = options.tsconfigDirectory || path.dirname(filename)
   const tsconfigPath =
     options.tsconfigPath || ts.findConfigFile(fileDirectory, ts.sys.fileExists)
@@ -86,9 +95,15 @@ module.exports = ({ content, filename, options }) => {
     const diagnostics = [
       ...emitResult.diagnostics,
       ...ts.getPreEmitDiagnostics(program),
-    ].map(diagnostic => {
-      console.log(diagnostic)
-      diagnostic.filename = diagnostic.filename.replace('.ts', '.svelte')
+    ].map(({ file, ...diagnostic }) => {
+      console.log(file)
+      return {
+        file: {
+          fileName: filename,
+          text: content,
+        },
+        ...diagnostic,
+      }
     })
 
     if (diagnostics.length > 0) {
@@ -105,38 +120,5 @@ module.exports = ({ content, filename, options }) => {
     }
   }
 
-  console.log('==== Evaluating code ====')
-  console.log(content)
-  console.log()
-
-  const result = compileTypeScriptCode(content, filename)
-
-  console.log('==== Output code ====')
-  console.log(result.code)
-  console.log()
-
-  // compile([filename], {
-  //   ...compilerOptions,
-  //   noEmitOnError: true,
-  //   noImplicitAny: true,
-  //   target: ts.ScriptTarget.ES5,
-  // })
-
-  // if (diagnostics.length) {
-  //   const diagnosticMessage = ts.formatDiagnostics(
-  //     diagnostics,
-  //     createFormatDiagnosticsHost(basePath),
-  //   )
-  //   console.log(diagnosticMessage)
-  // }
-
-  return { code, map }
-}
-
-function createFormatDiagnosticsHost(cwd) {
-  return {
-    getCanonicalFileName: fileName => fileName,
-    getCurrentDirectory: () => cwd,
-    getNewLine: () => ts.sys.newLine,
-  }
+  return compileTypeScriptCode(content, filename)
 }

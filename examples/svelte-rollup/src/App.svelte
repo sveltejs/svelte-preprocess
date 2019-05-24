@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-  export let name: number = 'abc'
+  export let name: number = 'ab'
 
   $: console.log(name)
 </script>
