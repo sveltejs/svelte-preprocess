@@ -7,12 +7,12 @@ module.exports = ({ content, filename, options }) => {
   options = {
     includePaths: getIncludePaths(filename),
     ...options,
+    data: options.data + content,
   }
 
   return new Promise((resolve, reject) => {
     sass.render(
       {
-        data: content,
         sourceMap: true,
         outFile: filename + '.css',
         ...options,
