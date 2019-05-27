@@ -91,7 +91,7 @@ Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Co
 
 ##### `typescript`
 
-Since `typescript` is not officially supported by `svelte` for its template language, `svelte-preprocess` only type checks code between the `<script></script>`.
+Since `typescript` is not officially supported by `svelte` for its template language, `svelte-preprocess` only type checks code between the `<script></script>` tag.
 
 ## Usage
 
