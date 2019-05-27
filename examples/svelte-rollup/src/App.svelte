@@ -1,16 +1,16 @@
 <template type="text/pug">
-	h1 Hello {name}
+  h1 Hello {label}
   br
-  input(bind:value="{name}")
+  input(bind:value="{label}")
 
   Nested
 </template>
 
 <script type="text/typescript">
   import Nested from './Nested.svelte'
-  export let name: string = ''
+  export let label: string = ''
 
-  $: console.log(name)
+  $: console.log(label)
 </script>
 
 <style type="text/stylus">

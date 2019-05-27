@@ -205,6 +205,7 @@ module.exports = ({ content, filename, options }) => {
   })
 
   if (diagnostics.length > 0) {
+    // could this be handled elsewhere?
     const formattedDiagnostics = formatDiagnostics(diagnostics, basePath)
     console.log(formattedDiagnostics)
   }
