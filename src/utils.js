@@ -74,7 +74,11 @@ exports.runTransformer = (name, options, { content, filename }) => {
 
     return TRANSFORMERS[name]({ content, filename, options })
   } catch (e) {
-    throwError(`Error transforming '${name}'. Message:\n${e.message}`)
+    throwError(
+      `Error transforming '${name}'. Message:\n${e.message}\nStack:\n${
+        e.stack
+      }`,
+    )
   }
 }
 
