@@ -1,5 +1,5 @@
 const ts = require('typescript')
-const { dirname, resolve } = require('path')
+const { dirname, basename, resolve } = require('path')
 const { existsSync } = require('fs')
 
 function createFormatDiagnosticsHost(cwd) {
@@ -21,8 +21,9 @@ function formatDiagnostics(diagnostics, basePath) {
 }
 
 function getFilenameExtension(filename) {
+  filename = basename(filename)
   const lastDotIndex = filename.lastIndexOf('.')
-  if (lastDotIndex === -1) return ''
+  if (lastDotIndex <= 0) return ''
   return filename.substr(lastDotIndex + 1)
 }
 
@@ -37,16 +38,15 @@ function isValidSvelteImportDiagnostic(filename, diagnostic) {
   if (diagnostic.code !== 2307) return false
 
   const importeeMatch = diagnostic.messageText.match(IMPORTEE_PATTERN)
+  // istanbul ignore if
   if (!importeeMatch) return false
 
   let [, importeePath] = importeeMatch
-  /**
-   * check if we're dealing with a relative path (begins with .)
-   * and if it's a svelte file
-   * */
-  if (importeePath[0] !== '.' || !isSvelteFile(importeePath)) {
-    return false
-  }
+  /** if we're not dealing with a relative path, assume the file exists */
+  if (importeePath[0] !== '.') return true
+
+  /** if the importee is not a svelte file, do nothing */
+  if (!isSvelteFile(importeePath)) return false
 
   importeePath = resolve(dirname(filename), importeePath)
   if (existsSync(importeePath)) return true
@@ -60,6 +60,7 @@ const TS_TRANSFORMERS = {
       const visit = node => {
         if (ts.isImportDeclaration(node)) {
           const importedFilename = node.moduleSpecifier.getText().slice(1, -1)
+          // istanbul ignore else
           if (isSvelteFile(importedFilename)) {
             return ts.createImportDeclaration(
               node.decorators,
@@ -69,7 +70,6 @@ const TS_TRANSFORMERS = {
             )
           }
         }
-
         return ts.visitEachChild(node, child => visit(child), context)
       }
 
@@ -115,6 +115,7 @@ function compileFileFromMemory(compilerOptions, { filename, content }) {
             shouldCreateNewSourceFile,
           ),
     readFile: filePath =>
+      // istanbul ignore next
       filePath === dummyFilePath ? content : realHost.readFile(filePath),
     useCaseSensitiveFileNames: () => realHost.useCaseSensitiveFileNames(),
     writeFile: (fileName, data) => {
@@ -161,19 +162,27 @@ module.exports = ({ content, filename, options }) => {
     options.tsconfigPath || ts.findConfigFile(fileDirectory, ts.sys.fileExists)
   const basePath = tsconfigPath ? dirname(tsconfigPath) : process.cwd()
 
-  let compilerOptionsJSON = options.compilerOptions || {}
+  let compilerOptionsJSON = Object.assign(
+    // default options
+    {
+      moduleResolution: 'node',
+      sourceMap: true,
+      strict: true,
+    },
+    options.compilerOptions,
+  )
+
   if (tsconfigPath) {
     const { error, config } = ts.readConfigFile(tsconfigPath, ts.sys.readFile)
     if (error) {
       throw new Error(formatDiagnostics(error, basePath))
     }
 
-    compilerOptionsJSON = {
-      moduleResolution: 'node',
-      sourceMap: true,
-      ...(config.compilerOptions || {}),
-      ...compilerOptionsJSON,
-    }
+    compilerOptionsJSON = Object.assign(
+      {},
+      compilerOptionsJSON,
+      config.compilerOptions,
+    )
   }
 
   const {
@@ -187,6 +196,7 @@ module.exports = ({ content, filename, options }) => {
   const compilerOptions = {
     ...convertedCompilerOptions,
     allowNonTsExtensions: true,
+    // don't know if this is necessary outside of tests
   }
 
   const { code, map, diagnostics } = compileFileFromMemory(compilerOptions, {
