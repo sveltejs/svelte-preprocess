@@ -196,7 +196,6 @@ module.exports = ({ content, filename, options }) => {
   const compilerOptions = {
     ...convertedCompilerOptions,
     allowNonTsExtensions: true,
-    // don't know if this is necessary outside of tests
   }
 
   const { code, map, diagnostics } = compileFileFromMemory(compilerOptions, {

@@ -1,9 +1,9 @@
 <template type="text/pug">
-  h1 Hello {label}
+  h1 Hello!
   br
   input(bind:value="{label}")
-
-  Nested
+  br
+  Nested("{label}")
 </template>
 
 <script type="text/typescript">
