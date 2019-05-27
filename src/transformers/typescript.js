@@ -1,5 +1,6 @@
 const ts = require('typescript')
-const { dirname } = require('path')
+const { dirname, resolve } = require('path')
+const { existsSync } = require('fs')
 
 function createFormatDiagnosticsHost(cwd) {
   return {
@@ -9,15 +10,72 @@ function createFormatDiagnosticsHost(cwd) {
   }
 }
 
-function formatDiagnostic(error, basePath) {
-  return ts.formatDiagnostic(error, createFormatDiagnosticsHost(basePath))
+function formatDiagnostics(diagnostics, basePath) {
+  if (Array.isArray(diagnostics)) {
+    return ts.formatDiagnosticsWithColorAndContext(
+      diagnostics,
+      createFormatDiagnosticsHost(basePath),
+    )
+  }
+  return ts.formatDiagnostic(diagnostics, createFormatDiagnosticsHost(basePath))
 }
 
-function formatDiagnostics(diagnostics, basePath) {
-  return ts.formatDiagnosticsWithColorAndContext(
-    diagnostics,
-    createFormatDiagnosticsHost(basePath),
-  )
+function getFilenameExtension(filename) {
+  const lastDotIndex = filename.lastIndexOf('.')
+  if (lastDotIndex === -1) return ''
+  return filename.substr(lastDotIndex + 1)
+}
+
+function isSvelteFile(filename) {
+  const importExtension = getFilenameExtension(filename)
+  return importExtension === 'svelte' || importExtension === 'html'
+}
+
+const IMPORTEE_PATTERN = /['"](.*?)['"]/
+function isValidSvelteImportDiagnostic(filename, diagnostic) {
+  // TS2307: 'cannot find module'
+  if (diagnostic.code !== 2307) return false
+
+  const importeeMatch = diagnostic.messageText.match(IMPORTEE_PATTERN)
+  if (!importeeMatch) return false
+
+  let [, importeePath] = importeeMatch
+  /**
+   * check if we're dealing with a relative path (begins with .)
+   * and if it's a svelte file
+   * */
+  if (importeePath[0] !== '.' || !isSvelteFile(importeePath)) {
+    return false
+  }
+
+  importeePath = resolve(dirname(filename), importeePath)
+  if (existsSync(importeePath)) return true
+
+  return false
+}
+
+const TS_TRANSFORMERS = {
+  before: [
+    context => {
+      const visit = node => {
+        if (ts.isImportDeclaration(node)) {
+          const importedFilename = node.moduleSpecifier.getText().slice(1, -1)
+          if (isSvelteFile(importedFilename)) {
+            return ts.createImportDeclaration(
+              node.decorators,
+              node.modifiers,
+              node.importClause,
+              node.moduleSpecifier,
+            )
+          }
+        }
+
+        return ts.visitEachChild(node, child => visit(child), context)
+      }
+
+      return node => ts.visitNode(node, visit)
+    },
+  ],
 }
 
 function compileFileFromMemory(compilerOptions, { filename, content }) {
@@ -25,7 +83,7 @@ function compileFileFromMemory(compilerOptions, { filename, content }) {
   let map
 
   const realHost = ts.createCompilerHost(compilerOptions, true)
-  const dummyFilePath = filename.replace(/\..*$/, '.ts')
+  const dummyFilePath = filename
   const dummySourceFile = ts.createSourceFile(
     dummyFilePath,
     code,
@@ -69,20 +127,30 @@ function compileFileFromMemory(compilerOptions, { filename, content }) {
   }
 
   const program = ts.createProgram([dummyFilePath], compilerOptions, host)
-  const emitResult = program.emit()
+  const emitResult = program.emit(
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    TS_TRANSFORMERS,
+  )
 
+  // collect diagnostics without svelte import errors
   const diagnostics = [
     ...emitResult.diagnostics,
     ...ts.getPreEmitDiagnostics(program),
-  ].map(({ file, ...diagnostic }) => {
-    return {
-      file: {
-        fileName: filename,
-        text: content,
-      },
-      ...diagnostic,
+  ].reduce((acc, { file, ...diagnostic }) => {
+    if (isValidSvelteImportDiagnostic(filename, diagnostic)) {
+      return acc
     }
-  })
+
+    acc.push({
+      file,
+      ...diagnostic,
+    })
+
+    return acc
+  }, [])
 
   return { code, map, diagnostics }
 }
@@ -97,13 +165,10 @@ module.exports = ({ content, filename, options }) => {
   if (tsconfigPath) {
     const { error, config } = ts.readConfigFile(tsconfigPath, ts.sys.readFile)
     if (error) {
-      throw new Error(formatDiagnostic(error, basePath))
+      throw new Error(formatDiagnostics(error, basePath))
     }
 
     compilerOptionsJSON = {
-      target: 'es5',
-      strict: true,
-      module: 'es2015',
       moduleResolution: 'node',
       sourceMap: true,
       ...(config.compilerOptions || {}),
@@ -113,10 +178,15 @@ module.exports = ({ content, filename, options }) => {
 
   const {
     errors,
-    options: compilerOptions,
+    options: convertedCompilerOptions,
   } = ts.convertCompilerOptionsFromJson(compilerOptionsJSON, basePath)
   if (errors.length) {
     throw new Error(formatDiagnostics(errors, basePath))
+  }
+
+  const compilerOptions = {
+    ...convertedCompilerOptions,
+    allowNonTsExtensions: true,
   }
 
   const { code, map, diagnostics } = compileFileFromMemory(compilerOptions, {
