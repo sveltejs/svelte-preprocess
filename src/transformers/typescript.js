@@ -140,15 +140,12 @@ function compileFileFromMemory(compilerOptions, { filename, content }) {
   const diagnostics = [
     ...emitResult.diagnostics,
     ...ts.getPreEmitDiagnostics(program),
-  ].reduce((acc, { file, ...diagnostic }) => {
+  ].reduce((acc, diagnostic) => {
     if (isValidSvelteImportDiagnostic(filename, diagnostic)) {
       return acc
     }
 
-    acc.push({
-      file,
-      ...diagnostic,
-    })
+    acc.push(diagnostic)
 
     return acc
   }, [])
