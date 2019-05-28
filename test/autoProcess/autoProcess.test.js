@@ -15,11 +15,17 @@ describe('detect - mimetype', () => {
     { lang: 'stylus', targetLanguage: 'stylus' },
     { src: '../foo.js', targetLanguage: 'javascript' },
     { src: '../foo', targetLanguage: 'javascript' },
-    { src: '../foo.custom', lang: 'customLanguage', targetLanguage: 'customLanguage' },
+    {
+      src: '../foo.custom',
+      lang: 'customLanguage',
+      targetLanguage: 'customLanguage',
+    },
   ]
 
   MIMETYPES.forEach(({ type, lang, src, targetLanguage }) => {
-    it(`should detect '${src || type || lang}' as '${targetLanguage}'`, async () => {
+    it(`should detect '${src ||
+      type ||
+      lang}' as '${targetLanguage}'`, async () => {
       const language = getLanguage({ type, lang, src }, targetLanguage)
       expect(language).toMatchObject({ lang: targetLanguage })
     })
@@ -70,11 +76,39 @@ describe('options', () => {
   })
 
   it('should append aliases to the language alias dictionary', async () => {
-    const input = `<div></div><style lang="customLanguage"></style>`
+    const input = `<script lang="cl"></script>`
     const opts = getAutoPreprocess({
-      aliases: [['customLanguage', 'css']],
+      aliases: [['cl', 'javascript']],
     })
     expect(await doesCompileThrow(input, opts)).toBe(false)
+  })
+
+  it('should allow to pass a method as an language alias transformer', async () => {
+    const input = `<style lang="cl"></style>`
+    const opts = getAutoPreprocess({
+      aliases: [['cl', 'customLanguage']],
+      cl() {
+        return { code: 'div{}' }
+      },
+    })
+    expect(await doesCompileThrow(input, opts)).toBe(false)
+
+    const preprocessed = await preprocess(input, opts)
+    expect(preprocessed.toString()).toContain('div{}')
+  })
+
+  it('should allow to pass a method as an language transformer', async () => {
+    const input = `<style lang="cl"></style>`
+    const opts = getAutoPreprocess({
+      aliases: [['cl', 'customLanguage']],
+      customLanguage() {
+        return { code: 'div{}' }
+      },
+    })
+    expect(await doesCompileThrow(input, opts)).toBe(false)
+
+    const preprocessed = await preprocess(input, opts)
+    expect(preprocessed.toString()).toContain('div{}')
   })
 
   it('should NOT preprocess preserved languages', async () => {

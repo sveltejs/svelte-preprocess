@@ -10,7 +10,6 @@ module.exports.pug = opts => require(`./processors/pug.js`)(opts)
 /** Script */
 module.exports.coffeescript = opts =>
   require(`./processors/coffeescript.js`)(opts)
-module.exports.coffee = opts => require(`./processors/coffeescript.js`)(opts)
 module.exports.typescript = opts => require(`./processors/typescript.js`)(opts)
 
 /** Style */

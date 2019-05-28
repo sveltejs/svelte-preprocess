@@ -28,6 +28,7 @@ exports.doesCompileThrow = async (input, opts) => {
     await compile(input, opts)
   } catch (err) {
     didThrow = true
+    console.error(err)
   }
   return didThrow
 }
