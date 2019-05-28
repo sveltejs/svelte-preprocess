@@ -10,16 +10,18 @@ const {
 
 describe('detect - mimetype', () => {
   const MIMETYPES = [
-    { type: 'application/ld+json', parser: 'ld+json' },
-    { type: 'text/some-other', parser: 'some-other' },
-    { lang: 'stylus', parser: 'stylus' },
-    { src: '../foo.custom', lang: 'customLanguage', parser: 'customLanguage' },
+    { type: 'application/ld+json', targetLanguage: 'ld+json' },
+    { type: 'text/some-other', targetLanguage: 'some-other' },
+    { lang: 'stylus', targetLanguage: 'stylus' },
+    { src: '../foo.js', targetLanguage: 'javascript' },
+    { src: '../foo', targetLanguage: 'javascript' },
+    { src: '../foo.custom', lang: 'customLanguage', targetLanguage: 'customLanguage' },
   ]
 
-  MIMETYPES.forEach(({ type, lang, src, parser }) => {
-    it(`should detect '${src || type || lang}' as '${parser}'`, async () => {
-      const language = getLanguage({ type, lang, src }, 'javascript')
-      expect(language).toEqual({ lang: parser, alias: parser })
+  MIMETYPES.forEach(({ type, lang, src, targetLanguage }) => {
+    it(`should detect '${src || type || lang}' as '${targetLanguage}'`, async () => {
+      const language = getLanguage({ type, lang, src }, targetLanguage)
+      expect(language).toMatchObject({ lang: targetLanguage })
     })
   })
 })
