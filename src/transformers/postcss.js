@@ -7,9 +7,12 @@ const process = async (plugins, content, filename, sourceMap) => {
     prev: sourceMap,
   })
 
-  const dependencies = messages
-    .filter(msg => msg.type === 'dependency')
-    .map(msg => msg.file)
+  const dependencies = messages.reduce((acc, msg) => {
+    // istanbul ignore if
+    if (msg.type !== 'dependency') return acc
+    acc.push(msg.file)
+    return acc
+  }, [])
 
   return { code: css, map, dependencies }
 }
@@ -30,5 +33,5 @@ module.exports = async ({ content, filename, options, map = undefined }) => {
     return { code: content, map }
   }
 
-  return process(options.plugins || [], content, filename, map)
+  return process(options.plugins, content, filename, map)
 }
