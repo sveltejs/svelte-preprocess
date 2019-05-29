@@ -80,18 +80,12 @@ Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Co
 <!-- Or -->
 
 <style type="text/stylus">
-  $color= red
+  $color = red
 
   div
     color: $color;
 </style>
 ```
-
-#### Limitations
-
-##### `typescript`
-
-Since `typescript` is not officially supported by `svelte` for its template language, `svelte-preprocess` only type checks code between the `<script></script>` tag.
 
 ## Usage
 
@@ -280,4 +274,24 @@ export default {
     ]
   }
   ...
+```
+
+### Limitations
+
+#### `typescript`
+
+Since `typescript` is not officially supported by `svelte` for its template language, `svelte-preprocess` only type checks code between the `<script></script>` tag.
+
+#### `pug`
+
+Some of Svelte's template syntax is invalid in `pug`. `svelte-preprocess` provides some pug mixins to represent svelte's `{#...}{/...}` blocks: `+if()`, `+else()`, `+elseif()`, `+each()`, `+await()`, `+then()`, `+catch()`, `+debug()`.
+
+```pug
+ul
+  +if('posts && posts.length > 1')
+    +each('posts as post')
+      li
+        a(rel="prefetch" href="blog/{post.slug}") {post.title}
+    +else()
+      span No posts :c
 ```
