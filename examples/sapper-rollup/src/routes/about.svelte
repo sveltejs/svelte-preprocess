@@ -1,6 +1,6 @@
 <template lang="pug">
   svelte:head
-  	title About
+    title About
 
   h1 About this site
 

@@ -33,15 +33,15 @@
 </style>
 
 <template lang="pug">
-svelte:head
-	title Sapper project template
+  svelte:head
+    title Sapper project template
 
-h1 Great success!
+  h1 Great success!
 
-figure
-	img(alt='Borat' src='great-success.png')
-	figcaption HIGH FIVE!
+  figure
+    img(alt='Borat' src='great-success.png')
+    figcaption HIGH FIVE!
 
-p
-  strong Try editing this file (src/routes/index.svelte) to test live reloading.
+  p
+    strong Try editing this file (src/routes/index.svelte) to test live reloading.
 </template>
