@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "module": "es2015"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}
