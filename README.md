@@ -80,12 +80,18 @@ Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Co
 <!-- Or -->
 
 <style type="text/stylus">
-  $color = red
+  $color= red
 
   div
     color: $color;
 </style>
 ```
+
+#### Limitations
+
+##### `typescript`
+
+Since `typescript` is not officially supported by `svelte` for its template language, `svelte-preprocess` only type checks code between the `<script></script>` tag.
 
 ## Usage
 

@@ -16,6 +16,7 @@ module.exports = ({ content, filename, options }) => {
     })
 
     style.render((err, css) => {
+      // istanbul ignore next
       if (err) reject(err)
 
       resolve({ code: css, map: style.sourcemap })
