@@ -242,6 +242,8 @@ export default {
       /**
        * It is also possible to manually enqueue
        * stand-alone processors
+       *
+       * Currently NOT working, see: https://github.com/rollup/rollup-plugin-svelte/pull/56
        * */
       preprocess: [
         pug({ /* pug options */ }),
