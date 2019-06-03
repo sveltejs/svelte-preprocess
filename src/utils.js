@@ -1,7 +1,8 @@
 const { readFile } = require('fs')
-const { resolve, dirname } = require('path')
+const { resolve, dirname, basename } = require('path')
 
 const LANG_DICT = new Map([
+  ['pcss', 'css'],
   ['postcss', 'css'],
   ['sass', 'scss'],
   ['styl', 'stylus'],
@@ -25,6 +26,7 @@ exports.resolveSrc = (importerFile, srcPath) =>
 exports.getSrcContent = file => {
   return new Promise((resolve, reject) => {
     readFile(file, (error, data) => {
+      // istanbul ignore if
       if (error) reject(error)
       else resolve(data.toString())
     })
@@ -50,8 +52,8 @@ exports.getLanguage = (attributes, defaultLang) => {
   } else if (attributes.type) {
     lang = attributes.type.replace(/^(text|application)\/(.*)$/, '$2')
   } else if (attributes.src) {
-    lang = attributes.src.match(/\.([^/.]+)$/)
-    lang = lang ? lang[1] : defaultLang
+    lang = basename(attributes.src).split('.')
+    lang = lang.length > 1 ? lang.pop() : defaultLang
   }
 
   return {
@@ -74,7 +76,11 @@ exports.runTransformer = (name, options, { content, filename }) => {
 
     return TRANSFORMERS[name]({ content, filename, options })
   } catch (e) {
-    throwError(`Error transforming '${name}'. Message:\n${e.message}`)
+    throwError(
+      `Error transforming '${name}'. Message:\n${e.message}\nStack:\n${
+        e.stack
+      }`,
+    )
   }
 }
 

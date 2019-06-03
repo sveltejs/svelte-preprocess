@@ -49,7 +49,7 @@ module.exports = ({ onBefore, aliases, preserve = [], ...rest } = {}) => {
   }
 
   const getTransformerTo = targetLanguage => async ({
-    content = '',
+    content,
     attributes,
     filename,
   }) => {
@@ -128,6 +128,7 @@ module.exports = ({ onBefore, aliases, preserve = [], ...rest } = {}) => {
         .filter(Boolean)
         .reduce((acc, attr) => {
           const [name, value] = attr.split('=')
+          // istanbul ignore next
           acc[name] = value ? value.replace(/['"]/g, '') : true
           return acc
         }, {})
