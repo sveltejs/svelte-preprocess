@@ -6,13 +6,13 @@ const { getIncludePaths } = require('../utils.js')
 module.exports = ({ content, filename, options }) => {
   options = {
     includePaths: getIncludePaths(filename),
-    ...options,
+    ...options
   }
+  options.data = options.data ? options.data + content : content
 
   return new Promise((resolve, reject) => {
     sass.render(
       {
-        data: content,
         sourceMap: true,
         outFile: filename + '.css',
         ...options,
