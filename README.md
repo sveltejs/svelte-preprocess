@@ -106,11 +106,6 @@ svelte.preprocess(input, preprocess({ /* options */ })).then(...)
 const svelte = require('svelte')
 const preprocess = require('svelte-preprocess')
 const options = {
-  /** Transform the whole markup before preprocessing */
-  onBefore({ content, filename }) {
-    return content.replace('something', 'someotherthing')
-  },
-
   /**
    * Extend the default language alias dictionary.
    * Each entry must follow: ['alias', 'languageName']
