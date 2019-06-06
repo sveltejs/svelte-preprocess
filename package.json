@@ -17,6 +17,9 @@
     "pug",
     "coffeescript"
   ],
+  "files": [
+    "src/"
+  ],
   "scripts": {
     "test": "jest --no-cache --verbose",
     "test:watch": "jest --no-cache --verbose --watchAll",
