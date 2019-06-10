@@ -1,4 +1,4 @@
-# Svelte Preprocess
+e# Svelte Preprocess
 
 > A [Svelte](https://svelte.technology) preprocessor wrapper with support for: PostCSS, SCSS, Less, Stylus, Coffeescript, TypeScript and Pug.
 
@@ -237,8 +237,6 @@ export default {
       /**
        * It is also possible to manually enqueue
        * stand-alone processors
-       *
-       * Currently NOT working, see: https://github.com/rollup/rollup-plugin-svelte/pull/56
        * */
       preprocess: [
         pug({ /* pug options */ }),
