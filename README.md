@@ -91,6 +91,8 @@ Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Co
 
 ### Auto Preprocessing
 
+In auto preprocessing mode, `svelte-preprocess` automatically use the respective preprocessor for your code based on your `type="..."` or `lang="..."` attributes.
+
 #### Basic
 
 ```js
@@ -215,7 +217,7 @@ svelte.preprocess(input, [
 ])
 ```
 
-**\*Note:** there's no built-in support for \<template\> tag or external files when using standalone processors.\*
+**Note**: there's no built-in support for \<template\> tag or external files when using standalone processors.
 
 ### With `rollup-plugin-svelte`
 
@@ -269,6 +271,38 @@ export default {
     ]
   }
   ...
+```
+
+### With [Sapper](https://sapper.svelte.dev/)
+
+Sapper has two build configurations, one for the client bundle and one for the server. To use `svelte-preprocess` with Sapper, you need to define it on both configurations.
+
+```js
+// ...
+import sveltePreprocess from 'svelte-preprocess';
+
+const preprocess = sveltePreprocess({
+  postcss: true,
+  // ...
+};
+
+export default {
+  client: {
+    plugins: [
+      svelte({
+        preprocess,
+        // ...
+      }),
+  },
+  server: {
+    plugins: [
+      svelte({
+        preprocess,
+        // ...
+      }),
+    ],
+  },
+};
 ```
 
 ### Limitations
