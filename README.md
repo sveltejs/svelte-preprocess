@@ -1,4 +1,4 @@
-e# Svelte Preprocess
+# Svelte Preprocess
 
 > A [Svelte](https://svelte.technology) preprocessor wrapper with support for: PostCSS, SCSS, Less, Stylus, Coffeescript, TypeScript and Pug.
 
