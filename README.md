@@ -87,6 +87,28 @@ Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Co
 </style>
 ```
 
+### Global style support
+
+Use `globalStyle` preprocess or `global` attribute to apply styles to a selector globally.
+
+```html
+<style global lang="scss">
+  $color: red;
+  div {
+    color: $color;
+  }
+</style>
+```
+
+```js
+import { scss, globalStyle } from 'svelte-preprocess'
+
+svelte.preprocess(input, [
+  globalStyle(),
+]).then(...)
+```
+
+
 ## Usage
 
 ### Auto Preprocessing

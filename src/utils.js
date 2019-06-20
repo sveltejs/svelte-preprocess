@@ -37,12 +37,11 @@ exports.addLanguageAlias = entries =>
   entries.forEach(entry => LANG_DICT.set(...entry))
 
 /** Paths used by preprocessors to resolve @imports */
-exports.getIncludePaths = fromFilename =>
-  [
-    process.cwd(),
-    fromFilename.length && dirname(fromFilename),
-    resolve(process.cwd(), 'node_modules'),
-  ].filter(Boolean)
+exports.getIncludePaths = fromFilename => [
+  process.cwd(),
+  fromFilename.length && dirname(fromFilename),
+  resolve(process.cwd(), 'node_modules'),
+].filter(Boolean)
 
 exports.getLanguage = (attributes, defaultLang) => {
   let lang = defaultLang
@@ -77,9 +76,7 @@ exports.runTransformer = (name, options, { content, filename }) => {
     return TRANSFORMERS[name]({ content, filename, options })
   } catch (e) {
     throwError(
-      `Error transforming '${name}'. Message:\n${e.message}\nStack:\n${
-        e.stack
-      }`,
+      `Error transforming '${name}'. Message:\n${e.message}\nStack:\n${e.stack}`,
     )
   }
 }
@@ -91,4 +88,13 @@ exports.requireAny = (...modules) => {
     } catch (e) {}
   }
   throw new Error(`Cannot find any of modules: ${modules}`)
+}
+
+exports.globalifySelectors = code => {
+  const selectorRe = /^(?!.*@media)[\t ]*([a-zA-Z#.:*[][^{/]*\s*){[\s\S]*?}/gm
+
+  function replacer(match, p1) {
+    return match.replace(p1, `:global(${p1.trim()})`)
+  }
+  return code.replace(selectorRe, replacer)
 }

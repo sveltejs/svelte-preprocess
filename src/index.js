@@ -18,3 +18,5 @@ module.exports.scss = opts => require(`./processors/scss.js`)(opts)
 module.exports.sass = opts => require(`./processors/scss.js`)(opts)
 module.exports.stylus = opts => require(`./processors/stylus.js`)(opts)
 module.exports.postcss = opts => require(`./processors/postcss.js`)(opts)
+module.exports.globalStyle = opts =>
+  require(`./processors/globalStyle.js`)(opts)

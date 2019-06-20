@@ -8,6 +8,7 @@ const {
   getSrcContent,
   resolveSrc,
   throwUnsupportedError,
+  globalifySelectors,
 } = require('./utils.js')
 
 const SVELTE_MAJOR_VERSION = +version[0]
@@ -161,6 +162,10 @@ module.exports = ({ onBefore, aliases, preserve = [], ...rest } = {}) => {
         code = result.code
         map = result.map
         dependencies = dependencies.concat(result.dependencies)
+      }
+
+      if (assetInfo.attributes.global) {
+        code = globalifySelectors(code)
       }
 
       return { code, map, dependencies }
