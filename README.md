@@ -42,13 +42,27 @@ _Note: only for auto preprocessing_
 <style src="./style.css"></style>
 ```
 
+### Global style support
+
+Add a `global` attribute to your `style` tag and instead of scoping the css, all of its content will be interpreted as global style.
+
+```html
+<style global>
+  div {
+    color: red;
+  }
+</style>
+```
+
 ### Preprocessors support
 
 Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Coffeescript`, `TypeScript`, `Pug` and `PostCSS`.
 
 ```html
 <template lang="pug">
-  div Hey
+  div Posts
+  +each('posts as post')
+    a(href="{post.url}") {post.title}
 </template>
 
 <script type="text/coffeescript">
@@ -80,40 +94,18 @@ Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Co
 <!-- Or -->
 
 <style type="text/stylus">
-  $color = red
+  $color=red
 
   div
     color: $color;
 </style>
 ```
 
-### Global style support
-
-Use `globalStyle` preprocess or `global` attribute to apply styles to a selector globally.
-
-```html
-<style global lang="scss">
-  $color: red;
-  div {
-    color: $color;
-  }
-</style>
-```
-
-```js
-import { scss, globalStyle } from 'svelte-preprocess'
-
-svelte.preprocess(input, [
-  globalStyle(),
-]).then(...)
-```
-
-
 ## Usage
 
 ### Auto Preprocessing
 
-In auto preprocessing mode, `svelte-preprocess` automatically use the respective preprocessor for your code based on your `type="..."` or `lang="..."` attributes.
+In auto preprocessing mode, `svelte-preprocess` automatically use the respective preprocessor for your code based on your `type="..."` or `lang="..."` attributes. It also handles the `<template>` tag for markup, external files and global styling.
 
 #### Basic
 
@@ -214,15 +206,24 @@ svelte.preprocess(input, preprocess(options)).then(...)
 
 ### Standalone processors
 
-Instead of a single processor, [Svelte v3 has added support for multiple processors](https://v3.svelte.technology/docs#svelte-preprocess). In case you want to manually configure your preprocessing step, `svelte-preprocess` exports these named processors: `pug`, `coffeescript` or `coffee`, `less`, `scss` or `sass`, `stylus`, `postcss`.
+Instead of a single processor, [Svelte v3 has added support for multiple processors](https://v3.svelte.technology/docs#svelte-preprocess). In case you want to manually configure your preprocessing step, `svelte-preprocess` exports these named processors:
+
+- `pug`
+- `coffeescript` or `coffee`
+- `less`
+- `scss` or `sass`
+- `stylus`
+- `postcss`
+- `globalStyle` - transform `<style global>` into global styles.
 
 ```js
-import { scss, coffeescript, pug } from 'svelte-preprocess'
+import { scss, coffeescript, pug, globalStyle } from 'svelte-preprocess'
 
 svelte.preprocess(input, [
   pug(),
   coffeescript(),
   scss(),
+  globalStyle()
 ]).then(...)
 ```
 
