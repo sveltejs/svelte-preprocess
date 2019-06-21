@@ -1,10 +1,19 @@
 const postcss = require('postcss')
 const postcssLoadConfig = require(`postcss-load-config`)
 
-const process = async (plugins, content, filename, sourceMap) => {
+const process = async (
+  { plugins, parser, syntax },
+  content,
+  filename,
+  sourceMap,
+) => {
   const { css, map, messages } = await postcss(plugins).process(content, {
     from: filename,
-    prev: sourceMap,
+    map: {
+      prev: sourceMap,
+    },
+    parser,
+    syntax,
   })
 
   const dependencies = messages.reduce((acc, msg) => {
@@ -21,7 +30,7 @@ const process = async (plugins, content, filename, sourceMap) => {
 module.exports = async ({ content, filename, options, map = undefined }) => {
   /** If manually passed a plugins array, use it as the postcss config */
   if (options && options.plugins) {
-    return process(options.plugins, content, filename, map)
+    return process(options, content, filename, map)
   }
 
   try {
@@ -33,5 +42,5 @@ module.exports = async ({ content, filename, options, map = undefined }) => {
     return { code: content, map }
   }
 
-  return process(options.plugins, content, filename, map)
+  return process(options, content, filename, map)
 }
