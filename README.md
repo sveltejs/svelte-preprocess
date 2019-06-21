@@ -46,6 +46,8 @@ _Note: only for auto preprocessing_
 
 Add a `global` attribute to your `style` tag and instead of scoping the css, all of its content will be interpreted as global style.
 
+_Note: needs postcss to be installed_
+
 ```html
 <style global>
   div {

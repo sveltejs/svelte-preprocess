@@ -8,7 +8,6 @@ const {
   getSrcContent,
   resolveSrc,
   throwUnsupportedError,
-  globalifySelectors,
 } = require('./utils.js')
 
 const SVELTE_MAJOR_VERSION = +version[0]
@@ -149,14 +148,18 @@ module.exports = ({ onBefore, aliases, preserve = [], ...rest } = {}) => {
       return { code, map, dependencies }
     },
     script: scriptTransformer,
-    async style(assetInfo) {
-      let { code, map, dependencies } = await cssTransformer(assetInfo)
+    async style({ content, attributes, filename }) {
+      let { code, map, dependencies } = await cssTransformer({
+        content,
+        attributes,
+        filename,
+      })
 
       if (transformers.postcss) {
         const result = await runTransformer('postcss', transformers.postcss, {
           content: code,
           map,
-          filename: assetInfo.filename,
+          filename,
         })
 
         code = result.code
@@ -164,8 +167,15 @@ module.exports = ({ onBefore, aliases, preserve = [], ...rest } = {}) => {
         dependencies = dependencies.concat(result.dependencies)
       }
 
-      if (assetInfo.attributes.global) {
-        code = globalifySelectors(code)
+      if (attributes.global) {
+        const result = await runTransformer('globalStyle', null, {
+          content: code,
+          map,
+          filename,
+        })
+
+        code = result.code
+        map = result.map
       }
 
       return { code, map, dependencies }
