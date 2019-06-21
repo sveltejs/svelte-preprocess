@@ -33,6 +33,8 @@ module.exports = async ({ content, filename, options, map = undefined }) => {
     return process(options, content, filename, map)
   }
 
+  if (options === true) options = {}
+
   try {
     /** If not, look for a postcss config file */
     options = await postcssLoadConfig(options, options.configFilePath)
