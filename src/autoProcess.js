@@ -22,6 +22,9 @@ const TEMPLATE_PATTERN = new RegExp(
   `<template([\\s\\S]*?)>([\\s\\S]*?)<\\/template>`,
 )
 
+const concat = (...arrs) =>
+  arrs.reduce((acc, a) => (a && a.length ? acc.concat(a) : acc), [])
+
 module.exports = ({ onBefore, aliases, preserve = [], ...rest } = {}) => {
   const optionsCache = {}
   const transformers = rest.transformers || rest
@@ -78,7 +81,7 @@ module.exports = ({ onBefore, aliases, preserve = [], ...rest } = {}) => {
       throwUnsupportedError(alias, filename)
     }
 
-    const transformedContent = await runTransformer(
+    const transformed = await runTransformer(
       lang,
       getTransformerOptions(lang, alias),
       {
@@ -88,8 +91,8 @@ module.exports = ({ onBefore, aliases, preserve = [], ...rest } = {}) => {
     )
 
     return {
-      ...transformedContent,
-      dependencies,
+      ...transformed,
+      dependencies: concat(dependencies, transformed.dependencies),
     }
   }
 
@@ -156,26 +159,26 @@ module.exports = ({ onBefore, aliases, preserve = [], ...rest } = {}) => {
       })
 
       if (transformers.postcss) {
-        const result = await runTransformer('postcss', transformers.postcss, {
-          content: code,
-          map,
-          filename,
-        })
+        const transformed = await runTransformer(
+          'postcss',
+          transformers.postcss,
+          { content: code, map, filename },
+        )
 
-        code = result.code
-        map = result.map
-        dependencies = dependencies.concat(result.dependencies)
+        code = transformed.code
+        map = transformed.map
+        dependencies = concat(dependencies, transformed.dependencies)
       }
 
       if (attributes.global) {
-        const result = await runTransformer('globalStyle', null, {
+        const transformed = await runTransformer('globalStyle', null, {
           content: code,
           map,
           filename,
         })
 
-        code = result.code
-        map = result.map
+        code = transformed.code
+        map = transformed.map
       }
 
       return { code, map, dependencies }
