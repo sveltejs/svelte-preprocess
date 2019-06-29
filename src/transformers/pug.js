@@ -12,7 +12,7 @@ mixin else
   block
 
 mixin elseif(condition)
-  | {:elseif !{condition}}
+  | {:else if !{condition}}
   block
 
 mixin each(loop)
