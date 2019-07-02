@@ -19,7 +19,11 @@ module.exports = ({ content, filename, options }) => {
       // istanbul ignore next
       if (err) reject(err)
 
-      resolve({ code: css, map: style.sourcemap })
+      resolve({
+        code: css,
+        map: style.sourcemap,
+        dependencies: style.deps()
+      })
     })
   })
 }
