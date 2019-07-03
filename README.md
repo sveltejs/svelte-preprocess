@@ -1,6 +1,6 @@
 # Svelte Preprocess
 
-> A [Svelte](https://svelte.technology) preprocessor wrapper with support for: PostCSS, SCSS, Less, Stylus, Coffeescript, TypeScript and Pug.
+> A [Svelte](https://svelte.dev) preprocessor wrapper with support for: PostCSS, SCSS, Less, Stylus, Coffeescript, TypeScript and Pug.
 
 ## Installation
 
@@ -67,15 +67,17 @@ Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Co
     a(href="{post.url}") {post.title}
 </template>
 
+<script lang="typescript">
+  // Compatible with Svelte v3...
+  export const hello: string = 'world';
+</script>
+
 <script type="text/coffeescript">
+  # ...and v2!
   export default
     methods:
       foo: () ->
         console.log('Hey')
-</script>
-
-<script lang="typescript">
-  export const hello: string = 'world';
 </script>
 
 <style src="./style.scss"></style>
@@ -107,7 +109,7 @@ Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Co
 
 ### Auto Preprocessing
 
-In auto preprocessing mode, `svelte-preprocess` automatically use the respective preprocessor for your code based on your `type="..."` or `lang="..."` attributes. It also handles the `<template>` tag for markup, external files and global styling.
+In auto preprocessing mode, `svelte-preprocess` automatically uses the respective preprocessor for your code based on your `type="..."` or `lang="..."` attributes. It also handles the `<template>` tag for markup, external files and global styling.
 
 #### Basic
 
@@ -208,7 +210,7 @@ svelte.preprocess(input, preprocess(options)).then(...)
 
 ### Standalone processors
 
-Instead of a single processor, [Svelte v3 has added support for multiple processors](https://v3.svelte.technology/docs#svelte-preprocess). In case you want to manually configure your preprocessing step, `svelte-preprocess` exports these named processors:
+Instead of a single processor, [Svelte v3 has added support for multiple processors](https://svelte.dev/docs#svelte_preprocess). In case you want to manually configure your preprocessing step, `svelte-preprocess` exports these named processors:
 
 - `pug`
 - `coffeescript` or `coffee`
@@ -334,7 +336,7 @@ export default {
 
 #### `typescript`
 
-Since `typescript` is not officially supported by `svelte` for its template language, `svelte-preprocess` only type checks code between the `<script></script>` tag.
+Since `typescript` is not officially supported by `svelte` for its template language, `svelte-preprocess` only type checks code in the `<script></script>` tag.
 
 #### `pug`
 
