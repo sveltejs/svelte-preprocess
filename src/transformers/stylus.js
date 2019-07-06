@@ -22,7 +22,7 @@ module.exports = ({ content, filename, options }) => {
       resolve({
         code: css,
         map: style.sourcemap,
-        dependencies: style.deps()
+        dependencies: style.deps(),
       })
     })
   })
