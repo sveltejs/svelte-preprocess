@@ -2,6 +2,28 @@
 
 > A [Svelte](https://svelte.dev) preprocessor wrapper with support for: PostCSS, SCSS, Less, Stylus, Coffeescript, TypeScript and Pug.
 
+<!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=3 orderedList=false} -->
+<!-- code_chunk_output -->
+
+- [Installation](#installation)
+- [Features](#features)
+  - [Template tag support](#template-tag-support)
+  - [External files support](#external-files-support)
+  - [Global style support](#global-style-support)
+  - [Preprocessors support](#preprocessors-support)
+- [Usage](#usage)
+  - [Auto Preprocessing](#auto-preprocessing)
+  - [Standalone processors](#standalone-processors)
+  - [With `rollup-plugin-svelte`](#with-rollup-plugin-svelte)
+  - [With `svelte-loader`](#with-svelte-loader)
+  - [With Sapper](#with-sapperhttpssappersveltedev)
+  - [With Svelte VS Code](#with-svelte-vs-codehttpsmarketplacevisualstudiocomitemsitemnamejamesbirtlessvelte-vscode)
+- [Limitations](#limitations)
+  - [`typescript`](#typescript)
+  - [`pug`](#pug)
+
+<!-- /code_chunk_output -->
+
 ## Installation
 
 `npm install --save-dev svelte-preprocess`
@@ -98,10 +120,7 @@ Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Co
 <!-- Or -->
 
 <style type="text/stylus">
-  $color=red
-
-  div
-    color: $color;
+  $color=reddivcolor: $color;
 </style>
 ```
 
@@ -332,13 +351,33 @@ export default {
 };
 ```
 
-### Limitations
+### With [Svelte VS Code](https://marketplace.visualstudio.com/items?itemName=JamesBirtles.svelte-vscode)
 
-#### `typescript`
+`svelte-vscode` needs to know how its (svelte) language server should preprocess your files. This can be achieved by creating a `svelte.config.js` file at the root of your project which exports a svelte options object (similar to `svelte-loader` and `rollup-plugin-svelte`).
+
+**Example**:
+
+```js
+// svelte.config.js
+const preprocess = require('svelte-preprocess')
+
+module.exports = {
+  preprocess: preprocess({
+    // ...svelte-preprocess options
+  }),
+  // ...other svelte options
+}
+```
+
+_Tip: this file can be imported in your bundle config instead of having multiple svelte configurations lying around._
+
+## Limitations
+
+### `typescript`
 
 Since `typescript` is not officially supported by `svelte` for its template language, `svelte-preprocess` only type checks code in the `<script></script>` tag.
 
-#### `pug`
+### `pug`
 
 Some of Svelte's template syntax is invalid in `pug`. `svelte-preprocess` provides some pug mixins to represent svelte's `{#...}{/...}` blocks: `+if()`, `+else()`, `+elseif()`, `+each()`, `+await()`, `+then()`, `+catch()`, `+debug()`.
 
