@@ -1,10 +1,12 @@
 const transformer = require('../transformers/stylus.js')
-
-const { getIncludePaths, getLanguage } = require('../utils.js')
+const { getIncludePaths, concat, parseFile } = require('../utils.js')
 
 module.exports = options => ({
-  style({ content, attributes, filename }) {
-    const { lang } = getLanguage(attributes, 'css')
+  async style(svelteFile) {
+    const { content, filename, lang, dependencies } = await parseFile(
+      svelteFile,
+      'css',
+    )
     if (lang !== 'stylus') return { code: content }
 
     options = {
@@ -12,6 +14,10 @@ module.exports = options => ({
       ...options,
     }
 
-    return transformer({ content, filename, options })
+    const transformed = await transformer({ content, filename, options })
+    return {
+      ...transformed,
+      dependencies: concat(dependencies, transformed.dependencies),
+    }
   },
 })

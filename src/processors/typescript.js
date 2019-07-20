@@ -1,11 +1,18 @@
-const { getLanguage } = require('../utils.js')
+const { concat, parseFile } = require('../utils.js')
 const transformer = require('../transformers/typescript.js')
 
 module.exports = options => ({
-  script({ content, attributes, filename }) {
-    const { lang } = getLanguage(attributes, 'javascript')
+  async script(svelteFile) {
+    const { content, filename, lang, dependencies } = await parseFile(
+      svelteFile,
+      'javascript',
+    )
     if (lang !== 'typescript') return { code: content }
 
-    return transformer({ content, filename, options })
+    const transformed = await transformer({ content, filename, options })
+    return {
+      ...transformed,
+      dependencies: concat(dependencies, transformed.dependencies),
+    }
   },
 })

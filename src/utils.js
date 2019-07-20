@@ -15,15 +15,18 @@ const throwError = msg => {
   throw new Error(`[svelte-preprocess] ${msg}`)
 }
 
+exports.concat = (...arrs) =>
+  arrs.reduce((acc, a) => (a && a.length ? acc.concat(a) : acc), [])
+
 exports.throwUnsupportedError = (lang, filename) =>
   throwError(`Unsupported script language '${lang}' in file '${filename}'`)
 
 exports.isFn = maybeFn => typeof maybeFn === 'function'
 
-exports.resolveSrc = (importerFile, srcPath) =>
-  resolve(dirname(importerFile), srcPath)
+const resolveSrc = (exports.resolveSrc = (importerFile, srcPath) =>
+  resolve(dirname(importerFile), srcPath))
 
-exports.getSrcContent = file => {
+const getSrcContent = (exports.getSrcContent = file => {
   return new Promise((resolve, reject) => {
     readFile(file, (error, data) => {
       // istanbul ignore if
@@ -31,6 +34,29 @@ exports.getSrcContent = file => {
       else resolve(data.toString())
     })
   })
+})
+
+exports.parseFile = async ({ attributes, filename, content }, language) => {
+  const dependencies = []
+  if (attributes.src) {
+    /** Ignore remote files */
+    if (!attributes.src.match(/^(https?)?:?\/\/.*$/)) {
+      const file = resolveSrc(filename, attributes.src)
+      content = await getSrcContent(file)
+      dependencies.push(file)
+    }
+  }
+
+  const { lang, alias } = exports.getLanguage(attributes, language)
+
+  return {
+    filename,
+    attributes,
+    content,
+    lang,
+    alias,
+    dependencies,
+  }
 }
 
 exports.addLanguageAlias = entries =>
@@ -76,9 +102,7 @@ exports.runTransformer = (name, options, { content, filename }) => {
     return TRANSFORMERS[name]({ content, filename, options })
   } catch (e) {
     throwError(
-      `Error transforming '${name}'. Message:\n${e.message}\nStack:\n${
-        e.stack
-      }`,
+      `Error transforming '${name}'. Message:\n${e.message}\nStack:\n${e.stack}`,
     )
   }
 }

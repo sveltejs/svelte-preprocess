@@ -1,9 +1,13 @@
 const transformer = require('../transformers/scss.js')
-const { getIncludePaths, getLanguage } = require('../utils.js')
+const { getIncludePaths, concat, parseFile } = require('../utils.js')
 
 module.exports = options => ({
-  style({ content, attributes, filename }) {
-    const { lang, alias } = getLanguage(attributes, 'css')
+  async style(svelteFile) {
+    const { content, filename, lang, alias, dependencies } = await parseFile(
+      svelteFile,
+      'css',
+    )
+
     if (lang !== 'scss') return { code: content }
 
     options = {
@@ -15,6 +19,10 @@ module.exports = options => ({
       options.indentedSyntax = true
     }
 
-    return transformer({ content, filename, options })
+    const transformed = await transformer({ content, filename, options })
+    return {
+      ...transformed,
+      dependencies: concat(dependencies, transformed.dependencies),
+    }
   },
 })

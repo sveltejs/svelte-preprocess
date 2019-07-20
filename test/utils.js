@@ -8,10 +8,11 @@ const {
 exports.CSS_PATTERN = /div(\.svelte-\w{4,7})?\s*\{\s*color:\s*(red|#f00);?\s*\}/
 
 exports.preprocess = async (input, opts) =>
-  sveltePreprocess(input, {
-    filename: resolve(__dirname, 'App.svelte'),
-    ...opts,
-  })
+  sveltePreprocess(
+    input,
+    opts,
+    { filename: resolve(__dirname, 'App.svelte') },
+  )
 
 const compile = async (input, magicOpts) => {
   const preprocessed = await exports.preprocess(input, magicOpts)

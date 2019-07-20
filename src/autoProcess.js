@@ -1,12 +1,11 @@
 const stripIndent = require('strip-indent')
 const { version } = require('svelte/package.json')
 const {
+  concat,
   addLanguageAlias,
-  getLanguage,
+  parseFile,
   runTransformer,
   isFn,
-  getSrcContent,
-  resolveSrc,
   throwUnsupportedError,
 } = require('./utils.js')
 
@@ -21,9 +20,6 @@ const ALIAS_OPTION_OVERRIDES = {
 const TEMPLATE_PATTERN = new RegExp(
   `<template([\\s\\S]*?)>([\\s\\S]*?)<\\/template>`,
 )
-
-const concat = (...arrs) =>
-  arrs.reduce((acc, a) => (a && a.length ? acc.concat(a) : acc), [])
 
 module.exports = ({ onBefore, aliases, preserve = [], ...rest } = {}) => {
   const optionsCache = {}
@@ -51,26 +47,14 @@ module.exports = ({ onBefore, aliases, preserve = [], ...rest } = {}) => {
     return optionsCache[alias]
   }
 
-  const getTransformerTo = targetLanguage => async ({
-    content,
-    attributes,
-    filename,
-  }) => {
-    const { lang, alias } = getLanguage(attributes, targetLanguage)
-    const dependencies = []
+  const getTransformerTo = targetLanguage => async svelteFile => {
+    const { content, filename, lang, alias, dependencies } = await parseFile(
+      svelteFile,
+      targetLanguage,
+    )
 
     if (preserve.includes(lang) || preserve.includes(alias)) {
       return
-    }
-
-    if (attributes.src) {
-      /** Ignore remote files */
-      if (attributes.src.match(/^(https?)?:?\/\/.*$/)) {
-        return
-      }
-      const file = resolveSrc(filename, attributes.src)
-      content = await getSrcContent(file)
-      dependencies.push(file)
     }
 
     if (lang === targetLanguage) {
@@ -84,10 +68,7 @@ module.exports = ({ onBefore, aliases, preserve = [], ...rest } = {}) => {
     const transformed = await runTransformer(
       lang,
       getTransformerOptions(lang, alias),
-      {
-        content: stripIndent(content),
-        filename,
-      },
+      { content: stripIndent(content), filename },
     )
 
     return {

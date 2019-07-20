@@ -56,8 +56,6 @@ _Note: only for auto preprocessing_
 
 ### External files support
 
-_Note: only for auto preprocessing_
-
 ```html
 <template src="template.html"></template>
 <script src="./script.js"></script>
@@ -128,7 +126,7 @@ Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Co
 
 ### Auto Preprocessing
 
-In auto preprocessing mode, `svelte-preprocess` automatically uses the respective preprocessor for your code based on your `type="..."` or `lang="..."` attributes. It also handles the `<template>` tag for markup, external files and global styling.
+In auto preprocessing mode, `svelte-preprocess` automatically uses the respective preprocessor for your code based on your `type="..."` or `lang="..."` attributes. It also handles the `<template>` tag for markup, external files and global styling. It's as simple as importing the module and executing the default exported method.
 
 #### Basic
 
@@ -227,7 +225,7 @@ const options = {
 svelte.preprocess(input, preprocess(options)).then(...)
 ```
 
-### Standalone processors
+### Stand-alone processors
 
 Instead of a single processor, [Svelte v3 has added support for multiple processors](https://svelte.dev/docs#svelte_preprocess). In case you want to manually configure your preprocessing step, `svelte-preprocess` exports these named processors:
 
