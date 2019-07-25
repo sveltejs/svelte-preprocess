@@ -12,12 +12,14 @@
   - [Global style support](#global-style-support)
   - [Preprocessors support](#preprocessors-support)
 - [Usage](#usage)
-  - [Auto Preprocessing](#auto-preprocessing)
-  - [Standalone processors](#standalone-processors)
   - [With `rollup-plugin-svelte`](#with-rollup-plugin-svelte)
   - [With `svelte-loader`](#with-svelte-loader)
   - [With Sapper](#with-sapperhttpssappersveltedev)
   - [With Svelte VS Code](#with-svelte-vs-codehttpsmarketplacevisualstudiocomitemsitemnamejamesbirtlessvelte-vscode)
+- [Preprocessing modes](#preprocessing-modes)
+  - [Auto Preprocessing](#auto-preprocessing)
+  - [Standalone processors](#standalone-processors)
+- [Options](#options)
 - [Limitations](#limitations)
   - [`typescript`](#typescript)
   - [`pug`](#pug)
@@ -124,145 +126,6 @@ Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Co
 
 ## Usage
 
-### Auto Preprocessing
-
-In auto preprocessing mode, `svelte-preprocess` automatically uses the respective preprocessor for your code based on your `type="..."` or `lang="..."` attributes. It also handles the `<template>` tag for markup, external files and global styling. It's as simple as importing the module and executing the default exported method.
-
-#### Basic
-
-```js
-const svelte = require('svelte')
-const preprocess = require('svelte-preprocess')
-
-svelte.preprocess(input, preprocess({ /* options */ })).then(...)
-```
-
-#### Advanced
-
-```js
-const svelte = require('svelte')
-const preprocess = require('svelte-preprocess')
-const options = {
-  /**
-   * Extend the default language alias dictionary.
-   * Each entry must follow: ['alias', 'languageName']
-   */
-  aliases: [
-    /**
-     * Means
-     * <... src="file.cst"> or
-     * <... lang="cst"> or
-     * <... type="text/customLanguage">
-     * <... type="application/customLanguage">
-     * will be treated as the language 'customLanguage'
-    */
-    ['cst', 'customLanguage']
-  ],
-
-  preserve: [
-    /**
-     * Using the same matching algorithm as above, don't parse,
-     * modify, or remove from the markup, tags which match the
-     * language / types listed below.
-     * **/
-    'ld+json'
-  ],
-
-  /** Disable a language by setting it to 'false' */
-  scss: false,
-
-  /**  Pass options to the default preprocessor method */
-  stylus: {
-    paths: ['node_modules']
-  },
-
-  /**
-   * Post process css with PostCSS by defining 'transformers.postcss' property,
-   * either pass 'true' to activate PostCSS transforms and use the `postcss.config.js`
-   */
-  postcss: true,
-
-  /** or pass an object with postcss plugins and their options directly. */
-  postcss: {
-    plugins: [
-      require('autoprefixer')({ browsers: 'last 2 versions' })
-    ]
-  },
-
-  typescript: {
-    /**
-     * Optionally specify the directory to load the tsconfig from
-     */
-    tsconfigDirectory: './configs',
-
-    /**
-     * Optionally specify the full path to the tsconfig
-     */
-    tsconfigFile: './tsconfig.app.json',
-
-    /**
-     * Optionally specify compiler options.
-     * These will be merged with options from the tsconfig if found.
-     */
-    compilerOptions: {
-      module: 'es2015'
-    }
-  },
-
-  /** Use a custom preprocess method by passing a function. */
-  pug({ content, filename }) {
-      const code = pug.render(content)
-      return { code, map: null }
-  },
-
-  /** Add a custom language preprocessor */
-  customLanguage({ content, filename }) {
-    const { code, map } = require('custom-language-compiler')(content)
-    return { code, map }
-  },
-}
-
-svelte.preprocess(input, preprocess(options)).then(...)
-```
-
-### Stand-alone processors
-
-Instead of a single processor, [Svelte v3 has added support for multiple processors](https://svelte.dev/docs#svelte_preprocess). In case you want to manually configure your preprocessing step, `svelte-preprocess` exports these named processors:
-
-- `pug`
-- `coffeescript` or `coffee`
-- `less`
-- `scss` or `sass`
-- `stylus`
-- `postcss`
-- `globalStyle` - transform `<style global>` into global styles.
-
-```js
-import { scss, coffeescript, pug, globalStyle } from 'svelte-preprocess'
-
-svelte.preprocess(input, [
-  pug(),
-  coffeescript(),
-  scss(),
-  globalStyle()
-]).then(...)
-```
-
-Every processor accepts an option object which is passed to its respective underlying tool.
-
-```js
-import { scss, postcss } from 'svelte-preprocess'
-
-svelte.preprocess(input, [
-  scss(),
-  postcss({
-    plugins: [require('autoprefixer')({ browsers: 'last 2 versions' })],
-  }),
-])
-```
-
-**Note**: there's no built-in support for \<template\> tag or external files when using standalone processors.
-
 ### With `rollup-plugin-svelte`
 
 ```js
@@ -368,6 +231,151 @@ module.exports = {
 ```
 
 _Tip: this file can be imported in your bundle config instead of having multiple svelte configurations lying around._
+
+## Preprocessing modes
+
+`svelte-preprocess` can be used in two ways: _auto preprocessing_ and with _stand-alone_ processors.
+
+### Auto Preprocessing
+
+In auto preprocessing mode, `svelte-preprocess` automatically uses the respective preprocessor for your code based on your `type="..."` or `lang="..."` attributes. It also handles the `<template>` tag for markup, external files and global styling. It's as simple as importing the module and executing the default exported method.
+
+```js
+const svelte = require('svelte')
+const preprocess = require('svelte-preprocess')
+
+svelte.preprocess(
+  input,
+  preprocess({
+    /* options */
+  }),
+)
+```
+
+### Standalone processors
+
+Instead of a single processor, [Svelte v3 has added support for multiple processors](https://svelte.dev/docs#svelte_preprocess). In case you want to manually configure your preprocessing step, `svelte-preprocess` exports these named processors:
+
+- `pug`
+- `coffeescript` or `coffee`
+- `less`
+- `scss` or `sass`
+- `stylus`
+- `postcss`
+- `globalStyle` - transform `<style global>` into global styles.
+
+```js
+import { scss, coffeescript, pug, globalStyle } from 'svelte-preprocess'
+
+svelte.preprocess(input, [pug(), coffeescript(), scss(), globalStyle()])
+```
+
+Every processor accepts an option object which is passed to its respective underlying tool.
+
+```js
+import { scss, postcss } from 'svelte-preprocess'
+
+svelte.preprocess(input, [
+  scss(),
+  postcss({
+    plugins: [
+      require('autoprefixer')({
+        browsers: 'last 2 versions',
+      }),
+    ],
+  }),
+])
+```
+
+**Note**: there's no built-in support for \<template\> tag when using standalone processors.
+
+## Options
+
+`svelte-preprocess` in _auto-processing_ mode can receive an options object.
+
+```js
+const svelte = require('svelte')
+const preprocess = require('svelte-preprocess')
+const options = {
+  /**
+   * Extend the default language alias dictionary.
+   * Each entry must follow: ['alias', 'languageName']
+   */
+  aliases: [
+    /**
+     * Means
+     * <... src="file.cst"> or
+     * <... lang="cst"> or
+     * <... type="text/customLanguage">
+     * <... type="application/customLanguage">
+     * will be treated as the language 'customLanguage'
+     */
+    ['cst', 'customLanguage'],
+  ],
+
+  preserve: [
+    /**
+     * Using the same matching algorithm as above, don't parse,
+     * modify, or remove from the markup, tags which match the
+     * language / types listed below.
+     * **/
+    'ld+json',
+  ],
+
+  /** Disable a language by setting it to 'false' */
+  scss: false,
+
+  /**  Pass options to the default preprocessor method */
+  stylus: {
+    paths: ['node_modules'],
+  },
+
+  /**
+   * Post process css with PostCSS by defining 'transformers.postcss' property,
+   * either pass 'true' to activate PostCSS transforms and use the `postcss.config.js`
+   */
+  postcss: true,
+
+  /** or pass an object with postcss plugins and their options directly. */
+  postcss: {
+    plugins: [require('autoprefixer')({ browsers: 'last 2 versions' })],
+  },
+
+  typescript: {
+    /**
+     * Optionally specify the directory to load the tsconfig from
+     */
+    tsconfigDirectory: './configs',
+
+    /**
+     * Optionally specify the full path to the tsconfig
+     */
+    tsconfigFile: './tsconfig.app.json',
+
+    /**
+     * Optionally specify compiler options.
+     * These will be merged with options from the tsconfig if found.
+     */
+    compilerOptions: {
+      module: 'es2015',
+    },
+  },
+
+  /** Use a custom preprocess method by passing a function. */
+  pug({ content, filename }) {
+    const code = pug.render(content)
+    return { code, map: null }
+  },
+
+  /** Add a custom language preprocessor */
+  customLanguage({ content, filename }) {
+    const { code, map } = require('custom-language-compiler')(content)
+    return { code, map }
+  },
+}
+
+svelte.preprocess(input, preprocess(options))
+```
 
 ## Limitations
 
