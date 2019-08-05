@@ -14,8 +14,8 @@
 - [Usage](#usage)
   - [With `rollup-plugin-svelte`](#with-rollup-plugin-svelte)
   - [With `svelte-loader`](#with-svelte-loader)
-  - [With Sapper](#with-sapperhttpssappersveltedev)
-  - [With Svelte VS Code](#with-svelte-vs-codehttpsmarketplacevisualstudiocomitemsitemnamejamesbirtlessvelte-vscode)
+  - [With Sapper](#with-sapper)
+  - [With Svelte VS Code](#with-svelte-vs-code)
 - [Preprocessing modes](#preprocessing-modes)
   - [Auto Preprocessing](#auto-preprocessing)
   - [Standalone processors](#standalone-processors)
@@ -180,9 +180,9 @@ export default {
   ...
 ```
 
-### With [Sapper](https://sapper.svelte.dev/)
+### With Sapper
 
-Sapper has two build configurations, one for the client bundle and one for the server. To use `svelte-preprocess` with Sapper, you need to define it on both configurations.
+[Sapper](https://sapper.svelte.dev/) has two build configurations, one for the client bundle and one for the server. To use `svelte-preprocess` with Sapper, you need to define it on both configurations.
 
 ```js
 // ...
@@ -212,9 +212,9 @@ export default {
 };
 ```
 
-### With [Svelte VS Code](https://marketplace.visualstudio.com/items?itemName=JamesBirtles.svelte-vscode)
+### With Svelte VS Code
 
-`svelte-vscode` needs to know how its (svelte) language server should preprocess your files. This can be achieved by creating a `svelte.config.js` file at the root of your project which exports a svelte options object (similar to `svelte-loader` and `rollup-plugin-svelte`).
+[svelte-vscode](https://marketplace.visualstudio.com/items?itemName=JamesBirtles.svelte-vscode) needs to know how its (svelte) language server should preprocess your files. This can be achieved by creating a `svelte.config.js` file at the root of your project which exports a svelte options object (similar to `svelte-loader` and `rollup-plugin-svelte`).
 
 **Example**:
 
