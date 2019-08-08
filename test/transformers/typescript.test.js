@@ -42,10 +42,10 @@ describe('transformer - typescript', () => {
       expect(preprocessed.toString()).toContain(EXPECTED_SCRIPT)
     })
 
-    it('should work with tsconfigPath', async () => {
+    it('should work with tsconfigFile', async () => {
       const opts = getAutoPreprocess({
         typescript: {
-          tsconfigPath: './test/fixtures/tsconfig.json',
+          tsconfigFile: './test/fixtures/tsconfig.json',
         },
       })
       const preprocessed = await preprocess(template, opts)
@@ -55,7 +55,7 @@ describe('transformer - typescript', () => {
     it('should report config syntactic errors in tsconfig file', () => {
       const opts = getAutoPreprocess({
         typescript: {
-          tsconfigPath: './test/fixtures/tsconfig.syntactic.json',
+          tsconfigFile: './test/fixtures/tsconfig.syntactic.json',
         },
       })
       return expect(preprocess(template, opts)).rejects.toThrow('TS1005')
@@ -64,7 +64,7 @@ describe('transformer - typescript', () => {
     it('should report config semantic errors in tsconfig file', () => {
       const opts = getAutoPreprocess({
         typescript: {
-          tsconfigPath: './test/fixtures/tsconfig.semantic.json',
+          tsconfigFile: './test/fixtures/tsconfig.semantic.json',
         },
       })
       return expect(preprocess(template, opts)).rejects.toThrow('TS6046')
