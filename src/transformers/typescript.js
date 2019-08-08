@@ -155,9 +155,9 @@ function compileFileFromMemory(compilerOptions, { filename, content }) {
 
 module.exports = ({ content, filename, options }) => {
   const fileDirectory = options.tsconfigDirectory || dirname(filename)
-  const tsconfigPath =
-    options.tsconfigPath || ts.findConfigFile(fileDirectory, ts.sys.fileExists)
-  const basePath = tsconfigPath ? dirname(tsconfigPath) : process.cwd()
+  const tsconfigFile =
+    options.tsconfigFile || ts.findConfigFile(fileDirectory, ts.sys.fileExists)
+  const basePath = tsconfigFile ? dirname(tsconfigFile) : process.cwd()
 
   let compilerOptionsJSON = Object.assign(
     // default options
@@ -169,8 +169,8 @@ module.exports = ({ content, filename, options }) => {
     options.compilerOptions,
   )
 
-  if (tsconfigPath) {
-    const { error, config } = ts.readConfigFile(tsconfigPath, ts.sys.readFile)
+  if (tsconfigFile) {
+    const { error, config } = ts.readConfigFile(tsconfigFile, ts.sys.readFile)
     if (error) {
       throw new Error(formatDiagnostics(error, basePath))
     }
