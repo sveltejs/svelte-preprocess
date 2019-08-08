@@ -1,6 +1,6 @@
 {
   "name": "svelte-preprocess",
-  "version": "2.15.0",
+  "version": "2.15.1",
   "license": "MIT",
   "main": "src/index.js",
   "types": "src/index.d.ts",
@@ -25,9 +25,11 @@
     "test:watch": "jest --no-cache --verbose --watchAll",
     "lint": "eslint \"src/**/*.js\"",
     "format": "prettier --loglevel silent --write \"src/**/*.js\" && eslint --fix \"src/**/*.js\"",
-    "prepublishOnly": "npm run format && npm run test",
-    "postinstall": "node -e \"console.log('\\u001b[36m\\u001b[1m[svelte-preprocess] Don\\'t forget to install the preprocessors packages that will be used: \\u001b[22m\\u001b[39m\\u001b[34mnode-sass/sass, stylus, less, postcss, coffesscript, pug, etc...\\u001b[0m')\"",
-    "version": "auto-changelog -p && git add CHANGELOG.md"
+    "postinstall": "node -e \"console.log('\\u001b[36m\\u001b[1m[svelte-preprocess] Don\\'t forget to install the preprocessors packages that will be used: \\u001b[22m\\u001b[39m\\u001b[34mnode-sass/sass, stylus, less, postcss, coffeescript, pug, etc...\\u001b[0m')\"",
+    "version": "npx conventional-changelog-cli -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
+    "tag": "git tag -a v$npm_package_version -m 'Release v$npm_package_version'",
+    "release": "npm run version && git add package.json && git commit -m \"chore: release v$npm_package_version\"",
+    "prepublishOnly": "npm run release && npm run tag"
   },
   "auto-changelog": {
     "template": "keepachangelog"
