@@ -1,6 +1,6 @@
 # Svelte Preprocess
 
-> A [Svelte](https://svelte.dev) preprocessor wrapper with support for: PostCSS, SCSS, Less, Stylus, Coffeescript, TypeScript and Pug.
+> A [Svelte](https://svelte.dev) preprocessor with support for: PostCSS, SCSS, Less, Stylus, Coffeescript, TypeScript and Pug.
 
 <!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=3 orderedList=false} -->
 <!-- code_chunk_output -->
@@ -220,10 +220,10 @@ export default {
 
 ```js
 // svelte.config.js
-const preprocess = require('svelte-preprocess')
+const sveltePreprocess = require('svelte-preprocess')
 
 module.exports = {
-  preprocess: preprocess({
+  preprocess: sveltePreprocess({
     // ...svelte-preprocess options
   }),
   // ...other svelte options
@@ -241,20 +241,37 @@ _Tip: this file can be imported in your bundle config instead of having multiple
 In auto preprocessing mode, `svelte-preprocess` automatically uses the respective preprocessor for your code based on your `type="..."` or `lang="..."` attributes. It also handles the `<template>` tag for markup, external files and global styling. It's as simple as importing the module and executing the default exported method.
 
 ```js
-const svelte = require('svelte')
-const preprocess = require('svelte-preprocess')
+const sveltePreprocess = require('svelte-preprocess')
 
-svelte.preprocess(
-  input,
-  preprocess({
-    /* options */
-  }),
-)
+...
+  {
+    /* svelte options */
+    ...,
+    preprocess: sveltePreprocess({ /* options */ }),
+  }
+...
+```
+
+[Svelte v3 has added support for multiple processors](https://svelte.dev/docs#svelte_preprocess), so it's also possible to use `svelte-preprocess` with other preprocessors:
+
+```js
+const sveltePreprocess = require('svelte-preprocess')
+const { mdsvex } = require('mdsvex')
+...
+  {
+    /* svelte options */
+    ...,
+    preprocess: [
+      sveltePreprocess({ /* svelte-preprocess options */ }),
+      msdvex({ /* mdsvex options */ })
+    ],
+  }
+...
 ```
 
 ### Standalone processors
 
-Instead of a single processor, [Svelte v3 has added support for multiple processors](https://svelte.dev/docs#svelte_preprocess). In case you want to manually configure your preprocessing step, `svelte-preprocess` exports these named processors:
+In case you want to manually configure your preprocessing step, `svelte-preprocess` exports these named processors:
 
 - `pug`
 - `coffeescript` or `coffee`
@@ -295,7 +312,7 @@ svelte.preprocess(input, [
 
 ```js
 const svelte = require('svelte')
-const preprocess = require('svelte-preprocess')
+const sveltePreprocess = require('svelte-preprocess')
 const options = {
   /**
    * Extend the default language alias dictionary.
@@ -374,7 +391,7 @@ const options = {
   },
 }
 
-svelte.preprocess(input, preprocess(options))
+svelte.preprocess(input, sveltePreprocess(options))
 ```
 
 ## Limitations
