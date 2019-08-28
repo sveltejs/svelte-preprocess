@@ -69,6 +69,19 @@ describe('transformer - typescript', () => {
       })
       return expect(preprocess(template, opts)).rejects.toThrow('TS6046')
     })
+
+    it('should not type check if "transpileOnly: true"', async () => {
+      const opts = getAutoPreprocess({
+        typescript: {
+          transpileOnly: true,
+          compilerOptions: {
+            module: 'ESNext',
+          },
+        },
+      })
+      const { code } = await preprocess(template, opts)
+      return expect(code).toContain(getFixtureContent('script.js'))
+    })
   })
 
   describe('code errors', () => {

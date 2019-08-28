@@ -195,10 +195,23 @@ module.exports = ({ content, filename, options }) => {
     allowNonTsExtensions: true,
   }
 
-  const { code, map, diagnostics } = compileFileFromMemory(compilerOptions, {
-    filename,
-    content,
-  })
+  let code, map, diagnostics
+  if (options.transpileOnly || compilerOptions.transpileOnly) {
+    ;({
+      outputText: code,
+      sourceMapText: map,
+      diagnostics,
+    } = ts.transpileModule(content, {
+      fileName: filename,
+      compilerOptions: compilerOptions,
+      reportDiagnostics: options.reportDiagnostics !== false,
+    }))
+  } else {
+    ;({ code, map, diagnostics } = compileFileFromMemory(compilerOptions, {
+      filename,
+      content,
+    }))
+  }
 
   if (diagnostics.length > 0) {
     // could this be handled elsewhere?
