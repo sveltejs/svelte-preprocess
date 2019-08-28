@@ -1,5 +1,4 @@
 const postcss = require('postcss')
-const postcssLoadConfig = require(`postcss-load-config`)
 
 const process = async (
   { plugins, parser, syntax },
@@ -37,10 +36,15 @@ module.exports = async ({ content, filename, options, map = undefined }) => {
 
   try {
     /** If not, look for a postcss config file */
+    const postcssLoadConfig = require(`postcss-load-config`)
     options = await postcssLoadConfig(options, options.configFilePath)
   } catch (e) {
     /** Something went wrong, do nothing */
-    console.error(e.message)
+    if (e.code === 'MODULE_NOT_FOUND') {
+      console.error(
+        `[svelte-preprocess] PostCSS configuration was not passed. If you expect to load it from a file, make sure to install "postcss-load-config" and try again ʕ•ᴥ•ʔ`,
+      )
+    }
     return { code: content, map }
   }
 

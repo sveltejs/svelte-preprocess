@@ -29,17 +29,19 @@
 
 ## Installation
 
-`npm install --save-dev svelte-preprocess`
+`npm install -D svelte-preprocess`
 
 The preprocessor module installation is up to the developer.
 
-- `postcss`: `npm install --save-dev postcss`
-- `coffeescript`: `npm install --save-dev coffeescript`
-- `typescript`: `npm install --save-dev typescript`
-- `less`: `npm install --save-dev less`
-- `sass`: `npm install --save-dev node-sass`
-- `pug`: `npm install --save-dev pug`
-- `stylus`: `npm install --save-dev stylus`
+- `postcss`: `npm install -D postcss postcss-load-config`
+- `coffeescript`: `npm install -D coffeescript`
+- `typescript`: `npm install -D typescript`
+- `less`: `npm install -D less`
+- `sass`: `npm install -D node-sass`
+- `pug`: `npm install -D pug`
+- `stylus`: `npm install -D stylus`
+
+_Note: If you want to load your `postcss` configuration from a external file, make sure to also install `postcss-load-config`._
 
 ## Features
 

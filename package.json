@@ -1,6 +1,6 @@
 {
   "name": "svelte-preprocess",
-  "version": "2.16.0",
+  "version": "3.0.0",
   "license": "MIT",
   "main": "src/index.js",
   "types": "src/index.d.ts",
@@ -25,7 +25,7 @@
     "test:watch": "jest --no-cache --verbose --watchAll",
     "lint": "eslint \"src/**/*.js\"",
     "format": "prettier --loglevel silent --write \"src/**/*.js\" && eslint --fix \"src/**/*.js\"",
-    "postinstall": "node -e \"console.log('\\u001b[36m\\u001b[1m[svelte-preprocess] Don\\'t forget to install the preprocessors packages that will be used: \\u001b[22m\\u001b[39m\\u001b[34mnode-sass/sass, stylus, less, postcss, coffeescript, pug, etc...\\u001b[0m')\"",
+    "postinstall": "node -e \"console.log('\\u001b[36m\\u001b[1m[svelte-preprocess] Don\\'t forget to install the preprocessors packages that will be used: \\u001b[22m\\u001b[39m\\u001b[34mnode-sass/sass, stylus, less, postcss &  postcss-load-config, coffeescript, pug, etc...\\u001b[0m')\"",
     "version": "npx conventional-changelog-cli -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
     "tag": "git tag -a v$npm_package_version -m 'Release v$npm_package_version'",
     "release": "npm run version && git add package.json && git commit -m \"chore: release v$npm_package_version\"",
@@ -58,6 +58,7 @@
     "node-sass": "^4.12.0",
     "postcss": "^7.0.14",
     "postcss-easy-import": "^3.0.0",
+    "postcss-load-config": "^2.1.0",
     "prettier": "^1.16.4",
     "pug": "^2.0.3",
     "stylus": "^0.54.5",
@@ -70,7 +71,6 @@
   },
   "dependencies": {
     "detect-indent": "^6.0.0",
-    "postcss-load-config": "^2.0.0",
     "strip-indent": "^2.0.0"
   }
 }
