@@ -1,6 +1,6 @@
 {
   "name": "svelte-preprocess",
-  "version": "2.15.1",
+  "version": "2.15.2",
   "license": "MIT",
   "main": "src/index.js",
   "types": "src/index.d.ts",
@@ -69,6 +69,7 @@
     "svelte": "^1.44.0 || ^2.0.0 || ^3.0.0"
   },
   "dependencies": {
+    "detect-indent": "^6.0.0",
     "postcss-load-config": "^2.0.0",
     "strip-indent": "^2.0.0"
   }

@@ -1,6 +1,6 @@
 const { resolve } = require('path')
 const getAutoPreprocess = require('../../src')
-const { preprocess, getFixtureContent } = require('../utils.js')
+const { preprocess } = require('../utils.js')
 
 describe('transformer - postcss', () => {
   it('should return @imported files as dependencies', async () => {
