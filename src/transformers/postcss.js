@@ -44,6 +44,8 @@ module.exports = async ({ content, filename, options, map = undefined }) => {
       console.error(
         `[svelte-preprocess] PostCSS configuration was not passed. If you expect to load it from a file, make sure to install "postcss-load-config" and try again ʕ•ᴥ•ʔ`,
       )
+    } else {
+      console.error(e)
     }
     return { code: content, map }
   }
