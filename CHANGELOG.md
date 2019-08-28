@@ -1,3 +1,12 @@
+# [2.16.0](https://github.com/kaisermann/svelte-preprocess/compare/v2.15.2...v2.16.0) (2019-08-28)
+
+
+### Features
+
+* 🎸 add "transpileOnly" option to skip type check ([3e46741](https://github.com/kaisermann/svelte-preprocess/commit/3e46741)), closes [#54](https://github.com/kaisermann/svelte-preprocess/issues/54)
+
+
+
 ## [2.15.2](https://github.com/kaisermann/svelte-preprocess/compare/v2.15.0...v2.15.2) (2019-08-28)
 
 
