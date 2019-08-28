@@ -1,3 +1,18 @@
+# [3.0.0](https://github.com/kaisermann/svelte-preprocess/compare/v2.16.0...v3.0.0) (2019-08-28)
+
+
+### Performance Improvements
+
+* ⚡️ make postcss-load-config optional for better pkg size ([7ab9c72](https://github.com/kaisermann/svelte-preprocess/commit/7ab9c72))
+
+
+### BREAKING CHANGES
+
+* To load PostCSS config automatically from a file, now it's needed to
+manually install "postcss-load-config".
+
+
+
 # [2.16.0](https://github.com/kaisermann/svelte-preprocess/compare/v2.15.2...v2.16.0) (2019-08-28)
 
 
