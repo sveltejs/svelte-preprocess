@@ -40,6 +40,7 @@ module.exports = async ({ content, filename, options, map = undefined }) => {
     options = await postcssLoadConfig(options, options.configFilePath)
   } catch (e) {
     /** Something went wrong, do nothing */
+    // istanbul ignore next
     if (e.code === 'MODULE_NOT_FOUND') {
       console.error(
         `[svelte-preprocess] PostCSS configuration was not passed. If you expect to load it from a file, make sure to install "postcss-load-config" and try again ʕ•ᴥ•ʔ`,

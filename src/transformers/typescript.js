@@ -35,18 +35,18 @@ function isSvelteFile(filename) {
 const IMPORTEE_PATTERN = /['"](.*?)['"]/
 function isValidSvelteImportDiagnostic(filename, diagnostic) {
   // TS2307: 'cannot find module'
-  if (diagnostic.code !== 2307) return false
+  if (diagnostic.code !== 2307) return true
 
   const importeeMatch = diagnostic.messageText.match(IMPORTEE_PATTERN)
   // istanbul ignore if
-  if (!importeeMatch) return false
+  if (!importeeMatch) return true
 
   let [, importeePath] = importeeMatch
   /** if we're not dealing with a relative path, assume the file exists */
-  if (importeePath[0] !== '.') return true
+  if (importeePath[0] !== '.') return false
 
   /** if the importee is not a svelte file, do nothing */
-  if (!isSvelteFile(importeePath)) return false
+  if (!isSvelteFile(importeePath)) return true
 
   importeePath = resolve(dirname(filename), importeePath)
 
