@@ -49,9 +49,8 @@ function isValidSvelteImportDiagnostic(filename, diagnostic) {
   if (!isSvelteFile(importeePath)) return false
 
   importeePath = resolve(dirname(filename), importeePath)
-  if (existsSync(importeePath)) return true
 
-  return false
+  return existsSync(importeePath) === false
 }
 
 const TS_TRANSFORMERS = {
@@ -140,15 +139,7 @@ function compileFileFromMemory(compilerOptions, { filename, content }) {
   const diagnostics = [
     ...emitResult.diagnostics,
     ...ts.getPreEmitDiagnostics(program),
-  ].reduce((acc, diagnostic) => {
-    if (isValidSvelteImportDiagnostic(filename, diagnostic)) {
-      return acc
-    }
-
-    acc.push(diagnostic)
-
-    return acc
-  }, [])
+  ].filter(diagnostic => isValidSvelteImportDiagnostic(filename, diagnostic))
 
   return { code, map, diagnostics }
 }
