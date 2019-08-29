@@ -1,3 +1,12 @@
+## [3.0.1](https://github.com/kaisermann/svelte-preprocess/compare/v3.0.0...v3.0.1) (2019-08-29)
+
+
+### Bug Fixes
+
+* 🐛 wrong typescript diagnostic filtering ([2630a44](https://github.com/kaisermann/svelte-preprocess/commit/2630a44)), closes [#49](https://github.com/kaisermann/svelte-preprocess/issues/49)
+
+
+
 # [3.0.0](https://github.com/kaisermann/svelte-preprocess/compare/v2.16.0...v3.0.0) (2019-08-28)
 
 
