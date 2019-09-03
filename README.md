@@ -47,6 +47,8 @@ _Note: If you want to load your `postcss` configuration from a external file, ma
 
 ### Template tag support
 
+Add _vue-like_ support for defining your markup between a `<template>` tag. The tagname can be customized to something like `markup` for example. See [#options](#options).
+
 _Note: only for auto preprocessing_
 
 ```html
@@ -317,6 +319,12 @@ svelte.preprocess(input, [
 const svelte = require('svelte')
 const sveltePreprocess = require('svelte-preprocess')
 const options = {
+  /**
+   * Define which tag should `svelte-preprocess` look for markup content.
+   * This is only used if you desire to define your markup between this tag
+   * or to import it from a external file.
+   **/
+  markupTagName: 'template',
   /**
    * Extend the default language alias dictionary.
    * Each entry must follow: ['alias', 'languageName']

@@ -16,6 +16,17 @@ it('should transform HTML between <template></template>', async () => {
   )
 })
 
+it('should transform HTML between custom tag <markup></markup>', async () => {
+  const input = `<script></script><markup><div>Hey</div></markup><style></style>`
+  const preprocessed = await preprocess(
+    input,
+    getAutoPreprocess({ markupTagName: 'markup' }),
+  )
+  expect(preprocessed.toString()).toBe(
+    `<script></script>${EXPECTED_MARKUP}<style></style>`,
+  )
+})
+
 it('should transform a custom language between <template lang="..."></template>', async () => {
   const input = `<script></script><template lang="test"><div>Hey</div></template><style></style>`
   const preprocessed = await preprocess(

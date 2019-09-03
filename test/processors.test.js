@@ -6,6 +6,7 @@ const {
   postcss,
   coffeescript,
   typescript,
+  pug,
 } = require('../src')
 const { CSS_PATTERN, getFixtureContent, preprocess } = require('./utils.js')
 
@@ -22,6 +23,7 @@ const SCRIPT_LANGS = [
   ['coffeescript', 'coffee', coffeescript],
   ['typescript', 'ts', typescript, { compilerOptions: { module: 'es2015' } }],
 ]
+const MARKUP_LANGS = [['pug', 'pug', pug]]
 
 STYLE_LANGS.forEach(([lang, ext, processor, options]) => {
   describe(`processor - ${lang}`, () => {
@@ -39,6 +41,17 @@ SCRIPT_LANGS.forEach(([lang, ext, processor, options]) => {
       const template = `<script src="./fixtures/script.${ext}"></script><div></div>`
       const preprocessed = await preprocess(template, [processor(options)])
       expect(preprocessed.toString()).toContain(EXPECTED_SCRIPT)
+    })
+  })
+})
+
+MARKUP_LANGS.forEach(([lang, ext, processor, options]) => {
+  const EXPECTED_TEMPLATE = getFixtureContent('template.html')
+  describe(`processor - ${lang}`, () => {
+    it('should preprocess the whole file', async () => {
+      const template = getFixtureContent('template.pug')
+      const preprocessed = await preprocess(template, [processor(options)])
+      expect(preprocessed.toString()).toContain(EXPECTED_TEMPLATE)
     })
   })
 })

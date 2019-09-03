@@ -17,13 +17,20 @@ const ALIAS_OPTION_OVERRIDES = {
   },
 }
 
-const TEMPLATE_PATTERN = new RegExp(
-  `<template([\\s\\S]*?)>([\\s\\S]*?)<\\/template>`,
-)
+module.exports = ({
+  onBefore,
+  aliases,
+  markupTagName = 'template',
+  preserve = [],
+  ...rest
+} = {}) => {
+  markupTagName = markupTagName.toLocaleLowerCase()
 
-module.exports = ({ onBefore, aliases, preserve = [], ...rest } = {}) => {
   const optionsCache = {}
   const transformers = rest.transformers || rest
+  const markupPattern = new RegExp(
+    `<${markupTagName}([\\s\\S]*?)>([\\s\\S]*)<\\/${markupTagName}>`,
+  )
 
   const getTransformerOptions = (lang, alias) => {
     if (isFn(transformers[alias])) return transformers[alias]
@@ -97,7 +104,7 @@ module.exports = ({ onBefore, aliases, preserve = [], ...rest } = {}) => {
         content = await onBefore({ content, filename })
       }
 
-      const templateMatch = content.match(TEMPLATE_PATTERN)
+      const templateMatch = content.match(markupPattern)
 
       /** If no <template> was found, just return the original markup */
       if (!templateMatch) {
