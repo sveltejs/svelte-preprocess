@@ -1,4 +1,9 @@
-# [3.1.0](https://github.com/kaisermann/svelte-preprocess/compare/v3.0.2...v3.1.0) (2019-09-03)
+## [3.1.1](https://github.com/kaisermann/svelte-preprocess/compare/v3.0.2...v3.1.1) (2019-09-10)
+
+
+### Bug Fixes
+
+* 🐛 make [@keyframe](https://github.com/keyframe) at-rules global. ([#65](https://github.com/kaisermann/svelte-preprocess/issues/65)) ([0b6a87b](https://github.com/kaisermann/svelte-preprocess/commit/0b6a87b))
 
 
 ### Features
