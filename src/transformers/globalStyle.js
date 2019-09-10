@@ -1,6 +1,12 @@
 const postcss = require('postcss')
 
-const globalifyPlugin = root =>
+const globalifyPlugin = root => {
+  root.walkAtRules(/keyframes$/, atrule => {
+    if (!atrule.params.startsWith('-global-')) {
+      atrule.params = '-global-' + atrule.params
+    }
+  })
+
   root.walkRules(rule => {
     if (rule.parent && rule.parent.name === 'keyframes') {
       return
@@ -10,6 +16,7 @@ const globalifyPlugin = root =>
       selector.startsWith(':global') ? selector : `:global(${selector})`,
     )
   })
+}
 
 module.exports = async ({ content, filename, map = undefined }) => {
   const { css, map: newMap } = await postcss()
