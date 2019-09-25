@@ -1,5 +1,5 @@
-const { readFile } = require('fs')
-const { resolve, dirname, basename } = require('path')
+const { readFile } = require('fs');
+const { resolve, dirname, basename } = require('path');
 
 const LANG_DICT = new Map([
   ['pcss', 'css'],
@@ -9,45 +9,45 @@ const LANG_DICT = new Map([
   ['js', 'javascript'],
   ['coffee', 'coffeescript'],
   ['ts', 'typescript'],
-])
+]);
 
 const throwError = msg => {
-  throw new Error(`[svelte-preprocess] ${msg}`)
-}
+  throw new Error(`[svelte-preprocess] ${msg}`);
+};
 
 exports.concat = (...arrs) =>
-  arrs.reduce((acc, a) => (a && a.length ? acc.concat(a) : acc), [])
+  arrs.reduce((acc, a) => (a && a.length ? acc.concat(a) : acc), []);
 
 exports.throwUnsupportedError = (lang, filename) =>
-  throwError(`Unsupported script language '${lang}' in file '${filename}'`)
+  throwError(`Unsupported script language '${lang}' in file '${filename}'`);
 
-exports.isFn = maybeFn => typeof maybeFn === 'function'
+exports.isFn = maybeFn => typeof maybeFn === 'function';
 
 const resolveSrc = (exports.resolveSrc = (importerFile, srcPath) =>
-  resolve(dirname(importerFile), srcPath))
+  resolve(dirname(importerFile), srcPath));
 
 const getSrcContent = (exports.getSrcContent = file => {
   return new Promise((resolve, reject) => {
     readFile(file, (error, data) => {
       // istanbul ignore if
-      if (error) reject(error)
-      else resolve(data.toString())
-    })
-  })
-})
+      if (error) reject(error);
+      else resolve(data.toString());
+    });
+  });
+});
 
 exports.parseFile = async ({ attributes, filename, content }, language) => {
-  const dependencies = []
+  const dependencies = [];
   if (attributes.src) {
     /** Ignore remote files */
     if (!attributes.src.match(/^(https?)?:?\/\/.*$/)) {
-      const file = resolveSrc(filename, attributes.src)
-      content = await getSrcContent(file)
-      dependencies.push(file)
+      const file = resolveSrc(filename, attributes.src);
+      content = await getSrcContent(file);
+      dependencies.push(file);
     }
   }
 
-  const { lang, alias } = exports.getLanguage(attributes, language)
+  const { lang, alias } = exports.getLanguage(attributes, language);
 
   return {
     filename,
@@ -56,11 +56,11 @@ exports.parseFile = async ({ attributes, filename, content }, language) => {
     lang,
     alias,
     dependencies,
-  }
-}
+  };
+};
 
 exports.addLanguageAlias = entries =>
-  entries.forEach(entry => LANG_DICT.set(...entry))
+  entries.forEach(entry => LANG_DICT.set(...entry));
 
 /** Paths used by preprocessors to resolve @imports */
 exports.getIncludePaths = fromFilename =>
@@ -68,50 +68,50 @@ exports.getIncludePaths = fromFilename =>
     process.cwd(),
     fromFilename.length && dirname(fromFilename),
     resolve(process.cwd(), 'node_modules'),
-  ].filter(Boolean)
+  ].filter(Boolean);
 
 exports.getLanguage = (attributes, defaultLang) => {
-  let lang = defaultLang
+  let lang = defaultLang;
 
   if (attributes.lang) {
-    lang = attributes.lang
+    lang = attributes.lang;
   } else if (attributes.type) {
-    lang = attributes.type.replace(/^(text|application)\/(.*)$/, '$2')
+    lang = attributes.type.replace(/^(text|application)\/(.*)$/, '$2');
   } else if (attributes.src) {
-    lang = basename(attributes.src).split('.')
-    lang = lang.length > 1 ? lang.pop() : defaultLang
+    lang = basename(attributes.src).split('.');
+    lang = lang.length > 1 ? lang.pop() : defaultLang;
   }
 
   return {
     lang: LANG_DICT.get(lang) || lang,
     alias: lang,
-  }
-}
+  };
+};
 
-const TRANSFORMERS = {}
+const TRANSFORMERS = {};
 exports.runTransformer = (name, options, { content, filename }) => {
   if (exports.isFn(options)) {
-    return options({ content, filename })
+    return options({ content, filename });
   }
 
   try {
     if (!TRANSFORMERS[name]) {
-      TRANSFORMERS[name] = require(`./transformers/${name}.js`)
+      TRANSFORMERS[name] = require(`./transformers/${name}.js`);
     }
 
-    return TRANSFORMERS[name]({ content, filename, options })
+    return TRANSFORMERS[name]({ content, filename, options });
   } catch (e) {
     throwError(
       `Error transforming '${name}'. Message:\n${e.message}\nStack:\n${e.stack}`,
-    )
+    );
   }
-}
+};
 
 exports.requireAny = (...modules) => {
   for (let m of modules) {
     try {
-      return require(m)
+      return require(m);
     } catch (e) {}
   }
-  throw new Error(`Cannot find any of modules: ${modules}`)
-}
+  throw new Error(`Cannot find any of modules: ${modules}`);
+};

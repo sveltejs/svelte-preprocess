@@ -1,4 +1,4 @@
-const postcss = require('postcss')
+const postcss = require('postcss');
 
 const process = async (
   { plugins, parser, syntax },
@@ -13,43 +13,43 @@ const process = async (
     },
     parser,
     syntax,
-  })
+  });
 
   const dependencies = messages.reduce((acc, msg) => {
     // istanbul ignore if
-    if (msg.type !== 'dependency') return acc
-    acc.push(msg.file)
-    return acc
-  }, [])
+    if (msg.type !== 'dependency') return acc;
+    acc.push(msg.file);
+    return acc;
+  }, []);
 
-  return { code: css, map, dependencies }
-}
+  return { code: css, map, dependencies };
+};
 
 /** Adapted from https://github.com/TehShrike/svelte-preprocess-postcss */
 module.exports = async ({ content, filename, options, map = undefined }) => {
   /** If manually passed a plugins array, use it as the postcss config */
   if (options && options.plugins) {
-    return process(options, content, filename, map)
+    return process(options, content, filename, map);
   }
 
-  if (options === true) options = {}
+  if (options === true) options = {};
 
   try {
     /** If not, look for a postcss config file */
-    const postcssLoadConfig = require(`postcss-load-config`)
-    options = await postcssLoadConfig(options, options.configFilePath)
+    const postcssLoadConfig = require(`postcss-load-config`);
+    options = await postcssLoadConfig(options, options.configFilePath);
   } catch (e) {
     /** Something went wrong, do nothing */
     // istanbul ignore next
     if (e.code === 'MODULE_NOT_FOUND') {
       console.error(
         `[svelte-preprocess] PostCSS configuration was not passed. If you expect to load it from a file, make sure to install "postcss-load-config" and try again ʕ•ᴥ•ʔ`,
-      )
+      );
     } else {
-      console.error(e)
+      console.error(e);
     }
-    return { code: content, map }
+    return { code: content, map };
   }
 
-  return process(options, content, filename, map)
-}
+  return process(options, content, filename, map);
+};
