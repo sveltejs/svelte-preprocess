@@ -1,5 +1,5 @@
-const stripIndent = require('strip-indent')
-const { version } = require('svelte/package.json')
+const stripIndent = require('strip-indent');
+const { version } = require('svelte/package.json');
 const {
   concat,
   addLanguageAlias,
@@ -7,15 +7,15 @@ const {
   runTransformer,
   isFn,
   throwUnsupportedError,
-} = require('./utils.js')
+} = require('./utils.js');
 
-const SVELTE_MAJOR_VERSION = +version[0]
+const SVELTE_MAJOR_VERSION = +version[0];
 
 const ALIAS_OPTION_OVERRIDES = {
   sass: {
     indentedSyntax: true,
   },
-}
+};
 
 module.exports = ({
   onBefore,
@@ -24,73 +24,73 @@ module.exports = ({
   preserve = [],
   ...rest
 } = {}) => {
-  markupTagName = markupTagName.toLocaleLowerCase()
+  markupTagName = markupTagName.toLocaleLowerCase();
 
-  const optionsCache = {}
-  const transformers = rest.transformers || rest
+  const optionsCache = {};
+  const transformers = rest.transformers || rest;
   const markupPattern = new RegExp(
     `<${markupTagName}([\\s\\S]*?)>([\\s\\S]*)<\\/${markupTagName}>`,
-  )
+  );
 
   const getTransformerOptions = (lang, alias) => {
-    if (isFn(transformers[alias])) return transformers[alias]
-    if (isFn(transformers[lang])) return transformers[lang]
+    if (isFn(transformers[alias])) return transformers[alias];
+    if (isFn(transformers[lang])) return transformers[lang];
 
     // istanbul ignore else
     if (typeof optionsCache[alias] === 'undefined') {
-      let opts = transformers[lang] || {}
+      let opts = transformers[lang] || {};
 
       if (lang !== alias) {
         opts = {
           ...opts,
           ...(ALIAS_OPTION_OVERRIDES[alias] || {}),
           ...(transformers[alias] || {}),
-        }
+        };
       }
 
-      optionsCache[alias] = opts
+      optionsCache[alias] = opts;
     }
 
-    return optionsCache[alias]
-  }
+    return optionsCache[alias];
+  };
 
   const getTransformerTo = targetLanguage => async svelteFile => {
     const { content, filename, lang, alias, dependencies } = await parseFile(
       svelteFile,
       targetLanguage,
-    )
+    );
 
     if (preserve.includes(lang) || preserve.includes(alias)) {
-      return
+      return;
     }
 
     if (lang === targetLanguage) {
-      return { code: content, dependencies }
+      return { code: content, dependencies };
     }
 
     if (transformers[lang] === false || transformers[alias] === false) {
-      throwUnsupportedError(alias, filename)
+      throwUnsupportedError(alias, filename);
     }
 
     const transformed = await runTransformer(
       lang,
       getTransformerOptions(lang, alias),
       { content: stripIndent(content), filename },
-    )
+    );
 
     return {
       ...transformed,
       dependencies: concat(dependencies, transformed.dependencies),
-    }
-  }
+    };
+  };
 
   if (aliases && aliases.length) {
-    addLanguageAlias(aliases)
+    addLanguageAlias(aliases);
   }
 
-  const scriptTransformer = getTransformerTo('javascript')
-  const cssTransformer = getTransformerTo('css')
-  const markupTransformer = getTransformerTo('html')
+  const scriptTransformer = getTransformerTo('javascript');
+  const cssTransformer = getTransformerTo('css');
+  const markupTransformer = getTransformerTo('html');
 
   return {
     async markup({ content, filename }) {
@@ -99,44 +99,44 @@ module.exports = ({
         if (SVELTE_MAJOR_VERSION >= 3) {
           console.warn(
             '[svelte-preprocess] For svelte >= v3, instead of onBefore(), prefer to prepend a preprocess object to your array of preprocessors',
-          )
+          );
         }
-        content = await onBefore({ content, filename })
+        content = await onBefore({ content, filename });
       }
 
-      const templateMatch = content.match(markupPattern)
+      const templateMatch = content.match(markupPattern);
 
       /** If no <template> was found, just return the original markup */
       if (!templateMatch) {
-        return { code: content }
+        return { code: content };
       }
 
-      const [fullMatch, attributesStr, templateCode] = templateMatch
+      const [fullMatch, attributesStr, templateCode] = templateMatch;
 
       /** Transform an attribute string into a key-value object */
       const attributes = attributesStr
         .split(/\s+/)
         .filter(Boolean)
         .reduce((acc, attr) => {
-          const [name, value] = attr.split('=')
+          const [name, value] = attr.split('=');
           // istanbul ignore next
-          acc[name] = value ? value.replace(/['"]/g, '') : true
-          return acc
-        }, {})
+          acc[name] = value ? value.replace(/['"]/g, '') : true;
+          return acc;
+        }, {});
 
       /** Transform the found template code */
       let { code, map, dependencies } = await markupTransformer({
         content: templateCode,
         attributes,
         filename,
-      })
+      });
 
       code =
         content.slice(0, templateMatch.index) +
         code +
-        content.slice(templateMatch.index + fullMatch.length)
+        content.slice(templateMatch.index + fullMatch.length);
 
-      return { code, map, dependencies }
+      return { code, map, dependencies };
     },
     script: scriptTransformer,
     async style({ content, attributes, filename }) {
@@ -144,18 +144,18 @@ module.exports = ({
         content,
         attributes,
         filename,
-      })
+      });
 
       if (transformers.postcss) {
         const transformed = await runTransformer(
           'postcss',
           transformers.postcss,
           { content: code, map, filename },
-        )
+        );
 
-        code = transformed.code
-        map = transformed.map
-        dependencies = concat(dependencies, transformed.dependencies)
+        code = transformed.code;
+        map = transformed.map;
+        dependencies = concat(dependencies, transformed.dependencies);
       }
 
       if (attributes.global) {
@@ -163,13 +163,13 @@ module.exports = ({
           content: code,
           map,
           filename,
-        })
+        });
 
-        code = transformed.code
-        map = transformed.map
+        code = transformed.code;
+        map = transformed.map;
       }
 
-      return { code, map, dependencies }
+      return { code, map, dependencies };
     },
-  }
-}
+  };
+};
