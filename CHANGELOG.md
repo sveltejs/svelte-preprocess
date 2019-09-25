@@ -1,9 +1,22 @@
-## [3.1.1](https://github.com/kaisermann/svelte-preprocess/compare/v3.0.2...v3.1.1) (2019-09-10)
+## [3.1.2](https://github.com/kaisermann/svelte-preprocess/compare/v3.1.1...v3.1.2) (2019-09-25)
 
 
 ### Bug Fixes
 
-* 🐛 make [@keyframe](https://github.com/keyframe) at-rules global. ([#65](https://github.com/kaisermann/svelte-preprocess/issues/65)) ([0b6a87b](https://github.com/kaisermann/svelte-preprocess/commit/0b6a87b))
+* 🐛 import less cjs instead of es6 ([e9e8c59](https://github.com/kaisermann/svelte-preprocess/commit/e9e8c59))
+
+
+
+## [3.1.1](https://github.com/kaisermann/svelte-preprocess/compare/v3.1.0...v3.1.1) (2019-09-10)
+
+
+### Bug Fixes
+
+* 🐛 make [@keyframe](https://github.com/keyframe) at-rules global. ([#65](https://github.com/kaisermann/svelte-preprocess/issues/65)) ([40fb9be](https://github.com/kaisermann/svelte-preprocess/commit/40fb9be))
+
+
+
+# [3.1.0](https://github.com/kaisermann/svelte-preprocess/compare/v3.0.2...v3.1.0) (2019-09-03)
 
 
 ### Features
