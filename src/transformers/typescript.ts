@@ -1,16 +1,23 @@
-const ts = require('typescript');
-const { dirname, basename, resolve } = require('path');
-const { existsSync } = require('fs');
+import ts, { ScriptTarget } from 'typescript';
+import { dirname, basename, resolve } from 'path';
+import { existsSync } from 'fs';
 
-function createFormatDiagnosticsHost(cwd) {
+interface CompilerOptions extends ts.CompilerOptions {
+  transpileOnly: boolean;
+}
+
+function createFormatDiagnosticsHost(cwd: string) {
   return {
-    getCanonicalFileName: fileName => fileName,
+    getCanonicalFileName: (fileName: string) => fileName,
     getCurrentDirectory: () => cwd,
     getNewLine: () => ts.sys.newLine,
   };
 }
 
-function formatDiagnostics(diagnostics, basePath) {
+function formatDiagnostics(
+  diagnostics: ts.Diagnostic | ts.Diagnostic[],
+  basePath: string,
+) {
   if (Array.isArray(diagnostics)) {
     return ts.formatDiagnosticsWithColorAndContext(
       diagnostics,
@@ -23,20 +30,20 @@ function formatDiagnostics(diagnostics, basePath) {
   );
 }
 
-function getFilenameExtension(filename) {
+function getFilenameExtension(filename: string) {
   filename = basename(filename);
   const lastDotIndex = filename.lastIndexOf('.');
   if (lastDotIndex <= 0) return '';
   return filename.substr(lastDotIndex + 1);
 }
 
-function isSvelteFile(filename) {
+function isSvelteFile(filename: string) {
   const importExtension = getFilenameExtension(filename);
   return importExtension === 'svelte' || importExtension === 'html';
 }
 
 const IMPORTEE_PATTERN = /['"](.*?)['"]/;
-function isValidSvelteImportDiagnostic(filename, diagnostic) {
+function isValidSvelteImportDiagnostic(filename: string, diagnostic: any) {
   // TS2307: 'cannot find module'
   if (diagnostic.code !== 2307) return true;
 
@@ -58,8 +65,8 @@ function isValidSvelteImportDiagnostic(filename, diagnostic) {
 
 const TS_TRANSFORMERS = {
   before: [
-    context => {
-      const visit = node => {
+    (context: any) => {
+      const visit = (node: ts.Node): ts.VisitResult<ts.Node> => {
         if (ts.isImportDeclaration(node)) {
           const importedFilename = node.moduleSpecifier.getText().slice(1, -1);
           // istanbul ignore else
@@ -75,12 +82,15 @@ const TS_TRANSFORMERS = {
         return ts.visitEachChild(node, child => visit(child), context);
       };
 
-      return node => ts.visitNode(node, visit);
+      return (node: any) => ts.visitNode(node, visit);
     },
   ],
 };
 
-function compileFileFromMemory(compilerOptions, { filename, content }) {
+function compileFileFromMemory(
+  compilerOptions: CompilerOptions,
+  { filename, content }: { filename: string; content: string },
+) {
   let code = content;
   let map;
 
@@ -93,20 +103,21 @@ function compileFileFromMemory(compilerOptions, { filename, content }) {
   );
 
   const host = {
-    fileExists: filePath =>
+    fileExists: (filePath: string) =>
       filePath === dummyFilePath || realHost.fileExists(filePath),
     directoryExists:
       realHost.directoryExists && realHost.directoryExists.bind(realHost),
     getCurrentDirectory: realHost.getCurrentDirectory.bind(realHost),
     getDirectories: realHost.getDirectories.bind(realHost),
-    getCanonicalFileName: fileName => realHost.getCanonicalFileName(fileName),
+    getCanonicalFileName: (fileName: string) =>
+      realHost.getCanonicalFileName(fileName),
     getNewLine: realHost.getNewLine.bind(realHost),
     getDefaultLibFileName: realHost.getDefaultLibFileName.bind(realHost),
     getSourceFile: (
-      fileName,
-      languageVersion,
-      onError,
-      shouldCreateNewSourceFile,
+      fileName: string,
+      languageVersion: ScriptTarget,
+      onError: () => any,
+      shouldCreateNewSourceFile: boolean,
     ) =>
       fileName === dummyFilePath
         ? dummySourceFile
@@ -116,11 +127,11 @@ function compileFileFromMemory(compilerOptions, { filename, content }) {
             onError,
             shouldCreateNewSourceFile,
           ),
-    readFile: filePath =>
+    readFile: (filePath: string) =>
       // istanbul ignore next
       filePath === dummyFilePath ? content : realHost.readFile(filePath),
     useCaseSensitiveFileNames: () => realHost.useCaseSensitiveFileNames(),
-    writeFile: (fileName, data) => {
+    writeFile: (fileName: string, data: string) => {
       if (fileName.endsWith('.map')) {
         map = data;
       } else {
@@ -129,7 +140,11 @@ function compileFileFromMemory(compilerOptions, { filename, content }) {
     },
   };
 
-  const program = ts.createProgram([dummyFilePath], compilerOptions, host);
+  const program = ts.createProgram(
+    [dummyFilePath],
+    compilerOptions,
+    (host as any) as ts.CompilerHost,
+  );
   const emitResult = program.emit(
     undefined,
     undefined,
@@ -147,34 +162,31 @@ function compileFileFromMemory(compilerOptions, { filename, content }) {
   return { code, map, diagnostics };
 }
 
-module.exports = ({ content, filename, options }) => {
-  const fileDirectory = options.tsconfigDirectory || dirname(filename);
-  const tsconfigFile =
-    options.tsconfigFile || ts.findConfigFile(fileDirectory, ts.sys.fileExists);
-  const basePath = tsconfigFile ? dirname(tsconfigFile) : process.cwd();
+export default ({ content, filename, options }: TransformerArgs) => {
+  // default options
+  const compilerOptionsJSON = {
+    moduleResolution: 'node',
+    sourceMap: true,
+    strict: true,
+  };
+  let basePath = process.cwd();
 
-  let compilerOptionsJSON = Object.assign(
-    // default options
-    {
-      moduleResolution: 'node',
-      sourceMap: true,
-      strict: true,
-    },
-    options.compilerOptions,
-  );
+  if (options.tsconfigFile !== false || options.tsconfigDirectory) {
+    const fileDirectory = (options.tsconfigDirectory ||
+      dirname(filename)) as string;
+    const tsconfigFile = (options.tsconfigFile ||
+      ts.findConfigFile(fileDirectory, ts.sys.fileExists)) as string;
+    basePath = dirname(tsconfigFile);
 
-  if (tsconfigFile) {
     const { error, config } = ts.readConfigFile(tsconfigFile, ts.sys.readFile);
     if (error) {
       throw new Error(formatDiagnostics(error, basePath));
     }
 
-    compilerOptionsJSON = Object.assign(
-      {},
-      compilerOptionsJSON,
-      config.compilerOptions,
-    );
+    Object.assign(compilerOptionsJSON, config.compilerOptions);
   }
+
+  Object.assign(compilerOptionsJSON, options.compilerOptions);
 
   const {
     errors,
@@ -185,7 +197,7 @@ module.exports = ({ content, filename, options }) => {
   }
 
   const compilerOptions = {
-    ...convertedCompilerOptions,
+    ...(convertedCompilerOptions as CompilerOptions),
     allowNonTsExtensions: true,
   };
 
@@ -216,5 +228,6 @@ module.exports = ({ content, filename, options }) => {
     code,
     map,
     diagnostics,
+    dependencies: [] as string[],
   };
 };

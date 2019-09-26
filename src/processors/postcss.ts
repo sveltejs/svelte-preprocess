@@ -1,9 +1,9 @@
-const transformer = require('../transformers/postcss.js');
-const { concat, parseFile } = require('../utils.js');
+import transformer from '../transformers/postcss';
+import { concat, parseFile } from '../utils';
 
 /** Adapted from https://github.com/TehShrike/svelte-preprocess-postcss */
-module.exports = options => ({
-  async style(svelteFile) {
+export default (options: GenericObject) => ({
+  async style(svelteFile: PreprocessArgs) {
     const { content, filename, dependencies } = await parseFile(
       svelteFile,
       'css',

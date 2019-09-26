@@ -1,24 +1,28 @@
 const postcss = require('postcss');
 
-const globalifyPlugin = root => {
-  root.walkAtRules(/keyframes$/, atrule => {
+const globalifyPlugin = (root: any) => {
+  root.walkAtRules(/keyframes$/, (atrule: any) => {
     if (!atrule.params.startsWith('-global-')) {
       atrule.params = '-global-' + atrule.params;
     }
   });
 
-  root.walkRules(rule => {
+  root.walkRules((rule: any) => {
     if (rule.parent && rule.parent.name === 'keyframes') {
       return;
     }
 
-    rule.selectors = rule.selectors.map(selector =>
+    rule.selectors = rule.selectors.map((selector: string) =>
       selector.startsWith(':global') ? selector : `:global(${selector})`,
     );
   });
 };
 
-module.exports = async ({ content, filename, map = undefined }) => {
+export default async ({
+  content,
+  filename,
+  map = undefined,
+}: TransformerArgs) => {
   const { css, map: newMap } = await postcss()
     .use(globalifyPlugin)
     .process(content, { from: filename, prev: map });

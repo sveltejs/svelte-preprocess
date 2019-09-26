@@ -1,4 +1,4 @@
-const autoProcess = require('../../src')
+const autoProcess = require('../../dist')
 const { preprocess } = require('../utils.js')
 
 describe('transformer - globalStyle', () => {

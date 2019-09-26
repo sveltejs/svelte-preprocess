@@ -1,5 +1,5 @@
-const getAutoPreprocess = require('../../src')
-const { getLanguage } = require('../../src/utils.js')
+const getAutoPreprocess = require('../../dist')
+const { getLanguage } = require('../../dist/utils.js')
 
 const {
   preprocess,

@@ -1,8 +1,8 @@
-const transformer = require('../transformers/less.js');
-const { concat, parseFile } = require('../utils.js');
+import transformer from '../transformers/less';
+import { concat, parseFile } from '../utils';
 
-module.exports = options => ({
-  async style(svelteFile) {
+export default (options: GenericObject) => ({
+  async style(svelteFile: PreprocessArgs) {
     const { content, filename, lang, dependencies } = await parseFile(
       svelteFile,
       'css',
@@ -10,7 +10,11 @@ module.exports = options => ({
 
     if (lang !== 'less') return { code: content };
 
-    const transformed = await transformer({ content, filename, options });
+    const transformed = await transformer({
+      content,
+      filename,
+      options,
+    });
     return {
       ...transformed,
       dependencies: concat(dependencies, transformed.dependencies),

@@ -1,8 +1,10 @@
-const transformer = require('../transformers/scss.js');
-const { getIncludePaths, concat, parseFile } = require('../utils.js');
+import transformer from '../transformers/scss';
+import { getIncludePaths, concat, parseFile } from '../utils';
 
-module.exports = options => ({
-  async style(svelteFile) {
+import { Options as SassOptions } from 'sass';
+
+export default (options: SassOptions) => ({
+  async style(svelteFile: PreprocessArgs) {
     const { content, filename, lang, alias, dependencies } = await parseFile(
       svelteFile,
       'css',
@@ -19,7 +21,11 @@ module.exports = options => ({
       options.indentedSyntax = true;
     }
 
-    const transformed = await transformer({ content, filename, options });
+    const transformed = await transformer({
+      content,
+      filename,
+      options: options as GenericObject,
+    });
     return {
       ...transformed,
       dependencies: concat(dependencies, transformed.dependencies),

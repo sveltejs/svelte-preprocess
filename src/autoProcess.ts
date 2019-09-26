@@ -1,60 +1,67 @@
 const stripIndent = require('strip-indent');
-const { version } = require('svelte/package.json');
-const {
+import { version } from 'svelte/package.json';
+import {
   concat,
   addLanguageAlias,
   parseFile,
   runTransformer,
   isFn,
   throwUnsupportedError,
-} = require('./utils.js');
+} from './utils.js';
 
 const SVELTE_MAJOR_VERSION = +version[0];
-
-const ALIAS_OPTION_OVERRIDES = {
+const ALIAS_OPTION_OVERRIDES: GenericObject = {
   sass: {
     indentedSyntax: true,
   },
 };
 
-module.exports = ({
-  onBefore,
-  aliases,
-  markupTagName = 'template',
-  preserve = [],
-  ...rest
-} = {}) => {
+export function autoPreprocess(
+  {
+    onBefore,
+    aliases,
+    markupTagName = 'template',
+    preserve = [],
+    ...rest
+  }: AutoPreprocessOptions = {} as AutoPreprocessOptions,
+): PreprocessorGroup {
   markupTagName = markupTagName.toLocaleLowerCase();
 
-  const optionsCache = {};
-  const transformers = rest.transformers || rest;
+  const optionsCache: GenericObject = {};
+  const transformers: TransformersOptions = rest.transformers || rest;
   const markupPattern = new RegExp(
     `<${markupTagName}([\\s\\S]*?)>([\\s\\S]*)<\\/${markupTagName}>`,
   );
 
-  const getTransformerOptions = (lang, alias) => {
+  const getTransformerOptions = (
+    lang: string,
+    alias: string,
+  ): TransformerOptions => {
     if (isFn(transformers[alias])) return transformers[alias];
     if (isFn(transformers[lang])) return transformers[lang];
+    if (optionsCache[alias] != null)
+      return optionsCache[alias] as TransformerOptions;
 
-    // istanbul ignore else
-    if (typeof optionsCache[alias] === 'undefined') {
-      let opts = transformers[lang] || {};
+    const opts = {} as TransformerOptions;
 
-      if (lang !== alias) {
-        opts = {
-          ...opts,
-          ...(ALIAS_OPTION_OVERRIDES[alias] || {}),
-          ...(transformers[alias] || {}),
-        };
-      }
-
-      optionsCache[alias] = opts;
+    if (typeof transformers[lang] === 'object') {
+      Object.assign(opts, transformers[lang]);
     }
 
-    return optionsCache[alias];
+    if (lang !== alias) {
+      Object.assign(opts, ALIAS_OPTION_OVERRIDES[alias] || null);
+
+      if (typeof transformers[alias] === 'object') {
+        Object.assign(opts, transformers[alias]);
+      }
+    }
+
+    return (optionsCache[alias] = opts);
   };
 
-  const getTransformerTo = targetLanguage => async svelteFile => {
+  const getTransformerTo = (targetLanguage: string): Preprocessor => async (
+    svelteFile: PreprocessArgs,
+  ) => {
     const { content, filename, lang, alias, dependencies } = await parseFile(
       svelteFile,
       targetLanguage,
@@ -93,7 +100,7 @@ module.exports = ({
   const markupTransformer = getTransformerTo('html');
 
   return {
-    async markup({ content, filename }) {
+    async markup({ content, filename }: MarkupPreprocessArgs) {
       if (isFn(onBefore)) {
         // istanbul ignore next
         if (SVELTE_MAJOR_VERSION >= 3) {
@@ -117,7 +124,7 @@ module.exports = ({
       const attributes = attributesStr
         .split(/\s+/)
         .filter(Boolean)
-        .reduce((acc, attr) => {
+        .reduce((acc: AttributesObject, attr) => {
           const [name, value] = attr.split('=');
           // istanbul ignore next
           acc[name] = value ? value.replace(/['"]/g, '') : true;
@@ -139,7 +146,7 @@ module.exports = ({
       return { code, map, dependencies };
     },
     script: scriptTransformer,
-    async style({ content, attributes, filename }) {
+    async style({ content, attributes, filename }: PreprocessArgs) {
       let { code, map, dependencies } = await cssTransformer({
         content,
         attributes,
@@ -172,4 +179,4 @@ module.exports = ({
       return { code, map, dependencies };
     },
   };
-};
+}

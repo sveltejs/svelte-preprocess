@@ -1,8 +1,8 @@
-const transformer = require('../transformers/stylus.js');
-const { getIncludePaths, concat, parseFile } = require('../utils.js');
+import transformer from '../transformers/stylus';
+import { getIncludePaths, concat, parseFile } from '../utils';
 
-module.exports = options => ({
-  async style(svelteFile) {
+export default (options: GenericObject) => ({
+  async style(svelteFile: PreprocessArgs) {
     const { content, filename, lang, dependencies } = await parseFile(
       svelteFile,
       'css',

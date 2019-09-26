@@ -1,15 +1,15 @@
-const less = require('less')
+import less from 'less';
 
-module.exports = async ({ content, filename, options }) => {
+export default async ({ content, filename, options }: TransformerArgs) => {
   const { css, map, imports } = await less.render(content, {
     sourceMap: {},
     filename,
     ...options,
-  })
+  });
 
   return {
     code: css,
     map,
     dependencies: imports,
-  }
-}
+  };
+};

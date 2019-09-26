@@ -1,9 +1,14 @@
-const { requireAny } = require('../utils');
-const sass = requireAny('node-sass', 'sass');
+import { importAny, getIncludePaths } from '../utils';
+import { Result, SassException } from 'sass';
 
-const { getIncludePaths } = require('../utils.js');
+let sass: {
+  render: (
+    options: GenericObject,
+    callback: (err: SassException, result: Result) => void,
+  ) => void;
+};
 
-module.exports = ({ content, filename, options }) => {
+export default async ({ content, filename, options }: TransformerArgs) => {
   options = {
     sourceMap: true,
     includePaths: getIncludePaths(filename),
@@ -13,7 +18,9 @@ module.exports = ({ content, filename, options }) => {
 
   options.data = options.data ? options.data + content : content;
 
-  return new Promise((resolve, reject) => {
+  if (sass == null) sass = await importAny('node-sass', 'sass');
+
+  return new Promise<PreprocessResult>((resolve, reject) => {
     sass.render(options, (err, result) => {
       if (err) return reject(err);
 

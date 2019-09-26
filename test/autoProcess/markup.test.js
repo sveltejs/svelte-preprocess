@@ -1,4 +1,4 @@
-const getAutoPreprocess = require('../../src')
+const getAutoPreprocess = require('../../dist')
 const {
   preprocess,
   getFixtureContent,

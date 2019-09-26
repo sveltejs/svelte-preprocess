@@ -1,10 +1,14 @@
-const postcss = require('postcss');
+import postcss from 'postcss';
+
+type PostCssConfigArgs = postcss.ProcessOptions & {
+  plugins: postcss.AcceptedPlugin[];
+};
 
 const process = async (
-  { plugins, parser, syntax },
-  content,
-  filename,
-  sourceMap,
+  { plugins, parser, syntax }: PostCssConfigArgs,
+  content: string,
+  filename: string,
+  sourceMap: string | object,
 ) => {
   const { css, map, messages } = await postcss(plugins).process(content, {
     from: filename,
@@ -26,13 +30,15 @@ const process = async (
 };
 
 /** Adapted from https://github.com/TehShrike/svelte-preprocess-postcss */
-module.exports = async ({ content, filename, options, map = undefined }) => {
-  /** If manually passed a plugins array, use it as the postcss config */
-  if (options && options.plugins) {
-    return process(options, content, filename, map);
+export default async ({
+  content,
+  filename,
+  options,
+  map = undefined,
+}: TransformerArgs) => {
+  if (options && Array.isArray(options.plugins)) {
+    return process(options as PostCssConfigArgs, content, filename, map);
   }
-
-  if (options === true) options = {};
 
   try {
     /** If not, look for a postcss config file */
@@ -48,8 +54,8 @@ module.exports = async ({ content, filename, options, map = undefined }) => {
     } else {
       console.error(e);
     }
-    return { code: content, map };
+    return { code: content, map, dependencies: [] as any[] };
   }
 
-  return process(options, content, filename, map);
+  return process(options as PostCssConfigArgs, content, filename, map);
 };

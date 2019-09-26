@@ -1,8 +1,8 @@
-const detectIndent = require('detect-indent');
-const pug = require('pug');
+import detectIndent from 'detect-indent';
+import pug from 'pug';
 
 // Mixins to use svelte template features
-const GET_MIXINS = identationType =>
+const GET_MIXINS = (identationType: 'tab' | 'space') =>
   `mixin if(condition)
 %_| {#if !{condition}}
 %_block
@@ -40,7 +40,7 @@ mixin debug(variables)
     identationType === 'tab' ? '\t' : '  ',
   );
 
-module.exports = ({ content, filename, options }) => {
+export default async ({ content, filename, options }: TransformerArgs) => {
   options = {
     doctype: 'html',
     filename,

@@ -1,5 +1,5 @@
 const { resolve } = require('path')
-const getAutoPreprocess = require('../../src')
+const getAutoPreprocess = require('../../dist')
 const { preprocess } = require('../utils.js')
 
 describe('transformer - less', () => {

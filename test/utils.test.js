@@ -1,13 +1,15 @@
-const {requireAny} = require('../src/utils')
+const { importAny } = require('../dist/utils');
 
-describe('utils - requireAny', () => {
+describe('utils - importAny', () => {
   it('should throw error when none exist', () => {
-    expect(() => {
-      requireAny('_1', '_2')
-    }).toThrow('_1,_2');
-  })
+    return expect(importAny('_1', '_2')).rejects.toThrowError(
+      'Cannot find any of modules: _1,_2',
+    );
+  });
 
-  it('should not throw error when any exist', () => {
-    expect(requireAny('_1', 'node-sass', '_2')).toBe(require('node-sass'));
-  })
-})
+  it('should not throw error when any exist', async () => {
+    expect((await importAny('_1', 'node-sass', '_2')).default).toBe(
+      require('node-sass'),
+    );
+  });
+});

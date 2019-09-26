@@ -1,9 +1,9 @@
 {
   "name": "svelte-preprocess",
-  "version": "3.1.4",
+  "version": "3.2.0-alpha.1",
   "license": "MIT",
-  "main": "src/index.js",
-  "types": "src/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/types/**/*.d.ts",
   "description": "A Svelte preprocessor wrapper with baked in support for common used preprocessors",
   "author": "Christian Kaisermann <christian@kaisermann.me>",
   "repository": "https://github.com/kaisermann/svelte-preprocess",
@@ -18,9 +18,12 @@
     "coffeescript"
   ],
   "files": [
-    "src/"
+    "dist/"
   ],
   "scripts": {
+    "build": "tsc && tsc --declaration --outDir dist/ --emitDeclarationOnly",
+    "postbuild": "cp src/typings.d.ts dist/typings.d.ts",
+    "dev": "tsc -w",
     "test": "jest --no-cache --verbose",
     "test:watch": "jest --no-cache --verbose --watchAll",
     "lint": "eslint \"src/**/*.js\"",
@@ -29,7 +32,7 @@
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
     "tag": "git tag -a v$npm_package_version -m 'Release v$npm_package_version'",
     "release": "npm run version && npm i --package-lock-only && git add package.json package-lock.json && git commit -m \"chore: release v$npm_package_version\"",
-    "prepublishOnly": "npm run release && npm run tag"
+    "prepublishOnly": "npm run build && npm run release && npm run tag"
   },
   "auto-changelog": {
     "template": "keepachangelog"
@@ -42,18 +45,21 @@
     ]
   },
   "devDependencies": {
+    "@types/jest": "^24.0.19",
+    "@types/node": "^12.7.8",
+    "@types/pug": "^2.0.4",
+    "@types/sass": "^1.16.0",
+    "@types/stylus": "^0.48.31",
+    "@typescript-eslint/eslint-plugin": "^2.3.1",
+    "@typescript-eslint/parser": "^2.3.1",
     "auto-changelog": "^1.11.0",
     "autoprefixer": "^9.4.7",
     "coffeescript": "^2.3.2",
     "conventional-changelog-cli": "^2.0.25",
     "eslint": "^5.13.0",
     "eslint-config-prettier": "^4.0.0",
-    "eslint-config-standard": "^12.0.0",
-    "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-prettier": "^3.0.1",
-    "eslint-plugin-promise": "^4.0.1",
-    "eslint-plugin-standard": "^4.0.0",
     "jest": "^24.9.0",
     "less": "^3.9.0",
     "node-sass": "^4.12.0",
@@ -65,12 +71,16 @@
     "stylus": "^0.54.5",
     "sugarss": "^2.0.0",
     "svelte": "^3.0.0",
-    "typescript": "^3.4.5"
+    "typescript": "^3.4.5",
+    "conventional-changelog-cli": "^2.0.25"
   },
   "peerDependencies": {
     "svelte": "^1.44.0 || ^2.0.0 || ^3.0.0"
   },
   "dependencies": {
+    "@types/pug": "^2.0.4",
+    "@types/sass": "^1.16.0",
+    "@types/stylus": "^0.48.31",
     "detect-indent": "^6.0.0",
     "strip-indent": "^2.0.0"
   }

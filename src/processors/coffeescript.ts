@@ -1,13 +1,14 @@
-const { concat, parseFile } = require('../utils.js');
-const transformer = require('../transformers/typescript.js');
+import transformer from '../transformers/coffeescript.js';
+import { concat, parseFile } from '../utils.js';
 
-module.exports = options => ({
-  async script(svelteFile) {
+export default (options: GenericObject) => ({
+  async script(svelteFile: PreprocessArgs) {
     const { content, filename, lang, dependencies } = await parseFile(
       svelteFile,
       'javascript',
     );
-    if (lang !== 'typescript') return { code: content };
+
+    if (lang !== 'coffeescript') return { code: content };
 
     const transformed = await transformer({ content, filename, options });
     return {

@@ -1,19 +1,18 @@
-const stylus = require('stylus');
+import stylus from 'stylus';
 
 const { getIncludePaths } = require('../utils.js');
 
-module.exports = ({ content, filename, options }) => {
+export default ({ content, filename, options }: TransformerArgs) => {
   options = {
     includePaths: getIncludePaths(filename),
     ...options,
   };
 
-  return new Promise((resolve, reject) => {
+  return new Promise<PreprocessResult>((resolve, reject) => {
     const style = stylus(content, {
       filename,
-      sourcemap: true,
       ...options,
-    });
+    }).set('sourcemap', options.sourcemap);
 
     style.render((err, css) => {
       // istanbul ignore next
@@ -21,8 +20,8 @@ module.exports = ({ content, filename, options }) => {
 
       resolve({
         code: css,
-        map: style.sourcemap,
-        dependencies: style.deps(),
+        map: (style as any).sourcemap,
+        dependencies: style.deps(filename),
       });
     });
   });

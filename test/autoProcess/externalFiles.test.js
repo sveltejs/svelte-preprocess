@@ -1,11 +1,7 @@
 const { resolve } = require('path');
 
-const getAutoPreprocess = require('../../src');
-const {
-  preprocess,
-  getFixtureContent,
-  getFixturePath,
-} = require('../utils.js');
+const getAutoPreprocess = require('../../dist')
+const { preprocess, getFixtureContent, getFixturePath } = require('../utils.js')
 
 const {
   markup: markupProcessor,
