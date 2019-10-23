@@ -39,8 +39,8 @@ const getSrcContent = (exports.getSrcContent = file => {
 exports.parseFile = async ({ attributes, filename, content }, language) => {
   const dependencies = [];
   if (attributes.src) {
-    /** Ignore remote files */
-    if (!attributes.src.match(/^(https?)?:?\/\/.*$/)) {
+    /** Only try to get local files (path starts with ./ or ../) */
+    if (attributes.src.match(/^\.{1,2}\//)) {
       const file = resolveSrc(filename, attributes.src);
       content = await getSrcContent(file);
       dependencies.push(file);
