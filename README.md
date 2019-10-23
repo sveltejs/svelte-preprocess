@@ -66,7 +66,7 @@ _Note: only for auto preprocessing_
 ### External files support
 
 ```html
-<template src="template.html"></template>
+<template src="./template.html"></template>
 <script src="./script.js"></script>
 <style src="./style.css"></style>
 ```
@@ -337,7 +337,7 @@ const options = {
   aliases: [
     /**
      * Means
-     * <... src="file.cst"> or
+     * <... src="./file.cst"> or
      * <... lang="cst"> or
      * <... type="text/customLanguage">
      * <... type="application/customLanguage">
