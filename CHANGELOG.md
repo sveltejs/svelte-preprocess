@@ -1,9 +1,18 @@
+## [3.1.3](https://github.com/kaisermann/svelte-preprocess/compare/v3.1.2...v3.1.3) (2019-10-23)
+
+
+### Bug Fixes
+
+* :bug: Try to only include files with local paths ([4c2c4e3](https://github.com/kaisermann/svelte-preprocess/commit/4c2c4e317e8de62bc161e7a1626892f08e98ce82))
+
+
+
 ## [3.1.2](https://github.com/kaisermann/svelte-preprocess/compare/v3.1.1...v3.1.2) (2019-09-25)
 
 
 ### Bug Fixes
 
-* 🐛 import less cjs instead of es6 ([e9e8c59](https://github.com/kaisermann/svelte-preprocess/commit/e9e8c59))
+* 🐛 import less cjs instead of es6 ([bf8627f](https://github.com/kaisermann/svelte-preprocess/commit/bf8627f3f4bde0d598769a67de10194bbcf04701))
 
 
 
@@ -12,7 +21,7 @@
 
 ### Bug Fixes
 
-* 🐛 make [@keyframe](https://github.com/keyframe) at-rules global. ([#65](https://github.com/kaisermann/svelte-preprocess/issues/65)) ([40fb9be](https://github.com/kaisermann/svelte-preprocess/commit/40fb9be))
+* 🐛 make [@keyframe](https://github.com/keyframe) at-rules global. ([#65](https://github.com/kaisermann/svelte-preprocess/issues/65)) ([40fb9be](https://github.com/kaisermann/svelte-preprocess/commit/40fb9be28e5737259754e9b1168efcaf25eef171))
 
 
 
@@ -21,7 +30,7 @@
 
 ### Features
 
-* 🎸 add "markupTagName" option ([746d2ab](https://github.com/kaisermann/svelte-preprocess/commit/746d2ab))
+* 🎸 add "markupTagName" option ([746d2ab](https://github.com/kaisermann/svelte-preprocess/commit/746d2abbaaf072d3fac29cc2d2c0f61fa28d58e8))
 
 
 
@@ -30,7 +39,7 @@
 
 ### Bug Fixes
 
-* 🐛 inverted conditionals on typescript transformer ([a6937f0](https://github.com/kaisermann/svelte-preprocess/commit/a6937f0))
+* 🐛 inverted conditionals on typescript transformer ([a6937f0](https://github.com/kaisermann/svelte-preprocess/commit/a6937f0d9895ceca69bbb335d918bbe69d16c2a4))
 
 
 
@@ -39,7 +48,7 @@
 
 ### Bug Fixes
 
-* 🐛 wrong typescript diagnostic filtering ([2630a44](https://github.com/kaisermann/svelte-preprocess/commit/2630a44)), closes [#49](https://github.com/kaisermann/svelte-preprocess/issues/49)
+* 🐛 wrong typescript diagnostic filtering ([2630a44](https://github.com/kaisermann/svelte-preprocess/commit/2630a44f4d6036a87f7120b5482b2c236cccd9a0)), closes [#49](https://github.com/kaisermann/svelte-preprocess/issues/49)
 
 
 
@@ -48,7 +57,7 @@
 
 ### Performance Improvements
 
-* ⚡️ make postcss-load-config optional for better pkg size ([7ab9c72](https://github.com/kaisermann/svelte-preprocess/commit/7ab9c72))
+* ⚡️ make postcss-load-config optional for better pkg size ([7ab9c72](https://github.com/kaisermann/svelte-preprocess/commit/7ab9c72797a3b702f2f3dd9280402b84057398be))
 
 
 ### BREAKING CHANGES
@@ -63,7 +72,7 @@ manually install "postcss-load-config".
 
 ### Features
 
-* 🎸 add "transpileOnly" option to skip type check ([3e46741](https://github.com/kaisermann/svelte-preprocess/commit/3e46741)), closes [#54](https://github.com/kaisermann/svelte-preprocess/issues/54)
+* 🎸 add "transpileOnly" option to skip type check ([3e46741](https://github.com/kaisermann/svelte-preprocess/commit/3e46741d917b8be5dcd331f5672bcd0c7ff75090)), closes [#54](https://github.com/kaisermann/svelte-preprocess/issues/54)
 
 
 
@@ -72,8 +81,8 @@ manually install "postcss-load-config".
 
 ### Bug Fixes
 
-* 🐛 make pug mixins work with space AND tabs ([81b0154](https://github.com/kaisermann/svelte-preprocess/commit/81b0154))
-* rename typescript configuration option to honor the readme docs ([67f2137](https://github.com/kaisermann/svelte-preprocess/commit/67f2137))
+* 🐛 make pug mixins work with space AND tabs ([81b0154](https://github.com/kaisermann/svelte-preprocess/commit/81b0154a2e90375a9f5793c8d7fd32698ef9f432))
+* rename typescript configuration option to honor the readme docs ([67f2137](https://github.com/kaisermann/svelte-preprocess/commit/67f2137f9b6c11f3d2f4508d6dab2699e0d0b823))
 
 
 
@@ -82,7 +91,7 @@ manually install "postcss-load-config".
 
 ### Features
 
-* 🎸 add external src support for stand-alone processors ([974ab5a](https://github.com/kaisermann/svelte-preprocess/commit/974ab5a))
+* 🎸 add external src support for stand-alone processors ([974ab5a](https://github.com/kaisermann/svelte-preprocess/commit/974ab5a05c37e32da1abe0e59fb777d07efb0b3c))
 
 
 
@@ -91,7 +100,7 @@ manually install "postcss-load-config".
 
 ### Features
 
-* 🎸 allow to watch stylus dependencies ([8aa3dfc](https://github.com/kaisermann/svelte-preprocess/commit/8aa3dfc))
+* 🎸 allow to watch stylus dependencies ([8aa3dfc](https://github.com/kaisermann/svelte-preprocess/commit/8aa3dfcd73730688c3a4d555ebf5a56cf36c669f))
 
 
 
@@ -100,7 +109,7 @@ manually install "postcss-load-config".
 
 ### Bug Fixes
 
-* 🐛 pass less [@imports](https://github.com/imports) as dependencies to svelte ([55e9d28](https://github.com/kaisermann/svelte-preprocess/commit/55e9d28))
+* 🐛 pass less [@imports](https://github.com/imports) as dependencies to svelte ([55e9d28](https://github.com/kaisermann/svelte-preprocess/commit/55e9d28fd03a2a1bf07c4d1b9ec3517fe2ce0cb3))
 
 
 
@@ -109,7 +118,7 @@ manually install "postcss-load-config".
 
 ### Bug Fixes
 
-* pug mixin elseif ([#45](https://github.com/kaisermann/svelte-preprocess/issues/45)) ([98ad9ca](https://github.com/kaisermann/svelte-preprocess/commit/98ad9ca))
+* pug mixin elseif ([#45](https://github.com/kaisermann/svelte-preprocess/issues/45)) ([98ad9ca](https://github.com/kaisermann/svelte-preprocess/commit/98ad9ca996c70da25666e4f1e9286d4dfd15fb36))
 
 
 
@@ -118,7 +127,7 @@ manually install "postcss-load-config".
 
 ### Bug Fixes
 
-* 🐛 transformer imported dependencies being overwritten ([423c17a](https://github.com/kaisermann/svelte-preprocess/commit/423c17a))
+* 🐛 transformer imported dependencies being overwritten ([423c17a](https://github.com/kaisermann/svelte-preprocess/commit/423c17a23283bca40ac0d8adf192ec1037196a12))
 
 
 
@@ -139,15 +148,15 @@ manually install "postcss-load-config".
 
 ### Bug Fixes
 
-* 🐛 template preprocessing running on the whole file ([e37da9d](https://github.com/kaisermann/svelte-preprocess/commit/e37da9d))
+* 🐛 template preprocessing running on the whole file ([e37da9d](https://github.com/kaisermann/svelte-preprocess/commit/e37da9d5f8f5fde5077e02add17be039db729e32))
 
 
 ### Features
 
-* 🎸 add support for typescript type checking ([#37](https://github.com/kaisermann/svelte-preprocess/issues/37)) ([e6dd744](https://github.com/kaisermann/svelte-preprocess/commit/e6dd744))
-* 🎸 add svelte pug mixins ([#38](https://github.com/kaisermann/svelte-preprocess/issues/38)) ([543ab75](https://github.com/kaisermann/svelte-preprocess/commit/543ab75))
-* 🎸 add typescript preprocessor ([c195aa1](https://github.com/kaisermann/svelte-preprocess/commit/c195aa1))
-* prepend scss with data property ([#36](https://github.com/kaisermann/svelte-preprocess/issues/36)) ([dfa2b2a](https://github.com/kaisermann/svelte-preprocess/commit/dfa2b2a))
+* 🎸 add support for typescript type checking ([#37](https://github.com/kaisermann/svelte-preprocess/issues/37)) ([e6dd744](https://github.com/kaisermann/svelte-preprocess/commit/e6dd7441db64906f79d7105723e23a8ef949e2d5))
+* 🎸 add svelte pug mixins ([#38](https://github.com/kaisermann/svelte-preprocess/issues/38)) ([543ab75](https://github.com/kaisermann/svelte-preprocess/commit/543ab7557bd8e8172ea52e89355101d3c88a38ba))
+* 🎸 add typescript preprocessor ([c195aa1](https://github.com/kaisermann/svelte-preprocess/commit/c195aa183b60899603d72743432de501b23f6087))
+* prepend scss with data property ([#36](https://github.com/kaisermann/svelte-preprocess/issues/36)) ([dfa2b2a](https://github.com/kaisermann/svelte-preprocess/commit/dfa2b2a24124c94c3d3af6e63eff8963489f7caa))
 
 
 
@@ -156,12 +165,12 @@ manually install "postcss-load-config".
 
 ### Bug Fixes
 
-* 🐛 cut 90% of downloaded package size ([882a4dd](https://github.com/kaisermann/svelte-preprocess/commit/882a4dd))
+* 🐛 cut 90% of downloaded package size ([882a4dd](https://github.com/kaisermann/svelte-preprocess/commit/882a4dd5c185c5063ceb27884877958d4178c0e8))
 
 
 ### Features
 
-* 🎸 watch internal files imported with postcss-import ([5b14624](https://github.com/kaisermann/svelte-preprocess/commit/5b14624))
+* 🎸 watch internal files imported with postcss-import ([5b14624](https://github.com/kaisermann/svelte-preprocess/commit/5b14624ac04a9812e680b252b8f6d69c97c30188))
 
 
 
@@ -170,7 +179,7 @@ manually install "postcss-load-config".
 
 ### Bug Fixes
 
-* 🐛 stand-alone processors not exported ([ced0fd1](https://github.com/kaisermann/svelte-preprocess/commit/ced0fd1))
+* 🐛 stand-alone processors not exported ([ced0fd1](https://github.com/kaisermann/svelte-preprocess/commit/ced0fd1dfc34e13aefa13ba9d31efd81255e348d))
 
 
 
@@ -179,7 +188,7 @@ manually install "postcss-load-config".
 
 ### Bug Fixes
 
-* 🐛 less and stylus stand-alone processor ([85827bb](https://github.com/kaisermann/svelte-preprocess/commit/85827bb))
+* 🐛 less and stylus stand-alone processor ([85827bb](https://github.com/kaisermann/svelte-preprocess/commit/85827bbd53340b39b99b706f03c926d3b01bbad6))
 
 
 
@@ -188,7 +197,7 @@ manually install "postcss-load-config".
 
 ### Features
 
-* support dart-sass ([e56f8b2](https://github.com/kaisermann/svelte-preprocess/commit/e56f8b2))
+* support dart-sass ([e56f8b2](https://github.com/kaisermann/svelte-preprocess/commit/e56f8b24c8f93db82ef9bb0f17dd658aaf000126))
 
 
 
@@ -197,12 +206,12 @@ manually install "postcss-load-config".
 
 ### Bug Fixes
 
-* 🐛 standalone processors breaking everything :) ([ce11323](https://github.com/kaisermann/svelte-preprocess/commit/ce11323))
+* 🐛 standalone processors breaking everything :) ([ce11323](https://github.com/kaisermann/svelte-preprocess/commit/ce113236f0ca2fe5876b75d7c9935f664634cae0))
 
 
 ### Features
 
-* 🎸 add stand-alone processors ([f19c90a](https://github.com/kaisermann/svelte-preprocess/commit/f19c90a))
+* 🎸 add stand-alone processors ([f19c90a](https://github.com/kaisermann/svelte-preprocess/commit/f19c90a1ed2838a8712b0c95dccbd8b005d8f9c0))
 
 
 
@@ -211,7 +220,7 @@ manually install "postcss-load-config".
 
 ### Features
 
-* 🎸 support async onBefore() ([a6af2a2](https://github.com/kaisermann/svelte-preprocess/commit/a6af2a2))
+* 🎸 support async onBefore() ([a6af2a2](https://github.com/kaisermann/svelte-preprocess/commit/a6af2a276cfc728ed60631eba5072b83cb035991))
 
 
 
@@ -220,7 +229,7 @@ manually install "postcss-load-config".
 
 ### Bug Fixes
 
-* 🐛 custom transformer not working with external src files ([cc037c3](https://github.com/kaisermann/svelte-preprocess/commit/cc037c3))
+* 🐛 custom transformer not working with external src files ([cc037c3](https://github.com/kaisermann/svelte-preprocess/commit/cc037c3cdae72f16c1f977986a1434006dc3fe96))
 
 
 
