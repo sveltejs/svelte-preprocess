@@ -1,9 +1,18 @@
+## [3.1.4](https://github.com/kaisermann/svelte-preprocess/compare/v3.1.3...v3.1.4) (2019-10-23)
+
+
+### Bug Fixes
+
+* don't try to include local files that doesn't exist ([52594eb](https://github.com/kaisermann/svelte-preprocess/commit/52594eb79e7533a442fd7063ef1e2e269269dbc3))
+
+
+
 ## [3.1.3](https://github.com/kaisermann/svelte-preprocess/compare/v3.1.2...v3.1.3) (2019-10-23)
 
 
 ### Bug Fixes
 
-* :bug: Try to only include files with local paths ([4c2c4e3](https://github.com/kaisermann/svelte-preprocess/commit/4c2c4e317e8de62bc161e7a1626892f08e98ce82))
+* 🐛 Try to only include files with local paths ([a167f6e](https://github.com/kaisermann/svelte-preprocess/commit/a167f6e4cc4802f86cc14fe38bbacf7e9db02729))
 
 
 
