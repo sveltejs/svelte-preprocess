@@ -1,8 +1,9 @@
 import stylus from 'stylus';
+import { PreprocessResult, Transformer } from '../typings';
 
 const { getIncludePaths } = require('../utils.js');
 
-export default ({ content, filename, options }: TransformerArgs) => {
+const transformer: Transformer = ({ content, filename, options }) => {
   options = {
     includePaths: getIncludePaths(filename),
     ...options,
@@ -26,3 +27,5 @@ export default ({ content, filename, options }: TransformerArgs) => {
     });
   });
 };
+
+export default transformer;

@@ -1,3 +1,4 @@
+import { GenericObject, PreprocessArgs } from '../typings';
 import transformer from '../transformers/globalStyle.js';
 
 export default (options: GenericObject) => {

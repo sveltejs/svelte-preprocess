@@ -1,3 +1,4 @@
+import { GenericObject, PreprocessArgs } from '../typings';
 import transformer from '../transformers/postcss';
 import { concat, parseFile } from '../utils';
 

@@ -8,8 +8,9 @@
     "resolveJsonModule": true,
     "target": "es2018",
     "outDir": "dist",
-    "lib": ["es2018"]
+    "lib": ["es2018"],
+    "declaration": true
   },
-  "include": ["src/**/*.ts", "src/**/*.js"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules/**/*", "dist"]
 }

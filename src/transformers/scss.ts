@@ -1,6 +1,8 @@
 import { importAny, getIncludePaths } from '../utils';
 import { Result, SassException } from 'sass';
 
+import { GenericObject, Transformer, PreprocessResult } from '../typings';
+
 let sass: {
   render: (
     options: GenericObject,
@@ -8,7 +10,7 @@ let sass: {
   ) => void;
 };
 
-export default async ({ content, filename, options }: TransformerArgs) => {
+const transformer: Transformer = async ({ content, filename, options }) => {
   options = {
     sourceMap: true,
     includePaths: getIncludePaths(filename),
@@ -32,3 +34,5 @@ export default async ({ content, filename, options }: TransformerArgs) => {
     });
   });
 };
+
+export default transformer;

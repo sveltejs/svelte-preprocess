@@ -1,3 +1,4 @@
+import { GenericObject, PreprocessArgs } from '../typings';
 import { concat, parseFile } from '../utils';
 import transformer from '../transformers/typescript';
 

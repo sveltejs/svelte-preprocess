@@ -1,3 +1,4 @@
+import { GenericObject, PreprocessArgs } from '../typings';
 import transformer from '../transformers/coffeescript.js';
 import { concat, parseFile } from '../utils.js';
 

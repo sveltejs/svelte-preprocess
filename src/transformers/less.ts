@@ -1,6 +1,8 @@
 import less from 'less';
 
-export default async ({ content, filename, options }: TransformerArgs) => {
+import { Transformer } from '../typings';
+
+const transformer: Transformer = async ({ content, filename, options }) => {
   const { css, map, imports } = await less.render(content, {
     sourceMap: {},
     filename,
@@ -13,3 +15,5 @@ export default async ({ content, filename, options }: TransformerArgs) => {
     dependencies: imports,
   };
 };
+
+export default transformer;

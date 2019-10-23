@@ -1,6 +1,8 @@
-import ts, { ScriptTarget } from 'typescript';
 import { dirname, basename, resolve } from 'path';
 import { existsSync } from 'fs';
+import ts, { ScriptTarget } from 'typescript';
+
+import { Transformer } from '../typings';
 
 interface CompilerOptions extends ts.CompilerOptions {
   transpileOnly: boolean;
@@ -162,7 +164,7 @@ function compileFileFromMemory(
   return { code, map, diagnostics };
 }
 
-export default ({ content, filename, options }: TransformerArgs) => {
+const transformer: Transformer = ({ content, filename, options }) => {
   // default options
   const compilerOptionsJSON = {
     moduleResolution: 'node',
@@ -231,3 +233,5 @@ export default ({ content, filename, options }: TransformerArgs) => {
     dependencies: [] as string[],
   };
 };
+
+export default transformer;

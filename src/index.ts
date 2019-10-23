@@ -16,6 +16,7 @@ interface ProcessorOptions {
 }
 
 export {
+  autoPreprocess as default,
   pug,
   coffeescript,
   typescript,

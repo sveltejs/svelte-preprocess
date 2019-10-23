@@ -8,6 +8,40 @@ import {
   isFn,
   throwUnsupportedError,
 } from './utils.js';
+import {
+  GenericObject,
+  PreprocessorGroup,
+  TransformerOptions,
+  Preprocessor,
+  AttributesObject,
+  PreprocessArgs,
+} from './typings';
+
+interface TransformersOptions {
+  typescript: TransformerOptions;
+  scss: TransformerOptions;
+  sass: TransformerOptions;
+  less: TransformerOptions;
+  stylus: TransformerOptions;
+  postcss: TransformerOptions;
+  coffeescript: TransformerOptions;
+  pub: TransformerOptions;
+  globalStyle: TransformerOptions;
+  [languageName: string]: TransformerOptions;
+}
+
+interface MarkupPreprocessArgs {
+  content: string;
+  filename: string;
+}
+
+type AutoPreprocessOptions = TransformersOptions & {
+  onBefore?: ({ content, filename }: MarkupPreprocessArgs) => string;
+  markupTagName?: string;
+  transformers?: TransformersOptions;
+  aliases: [string, string][];
+  preserve: string[];
+};
 
 const SVELTE_MAJOR_VERSION = +version[0];
 const ALIAS_OPTION_OVERRIDES: GenericObject = {
@@ -32,6 +66,10 @@ export function autoPreprocess(
   const markupPattern = new RegExp(
     `<${markupTagName}([\\s\\S]*?)>([\\s\\S]*)<\\/${markupTagName}>`,
   );
+
+  if (aliases && aliases.length) {
+    addLanguageAlias(aliases);
+  }
 
   const getTransformerOptions = (
     lang: string,
@@ -90,10 +128,6 @@ export function autoPreprocess(
       dependencies: concat(dependencies, transformed.dependencies),
     };
   };
-
-  if (aliases && aliases.length) {
-    addLanguageAlias(aliases);
-  }
 
   const scriptTransformer = getTransformerTo('javascript');
   const cssTransformer = getTransformerTo('css');

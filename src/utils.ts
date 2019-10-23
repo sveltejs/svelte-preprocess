@@ -1,5 +1,13 @@
-const { readFile } = require('fs');
-const { resolve, dirname, basename } = require('path');
+import { readFile } from 'fs';
+import { resolve, dirname, basename } from 'path';
+
+import {
+  PreprocessArgs,
+  AttributesObject,
+  Transformer,
+  TransformerArgs,
+  TransformerOptions,
+} from './typings';
 
 const LANG_DICT = new Map([
   ['pcss', 'css'],
@@ -42,8 +50,8 @@ export const parseFile = async (
 ) => {
   const dependencies = [];
   if (attributes.src && typeof attributes.src === 'string') {
-    /** Ignore remote files */
-    if (!attributes.src.match(/^(https?)?:?\/\/.*$/)) {
+    /** Only try to get local files (path starts with ./ or ../) */
+    if (attributes.src.match(/^\.{1,2}\//)) {
       const file = resolveSrc(filename, attributes.src);
       content = await getSrcContent(file);
       dependencies.push(file);
@@ -101,7 +109,7 @@ export const getLanguage = (
 };
 
 const TRANSFORMERS = {} as {
-  [key: string]: (o: TransformerArgs) => any;
+  [key: string]: Transformer;
 };
 
 export const runTransformer = async (
@@ -110,7 +118,7 @@ export const runTransformer = async (
   { content, map, filename }: TransformerArgs,
 ) => {
   if (typeof options === 'function') {
-    return options({ content, map: map, filename });
+    return options({ content, map, filename });
   }
 
   try {
@@ -139,7 +147,7 @@ export const importAny = async (...modules: string[]) => {
       (acc, moduleName) => acc.catch(() => import(moduleName)),
       Promise.reject(),
     );
-    return mod
+    return mod;
   } catch (e) {
     throw new Error(`Cannot find any of modules: ${modules}`);
   }

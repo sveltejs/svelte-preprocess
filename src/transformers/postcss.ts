@@ -1,4 +1,5 @@
 import postcss from 'postcss';
+import { Transformer } from '../typings';
 
 type PostCssConfigArgs = postcss.ProcessOptions & {
   plugins: postcss.AcceptedPlugin[];
@@ -30,12 +31,12 @@ const process = async (
 };
 
 /** Adapted from https://github.com/TehShrike/svelte-preprocess-postcss */
-export default async ({
+const transformer: Transformer = async ({
   content,
   filename,
   options,
   map = undefined,
-}: TransformerArgs) => {
+}) => {
   if (options && Array.isArray(options.plugins)) {
     return process(options as PostCssConfigArgs, content, filename, map);
   }
@@ -59,3 +60,5 @@ export default async ({
 
   return process(options as PostCssConfigArgs, content, filename, map);
 };
+
+export default transformer;

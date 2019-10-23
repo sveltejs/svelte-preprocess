@@ -1,5 +1,7 @@
 const postcss = require('postcss');
 
+import { Transformer } from '../typings';
+
 const globalifyPlugin = (root: any) => {
   root.walkAtRules(/keyframes$/, (atrule: any) => {
     if (!atrule.params.startsWith('-global-')) {
@@ -18,14 +20,16 @@ const globalifyPlugin = (root: any) => {
   });
 };
 
-export default async ({
+const transformer: Transformer = async ({
   content,
   filename,
   map = undefined,
-}: TransformerArgs) => {
+}) => {
   const { css, map: newMap } = await postcss()
     .use(globalifyPlugin)
     .process(content, { from: filename, prev: map });
 
   return { code: css, map: newMap };
 };
+
+export default transformer;
