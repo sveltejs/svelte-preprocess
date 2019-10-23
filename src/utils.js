@@ -1,4 +1,4 @@
-const { readFile } = require('fs');
+const { readFile, exists } = require('fs');
 const { resolve, dirname, basename } = require('path');
 
 const LANG_DICT = new Map([
@@ -23,8 +23,10 @@ exports.throwUnsupportedError = (lang, filename) =>
 
 exports.isFn = maybeFn => typeof maybeFn === 'function';
 
-const resolveSrc = (exports.resolveSrc = (importerFile, srcPath) =>
-  resolve(dirname(importerFile), srcPath));
+const resolveSrc = (importerFile, srcPath) =>
+  resolve(dirname(importerFile), srcPath);
+
+const doesFileExist = path => new Promise(res => exists(path, res));
 
 const getSrcContent = (exports.getSrcContent = file => {
   return new Promise((resolve, reject) => {
@@ -40,10 +42,12 @@ exports.parseFile = async ({ attributes, filename, content }, language) => {
   const dependencies = [];
   if (attributes.src) {
     /** Only try to get local files (path starts with ./ or ../) */
-    if (attributes.src.match(/^\.{1,2}\//)) {
-      const file = resolveSrc(filename, attributes.src);
-      content = await getSrcContent(file);
-      dependencies.push(file);
+    if (attributes.src.match(/^(https?:)?\/\//) == null) {
+      const filepath = resolveSrc(filename, attributes.src);
+      if (await doesFileExist(filepath)) {
+        content = await getSrcContent(filepath);
+        dependencies.push(filepath);
+      }
     }
   }
 
