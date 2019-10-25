@@ -12,16 +12,16 @@ import { CSS_PATTERN, getFixtureContent, preprocess } from './utils';
 
 const EXPECTED_SCRIPT = getFixtureContent('script.js');
 
-type bla = [string, string, (...args) => any, any?][];
+type ProcessorEntries = [string, string, (...args: any) => any, any?][];
 
-const STYLE_LANGS: bla = [
+const STYLE_LANGS: ProcessorEntries = [
   ['sass', 'sass', sass],
   ['scss', 'scss', scss],
   ['less', 'less', less],
   ['stylus', 'styl', stylus],
   ['postcss', 'css', postcss],
 ];
-const SCRIPT_LANGS: bla = [
+const SCRIPT_LANGS: ProcessorEntries = [
   ['coffeescript', 'coffee', coffeescript],
   [
     'typescript',
@@ -30,13 +30,12 @@ const SCRIPT_LANGS: bla = [
     { tsconfigFile: false, compilerOptions: { module: 'es2015' } },
   ],
 ];
-const MARKUP_LANGS: bla = [['pug', 'pug', pug]];
+const MARKUP_LANGS: ProcessorEntries = [['pug', 'pug', pug]];
 
 STYLE_LANGS.forEach(([lang, ext, processor, options]) => {
   describe(`processor - ${lang}`, () => {
     it('should support external src files', async () => {
       const template = `<style src="./fixtures/style.${ext}"></style><div></div>`;
-      console.log(processor);
       const preprocessed = await preprocess(template, [processor(options)]);
       expect(preprocessed.toString()).toMatch(CSS_PATTERN);
     });

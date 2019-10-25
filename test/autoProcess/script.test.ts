@@ -1,11 +1,7 @@
-const getAutoPreprocess = require('../../dist');
-const {
-  preprocess,
-  getFixtureContent,
-  doesCompileThrow,
-} = require('../utils.js');
+import getAutoPreprocess from '../../src';
+import { preprocess, getFixtureContent, doesCompileThrow } from '../utils';
 
-const SCRIPT_LANGS = [
+const SCRIPT_LANGS: [string, string, object?][] = [
   ['coffeescript', 'coffee'],
   [
     'typescript',

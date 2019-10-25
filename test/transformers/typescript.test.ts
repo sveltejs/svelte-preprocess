@@ -1,13 +1,13 @@
-import { Processed } from 'svelte/types/compiler/preprocess';
 import { resolve } from 'path';
+import { Diagnostic } from 'typescript';
 
 import getAutoPreprocess from '../../src';
-import { preprocess, getFixtureContent } from '../utils.js';
-import { Diagnostic } from 'typescript';
+import { Processed } from '../../src/typings';
+import { preprocess, getFixtureContent } from '../utils';
 
 const EXPECTED_SCRIPT = getFixtureContent('script.js');
 
-const transpile = async content => {
+const transpile = async (content: string) => {
   const opts = getAutoPreprocess({
     typescript: {
       tsconfigFile: false,

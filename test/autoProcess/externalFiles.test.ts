@@ -1,7 +1,8 @@
-const { resolve } = require('path');
+import { resolve } from 'path';
 
-const getAutoPreprocess = require('../../dist')
-const { preprocess, getFixtureContent, getFixturePath } = require('../utils.js')
+import getAutoPreprocess from '../../src';
+import { Processed } from '../../src/typings';
+import { preprocess, getFixtureContent, getFixturePath } from '../utils';
 
 const {
   markup: markupProcessor,
@@ -9,7 +10,7 @@ const {
   style: styleProcessor,
 } = getAutoPreprocess();
 
-const getBaseObj = src => ({
+const getBaseObj = (src: string) => ({
   content: `<template src="./fixtures/template.html"></template>
   <style src="./fixtures/style.css"></style>
   <script src="./fixtures/script.js"></script>`,
@@ -17,7 +18,9 @@ const getBaseObj = src => ({
   attributes: { src: `./fixtures/${src}` },
 });
 
-let markup, script, style;
+let markup: Processed;
+let script: Processed;
+let style: Processed;
 
 describe('external files', () => {
   beforeAll(async () => {

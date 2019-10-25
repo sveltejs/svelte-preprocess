@@ -8,13 +8,8 @@ import {
   runTransformer,
   isFn,
   throwUnsupportedError,
-} from './utils.js';
-import {
-  GenericObject,
-  PreprocessorGroup,
-  TransformerOptions,
-  Preprocessor,
-} from './typings';
+} from './utils';
+import { PreprocessorGroup, TransformerOptions, Preprocessor } from './typings';
 
 interface Transformers {
   typescript?: TransformerOptions;
@@ -29,7 +24,7 @@ interface Transformers {
   [languageName: string]: TransformerOptions;
 }
 
-type AutoPreprocessOptions = Transformers & {
+type AutoPreprocessOptions = {
   /** @deprecated use a array of processors since svelte v3 */
   onBefore?: ({
     content,
@@ -39,13 +34,31 @@ type AutoPreprocessOptions = Transformers & {
     filename: string;
   }) => Promise<string> | string;
   markupTagName?: string;
+  /** @deprecated add transformer config directly to svelte-preprocess options object */
   transformers?: Transformers;
   aliases?: [string, string][];
   preserve?: string[];
+  typescript?: TransformerOptions;
+  scss?: TransformerOptions;
+  sass?: TransformerOptions;
+  less?: TransformerOptions;
+  stylus?: TransformerOptions;
+  postcss?: TransformerOptions;
+  coffeescript?: TransformerOptions;
+  pub?: TransformerOptions;
+  globalStyle?: TransformerOptions;
+  // workaround while we don't have this
+  // https://github.com/microsoft/TypeScript/issues/17867
+  [languageName: string]:
+    | string
+    | Promise<string>
+    | [string, string][]
+    | string[]
+    | TransformerOptions;
 };
 
 const SVELTE_MAJOR_VERSION = +version[0];
-const ALIAS_OPTION_OVERRIDES: GenericObject = {
+const ALIAS_OPTION_OVERRIDES: Record<string, any> = {
   sass: {
     indentedSyntax: true,
   },
@@ -62,8 +75,8 @@ export function autoPreprocess(
 ): PreprocessorGroup {
   markupTagName = markupTagName.toLocaleLowerCase();
 
-  const optionsCache: GenericObject = {};
-  const transformers: Transformers = rest.transformers || rest;
+  const optionsCache: Record<string, any> = {};
+  const transformers = rest.transformers || (rest as Transformers);
   const markupPattern = new RegExp(
     `<${markupTagName}([\\s\\S]*?)>([\\s\\S]*)<\\/${markupTagName}>`,
   );

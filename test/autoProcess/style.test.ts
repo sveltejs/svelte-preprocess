@@ -1,19 +1,19 @@
-const getAutoPreprocess = require('../../dist');
-const {
+import getAutoPreprocess from '../../src';
+import {
   preprocess,
   getFixtureContent,
   doesCompileThrow,
   CSS_PATTERN,
-} = require('../utils.js');
+} from '../utils';
 
-const STYLE_LANGS = [
+const STYLE_LANGS: [string, string][] = [
   ['sass', 'sass'],
   ['less', 'less'],
   ['scss', 'scss'],
   ['stylus', 'styl'],
 ];
 
-STYLE_LANGS.forEach(([lang, ext, langOptions]) => {
+STYLE_LANGS.forEach(([lang, ext]) => {
   describe(`style - preprocessor - ${lang}`, () => {
     const template = `<div></div><style lang="${lang}">${getFixtureContent(
       'style.' + ext,
