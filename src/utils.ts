@@ -149,7 +149,7 @@ export const runTransformer = async (
     });
   } catch (e) {
     throwError(
-      `Error transforming '${name}'. Message:\n${e.message}\nStack:\n${e.stack}`,
+      `Error transforming '${name}'.\n\nMessage:\n${e.message}\n\nStack:\n${e.stack}`,
     );
   }
 };

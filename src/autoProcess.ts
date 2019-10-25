@@ -30,7 +30,7 @@ interface Transformers {
 }
 
 type AutoPreprocessOptions = {
-  /** @deprecated use a array of processors since svelte v3 */
+  /** @deprecated for svelte v3 use instead a array of processors */
   onBefore?: ({
     content,
     filename,

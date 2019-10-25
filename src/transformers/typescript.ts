@@ -172,6 +172,7 @@ const transformer: Transformer<Options.Typescript> = ({
     moduleResolution: 'node',
     sourceMap: true,
     strict: true,
+    target: 'es6',
   };
   let basePath = process.cwd();
 
@@ -204,6 +205,15 @@ const transformer: Transformer<Options.Typescript> = ({
     ...(convertedCompilerOptions as CompilerOptions),
     allowNonTsExtensions: true,
   };
+
+  if (
+    compilerOptions.target === ts.ScriptTarget.ES3 ||
+    compilerOptions.target === ts.ScriptTarget.ES5
+  ) {
+    throw new Error(
+      `Svelte only supports es6+ syntax. Set your 'compilerOptions.target' to 'es6' or higher.`,
+    );
+  }
 
   let code, map, diagnostics;
   if (options.transpileOnly || compilerOptions.transpileOnly) {

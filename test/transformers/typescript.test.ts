@@ -7,11 +7,12 @@ import { preprocess, getFixtureContent } from '../utils';
 
 const EXPECTED_SCRIPT = getFixtureContent('script.js');
 
-const transpile = async (content: string) => {
+const transpile = (content: string, compilerOptions?: any) => {
   const opts = getAutoPreprocess({
     typescript: {
       tsconfigFile: false,
       compilerOptions: {
+        ...compilerOptions,
         skipLibCheck: true,
       },
     },
@@ -29,11 +30,20 @@ describe('transformer - typescript', () => {
     'script.ts',
   )}</script>`;
 
+  it('should disallow transpilation to es5 or lower', async () => {
+    expect(
+      transpile('export let foo = 10', { target: 'es3' }),
+    ).rejects.toThrow();
+    expect(
+      transpile('export let foo = 10', { target: 'es5' }),
+    ).rejects.toThrow();
+  });
+
   describe('configuration file', () => {
     it('should work with no compilerOptions', async () => {
       const opts = getAutoPreprocess({ typescript: { tsconfigFile: false } });
       const preprocessed = await preprocess(template, opts);
-      expect(preprocessed.toString()).toContain('exports.hello');
+      expect(preprocessed.toString()).toContain('export var hello');
     });
 
     it('should work with tsconfigDirectory', async () => {

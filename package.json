@@ -1,6 +1,6 @@
 {
   "name": "svelte-preprocess",
-  "version": "3.2.0-alpha.1",
+  "version": "3.2.0-alpha.2",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -24,12 +24,12 @@
     "dist/"
   ],
   "scripts": {
-    "prebuild": "rm -rf dist/",
+    "prebuild": "rm -rf dist/ && npm run lint",
     "build": "tsc",
     "dev": "tsc -w",
     "test": "jest --no-cache --verbose",
     "test:watch": "jest --no-cache --verbose --watchAll",
-    "lint": "eslint \"src/**/*.js\"",
+    "lint": "eslint **/*.ts",
     "format": "prettier --loglevel silent --write \"src/**/*.js\" && eslint --fix \"src/**/*.js\"",
     "postinstall": "node -e \"console.log('\\u001b[36m\\u001b[1m[svelte-preprocess] Don\\'t forget to install the preprocessors packages that will be used: \\u001b[22m\\u001b[39m\\u001b[34mnode-sass/sass, stylus, less, postcss &  postcss-load-config, coffeescript, pug, etc...\\u001b[0m')\"",
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
