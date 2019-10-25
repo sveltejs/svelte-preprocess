@@ -1,8 +1,18 @@
 import less from 'less';
 
-import { Transformer } from '../typings';
+import { getIncludePaths } from '../utils';
+import { Transformer, Options } from '../typings';
 
-const transformer: Transformer = async ({ content, filename, options }) => {
+const transformer: Transformer<Options.Less> = async ({
+  content,
+  filename,
+  options,
+}) => {
+  options = {
+    paths: getIncludePaths(filename),
+    ...options,
+  };
+
   const { css, map, imports } = await less.render(content, {
     sourceMap: {},
     filename,

@@ -1,7 +1,7 @@
 import { Result, SassException, Options as SassOptions } from 'sass';
 
 import { importAny, getIncludePaths } from '../utils';
-import { Transformer, Processed } from '../typings';
+import { Transformer, Processed, Options } from '../typings';
 
 let sass: {
   render: (
@@ -10,7 +10,11 @@ let sass: {
   ) => void;
 };
 
-const transformer: Transformer = async ({ content, filename, options }) => {
+const transformer: Transformer<Options.Sass> = async ({
+  content,
+  filename,
+  options,
+}) => {
   if (sass == null) {
     ({ default: sass } = await importAny('node-sass', 'sass'));
   }

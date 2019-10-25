@@ -1,12 +1,10 @@
 import { existsSync } from 'fs';
 import { dirname, basename, resolve } from 'path';
-import ts, { ScriptTarget } from 'typescript';
+import ts from 'typescript';
 
-import { Transformer } from '../typings';
+import { Transformer, Options } from '../typings';
 
-interface CompilerOptions extends ts.CompilerOptions {
-  transpileOnly: boolean;
-}
+type CompilerOptions = Options.Typescript['compilerOptions'];
 
 function createFormatDiagnosticsHost(cwd: string) {
   return {
@@ -117,7 +115,7 @@ function compileFileFromMemory(
     getDefaultLibFileName: realHost.getDefaultLibFileName.bind(realHost),
     getSourceFile: (
       fileName: string,
-      languageVersion: ScriptTarget,
+      languageVersion: ts.ScriptTarget,
       onError: () => any,
       shouldCreateNewSourceFile: boolean,
     ) =>
@@ -164,7 +162,11 @@ function compileFileFromMemory(
   return { code, map, diagnostics };
 }
 
-const transformer: Transformer = ({ content, filename, options }) => {
+const transformer: Transformer<Options.Typescript> = ({
+  content,
+  filename,
+  options,
+}) => {
   // default options
   const compilerOptionsJSON = {
     moduleResolution: 'node',

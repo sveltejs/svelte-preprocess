@@ -1,6 +1,6 @@
-import { GenericObject, PreprocessorGroup } from '../typings';
+import { PreprocessorGroup } from '../typings';
 
-export default (options: GenericObject): PreprocessorGroup => {
+export default (): PreprocessorGroup => {
   return {
     async style({ content, attributes, filename }) {
       const { default: transformer } = await import(
@@ -8,7 +8,7 @@ export default (options: GenericObject): PreprocessorGroup => {
       );
       if (!attributes.global) return { code: content };
 
-      return transformer({ content, filename, options });
+      return transformer({ content, filename });
     },
   };
 };

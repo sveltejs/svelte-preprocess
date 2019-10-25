@@ -1,8 +1,12 @@
 import coffeescript from 'coffeescript';
 
-import { Transformer } from '../typings';
+import { Transformer, Options } from '../typings';
 
-const transformer: Transformer = ({ content, filename, options }) => {
+const transformer: Transformer<Options.Coffeescript> = ({
+  content,
+  filename,
+  options,
+}) => {
   const { js: code, sourceMap: map } = coffeescript.compile(content, {
     filename,
     sourceMap: true,

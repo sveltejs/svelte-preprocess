@@ -49,7 +49,11 @@ export const parseFile = async (
 ) => {
   const dependencies = [];
   if (attributes.src) {
-    let path = attributes.src as string;
+    // istanbul ignore if
+    if (typeof attributes.src !== 'string') {
+      throw new Error('src attribute must be string');
+    }
+    let path = attributes.src;
     /** Only try to get local files (path starts with ./ or ../) */
     if (path.match(/^(https?:)?\/\//) == null) {
       path = resolveSrc(filename, path);
@@ -80,7 +84,7 @@ export const getIncludePaths = (fromFilename: string) =>
   [
     process.cwd(),
     fromFilename.length && dirname(fromFilename),
-    resolve(process.cwd(), 'node_modules'),
+    'node_modules',
   ].filter(Boolean);
 
 export const getLanguage = (
@@ -90,17 +94,23 @@ export const getLanguage = (
   let lang = defaultLang;
 
   if (attributes.lang) {
+    // istanbul ignore if
     if (typeof attributes.lang !== 'string') {
       throw new Error('lang attribute must be string');
     }
     lang = attributes.lang;
   } else if (attributes.type) {
+    // istanbul ignore if
     if (typeof attributes.type !== 'string') {
-      throw new Error('lang attribute must be string');
+      throw new Error('type attribute must be string');
     }
     lang = attributes.type.replace(/^(text|application)\/(.*)$/, '$2');
   } else if (attributes.src) {
-    const parts = basename(attributes.src as string).split('.');
+    // istanbul ignore if
+    if (typeof attributes.src !== 'string') {
+      throw new Error('src attribute must be string');
+    }
+    const parts = basename(attributes.src).split('.');
     lang = parts.length > 1 ? parts.pop() : defaultLang;
   }
 
@@ -111,13 +121,13 @@ export const getLanguage = (
 };
 
 const TRANSFORMERS = {} as {
-  [key: string]: Transformer;
+  [key: string]: Transformer<any>;
 };
 
 export const runTransformer = async (
   name: string,
-  options: TransformerOptions,
-  { content, map, filename }: TransformerArgs,
+  options: TransformerOptions<any>,
+  { content, map, filename }: TransformerArgs<any>,
 ) => {
   if (typeof options === 'function') {
     return options({ content, map, filename });
@@ -126,7 +136,8 @@ export const runTransformer = async (
   try {
     if (!TRANSFORMERS[name]) {
       await import(`./transformers/${name}`).then(mod => {
-        TRANSFORMERS[name] = mod.default || mod;
+        // istanbul ignore else
+        TRANSFORMERS[name] = mod.default;
       });
     }
 

@@ -9,19 +9,24 @@ import {
   isFn,
   throwUnsupportedError,
 } from './utils';
-import { PreprocessorGroup, TransformerOptions, Preprocessor } from './typings';
+import {
+  PreprocessorGroup,
+  TransformerOptions,
+  Preprocessor,
+  Options,
+} from './typings';
 
 interface Transformers {
-  typescript?: TransformerOptions;
-  scss?: TransformerOptions;
-  sass?: TransformerOptions;
-  less?: TransformerOptions;
-  stylus?: TransformerOptions;
-  postcss?: TransformerOptions;
-  coffeescript?: TransformerOptions;
-  pub?: TransformerOptions;
-  globalStyle?: TransformerOptions;
-  [languageName: string]: TransformerOptions;
+  typescript?: TransformerOptions<Options.Typescript>;
+  scss?: TransformerOptions<Options.Sass>;
+  sass?: TransformerOptions<Options.Sass>;
+  less?: TransformerOptions<Options.Less>;
+  stylus?: TransformerOptions<Options.Stylus>;
+  postcss?: TransformerOptions<Options.Postcss>;
+  coffeescript?: TransformerOptions<Options.Coffeescript>;
+  pug?: TransformerOptions<Options.Pug>;
+  globalStyle?: TransformerOptions<Options.Typescript>;
+  [languageName: string]: TransformerOptions<any>;
 }
 
 type AutoPreprocessOptions = {
@@ -38,15 +43,15 @@ type AutoPreprocessOptions = {
   transformers?: Transformers;
   aliases?: [string, string][];
   preserve?: string[];
-  typescript?: TransformerOptions;
-  scss?: TransformerOptions;
-  sass?: TransformerOptions;
-  less?: TransformerOptions;
-  stylus?: TransformerOptions;
-  postcss?: TransformerOptions;
-  coffeescript?: TransformerOptions;
-  pub?: TransformerOptions;
-  globalStyle?: TransformerOptions;
+  typescript?: TransformerOptions<Options.Typescript>;
+  scss?: TransformerOptions<Options.Sass>;
+  sass?: TransformerOptions<Options.Sass>;
+  less?: TransformerOptions<Options.Less>;
+  stylus?: TransformerOptions<Options.Stylus>;
+  postcss?: TransformerOptions<Options.Postcss>;
+  coffeescript?: TransformerOptions<Options.Coffeescript>;
+  pug?: TransformerOptions<Options.Pug>;
+  globalStyle?: TransformerOptions<Options.Typescript>;
   // workaround while we don't have this
   // https://github.com/microsoft/TypeScript/issues/17867
   [languageName: string]:
@@ -54,7 +59,7 @@ type AutoPreprocessOptions = {
     | Promise<string>
     | [string, string][]
     | string[]
-    | TransformerOptions;
+    | TransformerOptions<any>;
 };
 
 const SVELTE_MAJOR_VERSION = +version[0];
@@ -88,13 +93,12 @@ export function autoPreprocess(
   const getTransformerOptions = (
     lang: string,
     alias: string,
-  ): TransformerOptions => {
+  ): TransformerOptions<unknown> => {
     if (isFn(transformers[alias])) return transformers[alias];
     if (isFn(transformers[lang])) return transformers[lang];
-    if (optionsCache[alias] != null)
-      return optionsCache[alias] as TransformerOptions;
+    if (optionsCache[alias] != null) return optionsCache[alias];
 
-    const opts = {} as TransformerOptions;
+    const opts: TransformerOptions<unknown> = {};
 
     if (typeof transformers[lang] === 'object') {
       Object.assign(opts, transformers[lang]);

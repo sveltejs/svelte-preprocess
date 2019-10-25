@@ -1,11 +1,15 @@
 import stylus from 'stylus';
 
 import { getIncludePaths } from '../utils';
-import { Processed, Transformer } from '../typings';
+import { Processed, Transformer, Options } from '../typings';
 
-const transformer: Transformer = ({ content, filename, options }) => {
+const transformer: Transformer<Options.Stylus> = ({
+  content,
+  filename,
+  options,
+}) => {
   options = {
-    includePaths: getIncludePaths(filename),
+    paths: getIncludePaths(filename),
     ...options,
   };
 

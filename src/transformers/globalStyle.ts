@@ -20,11 +20,7 @@ const globalifyPlugin = (root: any) => {
   });
 };
 
-const transformer: Transformer = async ({
-  content,
-  filename,
-  map = undefined,
-}) => {
+const transformer: Transformer<never> = async ({ content, filename }) => {
   const { css, map: newMap } = await postcss()
     .use(globalifyPlugin)
     .process(content, { from: filename, map: true });

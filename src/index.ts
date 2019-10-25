@@ -1,5 +1,4 @@
-import { Options as SassOptions } from 'sass';
-
+import { Options } from './typings';
 import { autoPreprocess } from './autoProcess';
 
 import pugProcessor from './processors/pug';
@@ -18,16 +17,18 @@ export default exports = module.exports = autoPreprocess;
 
 // stand-alone processors to be included manually */
 // Markup
-export const pug = (opts: any) => pugProcessor(opts);
+export const pug = (opts: Options.Pug) => pugProcessor(opts);
 
 // Script
-export const coffeescript = (opts: any) => coffeescriptProcessor(opts);
-export const typescript = (opts: any) => typescriptProcessor(opts);
+export const coffeescript = (opts: Options.Coffeescript) =>
+  coffeescriptProcessor(opts);
+export const typescript = (opts: Options.Typescript) =>
+  typescriptProcessor(opts);
 
 // Style
-export const less = (opts: any) => lessProcessor(opts);
-export const scss = (opts: Omit<SassOptions, 'file'>) => scssProcessor(opts);
-export const sass = (opts: Omit<SassOptions, 'file'>) => scssProcessor(opts);
-export const stylus = (opts: any) => stylusProcessor(opts);
-export const postcss = (opts: any) => postcssProcessor(opts);
-export const globalStyle = (opts: any) => globalStyleProcessor(opts);
+export const less = (opts: Options.Less) => lessProcessor(opts);
+export const scss = (opts: Options.Sass) => scssProcessor(opts);
+export const sass = (opts: Options.Sass) => scssProcessor(opts);
+export const stylus = (opts: Options.Stylus) => stylusProcessor(opts);
+export const postcss = (opts: Options.Postcss) => postcssProcessor(opts);
+export const globalStyle = () => globalStyleProcessor();

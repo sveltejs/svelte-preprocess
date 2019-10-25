@@ -1,9 +1,7 @@
-import { Options as SassOptions } from 'sass';
-
 import { getIncludePaths, concat, parseFile } from '../utils';
-import { GenericObject, PreprocessorGroup } from '../typings';
+import { PreprocessorGroup, Options } from '../typings';
 
-export default (options: SassOptions): PreprocessorGroup => ({
+export default (options: Options.Sass): PreprocessorGroup => ({
   async style(svelteFile) {
     const { default: transformer } = await import('../transformers/scss');
     const { content, filename, lang, alias, dependencies } = await parseFile(
@@ -25,7 +23,7 @@ export default (options: SassOptions): PreprocessorGroup => ({
     const transformed = await transformer({
       content,
       filename,
-      options: options as GenericObject,
+      options,
     });
     return {
       ...transformed,

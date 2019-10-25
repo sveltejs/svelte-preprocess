@@ -1,7 +1,7 @@
-import { GenericObject, PreprocessorGroup } from '../typings';
+import { PreprocessorGroup, Options } from '../typings';
 import { concat, parseFile } from '../utils';
 
-export default (options: GenericObject): PreprocessorGroup => ({
+export default (options: Options.Coffeescript): PreprocessorGroup => ({
   async script(svelteFile) {
     const { default: transformer } = await import(
       '../transformers/coffeescript'

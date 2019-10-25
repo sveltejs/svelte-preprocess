@@ -1,7 +1,7 @@
 import { getIncludePaths, concat, parseFile } from '../utils';
-import { GenericObject, PreprocessorGroup } from '../typings';
+import { Options, PreprocessorGroup } from '../typings';
 
-export default (options: GenericObject): PreprocessorGroup => ({
+export default (options: Options.Stylus): PreprocessorGroup => ({
   async style(svelteFile) {
     const { default: transformer } = await import('../transformers/stylus');
     const { content, filename, lang, dependencies } = await parseFile(
@@ -11,7 +11,7 @@ export default (options: GenericObject): PreprocessorGroup => ({
     if (lang !== 'stylus') return { code: content };
 
     options = {
-      includePaths: getIncludePaths(filename),
+      paths: getIncludePaths(filename),
       ...options,
     };
 
