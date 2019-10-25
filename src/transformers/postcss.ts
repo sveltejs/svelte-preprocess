@@ -41,7 +41,10 @@ const transformer: Transformer<Options.Postcss> = async ({
   try {
     /** If not, look for a postcss config file */
     const { default: postcssLoadConfig } = await import(`postcss-load-config`);
-    options = await postcssLoadConfig(options, options.configFilePath);
+    options = await postcssLoadConfig(
+      options,
+      options ? options.configFilePath : undefined,
+    );
   } catch (e) {
     /** Something went wrong, do nothing */
     // istanbul ignore next

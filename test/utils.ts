@@ -25,7 +25,6 @@ export const doesCompileThrow = async (input: string, opts: any) => {
     await compile(input, opts);
   } catch (err) {
     didThrow = true;
-    console.error(err);
   }
   return didThrow;
 };
