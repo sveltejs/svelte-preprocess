@@ -62,12 +62,10 @@ export namespace Options {
 
   // from https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/stylus/index.d.ts#L1410
   export interface Stylus {
-    // from @types/stylus
     globals?: Record<string, any>;
     functions?: Record<string, any>;
     imports?: string[];
     paths?: string[];
-    // filename?: string; // unnecessary
     // custom
     sourcemap?: boolean;
   }

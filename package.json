@@ -84,7 +84,6 @@
   "dependencies": {
     "@types/pug": "^2.0.4",
     "@types/sass": "^1.16.0",
-    "@types/stylus": "^0.48.31",
     "detect-indent": "^6.0.0",
     "strip-indent": "^2.0.0"
   }
