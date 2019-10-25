@@ -1,35 +1,36 @@
-const { resolve } = require('path')
-const getAutoPreprocess = require('../../dist')
-const { preprocess } = require('../utils.js')
+import { resolve } from 'path';
+
+import getAutoPreprocess from '../../src';
+import { preprocess } from '../utils';
 
 describe('transformer - postcss', () => {
   it('should return @imported files as dependencies', async () => {
-    const template = `<style>@import './fixtures/style.css';</style>`
+    const template = `<style>@import './fixtures/style.css';</style>`;
     const opts = getAutoPreprocess({
       postcss: {
         plugins: [require('postcss-easy-import')],
       },
-    })
-    const preprocessed = await preprocess(template, opts)
+    });
+    const preprocessed = await preprocess(template, opts);
     expect(preprocessed.dependencies).toContain(
       resolve(__dirname, '..', 'fixtures', 'style.css'),
-    )
-  })
+    );
+  });
 
   it('should allow custom postcss parsers', async () => {
     const template = `<style>
 div
   color: red
-</style>`
+</style>`;
     const opts = getAutoPreprocess({
       postcss: {
         parser: require('sugarss'),
         plugins: [require('postcss-easy-import')],
       },
-    })
-    const preprocessed = await preprocess(template, opts)
+    });
+    const preprocessed = await preprocess(template, opts);
     expect(preprocessed.toString()).toContain(`div {
   color: red
-}`)
-  })
-})
+}`);
+  });
+});

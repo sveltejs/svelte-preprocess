@@ -44,9 +44,11 @@
   "jest": {
     "collectCoverage": true,
     "collectCoverageFrom": [
-      "<rootDir>/src/**/*.js",
-      "!**/node_modules/**"
-    ]
+      "<rootDir>/src/**/*.ts"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    }
   },
   "devDependencies": {
     "@types/jest": "^24.0.19",

@@ -1,6 +1,9 @@
-const { resolve } = require('path');
-const getAutoPreprocess = require('../../dist');
-const { preprocess, getFixtureContent } = require('../utils.js');
+import { Processed } from 'svelte/types/compiler/preprocess';
+import { resolve } from 'path';
+
+import getAutoPreprocess from '../../src';
+import { preprocess, getFixtureContent } from '../utils.js';
+import { Diagnostic } from 'typescript';
 
 const EXPECTED_SCRIPT = getFixtureContent('script.js');
 
@@ -18,7 +21,7 @@ const transpile = async content => {
     content,
     attributes: { type: 'text/typescript' },
     filename: resolve(__dirname, '..', 'App.svelte'),
-  });
+  }) as Processed & { diagnostics: Diagnostic[] };
 };
 
 describe('transformer - typescript', () => {

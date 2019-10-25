@@ -1,4 +1,4 @@
-const { importAny } = require('../dist/utils');
+import { importAny } from '../src/utils';
 
 describe('utils - importAny', () => {
   it('should throw error when none exist', () => {
