@@ -1,9 +1,9 @@
-import { GenericObject, PreprocessArgs } from '../typings';
-import transformer from '../transformers/less';
+import { GenericObject, PreprocessorGroup } from '../typings';
 import { concat, parseFile } from '../utils';
 
-export default (options: GenericObject) => ({
-  async style(svelteFile: PreprocessArgs) {
+export default (options: GenericObject): PreprocessorGroup => ({
+  async style(svelteFile) {
+    const { default: transformer } = await import('../transformers/less');
     const { content, filename, lang, dependencies } = await parseFile(
       svelteFile,
       'css',

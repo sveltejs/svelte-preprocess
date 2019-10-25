@@ -1,13 +1,8 @@
-import { readFile } from 'fs';
+import { readFile, access } from 'fs';
 import { resolve, dirname, basename } from 'path';
+import { PreprocessorArgs } from './typings';
 
-import {
-  PreprocessArgs,
-  AttributesObject,
-  Transformer,
-  TransformerArgs,
-  TransformerOptions,
-} from './typings';
+import { Transformer, TransformerArgs, TransformerOptions } from './typings';
 
 const LANG_DICT = new Map([
   ['pcss', 'css'],
@@ -44,17 +39,24 @@ export const getSrcContent = (file: string): Promise<string> => {
   });
 };
 
+async function doesFileExist(file: string) {
+  return new Promise(resolve => access(file, 0, err => resolve(!err)));
+}
+
 export const parseFile = async (
-  { attributes, filename, content }: PreprocessArgs,
+  { attributes, filename, content }: PreprocessorArgs,
   language: string,
 ) => {
   const dependencies = [];
-  if (attributes.src && typeof attributes.src === 'string') {
+  if (attributes.src) {
+    let path = attributes.src as string;
     /** Only try to get local files (path starts with ./ or ../) */
-    if (attributes.src.match(/^\.{1,2}\//)) {
-      const file = resolveSrc(filename, attributes.src);
-      content = await getSrcContent(file);
-      dependencies.push(file);
+    if (path.match(/^(https?:)?\/\//) == null) {
+      path = resolveSrc(filename, path);
+      if (await doesFileExist(path)) {
+        content = await getSrcContent(path);
+        dependencies.push(path);
+      }
     }
   }
 
@@ -82,7 +84,7 @@ export const getIncludePaths = (fromFilename: string) =>
   ].filter(Boolean);
 
 export const getLanguage = (
-  attributes: AttributesObject,
+  attributes: PreprocessorArgs['attributes'],
   defaultLang: string,
 ) => {
   let lang = defaultLang;
@@ -98,7 +100,7 @@ export const getLanguage = (
     }
     lang = attributes.type.replace(/^(text|application)\/(.*)$/, '$2');
   } else if (attributes.src) {
-    const parts = basename(attributes.src).split('.');
+    const parts = basename(attributes.src as string).split('.');
     lang = parts.length > 1 ? parts.pop() : defaultLang;
   }
 

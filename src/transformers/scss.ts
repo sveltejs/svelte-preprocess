@@ -1,16 +1,20 @@
-import { importAny, getIncludePaths } from '../utils';
-import { Result, SassException } from 'sass';
+import { Result, SassException, Options as SassOptions } from 'sass';
 
-import { GenericObject, Transformer, PreprocessResult } from '../typings';
+import { importAny, getIncludePaths } from '../utils';
+import { Transformer, Processed } from '../typings';
 
 let sass: {
   render: (
-    options: GenericObject,
-    callback: (err: SassException, result: Result) => void,
+    options: SassOptions,
+    callback: (exception: SassException, result: Result) => void,
   ) => void;
 };
 
 const transformer: Transformer = async ({ content, filename, options }) => {
+  if (sass == null) {
+    ({ default: sass } = await importAny('node-sass', 'sass'));
+  }
+
   options = {
     sourceMap: true,
     includePaths: getIncludePaths(filename),
@@ -20,9 +24,7 @@ const transformer: Transformer = async ({ content, filename, options }) => {
 
   options.data = options.data ? options.data + content : content;
 
-  if (sass == null) sass = await importAny('node-sass', 'sass');
-
-  return new Promise<PreprocessResult>((resolve, reject) => {
+  return new Promise<Processed>((resolve, reject) => {
     sass.render(options, (err, result) => {
       if (err) return reject(err);
 

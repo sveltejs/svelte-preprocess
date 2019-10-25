@@ -1,7 +1,7 @@
 import stylus from 'stylus';
-import { PreprocessResult, Transformer } from '../typings';
 
-const { getIncludePaths } = require('../utils.js');
+import { getIncludePaths } from '../utils';
+import { Processed, Transformer } from '../typings';
 
 const transformer: Transformer = ({ content, filename, options }) => {
   options = {
@@ -9,7 +9,7 @@ const transformer: Transformer = ({ content, filename, options }) => {
     ...options,
   };
 
-  return new Promise<PreprocessResult>((resolve, reject) => {
+  return new Promise<Processed>((resolve, reject) => {
     const style = stylus(content, {
       filename,
       ...options,

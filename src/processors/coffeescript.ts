@@ -1,9 +1,12 @@
-import { GenericObject, PreprocessArgs } from '../typings';
-import transformer from '../transformers/coffeescript.js';
-import { concat, parseFile } from '../utils.js';
+import { GenericObject, PreprocessorGroup } from '../typings';
+import { concat, parseFile } from '../utils';
 
-export default (options: GenericObject) => ({
-  async script(svelteFile: PreprocessArgs) {
+export default (options: GenericObject): PreprocessorGroup => ({
+  async script(svelteFile) {
+    const { default: transformer } = await import(
+      '../transformers/coffeescript'
+    );
+
     const { content, filename, lang, dependencies } = await parseFile(
       svelteFile,
       'javascript',

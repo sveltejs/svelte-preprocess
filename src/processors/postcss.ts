@@ -1,10 +1,10 @@
-import { GenericObject, PreprocessArgs } from '../typings';
-import transformer from '../transformers/postcss';
 import { concat, parseFile } from '../utils';
+import { GenericObject, PreprocessorGroup } from '../typings';
 
 /** Adapted from https://github.com/TehShrike/svelte-preprocess-postcss */
-export default (options: GenericObject) => ({
-  async style(svelteFile: PreprocessArgs) {
+export default (options: GenericObject): PreprocessorGroup => ({
+  async style(svelteFile) {
+    const { default: transformer } = await import('../transformers/postcss');
     const { content, filename, dependencies } = await parseFile(
       svelteFile,
       'css',

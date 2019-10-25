@@ -1,8 +1,8 @@
-import { GenericObject, PreprocessArgs } from '../typings';
-import transformer from '../transformers/pug';
+import { GenericObject, PreprocessorGroup } from '../typings';
 
-export default (options: GenericObject) => ({
-  markup({ content, filename }: PreprocessArgs) {
+export default (options: GenericObject): PreprocessorGroup => ({
+  async markup({ content, filename }) {
+    const { default: transformer } = await import('../transformers/pug');
     return transformer({ content, filename, options });
   },
 });

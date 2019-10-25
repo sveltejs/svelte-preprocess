@@ -1,5 +1,5 @@
-import { dirname, basename, resolve } from 'path';
 import { existsSync } from 'fs';
+import { dirname, basename, resolve } from 'path';
 import ts, { ScriptTarget } from 'typescript';
 
 import { Transformer } from '../typings';

@@ -2,49 +2,32 @@ import { Options as SassOptions } from 'sass';
 
 import { autoPreprocess } from './autoProcess';
 
-import pug from './processors/pug';
-import coffeescript from './processors/coffeescript';
-import typescript from './processors/typescript';
-import less from './processors/less';
-import scss from './processors/scss';
-import stylus from './processors/stylus';
-import postcss from './processors/postcss';
-import globalStyle from './processors/globalStyle';
+import pugProcessor from './processors/pug';
+import coffeescriptProcessor from './processors/coffeescript';
+import typescriptProcessor from './processors/typescript';
+import lessProcessor from './processors/less';
+import scssProcessor from './processors/scss';
+import stylusProcessor from './processors/stylus';
+import postcssProcessor from './processors/postcss';
+import globalStyleProcessor from './processors/globalStyle';
 
-interface ProcessorOptions {
-  [key: string]: unknown;
-}
+// crazy es6/cjs export mix for backward compatibility
 
-export {
-  autoPreprocess as default,
-  pug,
-  coffeescript,
-  typescript,
-  less,
-  scss,
-  scss as sass,
-  stylus,
-  postcss,
-  globalStyle,
-};
+// default auto processor
+export default exports = module.exports = autoPreprocess;
 
-// for backward compatibility
+// stand-alone processors to be included manually */
+// Markup
+export const pug = (opts: any) => pugProcessor(opts);
 
-/** default auto processor */
-module.exports = autoPreprocess;
+// Script
+export const coffeescript = (opts: any) => coffeescriptProcessor(opts);
+export const typescript = (opts: any) => typescriptProcessor(opts);
 
-/** stand-alone processors to be included manually */
-/** Markup */
-module.exports.pug = (opts: ProcessorOptions) => pug(opts);
-
-/** Script */
-module.exports.coffeescript = (opts: ProcessorOptions) => coffeescript(opts);
-module.exports.typescript = (opts: ProcessorOptions) => typescript(opts);
-
-/** Style */
-module.exports.less = (opts: ProcessorOptions) => less(opts);
-module.exports.scss = (opts: Omit<SassOptions, 'file'>) => scss(opts);
-module.exports.sass = (opts: Omit<SassOptions, 'file'>) => scss(opts);
-module.exports.stylus = (opts: ProcessorOptions) => stylus(opts);
-module.exports.postcss = (opts: ProcessorOptions) => postcss(opts);
-module.exports.globalStyle = (opts: ProcessorOptions) => globalStyle(opts);
+// Style
+export const less = (opts: any) => lessProcessor(opts);
+export const scss = (opts: Omit<SassOptions, 'file'>) => scssProcessor(opts);
+export const sass = (opts: Omit<SassOptions, 'file'>) => scssProcessor(opts);
+export const stylus = (opts: any) => stylusProcessor(opts);
+export const postcss = (opts: any) => postcssProcessor(opts);
+export const globalStyle = (opts: any) => globalStyleProcessor(opts);

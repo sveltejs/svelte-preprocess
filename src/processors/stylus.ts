@@ -1,9 +1,9 @@
-import { GenericObject, PreprocessArgs } from '../typings';
-import transformer from '../transformers/stylus';
 import { getIncludePaths, concat, parseFile } from '../utils';
+import { GenericObject, PreprocessorGroup } from '../typings';
 
-export default (options: GenericObject) => ({
-  async style(svelteFile: PreprocessArgs) {
+export default (options: GenericObject): PreprocessorGroup => ({
+  async style(svelteFile) {
+    const { default: transformer } = await import('../transformers/stylus');
     const { content, filename, lang, dependencies } = await parseFile(
       svelteFile,
       'css',

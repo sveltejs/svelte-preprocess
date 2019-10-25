@@ -1,4 +1,5 @@
 import postcss from 'postcss';
+
 import { Transformer } from '../typings';
 
 type PostCssConfigArgs = postcss.ProcessOptions & {
@@ -43,7 +44,7 @@ const transformer: Transformer = async ({
 
   try {
     /** If not, look for a postcss config file */
-    const postcssLoadConfig = require(`postcss-load-config`);
+    const { default: postcssLoadConfig } = await import(`postcss-load-config`);
     options = await postcssLoadConfig(options, options.configFilePath);
   } catch (e) {
     /** Something went wrong, do nothing */

@@ -1,4 +1,4 @@
-const postcss = require('postcss');
+import postcss from 'postcss';
 
 import { Transformer } from '../typings';
 
@@ -27,7 +27,7 @@ const transformer: Transformer = async ({
 }) => {
   const { css, map: newMap } = await postcss()
     .use(globalifyPlugin)
-    .process(content, { from: filename, prev: map });
+    .process(content, { from: filename, map: true });
 
   return { code: css, map: newMap };
 };

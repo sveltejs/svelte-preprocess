@@ -1,5 +1,6 @@
-const stripIndent = require('strip-indent');
+import stripIndent from 'strip-indent';
 import { version } from 'svelte/package.json';
+
 import {
   concat,
   addLanguageAlias,
@@ -13,34 +14,34 @@ import {
   PreprocessorGroup,
   TransformerOptions,
   Preprocessor,
-  AttributesObject,
-  PreprocessArgs,
 } from './typings';
 
-interface TransformersOptions {
-  typescript: TransformerOptions;
-  scss: TransformerOptions;
-  sass: TransformerOptions;
-  less: TransformerOptions;
-  stylus: TransformerOptions;
-  postcss: TransformerOptions;
-  coffeescript: TransformerOptions;
-  pub: TransformerOptions;
-  globalStyle: TransformerOptions;
+interface Transformers {
+  typescript?: TransformerOptions;
+  scss?: TransformerOptions;
+  sass?: TransformerOptions;
+  less?: TransformerOptions;
+  stylus?: TransformerOptions;
+  postcss?: TransformerOptions;
+  coffeescript?: TransformerOptions;
+  pub?: TransformerOptions;
+  globalStyle?: TransformerOptions;
   [languageName: string]: TransformerOptions;
 }
 
-interface MarkupPreprocessArgs {
-  content: string;
-  filename: string;
-}
-
-type AutoPreprocessOptions = TransformersOptions & {
-  onBefore?: ({ content, filename }: MarkupPreprocessArgs) => string;
+type AutoPreprocessOptions = Transformers & {
+  /** @deprecated use a array of processors since svelte v3 */
+  onBefore?: ({
+    content,
+    filename,
+  }: {
+    content: string;
+    filename: string;
+  }) => Promise<string> | string;
   markupTagName?: string;
-  transformers?: TransformersOptions;
-  aliases: [string, string][];
-  preserve: string[];
+  transformers?: Transformers;
+  aliases?: [string, string][];
+  preserve?: string[];
 };
 
 const SVELTE_MAJOR_VERSION = +version[0];
@@ -62,7 +63,7 @@ export function autoPreprocess(
   markupTagName = markupTagName.toLocaleLowerCase();
 
   const optionsCache: GenericObject = {};
-  const transformers: TransformersOptions = rest.transformers || rest;
+  const transformers: Transformers = rest.transformers || rest;
   const markupPattern = new RegExp(
     `<${markupTagName}([\\s\\S]*?)>([\\s\\S]*)<\\/${markupTagName}>`,
   );
@@ -97,9 +98,9 @@ export function autoPreprocess(
     return (optionsCache[alias] = opts);
   };
 
-  const getTransformerTo = (targetLanguage: string): Preprocessor => async (
-    svelteFile: PreprocessArgs,
-  ) => {
+  const getTransformerTo = (
+    targetLanguage: string,
+  ): Preprocessor => async svelteFile => {
     const { content, filename, lang, alias, dependencies } = await parseFile(
       svelteFile,
       targetLanguage,
@@ -134,7 +135,7 @@ export function autoPreprocess(
   const markupTransformer = getTransformerTo('html');
 
   return {
-    async markup({ content, filename }: MarkupPreprocessArgs) {
+    async markup({ content, filename }) {
       if (isFn(onBefore)) {
         // istanbul ignore next
         if (SVELTE_MAJOR_VERSION >= 3) {
@@ -158,7 +159,7 @@ export function autoPreprocess(
       const attributes = attributesStr
         .split(/\s+/)
         .filter(Boolean)
-        .reduce((acc: AttributesObject, attr) => {
+        .reduce((acc: Record<string, string | boolean>, attr) => {
           const [name, value] = attr.split('=');
           // istanbul ignore next
           acc[name] = value ? value.replace(/['"]/g, '') : true;
@@ -180,7 +181,7 @@ export function autoPreprocess(
       return { code, map, dependencies };
     },
     script: scriptTransformer,
-    async style({ content, attributes, filename }: PreprocessArgs) {
+    async style({ content, attributes, filename }) {
       let { code, map, dependencies } = await cssTransformer({
         content,
         attributes,
