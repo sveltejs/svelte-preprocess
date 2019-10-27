@@ -39,7 +39,7 @@ The preprocessor module installation is up to the developer.
 - `coffeescript`: `npm install -D coffeescript`
 - `typescript`: `npm install -D typescript`
 - `less`: `npm install -D less`
-- `sass`: `npm install -D node-sass`
+- `sass`: `npm install -D node-sass` or `npm install -D sass`
 - `pug`: `npm install -D pug`
 - `stylus`: `npm install -D stylus`
 
