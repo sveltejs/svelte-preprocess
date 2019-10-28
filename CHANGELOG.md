@@ -12,7 +12,7 @@
 
 ### Bug Fixes
 
-* 🐛 Try to only include files with local paths ([a167f6e](https://github.com/kaisermann/svelte-preprocess/commit/a167f6e4cc4802f86cc14fe38bbacf7e9db02729))
+* :bug: Try to only include files with local paths ([4c2c4e3](https://github.com/kaisermann/svelte-preprocess/commit/4c2c4e317e8de62bc161e7a1626892f08e98ce82))
 
 
 

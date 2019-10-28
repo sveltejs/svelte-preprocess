@@ -1,12 +1,14 @@
 language: node_js
 
 node_js:
-- '8'
-- '9'
+  - '8'
+  - '9'
+  - '10'
 
 install:
   - npm ci || npm install
 
 script:
-- npm run lint
-- npm run test
+  - npm run build
+  - npm run lint
+  - npm run test

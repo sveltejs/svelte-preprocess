@@ -1,13 +1,14 @@
 {
   "root": true,
-  "extends": ["standard", "prettier", "prettier/standard"],
+  "parser": "@typescript-eslint/parser",
+  "extends": ["prettier", "prettier/standard"],
+  "plugins": ["@typescript-eslint"],
   "env": {
-    "browser": true,
+    "node": true,
     "jest": true
   },
   "parserOptions": {
-    "ecmaFeatures": {
-      "modules": true
-    }
+    "ecmaVersion": 6,
+    "sourceType": "module"
   }
 }
