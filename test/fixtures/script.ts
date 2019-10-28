@@ -1,1 +1,1 @@
-export let hello: string = 'world';
+export var hello: string = 'world';
