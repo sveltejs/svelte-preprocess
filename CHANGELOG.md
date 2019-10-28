@@ -1,36 +1,11 @@
-# [3.2.0](https://github.com/kaisermann/svelte-preprocess/compare/v3.1.4...v3.2.0) (2019-10-29)
-
-
-### Performance Improvements
-
-* rewrite in typescript ([#80](https://github.com/kaisermann/svelte-preprocess/issues/80)) ([f71f29c](https://github.com/kaisermann/svelte-preprocess/commit/f71f29c2fd051b9548845cfc188c3a245be6eb27))
-
-
-
-## [3.1.4](https://github.com/kaisermann/svelte-preprocess/compare/v3.1.3...v3.1.4) (2019-10-23)
-
-
-### Bug Fixes
-
-* don't try to include local files that doesn't exist ([52594eb](https://github.com/kaisermann/svelte-preprocess/commit/52594eb79e7533a442fd7063ef1e2e269269dbc3))
-
-
-
-## [3.1.3](https://github.com/kaisermann/svelte-preprocess/compare/v3.1.2...v3.1.3) (2019-10-23)
-
-
-### Bug Fixes
-
-* 🐛 Try to only include files with local paths ([a167f6e](https://github.com/kaisermann/svelte-preprocess/commit/a167f6e4cc4802f86cc14fe38bbacf7e9db02729))
-
-
-
-## [3.1.2](https://github.com/kaisermann/svelte-preprocess/compare/v3.1.1...v3.1.2) (2019-09-25)
+# [3.2.0](https://github.com/kaisermann/svelte-preprocess/compare/v3.1.1...v3.2.0) (2019-10-28)
 
 
 ### Bug Fixes
 
 * 🐛 import less cjs instead of es6 ([bf8627f](https://github.com/kaisermann/svelte-preprocess/commit/bf8627f3f4bde0d598769a67de10194bbcf04701))
+* 🐛 Try to only include files with local paths ([a167f6e](https://github.com/kaisermann/svelte-preprocess/commit/a167f6e4cc4802f86cc14fe38bbacf7e9db02729))
+* don't try to include local files that doesn't exist ([52594eb](https://github.com/kaisermann/svelte-preprocess/commit/52594eb79e7533a442fd7063ef1e2e269269dbc3))
 
 
 
