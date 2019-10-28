@@ -1,3 +1,12 @@
+# [3.2.0](https://github.com/kaisermann/svelte-preprocess/compare/v3.1.4...v3.2.0) (2019-10-29)
+
+
+### Performance Improvements
+
+* rewrite in typescript ([#80](https://github.com/kaisermann/svelte-preprocess/issues/80)) ([f71f29c](https://github.com/kaisermann/svelte-preprocess/commit/f71f29c2fd051b9548845cfc188c3a245be6eb27))
+
+
+
 ## [3.1.4](https://github.com/kaisermann/svelte-preprocess/compare/v3.1.3...v3.1.4) (2019-10-23)
 
 
@@ -12,7 +21,7 @@
 
 ### Bug Fixes
 
-* :bug: Try to only include files with local paths ([4c2c4e3](https://github.com/kaisermann/svelte-preprocess/commit/4c2c4e317e8de62bc161e7a1626892f08e98ce82))
+* 🐛 Try to only include files with local paths ([a167f6e](https://github.com/kaisermann/svelte-preprocess/commit/a167f6e4cc4802f86cc14fe38bbacf7e9db02729))
 
 
 
@@ -104,7 +113,7 @@ manually install "postcss-load-config".
 
 
 
-## [2.14.4](https://github.com/kaisermann/svelte-preprocess/compare/v2.14.3...v2.14.4) (2019-07-03)
+## [2.14.4](https://github.com/kaisermann/svelte-preprocess/compare/v2.14.3...v2.14.4) (2019-07-06)
 
 
 ### Features
@@ -113,20 +122,12 @@ manually install "postcss-load-config".
 
 
 
-## [2.14.3](https://github.com/kaisermann/svelte-preprocess/compare/v2.14.2...v2.14.3) (2019-07-01)
+## [2.14.3](https://github.com/kaisermann/svelte-preprocess/compare/v2.14.1...v2.14.3) (2019-07-01)
 
 
 ### Bug Fixes
 
 * 🐛 pass less [@imports](https://github.com/imports) as dependencies to svelte ([55e9d28](https://github.com/kaisermann/svelte-preprocess/commit/55e9d28fd03a2a1bf07c4d1b9ec3517fe2ce0cb3))
-
-
-
-## [2.14.2](https://github.com/kaisermann/svelte-preprocess/compare/v2.14.1...v2.14.2) (2019-06-29)
-
-
-### Bug Fixes
-
 * pug mixin elseif ([#45](https://github.com/kaisermann/svelte-preprocess/issues/45)) ([98ad9ca](https://github.com/kaisermann/svelte-preprocess/commit/98ad9ca996c70da25666e4f1e9286d4dfd15fb36))
 
 
@@ -152,7 +153,34 @@ manually install "postcss-load-config".
 
 
 
-# [2.12.0](https://github.com/kaisermann/svelte-preprocess/compare/v2.7.1...v2.12.0) (2019-06-03)
+# [2.12.0](https://github.com/kaisermann/svelte-preprocess/compare/v2.11.0...v2.12.0) (2019-06-03)
+
+
+### Features
+
+* prepend scss with data property ([#36](https://github.com/kaisermann/svelte-preprocess/issues/36)) ([dfa2b2a](https://github.com/kaisermann/svelte-preprocess/commit/dfa2b2a24124c94c3d3af6e63eff8963489f7caa))
+
+
+
+# [2.11.0](https://github.com/kaisermann/svelte-preprocess/compare/v2.10.0...v2.11.0) (2019-05-29)
+
+
+### Features
+
+* 🎸 add svelte pug mixins ([#38](https://github.com/kaisermann/svelte-preprocess/issues/38)) ([543ab75](https://github.com/kaisermann/svelte-preprocess/commit/543ab7557bd8e8172ea52e89355101d3c88a38ba))
+
+
+
+# [2.10.0](https://github.com/kaisermann/svelte-preprocess/compare/v2.9.1...v2.10.0) (2019-05-27)
+
+
+### Features
+
+* 🎸 add support for typescript type checking ([#37](https://github.com/kaisermann/svelte-preprocess/issues/37)) ([e6dd744](https://github.com/kaisermann/svelte-preprocess/commit/e6dd7441db64906f79d7105723e23a8ef949e2d5))
+
+
+
+## [2.9.1](https://github.com/kaisermann/svelte-preprocess/compare/v2.9.0...v2.9.1) (2019-05-27)
 
 
 ### Bug Fixes
@@ -160,12 +188,17 @@ manually install "postcss-load-config".
 * 🐛 template preprocessing running on the whole file ([e37da9d](https://github.com/kaisermann/svelte-preprocess/commit/e37da9d5f8f5fde5077e02add17be039db729e32))
 
 
+
+# [2.9.0](https://github.com/kaisermann/svelte-preprocess/compare/v2.8.0...v2.9.0) (2019-05-15)
+
+
+
+# [2.8.0](https://github.com/kaisermann/svelte-preprocess/compare/v2.7.1...v2.8.0) (2019-05-15)
+
+
 ### Features
 
-* 🎸 add support for typescript type checking ([#37](https://github.com/kaisermann/svelte-preprocess/issues/37)) ([e6dd744](https://github.com/kaisermann/svelte-preprocess/commit/e6dd7441db64906f79d7105723e23a8ef949e2d5))
-* 🎸 add svelte pug mixins ([#38](https://github.com/kaisermann/svelte-preprocess/issues/38)) ([543ab75](https://github.com/kaisermann/svelte-preprocess/commit/543ab7557bd8e8172ea52e89355101d3c88a38ba))
 * 🎸 add typescript preprocessor ([c195aa1](https://github.com/kaisermann/svelte-preprocess/commit/c195aa183b60899603d72743432de501b23f6087))
-* prepend scss with data property ([#36](https://github.com/kaisermann/svelte-preprocess/issues/36)) ([dfa2b2a](https://github.com/kaisermann/svelte-preprocess/commit/dfa2b2a24124c94c3d3af6e63eff8963489f7caa))
 
 
 
