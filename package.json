@@ -38,9 +38,6 @@
     "minify": "babel-minify dist -d dist",
     "prepublishOnly": "npm run build && npm run minify && npm run release && npm run tag"
   },
-  "auto-changelog": {
-    "template": "keepachangelog"
-  },
   "jest": {
     "collectCoverage": true,
     "collectCoverageFrom": [
