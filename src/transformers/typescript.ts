@@ -6,7 +6,7 @@ import { Transformer, Options } from '../typings';
 
 type CompilerOptions = Options.Typescript['compilerOptions'];
 
-function createFormatDiagnosticsHost(cwd: string) {
+function createFormatDiagnosticsHost(cwd: string): ts.FormatDiagnosticsHost {
   return {
     getCanonicalFileName: (fileName: string) => fileName,
     getCurrentDirectory: () => cwd,
@@ -63,28 +63,20 @@ function isValidSvelteImportDiagnostic(filename: string, diagnostic: any) {
   return existsSync(importeePath) === false;
 }
 
-const TS_TRANSFORMERS = {
-  before: [
-    (context: any) => {
-      const visit = (node: ts.Node): ts.VisitResult<ts.Node> => {
-        if (ts.isImportDeclaration(node)) {
-          const importedFilename = node.moduleSpecifier.getText().slice(1, -1);
-          // istanbul ignore else
-          if (isSvelteFile(importedFilename)) {
-            return ts.createImportDeclaration(
-              node.decorators,
-              node.modifiers,
-              node.importClause,
-              node.moduleSpecifier,
-            );
-          }
-        }
-        return ts.visitEachChild(node, child => visit(child), context);
-      };
+const importTransformer: ts.TransformerFactory<ts.SourceFile> = context => {
+  const visit: ts.Visitor = node => {
+    if (ts.isImportDeclaration(node)) {
+      return ts.createImportDeclaration(
+        node.decorators,
+        node.modifiers,
+        node.importClause,
+        node.moduleSpecifier,
+      );
+    }
+    return ts.visitEachChild(node, child => visit(child), context);
+  };
 
-      return (node: any) => ts.visitNode(node, visit);
-    },
-  ],
+  return node => ts.visitNode(node, visit);
 };
 
 function compileFileFromMemory(
@@ -96,62 +88,52 @@ function compileFileFromMemory(
 
   const realHost = ts.createCompilerHost(compilerOptions, true);
   const dummyFilePath = filename;
-  const dummySourceFile = ts.createSourceFile(
-    dummyFilePath,
-    code,
-    ts.ScriptTarget.Latest,
-  );
 
-  const host = {
-    fileExists: (filePath: string) =>
+  const host: ts.CompilerHost = {
+    fileExists: filePath =>
       filePath === dummyFilePath || realHost.fileExists(filePath),
-    directoryExists:
-      realHost.directoryExists && realHost.directoryExists.bind(realHost),
-    getCurrentDirectory: realHost.getCurrentDirectory.bind(realHost),
-    getDirectories: realHost.getDirectories.bind(realHost),
-    getCanonicalFileName: (fileName: string) =>
-      realHost.getCanonicalFileName(fileName),
-    getNewLine: realHost.getNewLine.bind(realHost),
-    getDefaultLibFileName: realHost.getDefaultLibFileName.bind(realHost),
+    getCanonicalFileName: fileName => realHost.getCanonicalFileName(fileName),
     getSourceFile: (
-      fileName: string,
-      languageVersion: ts.ScriptTarget,
-      onError: () => any,
-      shouldCreateNewSourceFile: boolean,
+      fileName,
+      languageVersion,
+      onError,
+      shouldCreateNewSourceFile,
     ) =>
       fileName === dummyFilePath
-        ? dummySourceFile
+        ? ts.createSourceFile(dummyFilePath, code, languageVersion)
         : realHost.getSourceFile(
             fileName,
             languageVersion,
             onError,
             shouldCreateNewSourceFile,
           ),
-    readFile: (filePath: string) =>
+    readFile: filePath =>
       // istanbul ignore next
       filePath === dummyFilePath ? content : realHost.readFile(filePath),
-    useCaseSensitiveFileNames: () => realHost.useCaseSensitiveFileNames(),
-    writeFile: (fileName: string, data: string) => {
+    writeFile: (fileName, data) => {
       if (fileName.endsWith('.map')) {
         map = data;
       } else {
         code = data;
       }
     },
+    directoryExists:
+      realHost.directoryExists && realHost.directoryExists.bind(realHost),
+    getCurrentDirectory: realHost.getCurrentDirectory.bind(realHost),
+    getDirectories: realHost.getDirectories.bind(realHost),
+    getNewLine: realHost.getNewLine.bind(realHost),
+    getDefaultLibFileName: realHost.getDefaultLibFileName.bind(realHost),
+    resolveModuleNames:
+      realHost.resolveModuleNames && realHost.resolveModuleNames.bind(realHost),
+    useCaseSensitiveFileNames: realHost.useCaseSensitiveFileNames.bind(
+      realHost,
+    ),
   };
 
-  const program = ts.createProgram(
-    [dummyFilePath],
-    compilerOptions,
-    (host as any) as ts.CompilerHost,
-  );
-  const emitResult = program.emit(
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    TS_TRANSFORMERS,
-  );
+  const program = ts.createProgram([dummyFilePath], compilerOptions, host);
+  const emitResult = program.emit(undefined, undefined, undefined, undefined, {
+    before: [importTransformer],
+  });
 
   // collect diagnostics without svelte import errors
   const diagnostics = [
@@ -170,19 +152,19 @@ const transformer: Transformer<Options.Typescript> = ({
   // default options
   const compilerOptionsJSON = {
     moduleResolution: 'node',
-    sourceMap: true,
-    strict: true,
     target: 'es6',
   };
+
   let basePath = process.cwd();
 
   if (options.tsconfigFile !== false || options.tsconfigDirectory) {
     const fileDirectory = (options.tsconfigDirectory ||
       dirname(filename)) as string;
-    const tsconfigFile = (options.tsconfigFile ||
-      ts.findConfigFile(fileDirectory, ts.sys.fileExists)) as string;
+    const tsconfigFile =
+      options.tsconfigFile ||
+      ts.findConfigFile(fileDirectory, ts.sys.fileExists);
 
-    if (tsconfigFile) {
+    if (typeof tsconfigFile === 'string') {
       basePath = dirname(tsconfigFile);
 
       const { error, config } = ts.readConfigFile(
