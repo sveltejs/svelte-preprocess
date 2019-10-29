@@ -181,14 +181,20 @@ const transformer: Transformer<Options.Typescript> = ({
       dirname(filename)) as string;
     const tsconfigFile = (options.tsconfigFile ||
       ts.findConfigFile(fileDirectory, ts.sys.fileExists)) as string;
-    basePath = dirname(tsconfigFile);
 
-    const { error, config } = ts.readConfigFile(tsconfigFile, ts.sys.readFile);
-    if (error) {
-      throw new Error(formatDiagnostics(error, basePath));
+    if (tsconfigFile) {
+      basePath = dirname(tsconfigFile);
+
+      const { error, config } = ts.readConfigFile(
+        tsconfigFile,
+        ts.sys.readFile,
+      );
+      if (error) {
+        throw new Error(formatDiagnostics(error, basePath));
+      }
+
+      Object.assign(compilerOptionsJSON, config.compilerOptions);
     }
-
-    Object.assign(compilerOptionsJSON, config.compilerOptions);
   }
 
   Object.assign(compilerOptionsJSON, options.compilerOptions);
