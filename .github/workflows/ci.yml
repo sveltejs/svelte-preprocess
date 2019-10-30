@@ -3,7 +3,15 @@ name: CI
 on: [push, pull_request]
 
 jobs:
+  Lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+      - run: 'npm i && npm run lint'
+
   Tests:
+    needs: [Lint]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -20,10 +28,3 @@ jobs:
       - run: npm test
         env:
           CI: true
-
-  Lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-      - run: 'npm i && npm run lint'
