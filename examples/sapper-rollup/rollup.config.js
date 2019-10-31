@@ -7,7 +7,7 @@ import { terser } from 'rollup-plugin-terser'
 import config from 'sapper/config/rollup.js'
 import pkg from './package.json'
 
-const preprocess = require('../../src/index.js')
+const preprocess = require('../../dist/index.js')
 
 const mode = process.env.NODE_ENV
 const dev = mode === 'development'
