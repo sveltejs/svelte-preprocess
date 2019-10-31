@@ -87,29 +87,34 @@ function compileFileFromMemory(
   let map;
 
   const realHost = ts.createCompilerHost(compilerOptions, true);
-  const dummyFilePath = filename;
+  const dummyFileName = ts.sys.resolvePath(filename);
+
+  const isDummyFile = (fileName: string) => ts.sys.resolvePath(fileName) === dummyFileName
 
   const host: ts.CompilerHost = {
-    fileExists: filePath =>
-      filePath === dummyFilePath || realHost.fileExists(filePath),
-    getCanonicalFileName: fileName => realHost.getCanonicalFileName(fileName),
+    fileExists: fileName =>
+      isDummyFile(fileName) || realHost.fileExists(fileName),
+    getCanonicalFileName: fileName => isDummyFile(fileName)
+      ? ts.sys.useCaseSensitiveFileNames
+        ? fileName
+        : fileName.toLowerCase()
+      : realHost.getCanonicalFileName(fileName),
     getSourceFile: (
       fileName,
       languageVersion,
       onError,
       shouldCreateNewSourceFile,
     ) =>
-      fileName === dummyFilePath
-        ? ts.createSourceFile(dummyFilePath, code, languageVersion)
+      isDummyFile(fileName)
+        ? ts.createSourceFile(dummyFileName, code, languageVersion)
         : realHost.getSourceFile(
-            fileName,
-            languageVersion,
-            onError,
-            shouldCreateNewSourceFile,
-          ),
-    readFile: filePath =>
-      // istanbul ignore next
-      filePath === dummyFilePath ? content : realHost.readFile(filePath),
+          fileName,
+          languageVersion,
+          onError,
+          shouldCreateNewSourceFile,
+        ),
+    readFile: fileName =>
+      isDummyFile(fileName) ? content : realHost.readFile(fileName),
     writeFile: (fileName, data) => {
       if (fileName.endsWith('.map')) {
         map = data;
@@ -130,7 +135,7 @@ function compileFileFromMemory(
     ),
   };
 
-  const program = ts.createProgram([dummyFilePath], compilerOptions, host);
+  const program = ts.createProgram([dummyFileName], compilerOptions, host);
   const emitResult = program.emit(undefined, undefined, undefined, undefined, {
     before: [importTransformer],
   });
