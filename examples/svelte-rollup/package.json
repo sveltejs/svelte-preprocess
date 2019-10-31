@@ -3,16 +3,16 @@
   "version": "1.0.0",
   "devDependencies": {
     "npm-run-all": "^4.1.5",
-    "pug": "^2.0.3",
-    "rollup": "^1.10.1",
-    "rollup-plugin-commonjs": "^9.3.4",
-    "rollup-plugin-livereload": "^1.0.0",
-    "rollup-plugin-node-resolve": "^4.2.3",
-    "rollup-plugin-svelte": "^5.0.3",
-    "rollup-plugin-terser": "^4.0.4",
-    "sirv-cli": "^0.4.0",
-    "svelte": "^3.0.0",
-    "svelte-preprocess": "^2.9.0"
+    "pug": "^2.0.4",
+    "rollup": "^1.26.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-livereload": "^1.0.4",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-svelte": "^5.1.0",
+    "rollup-plugin-terser": "^5.1.2",
+    "sirv-cli": "^0.4.5",
+    "svelte": "^3.12.1",
+    "svelte-preprocess": "^3.2.0"
   },
   "scripts": {
     "build": "rollup -c",
@@ -22,7 +22,7 @@
     "start:dev": "sirv public --dev"
   },
   "dependencies": {
-    "postcss": "^7.0.16",
+    "postcss": "^7.0.21",
     "postcss-import": "^12.0.1"
   }
 }
