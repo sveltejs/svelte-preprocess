@@ -30,7 +30,7 @@
     "test": "jest --no-cache",
     "test:watch": "jest --no-cache --watchAll",
     "lint": "eslint **/*.ts",
-    "format": "prettier --loglevel silent --write \"src/**/*.js\" && eslint --fix \"src/**/*.js\"",
+    "format": "prettier --loglevel silent --write \"src/**/*.ts\" && eslint --fix \"src/**/*.ts\"",
     "postinstall": "node -e \"console.log('\\u001b[36m\\u001b[1m[svelte-preprocess] Don\\'t forget to install the preprocessors packages that will be used: \\u001b[22m\\u001b[39m\\u001b[34mnode-sass/sass, stylus, less, postcss &  postcss-load-config, coffeescript, pug, etc...\\u001b[0m')\"",
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
     "tag": "git tag -a v$npm_package_version -m 'Release v$npm_package_version'",

@@ -79,6 +79,10 @@ const importTransformer: ts.TransformerFactory<ts.SourceFile> = context => {
   return node => ts.visitNode(node, visit);
 };
 
+const TS_TRANSFORMERS = {
+  before: [importTransformer],
+};
+
 function compileFileFromMemory(
   compilerOptions: CompilerOptions,
   { filename, content }: { filename: string; content: string },
@@ -89,16 +93,18 @@ function compileFileFromMemory(
   const realHost = ts.createCompilerHost(compilerOptions, true);
   const dummyFileName = ts.sys.resolvePath(filename);
 
-  const isDummyFile = (fileName: string) => ts.sys.resolvePath(fileName) === dummyFileName
+  const isDummyFile = (fileName: string) =>
+    ts.sys.resolvePath(fileName) === dummyFileName;
 
   const host: ts.CompilerHost = {
     fileExists: fileName =>
       isDummyFile(fileName) || realHost.fileExists(fileName),
-    getCanonicalFileName: fileName => isDummyFile(fileName)
-      ? ts.sys.useCaseSensitiveFileNames
-        ? fileName
-        : fileName.toLowerCase()
-      : realHost.getCanonicalFileName(fileName),
+    getCanonicalFileName: fileName =>
+      isDummyFile(fileName)
+        ? ts.sys.useCaseSensitiveFileNames
+          ? fileName
+          : fileName.toLowerCase()
+        : realHost.getCanonicalFileName(fileName),
     getSourceFile: (
       fileName,
       languageVersion,
@@ -108,11 +114,11 @@ function compileFileFromMemory(
       isDummyFile(fileName)
         ? ts.createSourceFile(dummyFileName, code, languageVersion)
         : realHost.getSourceFile(
-          fileName,
-          languageVersion,
-          onError,
-          shouldCreateNewSourceFile,
-        ),
+            fileName,
+            languageVersion,
+            onError,
+            shouldCreateNewSourceFile,
+          ),
     readFile: fileName =>
       isDummyFile(fileName) ? content : realHost.readFile(fileName),
     writeFile: (fileName, data) => {
@@ -136,9 +142,13 @@ function compileFileFromMemory(
   };
 
   const program = ts.createProgram([dummyFileName], compilerOptions, host);
-  const emitResult = program.emit(undefined, undefined, undefined, undefined, {
-    before: [importTransformer],
-  });
+  const emitResult = program.emit(
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    TS_TRANSFORMERS,
+  );
 
   // collect diagnostics without svelte import errors
   const diagnostics = [
@@ -216,6 +226,7 @@ const transformer: Transformer<Options.Typescript> = ({
         fileName: filename,
         compilerOptions: compilerOptions,
         reportDiagnostics: options.reportDiagnostics !== false,
+        transformers: TS_TRANSFORMERS,
       },
     ));
   } else {
