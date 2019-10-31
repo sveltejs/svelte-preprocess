@@ -1,3 +1,4 @@
+import path from 'path'
 import stylus from 'stylus';
 
 import { getIncludePaths } from '../utils';
@@ -26,7 +27,8 @@ const transformer: Transformer<Options.Stylus> = ({
       resolve({
         code: css,
         map: (style as any).sourcemap,
-        dependencies: style.deps(filename),
+        // .map() necessary for windows compatibility
+        dependencies: style.deps(filename).map((filePath: string) => path.resolve(filePath)),
       });
     });
   });
