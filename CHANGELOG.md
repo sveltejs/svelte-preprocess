@@ -1,4 +1,16 @@
-# [3.2.0](https://github.com/kaisermann/svelte-preprocess/compare/v3.1.4...v3.2.0) (2019-10-29)
+## [3.2.1](https://github.com/kaisermann/svelte-preprocess/compare/v3.2.0...v3.2.1) (2019-10-31)
+
+
+### Bug Fixes
+
+* 🐛 prevent ts from removing unused imports ([cfe6dcb](https://github.com/kaisermann/svelte-preprocess/commit/cfe6dcbd23b7759f36bf7153222cab8e846cf8eb)), closes [#81](https://github.com/kaisermann/svelte-preprocess/issues/81)
+* 🐛 stylus imports on windows ([5bee6e0](https://github.com/kaisermann/svelte-preprocess/commit/5bee6e0a73e3f11814e9002f4dafef3b762de95b))
+* 🐛 transforming typescript without a tsconfig.json file ([7edb18a](https://github.com/kaisermann/svelte-preprocess/commit/7edb18aa27d44a216bdab72264116ca7cd5762ab))
+* 🐛 typescript imports on windows ([f6d6195](https://github.com/kaisermann/svelte-preprocess/commit/f6d6195fc4d60d03c61a6c548066288967cf0d5f))
+
+
+
+# [3.2.0](https://github.com/kaisermann/svelte-preprocess/compare/v3.1.4...v3.2.0) (2019-10-31)
 
 
 ### Performance Improvements
