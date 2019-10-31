@@ -83,7 +83,7 @@ export function autoPreprocess(
   const optionsCache: Record<string, any> = {};
   const transformers = rest.transformers || (rest as Transformers);
   const markupPattern = new RegExp(
-    `<${markupTagName}([\\s\\S]*?)>([\\s\\S]*)<\\/${markupTagName}>`,
+    `<${markupTagName}([\\s\\S]*?)(?:>([\\s\\S]*)<\\/${markupTagName}>|/>)`,
   );
 
   if (aliases && aliases.length) {
