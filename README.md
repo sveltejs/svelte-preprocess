@@ -227,14 +227,14 @@ export default {
 
 ```js
 // svelte.config.js
-const sveltePreprocess = require('svelte-preprocess')
+const sveltePreprocess = require('svelte-preprocess');
 
 module.exports = {
   preprocess: sveltePreprocess({
     // ...svelte-preprocess options
   }),
   // ...other svelte options
-}
+};
 ```
 
 _Tip: this file can be imported in your bundle config instead of having multiple svelte configurations lying around._
@@ -289,15 +289,15 @@ In case you want to manually configure your preprocessing step, `svelte-preproce
 - `globalStyle` - transform `<style global>` into global styles.
 
 ```js
-import { scss, coffeescript, pug, globalStyle } from 'svelte-preprocess'
+import { scss, coffeescript, pug, globalStyle } from 'svelte-preprocess';
 
-svelte.preprocess(input, [pug(), coffeescript(), scss(), globalStyle()])
+svelte.preprocess(input, [pug(), coffeescript(), scss(), globalStyle()]);
 ```
 
 Every processor accepts an option object which is passed to its respective underlying tool.
 
 ```js
-import { scss, postcss } from 'svelte-preprocess'
+import { scss, postcss } from 'svelte-preprocess';
 
 svelte.preprocess(input, [
   scss(),
@@ -308,7 +308,7 @@ svelte.preprocess(input, [
       }),
     ],
   }),
-])
+]);
 ```
 
 **Note**: there's no built-in support for \<template\> tag when using standalone processors.
@@ -318,8 +318,8 @@ svelte.preprocess(input, [
 `svelte-preprocess` in _auto-processing_ mode can receive an options object.
 
 ```js
-const svelte = require('svelte')
-const sveltePreprocess = require('svelte-preprocess')
+const svelte = require('svelte');
+const sveltePreprocess = require('svelte-preprocess');
 const options = {
   /**
    * Define which tag should `svelte-preprocess` look for markup content.
@@ -402,18 +402,18 @@ const options = {
 
   /** Use a custom preprocess method by passing a function. */
   pug({ content, filename }) {
-    const code = pug.render(content)
-    return { code, map: null }
+    const code = pug.render(content);
+    return { code, map: null };
   },
 
   /** Add a custom language preprocessor */
   customLanguage({ content, filename }) {
-    const { code, map } = require('custom-language-compiler')(content)
-    return { code, map }
+    const { code, map } = require('custom-language-compiler')(content);
+    return { code, map };
   },
-}
+};
 
-svelte.preprocess(input, sveltePreprocess(options))
+svelte.preprocess(input, sveltePreprocess(options));
 ```
 
 ## Limitations
@@ -423,6 +423,8 @@ svelte.preprocess(input, sveltePreprocess(options))
 Since `typescript` is not officially supported by `svelte` for its template language, `svelte-preprocess` only type checks code in the `<script></script>` tag.
 
 ### `pug`
+
+#### Template blocks
 
 Some of Svelte's template syntax is invalid in `pug`. `svelte-preprocess` provides some pug mixins to represent svelte's `{#...}{/...}` blocks: `+if()`, `+else()`, `+elseif()`, `+each()`, `+await()`, `+then()`, `+catch()`, `+debug()`.
 
@@ -434,6 +436,14 @@ ul
         a(rel="prefetch" href="blog/{post.slug}") {post.title}
     +else()
       span No posts :c
+```
+
+#### Element attributes
+
+Pug encodes everything inside an element attribute to html entities, so `attr="{foo && bar}"` becomes `attr="foo &amp;&amp; bar"`. To prevent this from happening, instead of using the `=` operator use `!=` which won't encode your attribute value:
+
+```pug
+button(disabled!="{foo && bar}")
 ```
 
 ## FAQ
