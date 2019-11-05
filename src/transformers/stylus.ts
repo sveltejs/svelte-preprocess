@@ -1,4 +1,5 @@
 import path from 'path';
+
 import stylus from 'stylus';
 
 import { getIncludePaths } from '../utils';

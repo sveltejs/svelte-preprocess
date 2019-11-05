@@ -1,5 +1,6 @@
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
+
 import {
   compile as svelteCompile,
   preprocess as sveltePreprocess,

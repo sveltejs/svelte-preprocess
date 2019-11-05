@@ -8,6 +8,7 @@ import {
   typescript,
   pug,
 } from '../src';
+
 import { CSS_PATTERN, getFixtureContent, preprocess } from './utils';
 
 const EXPECTED_SCRIPT = getFixtureContent('script.js');
@@ -52,7 +53,7 @@ SCRIPT_LANGS.forEach(([lang, ext, processor, options]) => {
   });
 });
 
-MARKUP_LANGS.forEach(([lang, ext, processor, options]) => {
+MARKUP_LANGS.forEach(([lang, _, processor, options]) => {
   const EXPECTED_TEMPLATE = getFixtureContent('template.html');
   describe(`processor - ${lang}`, () => {
     it('should preprocess the whole file', async () => {

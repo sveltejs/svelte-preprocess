@@ -1,5 +1,6 @@
 import { existsSync } from 'fs';
 import { dirname, basename, resolve } from 'path';
+
 import ts from 'typescript';
 
 import { Transformer, Options } from '../typings';

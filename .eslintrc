@@ -1,14 +1,7 @@
 {
-  "root": true,
-  "parser": "@typescript-eslint/parser",
-  "extends": ["prettier", "prettier/standard"],
-  "plugins": ["@typescript-eslint"],
+  "extends": ["kaisermann/typescript"],
   "env": {
     "node": true,
     "jest": true
-  },
-  "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "module"
   }
 }

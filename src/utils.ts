@@ -1,8 +1,12 @@
 import { readFile, access } from 'fs';
 import { resolve, dirname, basename } from 'path';
-import { PreprocessorArgs } from './typings';
 
-import { Transformer, TransformerArgs, TransformerOptions } from './typings';
+import {
+  PreprocessorArgs,
+  Transformer,
+  TransformerArgs,
+  TransformerOptions,
+} from './typings';
 
 const LANG_DICT = new Map([
   ['pcss', 'css'],
