@@ -1,3 +1,12 @@
+## [3.2.4](https://github.com/kaisermann/svelte-preprocess/compare/v3.2.3...v3.2.4) (2019-11-05)
+
+
+### Bug Fixes
+
+* 🐛 rollback last release ([b4461b4](https://github.com/kaisermann/svelte-preprocess/commit/b4461b4431ce8d87ecd386f2fe40bb34775c3d8f))
+
+
+
 ## [3.2.3](https://github.com/kaisermann/svelte-preprocess/compare/v3.2.2...v3.2.3) (2019-11-05)
 
 

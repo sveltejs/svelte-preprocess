@@ -1,6 +1,6 @@
 {
   "name": "svelte-preprocess",
-  "version": "3.2.3",
+  "version": "3.2.4",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -21,8 +21,7 @@
     "node": ">= 7.6.0"
   },
   "files": [
-    "dist/",
-    "svelte.d.ts"
+    "dist/"
   ],
   "scripts": {
     "prebuild": "rm -rf dist/ && npm run lint",
@@ -33,9 +32,9 @@
     "lint": "eslint **/*.ts",
     "format": "prettier --loglevel silent --write \"src/**/*.ts\" && eslint --fix \"src/**/*.ts\"",
     "postinstall": "node -e \"console.log('\\u001b[36m\\u001b[1m[svelte-preprocess] Don\\'t forget to install the preprocessors packages that will be used: \\u001b[22m\\u001b[39m\\u001b[34mnode-sass/sass, stylus, less, postcss &  postcss-load-config, coffeescript, pug, etc...\\u001b[0m')\"",
-    "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
+    "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 1 && git add CHANGELOG.md",
     "tag": "git tag -a v$npm_package_version -m 'Release v$npm_package_version'",
-    "release": "npm run version && npm i --package-lock-only && git add package.json package-lock.json && git commit -m \"chore: release v$npm_package_version\"",
+    "release": "npm run version && npm i --package-lock-only && git add package.json package-lock.json && git commit -m \"chore(release): v$npm_package_version :tada:\"",
     "minify": "babel-minify dist -d dist",
     "prepublishOnly": "npm run build && npm run minify && npm run release && npm run tag"
   },
@@ -47,6 +46,9 @@
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     }
+  },
+  "auto-changelog": {
+    "ignoreCommitPattern": "chore: release|chore\\(release\\)|Release v\\d"
   },
   "devDependencies": {
     "@types/jest": "^24.0.19",
@@ -60,9 +62,7 @@
     "coffeescript": "^2.3.2",
     "conventional-changelog-cli": "^2.0.25",
     "eslint": "^5.13.0",
-    "eslint-config-prettier": "^4.0.0",
-    "eslint-plugin-node": "^8.0.1",
-    "eslint-plugin-prettier": "^3.0.1",
+    "eslint-config-kaisermann": "^0.0.1",
     "jest": "^24.9.0",
     "less": "^3.9.0",
     "node-sass": "^4.12.0",
