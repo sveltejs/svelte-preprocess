@@ -1,3 +1,5 @@
+/// <reference path="../svelte.d.ts" />
+
 import { autoPreprocess } from './autoProcess';
 
 // default auto processor

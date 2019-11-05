@@ -21,7 +21,8 @@
     "node": ">= 7.6.0"
   },
   "files": [
-    "dist/"
+    "dist/",
+    "svelte.d.ts"
   ],
   "scripts": {
     "prebuild": "rm -rf dist/ && npm run lint",
