@@ -1,3 +1,12 @@
+## [3.2.5](https://github.com/kaisermann/svelte-preprocess/compare/v3.2.4...v3.2.5) (2019-11-06)
+
+
+### Bug Fixes
+
+* 🐛 empty scss content throwing error ([b4a4139](https://github.com/kaisermann/svelte-preprocess/commit/b4a4139a72068db5d32d27c5209f9e24dbe313dc))
+
+
+
 ## [3.2.4](https://github.com/kaisermann/svelte-preprocess/compare/v3.2.3...v3.2.4) (2019-11-05)
 
 
