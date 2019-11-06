@@ -28,6 +28,11 @@ const transformer: Transformer<Options.Sass> = async ({
 
   options.data = options.data ? options.data + content : content;
 
+  // scss errors if passed an empty string
+  if (options.data.length === 0) {
+    return { code: options.data };
+  }
+
   return new Promise<Processed>((resolve, reject) => {
     sass.render(options, (err, result) => {
       if (err) return reject(err);
