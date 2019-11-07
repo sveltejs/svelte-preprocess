@@ -1,6 +1,6 @@
 {
   "name": "svelte-preprocess",
-  "version": "3.2.5",
+  "version": "3.2.6",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,7 +29,7 @@
     "dev": "tsc -w",
     "test": "jest",
     "test:watch": "jest --watchAll",
-    "test:ci": "jest --silent",
+    "test:ci": "jest --silent --no-cache",
     "lint": "eslint **/*.ts",
     "format": "prettier --loglevel silent --write \"src/**/*.ts\" && eslint --fix \"src/**/*.ts\"",
     "postinstall": "node -e \"console.log('\\u001b[36m\\u001b[1m[svelte-preprocess] Don\\'t forget to install the preprocessors packages that will be used: \\u001b[22m\\u001b[39m\\u001b[34mnode-sass/sass, stylus, less, postcss &  postcss-load-config, coffeescript, pug, etc...\\u001b[0m')\"",

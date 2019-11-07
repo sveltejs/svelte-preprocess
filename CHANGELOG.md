@@ -1,3 +1,12 @@
+## [3.2.6](https://github.com/kaisermann/svelte-preprocess/compare/v3.2.5...v3.2.6) (2019-11-07)
+
+
+### Bug Fixes
+
+* 🐛 concat passed inclusion paths with default ones ([aac8cd4](https://github.com/kaisermann/svelte-preprocess/commit/aac8cd47a1b8b5d8895027dad7d26f2dabea4c14))
+
+
+
 ## [3.2.5](https://github.com/kaisermann/svelte-preprocess/compare/v3.2.4...v3.2.5) (2019-11-06)
 
 
