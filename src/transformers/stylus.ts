@@ -8,10 +8,10 @@ import { Processed, Transformer, Options } from '../typings';
 const transformer: Transformer<Options.Stylus> = ({
   content,
   filename,
-  options,
+  options = {},
 }) => {
   options = {
-    paths: getIncludePaths(filename),
+    paths: getIncludePaths(filename, options.paths),
     ...options,
   };
 

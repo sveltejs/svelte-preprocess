@@ -42,7 +42,7 @@ export interface Stylus {
 }
 
 export interface Typescript {
-  compilerOptions: CompilerOptions & { transpileOnly?: boolean };
+  compilerOptions?: CompilerOptions & { transpileOnly?: boolean };
   tsconfigFile?: string | boolean;
   tsconfigDirectory?: string | boolean;
   transpileOnly?: boolean;

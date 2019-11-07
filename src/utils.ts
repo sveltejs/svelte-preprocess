@@ -84,12 +84,9 @@ export const addLanguageAlias = (entries: Array<[string, string]>) =>
   entries.forEach(entry => LANG_DICT.set(...entry));
 
 /** Paths used by preprocessors to resolve @imports */
-export const getIncludePaths = (fromFilename: string) =>
-  [
-    process.cwd(),
-    fromFilename.length && dirname(fromFilename),
-    'node_modules',
-  ].filter(Boolean);
+export const getIncludePaths = (fromFilename: string, base: string[] = []) => [
+  ...new Set([...base, 'node_modules', process.cwd(), dirname(fromFilename)]),
+];
 
 export const getLanguage = (
   attributes: PreprocessorArgs['attributes'],

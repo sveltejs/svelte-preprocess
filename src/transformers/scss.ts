@@ -13,7 +13,7 @@ let sass: {
 const transformer: Transformer<Options.Sass> = async ({
   content,
   filename,
-  options,
+  options = {},
 }) => {
   if (sass == null) {
     ({ default: sass } = await importAny('node-sass', 'sass'));
@@ -21,8 +21,8 @@ const transformer: Transformer<Options.Sass> = async ({
 
   options = {
     sourceMap: true,
-    includePaths: getIncludePaths(filename),
     ...options,
+    includePaths: getIncludePaths(filename, options.includePaths),
     outFile: filename + '.css',
   };
 

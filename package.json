@@ -27,8 +27,9 @@
     "prebuild": "rm -rf dist/ && npm run lint",
     "build": "tsc",
     "dev": "tsc -w",
-    "test": "jest --no-cache",
-    "test:watch": "jest --no-cache --watchAll",
+    "test": "jest",
+    "test:watch": "jest --watchAll",
+    "test:ci": "jest --silent",
     "lint": "eslint **/*.ts",
     "format": "prettier --loglevel silent --write \"src/**/*.ts\" && eslint --fix \"src/**/*.ts\"",
     "postinstall": "node -e \"console.log('\\u001b[36m\\u001b[1m[svelte-preprocess] Don\\'t forget to install the preprocessors packages that will be used: \\u001b[22m\\u001b[39m\\u001b[34mnode-sass/sass, stylus, less, postcss &  postcss-load-config, coffeescript, pug, etc...\\u001b[0m')\"",
@@ -36,7 +37,7 @@
     "tag": "git tag -a v$npm_package_version -m 'Release v$npm_package_version'",
     "release": "npm run version && npm i --package-lock-only && git add package.json package-lock.json && git commit -m \"chore(release): v$npm_package_version :tada:\"",
     "minify": "babel-minify dist -d dist",
-    "prepublishOnly": "npm run build && npm run minify && npm run release && npm run tag"
+    "prepublishOnly": "npm run test:ci && npm run build && npm run minify && npm run release && npm run tag"
   },
   "jest": {
     "collectCoverage": true,
