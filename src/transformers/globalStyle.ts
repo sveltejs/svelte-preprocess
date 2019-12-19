@@ -14,9 +14,20 @@ const globalifyPlugin = (root: any) => {
       return;
     }
 
-    rule.selectors = rule.selectors.map((selector: string) =>
-      selector.startsWith(':global') ? selector : `:global(${selector})`,
-    );
+    rule.selectors = rule.selectors.map((selector: string) => {
+      return selector
+        .split(' ')
+        .map(selectorPart => {
+          if (selectorPart.startsWith(':local')) {
+            return selectorPart.replace(/:local\((.+?)\)/g, '$1');
+          }
+          if (selectorPart.startsWith(':global')) {
+            return selectorPart;
+          }
+          return `:global(${selectorPart})`;
+        })
+        .join(' ');
+    });
   });
 };
 
