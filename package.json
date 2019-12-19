@@ -24,7 +24,7 @@
     "dist/"
   ],
   "scripts": {
-    "prebuild": "rm -rf dist/ && yarn lint",
+    "prebuild": "rm -rf dist/ && npm run lint",
     "build": "tsc",
     "dev": "tsc -w",
     "test": "jest",
@@ -35,9 +35,9 @@
     "postinstall": "node -e \"console.log('\\u001b[36m\\u001b[1m[svelte-preprocess] Don\\'t forget to install the preprocessors packages that will be used: \\u001b[22m\\u001b[39m\\u001b[34mnode-sass/sass, stylus, less, postcss &  postcss-load-config, coffeescript, pug, etc...\\u001b[0m')\"",
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 1 && git add CHANGELOG.md",
     "tag": "git tag -a v$npm_package_version -m 'Release v$npm_package_version'",
-    "release": "yarn version && yarn && git add package.json yarn.lock && git commit -m \"chore(release): v$npm_package_version :tada:\"",
+    "release": "npm run version && npm run && git add package.json yarn.lock && git commit -m \"chore(release): v$npm_package_version :tada:\"",
     "minify": "babel-minify dist -d dist",
-    "prepublishOnly": "yarn test && yarn build && yarn minify && yarn release && yarn tag"
+    "prepublishOnly": "npm run test && npm run build && npm run minify && npm run release && npm run tag"
   },
   "jest": {
     "collectCoverage": true,
