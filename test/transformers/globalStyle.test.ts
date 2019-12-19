@@ -2,36 +2,55 @@ import autoProcess from '../../src';
 import { preprocess } from '../utils';
 
 describe('transformer - globalStyle', () => {
-  it('should wrap selector in :global(...) modifier', async () => {
-    const template = `<style global>@media(min-width:10px){div{color:red}}.test{}</style>`;
+  it('wraps selector in :global(...) modifier', async () => {
+    const template = `<style global>div{color:red}.test{}</style>`;
     const opts = autoProcess();
     const preprocessed = await preprocess(template, opts);
     expect(preprocessed.toString()).toContain(
-      '@media(min-width:10px){:global(div){color:red}}:global(.test){}',
+      `:global(div){color:red}:global(.test){}`,
     );
   });
 
-  it('should wrap selector in :global(...) only if needed', async () => {
-    const template = `<style global>
-.test{}:global(.foo){}
-@keyframes a {from{} to{}}
-    </style>`;
+  it('wraps selector in :global(...) only if needed', async () => {
+    const template = `<style global>.test{}:global(.foo){}</style>`;
     const opts = autoProcess();
     const preprocessed = await preprocess(template, opts);
     expect(preprocessed.toString()).toContain(
-      `:global(.test){}:global(.foo){}
-@keyframes -global-a {from{} to{}}`,
+      `:global(.test){}:global(.foo){}`,
     );
   });
 
-  it("should prefix @keyframes names with '-global-' only if needed", async () => {
+  it("prefixes @keyframes names with '-global-' only if needed", async () => {
     const template = `<style global>
 @keyframes a {from{} to{}}@keyframes -global-b {from{} to{}}
-    </style>`;
+</style>`;
     const opts = autoProcess();
     const preprocessed = await preprocess(template, opts);
     expect(preprocessed.toString()).toContain(
       `@keyframes -global-a {from{} to{}}@keyframes -global-b {from{} to{}}`,
     );
+  });
+
+  it('allows to use :local() at the beginning of a selector', async () => {
+    const template = `<style global>:local(div) .test{}</style>`;
+    const opts = autoProcess();
+    const preprocessed = await preprocess(template, opts);
+    expect(preprocessed.toString()).toContain(`div :global(.test){}`);
+  });
+
+  it('allows to use :local() in the middle of a selector', async () => {
+    const template = `<style global>.test :local(div) .test{}</style>`;
+    const opts = autoProcess();
+    const preprocessed = await preprocess(template, opts);
+    expect(preprocessed.toString()).toContain(
+      `:global(.test) div :global(.test){}`,
+    );
+  });
+
+  it('allows to use :local() in the end of a selector', async () => {
+    const template = `<style global>.test :local(div){}</style>`;
+    const opts = autoProcess();
+    const preprocessed = await preprocess(template, opts);
+    expect(preprocessed.toString()).toContain(`:global(.test) div{}`);
   });
 });
