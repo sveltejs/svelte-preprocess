@@ -1,3 +1,17 @@
+## [3.3.1](https://github.com/kaisermann/svelte-preprocess/compare/v3.2.6...v3.3.1) (2020-01-29)
+
+
+### Bug Fixes
+
+* 🐛 postinstall script breaking on yarn v2 ([2f7f62b](https://github.com/kaisermann/svelte-preprocess/commit/2f7f62b5e0137bd621f1bff930289d0d97631cb9))
+
+
+### Features
+
+* 🎸 support :local() pseudo-selector for global styles ([52277a8](https://github.com/kaisermann/svelte-preprocess/commit/52277a8af5492e1b0fc10cde16299a70da72cfdd))
+
+
+
 # [3.3.0](https://github.com/kaisermann/svelte-preprocess/compare/v3.2.6...v3.3.0) (2019-12-19)
 
 
