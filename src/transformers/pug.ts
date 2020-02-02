@@ -54,8 +54,17 @@ const transformer: Transformer<Options.Pug> = async ({
   };
 
   const { type: identationType } = detectIndent(content);
-  const code = pug.render(`${GET_MIXINS(identationType)}\n${content}`, options);
-  return { code };
+  const code = `${GET_MIXINS(identationType)}\n${content}`;
+  const compiled = pug.compile(code, {
+    compileDebug: false,
+    filename,
+    ...options,
+    // @types/pug compile() returned value doesn't have `dependencies` prop
+  }) as pug.compileTemplate & { dependencies?: string[] };
+  return {
+    code: compiled(),
+    dependencies: compiled.dependencies ?? null,
+  };
 };
 
 export default transformer;
