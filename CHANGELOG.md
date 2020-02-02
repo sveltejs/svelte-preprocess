@@ -1,3 +1,12 @@
+# [3.4.0](https://github.com/kaisermann/svelte-preprocess/compare/v3.3.1...v3.4.0) (2020-02-02)
+
+
+### Features
+
+* 🎸 watch included pug files ([a8855fb](https://github.com/kaisermann/svelte-preprocess/commit/a8855fb7a92affe27490c14f14341403568132d5))
+
+
+
 ## [3.3.1](https://github.com/kaisermann/svelte-preprocess/compare/v3.2.6...v3.3.1) (2020-01-29)
 
 
