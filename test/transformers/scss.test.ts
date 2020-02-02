@@ -20,7 +20,7 @@ describe('transformer - scss', () => {
     const opts = getAutoPreprocess();
     const preprocessed = await preprocess(template, opts);
     expect(preprocessed.dependencies).toContain(
-      resolve(__dirname, '..', 'fixtures', 'style.scss'),
+      resolve(__dirname, '..', 'fixtures', 'style.scss').replace(/[\\/]/g, '/'),
     );
   });
 });

@@ -2,3 +2,7 @@ node_modules
 *.log
 coverage
 dist/
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.pnp.*
