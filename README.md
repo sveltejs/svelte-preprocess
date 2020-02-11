@@ -75,8 +75,6 @@ _Note: only for auto preprocessing_
 
 Add a `global` attribute to your `style` tag and instead of scoping the css, all of its content will be interpreted as global style.
 
-_Note: needs postcss to be installed_
-
 ```html
 <style global>
   div {
@@ -84,6 +82,9 @@ _Note: needs postcss to be installed_
   }
 </style>
 ```
+
+_Note<sup>1</sup>: needs postcss to be installed_
+_Note<sup>2</sup>: if you're using it as a standalone processor, it works best if added to the end of the processors array._
 
 ### Preprocessors support
 
