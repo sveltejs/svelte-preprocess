@@ -1,7 +1,7 @@
 import { Result, SassException, Options as SassOptions } from 'sass';
 
 import { importAny, getIncludePaths } from '../utils';
-import { Transformer, Processed, Options } from '../typings';
+import { Transformer, Processed, Options } from '../types';
 
 let sass: {
   render: (

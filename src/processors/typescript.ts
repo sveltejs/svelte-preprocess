@@ -1,4 +1,4 @@
-import { Options, PreprocessorGroup } from '../typings';
+import { Options, PreprocessorGroup } from '../types';
 import { concat, parseFile } from '../utils';
 
 export default (options: Options.Typescript): PreprocessorGroup => ({

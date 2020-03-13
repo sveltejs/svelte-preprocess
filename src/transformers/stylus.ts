@@ -3,7 +3,7 @@ import path from 'path';
 import stylus from 'stylus';
 
 import { getIncludePaths } from '../utils';
-import { Processed, Transformer, Options } from '../typings';
+import { Processed, Transformer, Options } from '../types';
 
 const transformer: Transformer<Options.Stylus> = ({
   content,

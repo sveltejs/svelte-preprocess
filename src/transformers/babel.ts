@@ -1,6 +1,6 @@
 import { transformAsync } from '@babel/core';
 
-import { Transformer, Options } from '../typings';
+import { Transformer, Options } from '../types';
 
 const transformer: Transformer<Options.Babel> = async ({
   content,
@@ -8,6 +8,10 @@ const transformer: Transformer<Options.Babel> = async ({
   options,
   map = undefined,
 }) => {
+  if (!options) {
+    return { code: content, map };
+  }
+
   const { code, map: sourcemap } = await transformAsync(content, {
     ...options,
     inputSourceMap: map as any,

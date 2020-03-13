@@ -1,16 +1,15 @@
 import { concat, parseFile } from '../utils';
 import { PreprocessorGroup, Options } from '../types';
 
-/** Adapted from https://github.com/TehShrike/svelte-preprocess-postcss */
-export default (options: Options.Postcss): PreprocessorGroup => ({
-  async style(svelteFile) {
-    const { default: transformer } = await import('../transformers/postcss');
+export default (options: Options.Babel): PreprocessorGroup => ({
+  async script(svelteFile) {
+    const { default: transformer } = await import('../transformers/babel');
+
     const { content, filename, dependencies } = await parseFile(
       svelteFile,
-      'css',
+      'javascript',
     );
 
-    /** If manually passed a plugins array, use it as the postcss config */
     const transformed = await transformer({ content, filename, options });
     return {
       ...transformed,

@@ -22,6 +22,10 @@ export interface TransformerArgs<T> {
   options?: T;
 }
 
+export type ProcessedScript = Processed & {
+  diagnostics?: unknown[];
+};
+
 export type Transformer<T> = (
   args: TransformerArgs<T>,
 ) => Processed | Promise<Processed>;

@@ -1,5 +1,5 @@
 import { concat, parseFile } from '../utils';
-import { PreprocessorGroup, Options } from '../typings';
+import { PreprocessorGroup, Options } from '../types';
 
 export default (options: Options.Sass): PreprocessorGroup => ({
   async style(svelteFile) {

@@ -13,3 +13,4 @@ export { default as scss, default as sass } from './processors/scss';
 export { default as stylus } from './processors/stylus';
 export { default as postcss } from './processors/postcss';
 export { default as globalStyle } from './processors/globalStyle';
+export { default as babel } from './processors/babel';
