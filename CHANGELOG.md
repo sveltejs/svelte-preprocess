@@ -1,3 +1,12 @@
+# [3.5.0](https://github.com/kaisermann/svelte-preprocess/compare/v3.4.0...v3.5.0) (2020-03-13)
+
+
+### Features
+
+* 🎸 add babel transformer ([adc47a1](https://github.com/kaisermann/svelte-preprocess/commit/adc47a1752c30a7630cf2567418d8475bb545bdb)), closes [#108](https://github.com/kaisermann/svelte-preprocess/issues/108)
+
+
+
 # [3.4.0](https://github.com/kaisermann/svelte-preprocess/compare/v3.3.1...v3.4.0) (2020-02-02)
 
 
