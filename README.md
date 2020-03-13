@@ -7,10 +7,11 @@
 
 - [Installation](#installation)
 - [Features](#features)
-  - [Template tag support](#template-tag-support)
-  - [External files support](#external-files-support)
-  - [Global style support](#global-style-support)
-  - [Preprocessors support](#preprocessors-support)
+  - [Template tag](#template-tag)
+  - [External files](#external-files)
+  - [Global style](#global-style)
+  - [Preprocessors](#preprocessors)
+  - [Modern Javascript syntax](#modern-javascript-syntax)
 - [Usage](#usage)
   - [With `rollup-plugin-svelte`](#with-rollup-plugin-svelte)
   - [With `svelte-loader`](#with-svelte-loader)
@@ -35,9 +36,10 @@
 
 The preprocessor module installation is up to the developer.
 
-- `postcss`: `npm install -D postcss postcss-load-config`
+- `babel`: `npm install -D @babel/core @babel/preset-...`
 - `coffeescript`: `npm install -D coffeescript`
 - `typescript`: `npm install -D typescript`
+- `postcss`: `npm install -D postcss postcss-load-config`
 - `less`: `npm install -D less`
 - `sass`: `npm install -D node-sass` or `npm install -D sass`
 - `pug`: `npm install -D pug`
@@ -47,7 +49,7 @@ _Note: If you want to load your `postcss` configuration from a external file, ma
 
 ## Features
 
-### Template tag support
+### Template tag
 
 Add _vue-like_ support for defining your markup between a `<template>` tag. The tagname can be customized to something like `markup` for example. See [#options](#options).
 
@@ -63,7 +65,7 @@ _Note: only for auto preprocessing_
 <script></script>
 ```
 
-### External files support
+### External files
 
 ```html
 <template src="./template.html"></template>
@@ -71,7 +73,7 @@ _Note: only for auto preprocessing_
 <style src="./style.css"></style>
 ```
 
-### Global style support
+### Global style
 
 Add a `global` attribute to your `style` tag and instead of scoping the css, all of its content will be interpreted as global style.
 
@@ -86,9 +88,9 @@ Add a `global` attribute to your `style` tag and instead of scoping the css, all
 _Note<sup>1</sup>: needs postcss to be installed_
 _Note<sup>2</sup>: if you're using it as a standalone processor, it works best if added to the end of the processors array._
 
-### Preprocessors support
+### Preprocessors
 
-Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Coffeescript`, `TypeScript`, `Pug` and `PostCSS`.
+Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Coffeescript`, `TypeScript`, `Pug`, `PostCSS`, `Babel`.
 
 ```html
 <template lang="pug">
@@ -131,6 +133,38 @@ Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Co
   $color=reddivcolor: $color;
 </style>
 ```
+
+### Modern Javascript syntax
+
+`svelte-preprocess` allows you to run your component code through `babel` before sending it to the compiler, allowing you to use new language features such as optional operators and nullish coalescing. However, note that `babel` should transpile your component code to the javascript version supported by the Svelte compiler, so ES6+.
+
+For example, with `@babel/preset-env` your config could be:
+
+```js
+import preprocess from 'svelte-preprocess'
+  ...
+  preprocess: preprocess({
+    babel: {
+      presets: [
+        [
+          '@babel/preset-env',
+          {
+            loose: true,
+            // No need for babel to resolve modules
+            modules: false,
+            targets: {
+              // ! Very important. Target es6+
+              esmodules: true,
+            },
+          },
+        ],
+      ],
+    },
+  });
+  ...
+```
+
+_Note: If you want to transpile your app to be supported in older browsers, you must run babel from the context of your bundler._
 
 ## Usage
 
