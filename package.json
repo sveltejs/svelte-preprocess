@@ -54,8 +54,13 @@
     }
   },
   "lint-staged": {
-    "*.{ts,js,tsx,jsx}": ["eslint --fix", "prettier --write"],
-    "*.json": ["prettier --write"]
+    "*.{ts,js,tsx,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.json": [
+      "prettier --write"
+    ]
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
