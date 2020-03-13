@@ -2,6 +2,7 @@ import postcss from 'postcss';
 import { Options as SassOptions } from 'sass';
 import { Options as PugOptions } from 'pug';
 import { CompilerOptions } from 'typescript';
+import { TransformOptions as BabelOptions } from '@babel/core';
 
 export interface Coffeescript {
   inlineMap?: boolean;
@@ -14,6 +15,14 @@ export interface Coffeescript {
 export interface Postcss extends postcss.ProcessOptions {
   plugins: postcss.AcceptedPlugin[];
   configFilePath?: string;
+}
+
+export interface Babel extends BabelOptions {
+  sourceType: 'module';
+  minified: false;
+  ast: false;
+  code: true;
+  sourceMaps: boolean;
 }
 
 export type Pug = PugOptions;

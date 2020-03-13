@@ -49,6 +49,7 @@ type AutoPreprocessOptions = {
   less?: TransformerOptions<Options.Less>;
   stylus?: TransformerOptions<Options.Stylus>;
   postcss?: TransformerOptions<Options.Postcss>;
+  babel?: TransformerOptions<Options.Babel>;
   coffeescript?: TransformerOptions<Options.Coffeescript>;
   pug?: TransformerOptions<Options.Pug>;
   globalStyle?: TransformerOptions<Options.Typescript>;
@@ -197,13 +198,42 @@ export function autoPreprocess(
 
       return { code, map, dependencies };
     },
-    script: scriptTransformer,
-    async style({ content, attributes, filename }) {
-      let { code, map, dependencies } = await cssTransformer({
+    async script({ content, attributes, filename }) {
+      const transformResult = await scriptTransformer({
         content,
         attributes,
         filename,
       });
+
+      if (transformResult == null) return;
+
+      let { code, map, dependencies, diagnostics } = transformResult;
+
+      if (transformers.babel) {
+        const transformed = await runTransformer('babel', transformers.babel, {
+          content: code,
+          map,
+          filename,
+        });
+
+        code = transformed.code;
+        map = transformed.map;
+        dependencies = concat(dependencies, transformed.dependencies);
+        diagnostics = concat(diagnostics, transformed.diagnostics);
+      }
+
+      return { code, map, dependencies, diagnostics };
+    },
+    async style({ content, attributes, filename }) {
+      const transformResult = await cssTransformer({
+        content,
+        attributes,
+        filename,
+      });
+
+      if (transformResult == null) return;
+
+      let { code, map, dependencies } = transformResult;
 
       if (transformers.postcss) {
         const transformed = await runTransformer(

@@ -1,6 +1,5 @@
 import getAutoPreprocess from '../../src';
 import { getLanguage } from '../../src/utils';
-
 import {
   preprocess,
   getFixtureContent,
