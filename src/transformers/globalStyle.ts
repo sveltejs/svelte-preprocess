@@ -1,6 +1,6 @@
 import postcss from 'postcss';
 
-import { Transformer } from '../typings';
+import { Transformer } from '../types';
 
 const globalifyPlugin = (root: any) => {
   root.walkAtRules(/keyframes$/, (atrule: any) => {

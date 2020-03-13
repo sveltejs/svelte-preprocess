@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 
 import getAutoPreprocess from '../../src';
-import { Processed } from '../../src/typings';
+import { Processed } from '../../src/types';
 import { preprocess, getFixtureContent, getFixturePath } from '../utils';
 
 const {

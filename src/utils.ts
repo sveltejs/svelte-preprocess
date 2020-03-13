@@ -6,7 +6,7 @@ import {
   Transformer,
   TransformerArgs,
   TransformerOptions,
-} from './typings';
+} from './types';
 
 const LANG_DICT = new Map([
   ['pcss', 'css'],

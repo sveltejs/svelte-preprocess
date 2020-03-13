@@ -1,8 +1,9 @@
 import { resolve } from 'path';
+
 import { Diagnostic } from 'typescript';
 
 import getAutoPreprocess from '../../src';
-import { Processed } from '../../src/typings';
+import { Processed } from '../../src/types';
 import { preprocess, getFixtureContent } from '../utils';
 
 const EXPECTED_SCRIPT = getFixtureContent('script.js');

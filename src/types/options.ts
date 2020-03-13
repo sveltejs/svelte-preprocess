@@ -18,11 +18,11 @@ export interface Postcss extends postcss.ProcessOptions {
 }
 
 export interface Babel extends BabelOptions {
-  sourceType: 'module';
-  minified: false;
-  ast: false;
-  code: true;
-  sourceMaps: boolean;
+  sourceType?: 'module';
+  minified?: false;
+  ast?: false;
+  code?: true;
+  sourceMaps?: boolean;
 }
 
 export type Pug = PugOptions;

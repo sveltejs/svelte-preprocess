@@ -1,4 +1,4 @@
-import { PreprocessorGroup, Options } from '../typings';
+import { PreprocessorGroup, Options } from '../types';
 import { concat, parseFile } from '../utils';
 
 export default (options: Options.Less): PreprocessorGroup => ({

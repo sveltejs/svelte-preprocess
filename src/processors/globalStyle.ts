@@ -1,4 +1,4 @@
-import { PreprocessorGroup } from '../typings';
+import { PreprocessorGroup } from '../types';
 
 export default (): PreprocessorGroup => {
   return {

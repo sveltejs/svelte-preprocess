@@ -1,6 +1,6 @@
 import coffeescript from 'coffeescript';
 
-import { Transformer, Options } from '../typings';
+import { Transformer, Options } from '../types';
 
 const transformer: Transformer<Options.Coffeescript> = ({
   content,

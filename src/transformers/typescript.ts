@@ -3,7 +3,7 @@ import { dirname, basename, resolve } from 'path';
 
 import ts from 'typescript';
 
-import { Transformer, Options } from '../typings';
+import { Transformer, Options } from '../types';
 
 type CompilerOptions = Options.Typescript['compilerOptions'];
 
