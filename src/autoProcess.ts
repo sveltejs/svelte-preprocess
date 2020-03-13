@@ -14,7 +14,6 @@ import {
   TransformerOptions,
   Preprocessor,
   Options,
-  Processed,
   ProcessedScript,
 } from './types';
 
