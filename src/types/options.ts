@@ -26,7 +26,7 @@ export interface Babel extends BabelOptions {
 }
 
 export type Pug = PugOptions;
-export type Sass = Omit<SassOptions, 'file'>;
+export type Sass = Omit<SassOptions, 'file'> & { renderSync?: boolean };
 // from https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/less/index.d.ts#L80
 export interface Less {
   paths?: string[];
