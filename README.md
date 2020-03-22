@@ -457,6 +457,11 @@ svelte.preprocess(input, sveltePreprocess(options));
 
 Since `typescript` is not officially supported by `svelte` for its template language, `svelte-preprocess` only type checks code in the `<script></script>` tag.
 
+The following compiler options are not supported:
+
+- `noUnusedLocals`
+- `declarations`
+
 ### `pug`
 
 #### Template blocks
