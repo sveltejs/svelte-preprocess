@@ -460,6 +460,7 @@ Since `typescript` is not officially supported by `svelte` for its template lang
 The following compiler options are not supported:
 
 - `noUnusedLocals`
+- `noEmitOnError`
 - `declarations`
 
 ### `pug`
