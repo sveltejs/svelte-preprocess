@@ -97,9 +97,10 @@ function isValidSvelteReactiveValueDiagnostic(
   /** if error message doesn't contain a reactive value, do nothing */
   if (!diagnostic.messageText.includes('$')) return true;
 
-  const matches = diagnostic.messageText.match(TS2552_REGEX);
+  const [, usedVar, proposedVar] =
+    diagnostic.messageText.match(TS2552_REGEX) || [];
 
-  return !(matches[1] && matches[2] && matches[1] === matches[2]);
+  return !(usedVar && proposedVar && usedVar === proposedVar);
 }
 
 function compileFileFromMemory(
