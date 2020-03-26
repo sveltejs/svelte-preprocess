@@ -141,5 +141,26 @@ describe('transformer - typescript', () => {
       );
       expect(diagnostics.some(d => d.code === 2307)).toBe(true);
     });
+
+    it('should NOT report a mismatched variable name error when using reactive variables', async () => {
+      const { diagnostics } = await transpile(
+        `
+          const user = {};
+          $user.name = "test";
+        `,
+      );
+      expect(diagnostics.some(d => d.code === 2552)).toBe(false);
+    });
+    
+    it('should report a mismatched variable name error', async () => {
+      const { diagnostics } = await transpile(
+        `
+          const user = {};
+          xuser.name = "test";
+        `,
+      );
+      expect(diagnostics.some(d => d.code === 2552)).toBe(true);
+    });
+
   });
 });
