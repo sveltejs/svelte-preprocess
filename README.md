@@ -393,6 +393,11 @@ const options = {
   /** Disable a language by setting it to 'false' */
   scss: false,
 
+  /** or pass an option to render synchronously and any other node-sass or sass options*/
+  scss: {
+    renderSync: true
+  },
+
   /**  Pass options to the default preprocessor method */
   stylus: {
     paths: ['node_modules'],

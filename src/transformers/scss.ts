@@ -8,7 +8,24 @@ let sass: {
     options: SassOptions,
     callback: (exception: SassException, result: Result) => void,
   ) => void;
+  renderSync: (
+    options: SassOptions
+  ) => Result;  
 };
+
+type ResolveResult = {
+  code: string;
+  map: string | undefined;
+  dependencies: string[];
+};
+
+function getResultForResolve(result: Result): ResolveResult {
+  return {
+    code: result.css.toString(),
+    map: result.map ? result.map.toString() : undefined,
+    dependencies: result.stats.includedFiles,
+  };
+}
 
 const transformer: Transformer<Options.Sass> = async ({
   content,
@@ -19,12 +36,15 @@ const transformer: Transformer<Options.Sass> = async ({
     ({ default: sass } = await importAny('node-sass', 'sass'));
   }
 
-  options = {
-    sourceMap: true,
-    ...options,
-    includePaths: getIncludePaths(filename, options.includePaths),
-    outFile: filename + '.css',
-  };
+  let renderSync: boolean;
+  (
+    {renderSync, ...options} = {
+      sourceMap: true,
+      ...options,
+      includePaths: getIncludePaths(filename, options.includePaths),
+      outFile: filename + '.css',
+    }
+  );
 
   options.data = options.data ? options.data + content : content;
 
@@ -34,14 +54,21 @@ const transformer: Transformer<Options.Sass> = async ({
   }
 
   return new Promise<Processed>((resolve, reject) => {
+    if (renderSync){
+      try {
+        const result = sass.renderSync(options);
+
+        return resolve(getResultForResolve(result));        
+      }
+      catch (err){
+        return reject(err as SassException);
+      }
+    }
+
     sass.render(options, (err, result) => {
       if (err) return reject(err);
 
-      resolve({
-        code: result.css.toString(),
-        map: result.map ? result.map.toString() : undefined,
-        dependencies: result.stats.includedFiles,
-      });
+      resolve(getResultForResolve(result));
     });
   });
 };
