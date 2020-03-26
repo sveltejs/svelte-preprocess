@@ -21,7 +21,8 @@
   - [Auto Preprocessing](#auto-preprocessing)
   - [Standalone processors](#standalone-processors)
 - [Options](#options)
-- [Limitations](#limitations)
+- [Specifics and limitations](#specifics-and-limitations)
+  - [`scss`/`sass`](#scsssass)
   - [`typescript`](#typescript)
   - [`pug`](#pug)
 - [FAQ](#faq)
@@ -456,7 +457,14 @@ const options = {
 svelte.preprocess(input, sveltePreprocess(options));
 ```
 
-## Limitations
+## Specifics and limitations
+
+### `scss`/`sass`
+
+The SCSS/SASS processor accepts the default sass options alongside two other props:
+
+- `data: string` - a string prepended to every scss file processed.
+- `renderSync: boolean` - if `true`, use the sync render method which is faster for dart sass.
 
 ### `typescript`
 

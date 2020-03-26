@@ -8,9 +8,7 @@ let sass: {
     options: SassOptions,
     callback: (exception: SassException, result: Result) => void,
   ) => void;
-  renderSync: (
-    options: SassOptions
-  ) => Result;  
+  renderSync: (options: SassOptions) => Result;
 };
 
 type ResolveResult = {
@@ -22,7 +20,7 @@ type ResolveResult = {
 function getResultForResolve(result: Result): ResolveResult {
   return {
     code: result.css.toString(),
-    map: result.map ? result.map.toString() : undefined,
+    map: result.map?.toString(),
     dependencies: result.stats.includedFiles,
   };
 }
@@ -36,36 +34,26 @@ const transformer: Transformer<Options.Sass> = async ({
     ({ default: sass } = await importAny('node-sass', 'sass'));
   }
 
-  let renderSync: boolean;
-  (
-    {renderSync, ...options} = {
-      sourceMap: true,
-      ...options,
-      includePaths: getIncludePaths(filename, options.includePaths),
-      outFile: filename + '.css',
-    }
-  );
+  const { renderSync, ...sassOptions }: Options.Sass = {
+    sourceMap: true,
+    ...options,
+    includePaths: getIncludePaths(filename, options.includePaths),
+    outFile: `${filename}.css`,
+  };
 
-  options.data = options.data ? options.data + content : content;
+  sassOptions.data = options.data ? options.data + content : content;
 
   // scss errors if passed an empty string
-  if (options.data.length === 0) {
+  if (sassOptions.data.length === 0) {
     return { code: options.data };
   }
 
+  if (renderSync) {
+    return getResultForResolve(sass.renderSync(sassOptions));
+  }
+
   return new Promise<Processed>((resolve, reject) => {
-    if (renderSync){
-      try {
-        const result = sass.renderSync(options);
-
-        return resolve(getResultForResolve(result));        
-      }
-      catch (err){
-        return reject(err as SassException);
-      }
-    }
-
-    sass.render(options, (err, result) => {
+    sass.render(sassOptions, (err, result) => {
       if (err) return reject(err);
 
       resolve(getResultForResolve(result));
