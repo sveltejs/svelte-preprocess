@@ -1,3 +1,12 @@
+# [3.6.0](https://github.com/kaisermann/svelte-preprocess/compare/v3.4.0...v3.6.0) (2020-03-26)
+
+
+### Features
+
+* add an option to render scss synchronously via renderSync ([#123](https://github.com/kaisermann/svelte-preprocess/issues/123)) ([1c9285d](https://github.com/kaisermann/svelte-preprocess/commit/1c9285d508ec2fd0bea9b9f77a0940c6b3e00b89))
+
+
+
 # [3.5.0](https://github.com/kaisermann/svelte-preprocess/compare/v3.4.0...v3.5.0) (2020-03-13)
 
 
