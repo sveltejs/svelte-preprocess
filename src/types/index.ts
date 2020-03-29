@@ -26,7 +26,7 @@ export interface TransformerArgs<T> {
 }
 
 export type Processed = SvelteProcessed & {
-  diagnostics?: unknown[];
+  diagnostics?: any[];
 };
 
 export type Transformer<T> = (
