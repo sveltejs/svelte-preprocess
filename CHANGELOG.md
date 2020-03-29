@@ -1,3 +1,17 @@
+# [3.7.0](https://github.com/kaisermann/svelte-preprocess/compare/v3.6.0...v3.7.0) (2020-03-29)
+
+
+### Bug Fixes
+
+* avoid reporting 'Cannot find name '{0}'. Did you mean '{1}'?' for reactive variables ([#126](https://github.com/kaisermann/svelte-preprocess/issues/126)) ([a267885](https://github.com/kaisermann/svelte-preprocess/commit/a267885e48a20c913368feafda153fa2389609e1))
+
+
+### Features
+
+* 🎸 add `replace` transformer ([06981f4](https://github.com/kaisermann/svelte-preprocess/commit/06981f410d0427bc75119cebebcb4b35c4b9a7dc))
+
+
+
 # [3.6.0](https://github.com/kaisermann/svelte-preprocess/compare/v3.4.0...v3.6.0) (2020-03-26)
 
 
