@@ -513,6 +513,8 @@ const options = {
     [/@then\s*(?:\((.*?)\))?$/gim, '{:then $1}'],
     [/@catch\s*(?:\((.*?)\))?$$/gim, '{:catch $1}'],
     [/@endawait$/gim, '{/await}'],
+    [/@debug\s*\((.*?)\)$/gim, '{@debug $1}'],
+    [/@html\s*\((.*?)\)$/gim, '{@html $1}'],
   ];
 };
 

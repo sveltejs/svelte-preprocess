@@ -12,11 +12,20 @@ const options = [
   [/@then\s*(?:\((.*?)\))?$/gim, '{:then $1}'],
   [/@catch\s*(?:\((.*?)\))?$$/gim, '{:catch $1}'],
   [/@endawait$/gim, '{/await}'],
+  [/@debug\s*\((.*?)\)$/gim, '{@debug $1}'],
+  [/@html\s*\((.*?)\)$/gim, '{@html $1}'],
 ];
 
 describe('transformer - regex', () => {
   it('replaces string patterns in markup with string patterns', async () => {
     const template = `
+<script>
+  let foo = 1
+</script>
+
+@debug(foo)
+@html(foo)
+
 @if (foo && bar)
     <div>hey</div>
 @elseif (baz < 0 && (baz || bar))
@@ -37,57 +46,71 @@ describe('transformer - regex', () => {
     then value
 @catch
     catch
-@endawait`.repeat(2);
-    const opts = autoProcess({ regex: options });
+@endawait`
+      .trim()
+      .repeat(2);
+    const opts = autoProcess({ replace: options });
     const preprocessed = await preprocess(template, opts);
     expect(preprocessed.toString()).toMatchInlineSnapshot(`
-      "
-      @if (foo && bar)
+      "<script>
+        let foo = 1
+      </script>
+
+      {@debug foo}
+      {@html foo}
+
+      {#if foo && bar}
           <div>hey</div>
-      @elseif (baz < 0 && (baz || bar))
+      {:else if baz < 0 && (baz || bar)}
           <div>yo</div>
-      @endif
+      {/if}
 
-      @each(expression as name, index (key))
+      {#each expression as name, index (key)}
           <li>foo</li>
-      @else
+      {:else}
           <div>foo</div>
-      @endeach
+      {/each}
 
-      @await(promise)
+      {#await promise}
           awaiting
-      @then
+      {:then }
           then
-      @then(value)
+      {:then value}
           then value
-      @catch
+      {:catch }
           catch
-      @endawait
-      @if (foo && bar)
+      @endawait<script>
+        let foo = 1
+      </script>
+
+      {@debug foo}
+      {@html foo}
+
+      {#if foo && bar}
           <div>hey</div>
-      @elseif (baz < 0 && (baz || bar))
+      {:else if baz < 0 && (baz || bar)}
           <div>yo</div>
-      @endif
+      {/if}
 
-      @each(expression as name, index (key))
+      {#each expression as name, index (key)}
           <li>foo</li>
-      @else
+      {:else}
           <div>foo</div>
-      @endeach
+      {/each}
 
-      @await(promise)
+      {#await promise}
           awaiting
-      @then
+      {:then }
           then
-      @then(value)
+      {:then value}
           then value
-      @catch
+      {:catch }
           catch
-      @endawait"
+      {/await}"
     `);
   });
 
-  it('replaces string patterns in markup with string patterns', async () => {
+  it('replaces string patterns in markup by using a method', async () => {
     const template = `<script>
       let isDEV = process.env.NODE_ENV === 'development';
     </script>`;
