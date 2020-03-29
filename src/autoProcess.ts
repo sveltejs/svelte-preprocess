@@ -27,6 +27,7 @@ interface Transformers {
   coffeescript?: TransformerOptions<Options.Coffeescript>;
   pug?: TransformerOptions<Options.Pug>;
   globalStyle?: TransformerOptions<Options.Typescript>;
+  replace?: Options.Replace;
   [languageName: string]: TransformerOptions<any>;
 }
 
@@ -163,6 +164,15 @@ export function autoPreprocess(
           );
         }
         content = await onBefore({ content, filename });
+      }
+
+      if (transformers.replace) {
+        const result = await runTransformer('replace', transformers.replace, {
+          content,
+          filename,
+        });
+
+        content = result.code;
       }
 
       const templateMatch = content.match(markupPattern);

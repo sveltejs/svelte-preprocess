@@ -4,6 +4,10 @@ import { Options as PugOptions } from 'pug';
 import { CompilerOptions } from 'typescript';
 import { TransformOptions as BabelOptions } from '@babel/core';
 
+export type Replace = Array<
+  [RegExp, (substring: string, ...args: any[]) => string | string]
+>;
+
 export interface Coffeescript {
   inlineMap?: boolean;
   filename?: string;

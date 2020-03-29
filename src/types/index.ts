@@ -28,7 +28,7 @@ export type ProcessedScript = Processed & {
 
 export type Transformer<T> = (
   args: TransformerArgs<T>,
-) => Processed | Promise<Processed>;
+) => ProcessedScript | Promise<ProcessedScript>;
 
 export type TransformerOptions<T> =
   | boolean

@@ -12,6 +12,7 @@
   - [Global style](#global-style)
   - [Preprocessors](#preprocessors)
   - [Modern Javascript syntax](#modern-javascript-syntax)
+  - [Replace values](#replace-values)
 - [Usage](#usage)
   - [With `rollup-plugin-svelte`](#with-rollup-plugin-svelte)
   - [With `svelte-loader`](#with-svelte-loader)
@@ -166,6 +167,44 @@ import preprocess from 'svelte-preprocess'
 ```
 
 _Note: If you want to transpile your app to be supported in older browsers, you must run babel from the context of your bundler._
+
+### Replace values
+
+Replace a set of string patterns in your components markup by passing an array of `[RegExp, ReplaceFn | string]`, the same arguments received by the `String.prototype.replace` method.
+
+In example, to add `process.env.{prop}` value resolution and a custom `@if/@endif` if-block shorthand, one could do:
+
+```js
+sveltePreprocess({
+  replace: [
+    [
+      /process\.env\.(\w+)/g,
+      (_:, prop) => JSON.stringify(process.env[prop]),
+    ],
+    [/@if\s*\((.*?)\)$/gim, '{#if $1}'],
+    [/@endif$/gim, '{/if}'],
+  ],
+});
+```
+
+Which allows to write your component like:
+
+```html
+@if(process.env.NODE_ENV !== 'development')
+  <h1>Production environment!</h1>
+@endif
+```
+
+And the result, for a `NODE_ENV = 'production'` would be:
+
+```svelte
+{#if "production" !== 'development'}
+  <h1>Production environment!</h1>
+{/if}
+```
+
+_Note<sup>1</sup>: the `replace` transformer is executed before any other transformer._
+_Note<sup>2</sup>: it is **NOT** recommended to modify Svelte's syntax for a number of reasons._
 
 ## Usage
 
@@ -396,7 +435,7 @@ const options = {
 
   /** or pass an option to render synchronously and any other node-sass or sass options*/
   scss: {
-    renderSync: true
+    renderSync: true,
   },
 
   /**  Pass options to the default preprocessor method */
@@ -452,6 +491,26 @@ const options = {
     const { code, map } = require('custom-language-compiler')(content);
     return { code, map };
   },
+
+  /** Replace string patterns in your markup */
+  replace: [
+    // Replace `process.env.{prop}` with the actual stringified value.
+    [
+      /process\.env\.(\w+)/g,
+      (_: string, match: string) => JSON.stringify(process.env[match]),
+    ],
+    // Example of "supporting" a blade-like syntax:
+    [/@if\s*\((.*?)\)$/gim, '{#if $1}'],
+    [/@elseif\s*\((.*?)\)$/gim, '{:else if $1}'],
+    [/@else$/gim, '{:else}'],
+    [/@endif$/gim, '{/if}'],
+    [/@each\s*\((.*?)\)$/gim, '{#each $1}'],
+    [/@endeach$/gim, '{/each}'],
+    [/@await\s*\((.*?)\)$/gim, '{#await $1}'],
+    [/@then\s*(?:\((.*?)\))?$/gim, '{:then $1}'],
+    [/@catch\s*(?:\((.*?)\))?$$/gim, '{:catch $1}'],
+    [/@endawait$/gim, '{/await}'],
+  ];
 };
 
 svelte.preprocess(input, sveltePreprocess(options));
