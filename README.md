@@ -90,6 +90,7 @@ Add a `global` attribute to your `style` tag and instead of scoping the css, all
 ```
 
 _Note<sup>1</sup>: needs postcss to be installed_
+
 _Note<sup>2</sup>: if you're using it as a standalone processor, it works best if added to the end of the processors array._
 
 ### Preprocessors
@@ -206,6 +207,7 @@ And the result, for a `NODE_ENV = 'production'` would be:
 ```
 
 _Note<sup>1</sup>: the `replace` transformer is executed before any other transformer._
+
 _Note<sup>2</sup>: it is **NOT** recommended to modify Svelte's syntax for a number of reasons._
 
 ## Usage
@@ -513,7 +515,7 @@ const options = {
     [/@endeach$/gim, '{/each}'],
     [/@await\s*\((.*?)\)$/gim, '{#await $1}'],
     [/@then\s*(?:\((.*?)\))?$/gim, '{:then $1}'],
-    [/@catch\s*(?:\((.*?)\))?$$/gim, '{:catch $1}'],
+    [/@catch\s*(?:\((.*?)\))?$/gim, '{:catch $1}'],
     [/@endawait$/gim, '{/await}'],
     [/@debug\s*\((.*?)\)$/gim, '{@debug $1}'],
     [/@html\s*\((.*?)\)$/gim, '{@html $1}'],
