@@ -1,6 +1,8 @@
 import { readFile, access } from 'fs';
 import { resolve, dirname, basename } from 'path';
 
+import stripIndent from 'strip-indent';
+
 import {
   PreprocessorArgs,
   Transformer,
@@ -130,6 +132,9 @@ export const runTransformer = async (
   options: TransformerOptions<any>,
   { content, map, filename }: TransformerArgs<any>,
 ): Promise<ReturnType<Transformer<unknown>>> => {
+  // remove any unnecessary indentation (useful for coffee, pug and sugarss)
+  content = stripIndent(content);
+
   if (typeof options === 'function') {
     return options({ content, map, filename });
   }

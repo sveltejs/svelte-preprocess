@@ -194,7 +194,7 @@ Which allows to write your component like:
 
 ```html
 @if(process.env.NODE_ENV !== 'development')
-<h1>Production environment!</h1>
+  <h1>Production environment!</h1>
 @endif
 ```
 

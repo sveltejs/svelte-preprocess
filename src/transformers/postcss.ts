@@ -10,9 +10,7 @@ const process = async (
 ) => {
   const { css, map, messages } = await postcss(plugins).process(content, {
     from: filename,
-    map: {
-      prev: sourceMap,
-    },
+    map: { prev: sourceMap },
     parser,
     syntax,
   });
@@ -41,10 +39,16 @@ const transformer: Transformer<Options.Postcss> = async ({
   try {
     /** If not, look for a postcss config file */
     const { default: postcssLoadConfig } = await import(`postcss-load-config`);
-    options = await postcssLoadConfig(
+    const loadedConfig = await postcssLoadConfig(
       options,
       options ? options.configFilePath : undefined,
     );
+
+    options = {
+      plugins: loadedConfig.plugins,
+      // `postcss-load-config` puts all other props in a `options` object
+      ...loadedConfig.options,
+    };
   } catch (e) {
     /** Something went wrong, do nothing */
     // istanbul ignore next
