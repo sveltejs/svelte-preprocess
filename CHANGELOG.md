@@ -1,3 +1,12 @@
+## [3.7.1](https://github.com/kaisermann/svelte-preprocess/compare/v3.7.0...v3.7.1) (2020-03-29)
+
+
+### Bug Fixes
+
+* 🐛 syntax and parser props from postcss config file ([74d4a89](https://github.com/kaisermann/svelte-preprocess/commit/74d4a8923faf619c3908dd63ba40626835303363)), closes [#127](https://github.com/kaisermann/svelte-preprocess/issues/127)
+
+
+
 # [3.7.0](https://github.com/kaisermann/svelte-preprocess/compare/v3.6.0...v3.7.0) (2020-03-29)
 
 
