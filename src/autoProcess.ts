@@ -167,12 +167,13 @@ export function autoPreprocess(
       }
 
       if (transformers.replace) {
-        const result = await runTransformer('replace', transformers.replace, {
-          content,
-          filename,
-        });
+        const transformed = await runTransformer(
+          'replace',
+          transformers.replace,
+          { content, filename },
+        );
 
-        content = result.code;
+        content = transformed.code;
       }
 
       const templateMatch = content.match(markupPattern);

@@ -191,7 +191,7 @@ Which allows to write your component like:
 
 ```html
 @if(process.env.NODE_ENV !== 'development')
-  <h1>Production environment!</h1>
+<h1>Production environment!</h1>
 @endif
 ```
 
@@ -357,11 +357,14 @@ In case you want to manually configure your preprocessing step, `svelte-preproce
 
 - `pug`
 - `coffeescript` or `coffee`
+- `typescript`
 - `less`
 - `scss` or `sass`
 - `stylus`
 - `postcss`
+- `babel`
 - `globalStyle` - transform `<style global>` into global styles.
+- `replace` - replace string patterns in your markup.
 
 ```js
 import { scss, coffeescript, pug, globalStyle } from 'svelte-preprocess';
