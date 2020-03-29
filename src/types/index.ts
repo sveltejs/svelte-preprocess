@@ -1,11 +1,14 @@
-import { Processed, Preprocessor } from 'svelte/types/compiler/preprocess';
+import {
+  Processed as SvelteProcessed,
+  Preprocessor,
+} from 'svelte/types/compiler/preprocess';
 
 import * as Options from './options';
 
 export { Options };
 
 export {
-  Processed,
+  Processed as SvelteProcessed,
   PreprocessorGroup,
   Preprocessor,
 } from 'svelte/types/compiler/preprocess';
@@ -22,13 +25,13 @@ export interface TransformerArgs<T> {
   options?: T;
 }
 
-export type ProcessedScript = Processed & {
+export type Processed = SvelteProcessed & {
   diagnostics?: unknown[];
 };
 
 export type Transformer<T> = (
   args: TransformerArgs<T>,
-) => ProcessedScript | Promise<ProcessedScript>;
+) => Processed | Promise<Processed>;
 
 export type TransformerOptions<T> =
   | boolean

@@ -14,7 +14,7 @@ import {
   TransformerOptions,
   Preprocessor,
   Options,
-  ProcessedScript,
+  Processed,
 } from './types';
 
 interface Transformers {
@@ -211,7 +211,7 @@ export function autoPreprocess(
       return { code, map, dependencies };
     },
     async script({ content, attributes, filename }) {
-      const transformResult: ProcessedScript = await scriptTransformer({
+      const transformResult: Processed = await scriptTransformer({
         content,
         attributes,
         filename,
