@@ -129,7 +129,7 @@ export const runTransformer = async (
   name: string,
   options: TransformerOptions<any>,
   { content, map, filename }: TransformerArgs<any>,
-) => {
+): Promise<ReturnType<Transformer<unknown>>> => {
   if (typeof options === 'function') {
     return options({ content, map, filename });
   }

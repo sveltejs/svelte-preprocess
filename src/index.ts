@@ -14,3 +14,4 @@ export { default as stylus } from './processors/stylus';
 export { default as postcss } from './processors/postcss';
 export { default as globalStyle } from './processors/globalStyle';
 export { default as babel } from './processors/babel';
+export { default as replace } from './processors/replace';
