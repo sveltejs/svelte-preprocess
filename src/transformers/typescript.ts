@@ -84,6 +84,25 @@ const TS_TRANSFORMERS = {
   before: [importTransformer],
 };
 
+const TS2552_REGEX = /Cannot find name '\$([a-zA-Z0-9_]+)'. Did you mean '([a-zA-Z0-9_]+)'\?/i;
+function isValidSvelteReactiveValueDiagnostic(
+  filename: string,
+  diagnostic: any,
+): boolean {
+  if (diagnostic.code !== 2552) return true;
+
+  /** if the importee is not a svelte file, do nothing */
+  if (!isSvelteFile(filename)) return true;
+
+  /** if error message doesn't contain a reactive value, do nothing */
+  if (!diagnostic.messageText.includes('$')) return true;
+
+  const [, usedVar, proposedVar] =
+    diagnostic.messageText.match(TS2552_REGEX) || [];
+
+  return !(usedVar && proposedVar && usedVar === proposedVar);
+}
+
 function compileFileFromMemory(
   compilerOptions: CompilerOptions,
   { filename, content }: { filename: string; content: string },
@@ -155,7 +174,11 @@ function compileFileFromMemory(
   const diagnostics = [
     ...emitResult.diagnostics,
     ...ts.getPreEmitDiagnostics(program),
-  ].filter(diagnostic => isValidSvelteImportDiagnostic(filename, diagnostic));
+  ].filter(
+    diagnostic =>
+      isValidSvelteImportDiagnostic(filename, diagnostic) &&
+      isValidSvelteReactiveValueDiagnostic(filename, diagnostic),
+  );
 
   return { code, map, diagnostics };
 }
