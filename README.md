@@ -1,3 +1,5 @@
+![](https://github.com/kaisermann/svelte-preprocess/workflows/ci/badge.svg)
+
 # Svelte Preprocess
 
 > A [Svelte](https://svelte.dev) preprocessor with support for: PostCSS, SCSS, Less, Stylus, Coffeescript, TypeScript and Pug.
