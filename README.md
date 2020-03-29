@@ -1,4 +1,4 @@
-![](https://github.com/kaisermann/svelte-preprocess/workflows/ci/badge.svg)
+![](https://github.com/kaisermann/svelte-preprocess/workflows/CI/badge.svg)
 
 # Svelte Preprocess
 
