@@ -349,7 +349,7 @@ const { mdsvex } = require('mdsvex')
     ...,
     preprocess: [
       sveltePreprocess({ /* svelte-preprocess options */ }),
-      msdvex({ /* mdsvex options */ })
+      mdsvex({ /* mdsvex options */ })
     ],
   }
 ...
