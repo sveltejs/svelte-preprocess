@@ -568,6 +568,15 @@ Pug encodes everything inside an element attribute to html entities, so `attr="{
 button(disabled!="{foo && bar}")
 ```
 
+#### Svelte Element directives
+
+Syntax for use Svelte Element directives with Pug
+
+```pug
+input(bind:value="{foo}")
+input(on:input="{bar}")
+```
+
 ## FAQ
 
 ### My VS Code is displaying a lot of errors on my templates when I try to use `x`...
