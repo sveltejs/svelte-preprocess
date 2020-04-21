@@ -1,3 +1,12 @@
+## [3.7.2](https://github.com/kaisermann/svelte-preprocess/compare/v3.7.1...v3.7.2) (2020-04-21)
+
+
+### Bug Fixes
+
+* 🐛 add `bare: true` to coffee compiler ([7d38bfd](https://github.com/kaisermann/svelte-preprocess/commit/7d38bfde34b6fafeca7e8df490348fd2004cdb1a)), closes [#134](https://github.com/kaisermann/svelte-preprocess/issues/134)
+
+
+
 ## [3.7.1](https://github.com/kaisermann/svelte-preprocess/compare/v3.7.0...v3.7.1) (2020-03-29)
 
 
