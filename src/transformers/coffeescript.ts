@@ -10,6 +10,7 @@ const transformer: Transformer<Options.Coffeescript> = ({
   const { js: code, sourceMap: map } = coffeescript.compile(content, {
     filename,
     sourceMap: true,
+    bare: false,
     ...options,
   });
 
