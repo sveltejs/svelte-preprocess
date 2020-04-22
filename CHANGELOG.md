@@ -1,3 +1,12 @@
+## [3.7.3](https://github.com/kaisermann/svelte-preprocess/compare/v3.7.2...v3.7.3) (2020-04-22)
+
+
+### Bug Fixes
+
+* 🐛 add preprocessors as optional peerDeps ([7f434df](https://github.com/kaisermann/svelte-preprocess/commit/7f434dfc78c8118afbe7142d8061a2d3df1a330c)), closes [#137](https://github.com/kaisermann/svelte-preprocess/issues/137)
+
+
+
 ## [3.7.2](https://github.com/kaisermann/svelte-preprocess/compare/v3.7.1...v3.7.2) (2020-04-21)
 
 
