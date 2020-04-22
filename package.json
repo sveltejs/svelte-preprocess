@@ -72,31 +72,75 @@
     "babel-minify": "^0.5.1",
     "coffeescript": "^2.5.1",
     "conventional-changelog-cli": "^2.0.31",
-    "eslint": "^6.8.0",
     "eslint-config-kaisermann": "0.1.0",
+    "eslint": "^6.8.0",
     "husky": "^4.2.3",
+    "install-peers-cli": "^2.2.0",
     "jest": "^25.1.0",
     "less": "^3.10.3",
     "lint-staged": "^10.0.8",
     "node-sass": "^4.13.1",
-    "postcss": "^7.0.26",
     "postcss-easy-import": "^3.0.0",
     "postcss-load-config": "^2.1.0",
+    "postcss": "^7.0.26",
     "prettier": "^1.19.1",
     "pug": "^2.0.4",
+    "sass": "^1.26.3",
     "stylus": "^0.54.7",
     "sugarss": "^2.0.0",
-    "svelte": "^3.0.0",
+    "svelte": "^3.18.1",
     "ts-jest": "^25.1.0",
     "typescript": "^3.7.5"
-  },
-  "peerDependencies": {
-    "svelte": "^3.18.1"
   },
   "dependencies": {
     "@types/pug": "^2.0.4",
     "@types/sass": "^1.16.0",
     "detect-indent": "^6.0.0",
     "strip-indent": "^3.0.0"
+  },
+  "peerDependencies": {
+    "@babel/core": "^7.8.4",
+    "coffeescript": "^2.5.1",
+    "less": "^3.10.3",
+    "node-sass": "^4.13.1",
+    "postcss": "^7.0.26",
+    "postcss-load-config": "^2.1.0",
+    "pug": "^2.0.4",
+    "sass": "^1.26.3",
+    "stylus": "^0.54.7",
+    "svelte": "^3.18.1",
+    "typescript": "^3.7.5"
+  },
+  "peerDependenciesMeta": {
+    "@babel/core": {
+      "optional": true
+    },
+    "coffeescript": {
+      "optional": true
+    },
+    "node-sass": {
+      "optional": true
+    },
+    "postcss": {
+      "optional": true
+    },
+    "postcss-load-config": {
+      "optional": true
+    },
+    "pug": {
+      "optional": true
+    },
+    "sass": {
+      "optional": true
+    },
+    "stylus": {
+      "optional": true
+    },
+    "svelte": {
+      "optional": true
+    },
+    "typescript": {
+      "optional": true
+    }
   }
 }
