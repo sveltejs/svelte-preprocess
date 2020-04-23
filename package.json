@@ -118,6 +118,9 @@
     "coffeescript": {
       "optional": true
     },
+    "less": {
+      "optional": true
+    },
     "node-sass": {
       "optional": true
     },
