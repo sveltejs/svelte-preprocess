@@ -1,3 +1,7 @@
+## [3.7.4](https://github.com/kaisermann/svelte-preprocess/compare/v3.7.3...v3.7.4) (2020-04-23)
+
+
+
 ## [3.7.3](https://github.com/kaisermann/svelte-preprocess/compare/v3.7.2...v3.7.3) (2020-04-22)
 
 
