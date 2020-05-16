@@ -1,15 +1,9 @@
-import { Result, SassException, Options as SassOptions } from 'sass';
+import { Result } from 'sass';
 
 import { importAny, getIncludePaths } from '../utils';
 import { Transformer, Processed, Options } from '../types';
 
-let sass: {
-  render: (
-    options: SassOptions,
-    callback: (exception: SassException, result: Result) => void,
-  ) => void;
-  renderSync: (options: SassOptions) => Result;
-};
+let sass: Options.Sass['implementation'];
 
 type ResolveResult = {
   code: string;
@@ -30,8 +24,11 @@ const transformer: Transformer<Options.Sass> = async ({
   filename,
   options = {},
 }) => {
-  if (sass == null) {
-    ({ default: sass } = await importAny('node-sass', 'sass'));
+  let implementation = options?.implementation ?? sass;
+
+  if (implementation == null) {
+    const mod = await importAny('node-sass', 'sass');
+    implementation = sass = mod.default;
   }
 
   const { renderSync, ...sassOptions }: Options.Sass = {
@@ -49,11 +46,11 @@ const transformer: Transformer<Options.Sass> = async ({
   }
 
   if (renderSync) {
-    return getResultForResolve(sass.renderSync(sassOptions));
+    return getResultForResolve(implementation.renderSync(sassOptions));
   }
 
   return new Promise<Processed>((resolve, reject) => {
-    sass.render(sassOptions, (err, result) => {
+    implementation.render(sassOptions, (err, result) => {
       if (err) return reject(err);
 
       resolve(getResultForResolve(result));
