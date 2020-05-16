@@ -443,6 +443,8 @@ const options = {
   /** or pass an option to render synchronously and any other node-sass or sass options*/
   scss: {
     renderSync: true,
+    /** Explicitly set the scss implementation to use */
+    implementation: require('sass'),
   },
 
   /**  Pass options to the default preprocessor method */
@@ -533,6 +535,7 @@ The SCSS/SASS processor accepts the default sass options alongside two other pro
 
 - `data: string` - a string prepended to every scss file processed.
 - `renderSync: boolean` - if `true`, use the sync render method which is faster for dart sass.
+- `implementation: object` - pass the module to use to compile sass, if unspecified, `svelte-preprocess` will first look for `node-sass` and then for `sass`.
 
 ### `typescript`
 

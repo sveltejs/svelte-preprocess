@@ -1,5 +1,5 @@
 import postcss from 'postcss';
-import { Options as SassOptions } from 'sass';
+import { Options as SassOptions, render, renderSync } from 'sass';
 import { Options as PugOptions } from 'pug';
 import { CompilerOptions } from 'typescript';
 import { TransformOptions as BabelOptions } from '@babel/core';
@@ -30,7 +30,13 @@ export interface Babel extends BabelOptions {
 }
 
 export type Pug = PugOptions;
-export type Sass = Omit<SassOptions, 'file'> & { renderSync?: boolean };
+export type Sass = Omit<SassOptions, 'file'> & {
+  implementation?: {
+    render?: typeof render;
+    renderSync?: typeof renderSync;
+  };
+  renderSync?: boolean;
+};
 // from https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/less/index.d.ts#L80
 export interface Less {
   paths?: string[];
