@@ -31,7 +31,7 @@ const transformer: Transformer<Options.Sass> = async ({
   options = {},
 }) => {
   if (sass == null) {
-    ({ default: sass } = await importAny('node-sass', 'sass'));
+    ({ default: sass } = await importAny('sass', 'node-sass'));
   }
 
   const { renderSync, ...sassOptions }: Options.Sass = {
