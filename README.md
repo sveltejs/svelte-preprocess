@@ -306,7 +306,7 @@ export default {
 
 ```js
 // svelte.config.js
-const sveltePreprocess = require('svelte-preprocess');
+import sveltePreprocess from 'svelte-preprocess';
 
 module.exports = {
   preprocess: sveltePreprocess({
@@ -327,7 +327,7 @@ _Tip: this file can be imported in your bundle config instead of having multiple
 In auto preprocessing mode, `svelte-preprocess` automatically uses the respective preprocessor for your code based on your `type="..."` or `lang="..."` attributes. It also handles the `<template>` tag for markup, external files and global styling. It's as simple as importing the module and executing the default exported method.
 
 ```js
-const sveltePreprocess = require('svelte-preprocess')
+import sveltePreprocess from 'svelte-preprocess'
 
 ...
   {
@@ -341,8 +341,8 @@ const sveltePreprocess = require('svelte-preprocess')
 [Svelte v3 has added support for multiple processors](https://svelte.dev/docs#svelte_preprocess), so it's also possible to use `svelte-preprocess` with other preprocessors:
 
 ```js
-const sveltePreprocess = require('svelte-preprocess')
-const { mdsvex } = require('mdsvex')
+import sveltePreprocess from 'svelte-preprocess'
+import { mdsvex } from 'mdsvex'
 ...
   {
     /* svelte options */
@@ -400,8 +400,8 @@ svelte.preprocess(input, [
 `svelte-preprocess` in _auto-processing_ mode can receive an options object.
 
 ```js
-const svelte = require('svelte');
-const sveltePreprocess = require('svelte-preprocess');
+import svelte from 'svelte';
+import sveltePreprocess from 'svelte-preprocess';
 const options = {
   /**
    * Define which tag should `svelte-preprocess` look for markup content.
@@ -596,7 +596,7 @@ If you have configured `svelte-preprocess` to use some kind of preprocessor and 
 If you have a medium-to-big project, the typescript processor might start to get slow. If you already have an IDE type checking your code, you can speed up the transpilation process by setting `transpileOnly` to `true`:
 
 ```js
-const preprocess = require('svelte-preprocess')
+import preprocess from 'svelte-preprocess'
 ...
 {
   ...svelteOptions,
