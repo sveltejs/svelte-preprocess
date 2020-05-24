@@ -23,6 +23,7 @@ export interface TransformerArgs<T> {
   map?: string | object;
   dianostics?: Array<unknown>;
   options?: T;
+  markup?: string;
 }
 
 export type Processed = SvelteProcessed & {

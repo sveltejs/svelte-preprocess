@@ -60,4 +60,5 @@ export interface Typescript {
   tsconfigDirectory?: string | boolean;
   transpileOnly?: boolean;
   reportDiagnostics?: boolean;
+  removeNonEmittingImports?: boolean;
 }

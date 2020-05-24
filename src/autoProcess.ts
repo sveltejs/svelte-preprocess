@@ -83,6 +83,7 @@ export function autoPreprocess(
 ): PreprocessorGroup {
   markupTagName = markupTagName.toLocaleLowerCase();
 
+  const markupCache: Record<string, string> = {};
   const optionsCache: Record<string, any> = {};
   const transformers = rest.transformers || (rest as Transformers);
   const markupPattern = new RegExp(
@@ -141,7 +142,11 @@ export function autoPreprocess(
     const transformed = await runTransformer(
       lang,
       getTransformerOptions(lang, alias),
-      { content: stripIndent(content), filename },
+      {
+        content: stripIndent(content),
+        filename,
+        markup: markupCache[svelteFile.filename],
+      },
     );
 
     return {
@@ -170,7 +175,7 @@ export function autoPreprocess(
         const transformed = await runTransformer(
           'replace',
           transformers.replace,
-          { content, filename },
+          { content, filename, markup: content },
         );
 
         content = transformed.code;
@@ -180,6 +185,9 @@ export function autoPreprocess(
 
       /** If no <template> was found, just return the original markup */
       if (!templateMatch) {
+
+        markupCache[filename] = content;
+
         return { code: content };
       }
 
@@ -207,6 +215,8 @@ export function autoPreprocess(
         content.slice(0, templateMatch.index) +
         code +
         content.slice(templateMatch.index + fullMatch.length);
+        
+      markupCache[filename] = code;
 
       return { code, map, dependencies };
     },
@@ -214,7 +224,7 @@ export function autoPreprocess(
       const transformResult: Processed = await scriptTransformer({
         content,
         attributes,
-        filename,
+        filename
       });
 
       if (transformResult == null) return;
@@ -226,6 +236,7 @@ export function autoPreprocess(
           content: code,
           map,
           filename,
+          markup: markupCache[filename]
         });
 
         code = transformed.code;
@@ -251,7 +262,7 @@ export function autoPreprocess(
         const transformed = await runTransformer(
           'postcss',
           transformers.postcss,
-          { content: code, map, filename },
+          { content: code, map, filename, markup: markupCache[filename] },
         );
 
         code = transformed.code;
@@ -264,6 +275,7 @@ export function autoPreprocess(
           content: code,
           map,
           filename,
+          markup: markupCache[filename],
         });
 
         code = transformed.code;

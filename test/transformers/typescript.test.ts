@@ -31,6 +31,79 @@ describe('transformer - typescript', () => {
     'script.ts',
   )}</script>`;
 
+  it('should keep tags referenced in the markup', async () => {
+    const opts = getAutoPreprocess({});
+    const preprocessed = await preprocess(
+      getFixtureContent('References.svelte'),
+      opts,
+    );
+    expect(preprocessed.toString()).toMatchInlineSnapshot(`
+      "<script lang=\\"typescript\\">import { Box, Circle } from \\"./fixtures/shapes\\";
+      export let triangle;
+      //# sourceMappingURL=App.svelte.js.map</script>
+
+      <Box color=\\"green\\">
+        <Circle color=\\"orange\\">
+        </Circle>
+      </Box>"
+    `);
+  });
+
+  it('should keep tags referenced in the markup when only transpiling', async () => {
+    const opts = getAutoPreprocess({
+      typescript: {
+        transpileOnly: true,
+      },
+    });
+    const preprocessed = await preprocess(
+      getFixtureContent('References.svelte'),
+      opts,
+    );
+    expect(preprocessed.toString()).toMatchInlineSnapshot(`
+      "<script lang=\\"typescript\\">import { Box, Circle } from \\"./fixtures/shapes\\";
+      export let triangle;
+      //# sourceMappingURL=App.svelte.js.map</script>
+
+      <Box color=\\"green\\">
+        <Circle color=\\"orange\\">
+        </Circle>
+      </Box>"
+    `);
+  });
+
+  it('should remove unused named imports', async () => {
+    const { code } = await transpile(
+      'import { IFace, ExportedClass } from "./fixtures/exports"',
+    );
+    expect(code).toMatchInlineSnapshot(`
+      "import \\"./fixtures/exports\\";
+      //# sourceMappingURL=App.svelte.js.map"
+    `);
+  });
+
+  it('should remove unused named imports but leave used ones', async () => {
+    const { code } = await transpile(
+      'import { IFace, ExportedClass } from "./fixtures/exports"\nnew ExportedClass()',
+    );
+    expect(code).toMatchInlineSnapshot(`
+      "import { ExportedClass } from \\"./fixtures/exports\\";
+      new ExportedClass();
+      //# sourceMappingURL=App.svelte.js.map"
+    `);
+  });
+
+  it('should remove unused named imports that conflict with local variables', async () => {
+    const { code } = await transpile(
+      'import { IFace as name } from "./fixtures/exports"\nexport let iface: name\nfunction func(name: string) { return name }',
+    );
+    expect(code).toMatchInlineSnapshot(`
+      "import \\"./fixtures/exports\\";
+      export let iface;
+      function func(name) { return name; }
+      //# sourceMappingURL=App.svelte.js.map"
+    `);
+  });
+
   it('should disallow transpilation to es5 or lower', async () => {
     expect(
       transpile('export let foo = 10', { target: 'es3' }),
@@ -151,7 +224,7 @@ describe('transformer - typescript', () => {
       );
       expect(diagnostics.some(d => d.code === 2552)).toBe(false);
     });
-    
+
     it('should report a mismatched variable name error', async () => {
       const { diagnostics } = await transpile(
         `
@@ -161,6 +234,5 @@ describe('transformer - typescript', () => {
       );
       expect(diagnostics.some(d => d.code === 2552)).toBe(true);
     });
-
   });
 });

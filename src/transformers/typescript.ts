@@ -80,9 +80,129 @@ const importTransformer: ts.TransformerFactory<ts.SourceFile> = context => {
   return node => ts.visitNode(node, visit);
 };
 
-const TS_TRANSFORMERS = {
-  before: [importTransformer],
+function findImportUsages(
+  node: ts.Node,
+  context: ts.TransformationContext,
+): { [name: string]: number } {
+  const usages: { [name: string]: number } = {};
+
+  let locals = new Set<string>();
+
+  const enterScope = <T>(action: () => T) => {
+    const oldLocals = locals;
+    locals = new Set([...locals]);
+    const result = action();
+    locals = oldLocals;
+    return result;
+  };
+
+  const findUsages: ts.Visitor = node => {
+    if (ts.isImportClause(node)) {
+      const bindings = node.namedBindings;
+      if (bindings && 'elements' in bindings) {
+        bindings.elements.forEach(
+          binding => (usages[binding.name.escapedText as string] = 0),
+        );
+      }
+      return node;
+    }
+
+    if (ts.isFunctionDeclaration(node)) {
+      return enterScope(() => {
+        node.parameters
+          .map(p => p.name)
+          .filter(ts.isIdentifier)
+          .forEach(p => locals.add(p.escapedText as string));
+        return ts.visitEachChild(node, child => findUsages(child), context);
+      });
+    }
+
+    if (ts.isBlock(node)) {
+      return enterScope(() =>
+        ts.visitEachChild(node, child => findUsages(child), context),
+      );
+    }
+
+    if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name)) {
+      locals.add(node.name.escapedText as string);
+    } else if (ts.isIdentifier(node)) {
+      const identifier = node.escapedText as string;
+      if (!locals.has(identifier) && usages[identifier] != undefined) {
+        usages[identifier]++;
+      }
+    }
+
+    return ts.visitEachChild(node, child => findUsages(child), context);
+  };
+
+  ts.visitNode(node, findUsages);
+
+  return usages;
+}
+
+const removeNonEmittingImports: (
+  mainFile?: string,
+) => ts.TransformerFactory<ts.SourceFile> = mainFile => context => {
+  function createVisitor(usages: { [name: string]: number }) {
+    const visit: ts.Visitor = node => {
+      if (ts.isImportDeclaration(node)) {
+        let importClause = node.importClause;
+        const bindings = importClause.namedBindings;
+
+        if (bindings && ts.isNamedImports(bindings)) {
+          const namedImports = bindings.elements.filter(
+            element => usages[element.name.getText()] > 0,
+          );
+
+          if (namedImports.length !== bindings.elements.length) {
+            return ts.createImportDeclaration(
+              node.decorators,
+              node.modifiers,
+              namedImports.length == 0
+                ? undefined
+                : ts.createImportClause(
+                    importClause.name,
+                    ts.createNamedImports(namedImports),
+                  ),
+              node.moduleSpecifier,
+            );
+          }
+        }
+
+        return node;
+      }
+
+      if (
+        ts.isVariableStatement(node) &&
+        node.modifiers &&
+        node.modifiers[0] &&
+        node.modifiers[0].kind == ts.SyntaxKind.ExportKeyword
+      ) {
+        const name = node.declarationList.declarations[0].name;
+
+        if (ts.isIdentifier(name) && name.escapedText == '___used_tags__') {
+          return undefined;
+        }
+      }
+
+      return ts.visitEachChild(node, child => visit(child), context);
+    };
+
+    return visit;
+  }
+
+  return node =>
+    !mainFile || ts.sys.resolvePath(node.fileName) === mainFile
+      ? ts.visitNode(node, createVisitor(findImportUsages(node, context)))
+      : node;
 };
+
+function createTransforms(mainFile?: string) {
+  return {
+    before: [importTransformer],
+    after: [removeNonEmittingImports(mainFile)],
+  };
+}
 
 const TS2552_REGEX = /Cannot find name '\$([a-zA-Z0-9_]+)'. Did you mean '([a-zA-Z0-9_]+)'\?/i;
 function isValidSvelteReactiveValueDiagnostic(
@@ -103,6 +223,25 @@ function isValidSvelteReactiveValueDiagnostic(
   return !(usedVar && proposedVar && usedVar === proposedVar);
 }
 
+function findTagsInMarkup(markup: string) {
+  if (!markup) {
+    return [];
+  }
+
+  let match: RegExpExecArray;
+  const result: string[] = [];
+  const findTag = /<([A-Z][^\s\/>]*)([\s\S]*?)>/g;
+  const template = markup
+    .replace(/<script([\s\S]*?)(?:>([\s\S]*)<\/script>|\/>)/g, '')
+    .replace(/<style([\s\S]*?)(?:>([\s\S]*)<\/style>|\/>)/g, '');
+
+  while ((match = findTag.exec(template)) !== null) {
+    result.push(match[1]);
+  }
+
+  return result;
+}
+
 function compileFileFromMemory(
   compilerOptions: CompilerOptions,
   { filename, content }: { filename: string; content: string },
@@ -112,7 +251,7 @@ function compileFileFromMemory(
 
   const realHost = ts.createCompilerHost(compilerOptions, true);
   const dummyFileName = ts.sys.resolvePath(filename);
-
+  const dummyBaseName = basename(dummyFileName);
   const isDummyFile = (fileName: string) =>
     ts.sys.resolvePath(fileName) === dummyFileName;
 
@@ -142,10 +281,13 @@ function compileFileFromMemory(
     readFile: fileName =>
       isDummyFile(fileName) ? content : realHost.readFile(fileName),
     writeFile: (fileName, data) => {
-      if (fileName.endsWith('.map')) {
-        map = data;
-      } else {
-        code = data;
+      switch (basename(fileName)) {
+        case dummyBaseName + '.js.map':
+          map = data;
+          break;
+        case dummyBaseName + '.js':
+          code = data;
+          break;
       }
     },
     directoryExists:
@@ -162,12 +304,13 @@ function compileFileFromMemory(
   };
 
   const program = ts.createProgram([dummyFileName], compilerOptions, host);
+
   const emitResult = program.emit(
     undefined,
     undefined,
     undefined,
     undefined,
-    TS_TRANSFORMERS,
+    createTransforms(dummyFileName),
   );
 
   // collect diagnostics without svelte import errors
@@ -187,6 +330,7 @@ const transformer: Transformer<Options.Typescript> = ({
   content,
   filename,
   options,
+  markup,
 }) => {
   // default options
   const compilerOptionsJSON = {
@@ -242,7 +386,20 @@ const transformer: Transformer<Options.Typescript> = ({
     );
   }
 
+  // Force module kind to es2015, so we keep the correct names.
+  compilerOptions.module = ts.ModuleKind.ES2015;
+
+  // Generate separate source maps.
+  compilerOptions.sourceMap = true;
+  compilerOptions.inlineSourceMap = false;
+
+  const tagsInMarkup = findTagsInMarkup(markup);
+
   let code, map, diagnostics;
+
+  // Append all used tags
+  content += '\nexport const __used_tags__=[' + tagsInMarkup.join(',') + '];';
+
   if (options.transpileOnly || compilerOptions.transpileOnly) {
     ({ outputText: code, sourceMapText: map, diagnostics } = ts.transpileModule(
       content,
@@ -250,7 +407,7 @@ const transformer: Transformer<Options.Typescript> = ({
         fileName: filename,
         compilerOptions: compilerOptions,
         reportDiagnostics: options.reportDiagnostics !== false,
-        transformers: TS_TRANSFORMERS,
+        transformers: createTransforms(),
       },
     ));
   } else {

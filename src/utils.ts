@@ -130,13 +130,13 @@ const TRANSFORMERS = {} as {
 export const runTransformer = async (
   name: string,
   options: TransformerOptions<any>,
-  { content, map, filename }: TransformerArgs<any>,
+  { content, map, filename, markup }: TransformerArgs<any>,
 ): Promise<ReturnType<Transformer<unknown>>> => {
   // remove any unnecessary indentation (useful for coffee, pug and sugarss)
   content = stripIndent(content);
 
   if (typeof options === 'function') {
-    return options({ content, map, filename });
+    return options({ content, map, filename, markup });
   }
 
   try {
@@ -150,6 +150,7 @@ export const runTransformer = async (
     return TRANSFORMERS[name]({
       content,
       filename,
+      markup,
       map,
       options: typeof options === 'boolean' ? null : options,
     });
