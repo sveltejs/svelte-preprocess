@@ -27,11 +27,11 @@ describe('transformer - babel', () => {
     });
     const preprocessed = await preprocess(template, opts);
     expect(preprocessed.code).toMatchInlineSnapshot(`
-      "<script>var _ref;
+      "<script>var _foo$b;
 
       var foo = {};
 
-      $: bar = (_ref = foo == null ? void 0 : foo.b) != null ? _ref : 120;</script>"
+      $: bar = (_foo$b = foo == null ? void 0 : foo.b) != null ? _foo$b : 120;</script>"
     `);
   });
 });
