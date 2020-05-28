@@ -17,7 +17,7 @@ const BABEL_CONFIG = {
 };
 
 describe('transformer - babel', () => {
-  it('transpile with babel', async () => {
+  it('transpiles with babel', async () => {
     const template = `<script>
     let foo = {}
     $: bar = foo?.b ?? 120
@@ -26,12 +26,13 @@ describe('transformer - babel', () => {
       babel: BABEL_CONFIG,
     });
     const preprocessed = await preprocess(template, opts);
+
     expect(preprocessed.code).toMatchInlineSnapshot(`
-      "<script>var _ref;
+      "<script>var _foo$b;
 
       var foo = {};
 
-      $: bar = (_ref = foo == null ? void 0 : foo.b) != null ? _ref : 120;</script>"
+      $: bar = (_foo$b = foo == null ? void 0 : foo.b) != null ? _foo$b : 120;</script>"
     `);
   });
 });
