@@ -93,6 +93,30 @@ _Note<sup>1</sup>: needs postcss to be installed_
 
 _Note<sup>2</sup>: if you're using it as a standalone processor, it works best if added to the end of the processors array._
 
+_Note<sup>3</sup>: if you need to have some styles be scoped inside a global style tag, use `:local` in the same way you'd use `:global`._
+
+### Global rule
+
+Use a `@global` rule to only expose parts of the stylesheet:
+
+```html
+<style lang="scss">
+  .scoped-style {}
+
+  @global {
+    import 'global-stylesheet.css';
+
+    .global-style {
+      .global-child-style {}
+    }
+  }
+</style>
+```
+
+_Note<sup>1</sup>: needs postcss to be installed_
+
+_Note<sup>2</sup>: if you're using it as a standalone processor, it works best if added to the end of the processors array._
+
 ### Preprocessors
 
 Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Coffeescript`, `TypeScript`, `Pug`, `PostCSS`, `Babel`.
