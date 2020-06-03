@@ -2,7 +2,7 @@ import postcss from 'postcss';
 
 import { Transformer } from '../types';
 
-const globalifyPlugin = (root: any) => {
+export const globalifyPlugin = (root: any) => {
   root.walkAtRules(/keyframes$/, (atrule: any) => {
     if (!atrule.params.startsWith('-global-')) {
       atrule.params = '-global-' + atrule.params;
