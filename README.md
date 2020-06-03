@@ -135,7 +135,9 @@ Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Co
 <!-- Or -->
 
 <style type="text/stylus">
-  $color=reddivcolor: $color;
+  $color = red
+  div
+    color: $color
 </style>
 ```
 
