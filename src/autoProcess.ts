@@ -27,6 +27,7 @@ interface Transformers {
   coffeescript?: TransformerOptions<Options.Coffeescript>;
   pug?: TransformerOptions<Options.Pug>;
   globalStyle?: TransformerOptions<Options.Typescript>;
+  globalRule?: TransformerOptions<Options.Typescript>;
   replace?: Options.Replace;
   [languageName: string]: TransformerOptions<any>;
 }
@@ -55,6 +56,7 @@ type AutoPreprocessOptions = {
   coffeescript?: TransformerOptions<Options.Coffeescript>;
   pug?: TransformerOptions<Options.Pug>;
   globalStyle?: TransformerOptions<Options.Typescript>;
+  globalRule?: TransformerOptions<Options.Typescript>;
   // workaround while we don't have this
   // https://github.com/microsoft/TypeScript/issues/17867
   [languageName: string]:
@@ -269,6 +271,15 @@ export function autoPreprocess(
         code = transformed.code;
         map = transformed.map;
       }
+
+      const transformed = await runTransformer('globalRule', null, {
+        content: code,
+        map,
+        filename,
+      });
+
+      code = transformed.code;
+      map = transformed.map;
 
       return { code, map, dependencies };
     },
