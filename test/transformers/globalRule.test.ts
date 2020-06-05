@@ -2,6 +2,13 @@ import autoProcess from '../../src';
 import { preprocess } from '../utils';
 
 describe('transformer - globalRule', () => {
+  it('does nothing if postcss is not installed', async () => {
+    const template = `<style>:global div{color:red}:global .test{}</style>`;
+    const opts = autoProcess();
+
+    expect(async () => await preprocess(template, opts)).not.toThrow();
+  });
+
   it('wraps selector in :global(...) modifier', async () => {
     const template = `<style>:global div{color:red}:global .test{}</style>`;
     const opts = autoProcess();
