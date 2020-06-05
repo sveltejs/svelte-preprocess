@@ -6,6 +6,7 @@ describe('transformer - globalRule', () => {
     const template = `<style>:global div{color:red}:global .test{}</style>`;
     const opts = autoProcess();
     const preprocessed = await preprocess(template, opts);
+
     expect(preprocessed.toString()).toContain(
       `:global(div){color:red}:global(.test){}`,
     );
@@ -15,6 +16,7 @@ describe('transformer - globalRule', () => {
     const template = `<style>:global .test{}:global :global(.foo){}</style>`;
     const opts = autoProcess();
     const preprocessed = await preprocess(template, opts);
+
     expect(preprocessed.toString()).toContain(
       `:global(.test){}:global(.foo){}`,
     );
@@ -24,6 +26,7 @@ describe('transformer - globalRule', () => {
     const template = '<style>:global div .cls{}</style>';
     const opts = autoProcess();
     const preprocessed = await preprocess(template, opts);
+
     expect(preprocessed.toString()).toMatch(
       // either be :global(div .cls){}
       //        or :global(div) :global(.cls){}
@@ -32,13 +35,14 @@ describe('transformer - globalRule', () => {
   });
 
   it('wraps selector in :global(...) on multiple levels when in the middle', async () => {
-    const template = '<style>div :global span .cls{}</style>';
+    const template = '<style>div div :global span .cls{}</style>';
     const opts = autoProcess();
     const preprocessed = await preprocess(template, opts);
+
     expect(preprocessed.toString()).toMatch(
-      // either be div :global(span .cls) {}
-      //        or div :global(span) :global(.cls) {}
-      /div (:global\(span .cls\)\{\}|:global\(span\) :global\(\.cls\)\{\})/,
+      // either be div div :global(span .cls) {}
+      //        or div div :global(span) :global(.cls) {}
+      /div div (:global\(span .cls\)\{\}|:global\(span\) :global\(\.cls\)\{\})/,
     );
   });
 
@@ -46,6 +50,7 @@ describe('transformer - globalRule', () => {
     const template = '<style>span :global{}</style>';
     const opts = autoProcess();
     const preprocessed = await preprocess(template, opts);
+
     expect(preprocessed.toString()).toContain('span{}');
   });
 
@@ -53,6 +58,7 @@ describe('transformer - globalRule', () => {
     const template = '<style>div :global span :global .cls{}</style>';
     const opts = autoProcess();
     const preprocessed = await preprocess(template, opts);
+
     expect(preprocessed.toString()).toMatch(
       // either be div :global(span .cls) {}
       //        or div :global(span) :global(.cls) {}
@@ -64,6 +70,7 @@ describe('transformer - globalRule', () => {
     const template = '<style>div :global(span){}</style>';
     const opts = autoProcess();
     const preprocessed = await preprocess(template, opts);
+
     expect(preprocessed.toString()).toContain('div :global(span){}');
   });
 
@@ -71,6 +78,7 @@ describe('transformer - globalRule', () => {
     const template = '<style>div :global(span) :global .cls{}</style>';
     const opts = autoProcess();
     const preprocessed = await preprocess(template, opts);
+
     expect(preprocessed.toString()).toMatch(
       // either be div :global(span .cls) {}
       //        or div :global(span) :global(.cls) {}
