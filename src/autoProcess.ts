@@ -118,9 +118,9 @@ export function autoPreprocess(
     return (optionsCache[alias] = opts);
   };
 
-  const getTransformerTo = (
-    targetLanguage: string,
-  ): Preprocessor => async svelteFile => {
+  const getTransformerTo = (targetLanguage: string): Preprocessor => async (
+    svelteFile,
+  ) => {
     const { content, filename, lang, alias, dependencies } = await parseFile(
       svelteFile,
       targetLanguage,
