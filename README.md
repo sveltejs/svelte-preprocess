@@ -659,3 +659,5 @@ import preprocess from 'svelte-preprocess'
 }
 ...
 ```
+
+Warning: If you do this, you can't import types or interfaces into your svelte component without using the new TS 3.8 `type` import modifier: `import type { SomeInterface } from './MyModule.ts'` otherwise Rollup (and possibly others) will complain that the name is not exported by `MyModule`)
