@@ -30,7 +30,7 @@ const implementation: Options.Sass['implementation'] = {
 };
 
 describe('transformer - scss', () => {
-  it('should prepend scss content via `data` option property - via defaul async render', async () => {
+  it('should prepend scss content via `data` option property - via default async render', async () => {
     const template = `<style lang="scss"></style>`;
     const opts = getAutoPreprocess({
       scss: {
