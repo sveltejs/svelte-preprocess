@@ -1,5 +1,6 @@
-import { concat, parseFile } from '../utils';
+import { parseFile } from '../modules/parseFile';
 import { PreprocessorGroup, Options } from '../types';
+import { concat } from '../modules/concat';
 
 /** Adapted from https://github.com/TehShrike/svelte-preprocess-postcss */
 export default (options: Options.Postcss): PreprocessorGroup => ({
@@ -12,6 +13,7 @@ export default (options: Options.Postcss): PreprocessorGroup => ({
 
     /** If manually passed a plugins array, use it as the postcss config */
     const transformed = await transformer({ content, filename, options });
+
     return {
       ...transformed,
       dependencies: concat(dependencies, transformed.dependencies),

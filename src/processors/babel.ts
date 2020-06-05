@@ -1,5 +1,6 @@
-import { concat, parseFile } from '../utils';
 import { PreprocessorGroup, Options } from '../types';
+import { concat } from '../modules/concat';
+import { parseFile } from '../modules/parseFile';
 
 export default (options: Options.Babel): PreprocessorGroup => ({
   async script(svelteFile) {
@@ -11,6 +12,7 @@ export default (options: Options.Babel): PreprocessorGroup => ({
     );
 
     const transformed = await transformer({ content, filename, options });
+
     return {
       ...transformed,
       dependencies: concat(dependencies, transformed.dependencies),

@@ -1,9 +1,9 @@
 import { resolve } from 'path';
 
-import { getIncludePaths } from '../src/utils';
 import { importAny } from '../src/modules/importAny';
+import { getIncludePaths } from '../src/modules/getIncludePaths';
 
-describe('utils - importAny', () => {
+describe('importAny', () => {
   it('should throw error when none exist', () => {
     return expect(importAny('_1', '_2')).rejects.toThrowError(
       'Cannot find any of modules: _1,_2',
@@ -17,7 +17,7 @@ describe('utils - importAny', () => {
   });
 });
 
-describe('utils - getIncludePaths', () => {
+describe('getIncludePaths', () => {
   const dummyDir = resolve(process.cwd(), 'src');
   const dummyFile = resolve(dummyDir, 'App.svelte');
 

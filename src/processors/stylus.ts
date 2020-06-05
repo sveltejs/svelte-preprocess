@@ -1,5 +1,6 @@
-import { concat, parseFile } from '../utils';
+import { parseFile } from '../modules/parseFile';
 import { Options, PreprocessorGroup } from '../types';
+import { concat } from '../modules/concat';
 
 export default (options: Options.Stylus): PreprocessorGroup => ({
   async style(svelteFile) {
@@ -11,6 +12,7 @@ export default (options: Options.Stylus): PreprocessorGroup => ({
     if (lang !== 'stylus') return { code: content };
 
     const transformed = await transformer({ content, filename, options });
+
     return {
       ...transformed,
       dependencies: concat(dependencies, transformed.dependencies),

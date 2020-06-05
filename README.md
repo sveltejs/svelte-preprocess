@@ -526,12 +526,14 @@ const options = {
   /** Use a custom preprocess method by passing a function. */
   pug({ content, filename }) {
     const code = pug.render(content);
+
     return { code, map: null };
   },
 
   /** Add a custom language preprocessor */
   customLanguage({ content, filename }) {
     const { code, map } = require('custom-language-compiler')(content);
+
     return { code, map };
   },
 

@@ -1,5 +1,6 @@
-import { concat, parseFile } from '../utils';
+import { parseFile } from '../modules/parseFile';
 import { PreprocessorGroup, Options } from '../types';
+import { concat } from '../modules/concat';
 
 export default (options: Options.Sass): PreprocessorGroup => ({
   async style(svelteFile) {
@@ -23,6 +24,7 @@ export default (options: Options.Sass): PreprocessorGroup => ({
       filename,
       options,
     });
+
     return {
       ...transformed,
       dependencies: concat(dependencies, transformed.dependencies),

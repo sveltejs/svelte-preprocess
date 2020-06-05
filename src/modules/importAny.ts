@@ -4,6 +4,7 @@ export async function importAny(...modules: string[]) {
       (acc, moduleName) => acc.catch(() => import(moduleName)),
       Promise.reject(),
     );
+
     return mod;
   } catch (e) {
     throw new Error(`Cannot find any of modules: ${modules}`);

@@ -19,6 +19,7 @@ const process = async (
     // istanbul ignore if
     if (msg.type !== 'dependency') return acc;
     acc.push(msg.file);
+
     return acc;
   }, []);
 

@@ -2,14 +2,6 @@ import stripIndent from 'strip-indent';
 import { version } from 'svelte/package.json';
 
 import {
-  concat,
-  addLanguageAlias,
-  parseFile,
-  runTransformer,
-  isFn,
-  throwUnsupportedError,
-} from './utils';
-import {
   PreprocessorGroup,
   TransformerOptions,
   Preprocessor,
@@ -17,6 +9,11 @@ import {
   Processed,
 } from './types';
 import { hasPostCssInstalled } from './modules/hasPostcssInstalled';
+import { concat } from './modules/concat';
+import { parseFile } from './modules/parseFile';
+import { addLanguageAlias } from './modules/language';
+import { runTransformer } from './modules/transformers';
+import { throwUnsupportedError } from './modules/errors';
 
 interface Transformers {
   typescript?: TransformerOptions<Options.Typescript>;
@@ -100,8 +97,8 @@ export function autoPreprocess(
     lang: string,
     alias: string,
   ): TransformerOptions<unknown> => {
-    if (isFn(transformers[alias])) return transformers[alias];
-    if (isFn(transformers[lang])) return transformers[lang];
+    if (typeof transformers[alias] === 'function') return transformers[alias];
+    if (typeof transformers[lang] === 'function') return transformers[lang];
     if (optionsCache[alias] != null) return optionsCache[alias];
 
     const opts: TransformerOptions<unknown> = {};
@@ -159,7 +156,7 @@ export function autoPreprocess(
 
   return {
     async markup({ content, filename }) {
-      if (isFn(onBefore)) {
+      if (typeof onBefore === 'function') {
         // istanbul ignore next
         if (SVELTE_MAJOR_VERSION >= 3) {
           console.warn(

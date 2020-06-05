@@ -1,11 +1,11 @@
 import getAutoPreprocess from '../../src';
-import { getLanguage } from '../../src/utils';
 import {
   preprocess,
   getFixtureContent,
   doesCompileThrow,
   CSS_PATTERN,
 } from '../utils';
+import { getLanguage } from '../../src/modules/language';
 
 describe('detect - mimetype', () => {
   const MIMETYPES = [
@@ -22,9 +22,9 @@ describe('detect - mimetype', () => {
   ];
 
   MIMETYPES.forEach(({ type, lang, src, targetLanguage }) => {
-    it(`should detect '${src ||
-      type ||
-      lang}' as '${targetLanguage}'`, async () => {
+    it(`should detect '${
+      src || type || lang
+    }' as '${targetLanguage}'`, async () => {
       const language = getLanguage({ type, lang, src }, targetLanguage);
       expect(language).toMatchObject({ lang: targetLanguage });
     });
@@ -37,11 +37,8 @@ describe('options', () => {
       'template.custom',
     )}</template>`;
     const opts = getAutoPreprocess({
-      customTransformer({ content, filename }) {
-        content = content
-          .replace('foo', 'bar')
-          .toString()
-          .trim();
+      customTransformer({ content }) {
+        content = content.replace('foo', 'bar').toString().trim();
         return { code: content, map: null };
       },
     });
