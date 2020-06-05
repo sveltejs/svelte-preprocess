@@ -2,7 +2,23 @@ import postcss from 'postcss';
 
 import { Transformer } from '../types';
 
-export const globalifyPlugin = (root: any) => {
+export const wrapSelectorInGlobal = (selector: string) => {
+  return selector
+    .trim()
+    .split(' ')
+    .map((selectorPart) => {
+      if (selectorPart.startsWith(':local')) {
+        return selectorPart.replace(/:local\((.+?)\)/g, '$1');
+      }
+      if (selectorPart.startsWith(':global')) {
+        return selectorPart;
+      }
+      return `:global(${selectorPart})`;
+    })
+    .join(' ');
+};
+
+const globalifyPlugin = (root: any) => {
   root.walkAtRules(/keyframes$/, (atrule: any) => {
     if (!atrule.params.startsWith('-global-')) {
       atrule.params = '-global-' + atrule.params;
@@ -14,20 +30,7 @@ export const globalifyPlugin = (root: any) => {
       return;
     }
 
-    rule.selectors = rule.selectors.map((selector: string) => {
-      return selector
-        .split(' ')
-        .map((selectorPart) => {
-          if (selectorPart.startsWith(':local')) {
-            return selectorPart.replace(/:local\((.+?)\)/g, '$1');
-          }
-          if (selectorPart.startsWith(':global')) {
-            return selectorPart;
-          }
-          return `:global(${selectorPart})`;
-        })
-        .join(' ');
-    });
+    rule.selectors = rule.selectors.map(wrapSelectorInGlobal);
   });
 };
 
