@@ -3,6 +3,7 @@ export function concat(...arrs: any[]): any[] {
     if (a) {
       return acc.concat(a);
     }
+
     return acc;
   }, []);
 }

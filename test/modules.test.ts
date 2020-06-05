@@ -11,8 +11,10 @@ describe('importAny', () => {
   });
 
   it('should not throw error when any exist', async () => {
+    const nodeSass = await import('node-sass');
+
     expect((await importAny('_1', 'node-sass', '_2')).default).toBe(
-      require('node-sass'),
+      nodeSass.default,
     );
   });
 });
@@ -23,6 +25,7 @@ describe('getIncludePaths', () => {
 
   it('should default to cwd, node_modules and current file dirname', () => {
     const paths = getIncludePaths(dummyFile);
+
     expect(paths).toEqual(
       expect.arrayContaining(['node_modules', process.cwd(), dummyDir]),
     );
@@ -30,6 +33,7 @@ describe('getIncludePaths', () => {
 
   it('should prepend any passed paths via config object', () => {
     const paths = getIncludePaths(dummyFile, ['src']);
+
     expect(paths).toEqual(
       expect.arrayContaining(['src', 'node_modules', process.cwd(), dummyDir]),
     );

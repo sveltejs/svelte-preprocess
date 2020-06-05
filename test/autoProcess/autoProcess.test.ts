@@ -26,6 +26,7 @@ describe('detect - mimetype', () => {
       src || type || lang
     }' as '${targetLanguage}'`, async () => {
       const language = getLanguage({ type, lang, src }, targetLanguage);
+
       expect(language).toMatchObject({ lang: targetLanguage });
     });
   });
@@ -39,10 +40,12 @@ describe('options', () => {
     const opts = getAutoPreprocess({
       customTransformer({ content }) {
         content = content.replace('foo', 'bar').toString().trim();
+
         return { code: content, map: null };
       },
     });
     const preprocessed = await preprocess(input, opts);
+
     expect(preprocessed.toString()).toBe('bar');
   });
 
@@ -57,6 +60,7 @@ describe('options', () => {
         },
       }),
     );
+
     expect(preprocessed.toString()).toMatch(CSS_PATTERN);
   });
 
@@ -68,6 +72,7 @@ describe('options', () => {
       },
     });
     const preprocessed = await preprocess(input, opts);
+
     expect(preprocessed.toString()).toBe(input.toLowerCase());
   });
 
@@ -76,6 +81,7 @@ describe('options', () => {
     const opts = getAutoPreprocess({
       aliases: [['cl', 'javascript']],
     });
+
     expect(await doesCompileThrow(input, opts)).toBe(false);
   });
 
@@ -87,9 +93,11 @@ describe('options', () => {
         return { code: 'div{}' };
       },
     });
+
     expect(await doesCompileThrow(input, opts)).toBe(false);
 
     const preprocessed = await preprocess(input, opts);
+
     expect(preprocessed.toString()).toContain('div{}');
   });
 
@@ -101,9 +109,11 @@ describe('options', () => {
         return { code: 'div{}' };
       },
     });
+
     expect(await doesCompileThrow(input, opts)).toBe(false);
 
     const preprocessed = await preprocess(input, opts);
+
     expect(preprocessed.toString()).toContain('div{}');
   });
 
@@ -117,6 +127,7 @@ describe('options', () => {
       },
     });
     const preprocessed = await preprocess(input, opts);
+
     expect(preprocessed.toString()).toContain(
       `<script type="application/ld+json">{"json":true}</script>`,
     );
@@ -144,6 +155,7 @@ describe('options', () => {
       },
     });
     const preprocessed = await preprocess(input, opts);
+
     expect(preprocessed.toString()).toBe(`<script lang="mock">mock</script>`);
   });
 });

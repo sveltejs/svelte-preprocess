@@ -6,6 +6,7 @@ export default (): PreprocessorGroup => {
       const { default: transformer } = await import(
         '../transformers/globalStyle'
       );
+
       if (!attributes.global) return { code: content };
 
       return transformer({ content, filename });

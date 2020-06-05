@@ -51,13 +51,14 @@ describe('external files', () => {
     './some-not-local-file.js',
   ];
 
-  EXTERNALJS.forEach(url => {
+  EXTERNALJS.forEach((url) => {
     it(`should not attempt to locally resolve ${url}`, async () => {
       const input = `<div></div><script src="${url}"></script>`;
 
       const preprocessed = await preprocess(input, getAutoPreprocess());
+
       expect(preprocessed.toString()).toContain(input);
-      expect(preprocessed.dependencies.length).toBe(0);
+      expect(preprocessed.dependencies).toHaveLength(0);
     });
   });
 });

@@ -61,6 +61,7 @@ const transformer: Transformer<Options.Pug> = async ({
     ...options,
     // @types/pug compile() returned value doesn't have `dependencies` prop
   }) as pug.compileTemplate & { dependencies?: string[] };
+
   return {
     code: compiled(),
     dependencies: compiled.dependencies ?? null,

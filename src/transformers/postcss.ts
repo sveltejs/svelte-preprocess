@@ -7,6 +7,7 @@ const process = async (
   content: string,
   filename: string,
   sourceMap: string | object,
+  // eslint-disable-next-line max-params
 ) => {
   const { css, map, messages } = await postcss(plugins).process(content, {
     from: filename,
@@ -60,6 +61,7 @@ const transformer: Transformer<Options.Postcss> = async ({
     } else {
       console.error(e);
     }
+
     return { code: content, map, dependencies: [] as any[] };
   }
 

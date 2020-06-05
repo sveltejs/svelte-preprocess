@@ -6,6 +6,7 @@ describe('transformer - globalStyle', () => {
     const template = `<style global>div{color:red}.test{}</style>`;
     const opts = autoProcess();
     const preprocessed = await preprocess(template, opts);
+
     expect(preprocessed.toString()).toContain(
       `:global(div){color:red}:global(.test){}`,
     );
@@ -15,6 +16,7 @@ describe('transformer - globalStyle', () => {
     const template = `<style global>.test{}:global(.foo){}</style>`;
     const opts = autoProcess();
     const preprocessed = await preprocess(template, opts);
+
     expect(preprocessed.toString()).toContain(
       `:global(.test){}:global(.foo){}`,
     );
@@ -26,6 +28,7 @@ describe('transformer - globalStyle', () => {
 </style>`;
     const opts = autoProcess();
     const preprocessed = await preprocess(template, opts);
+
     expect(preprocessed.toString()).toContain(
       `@keyframes -global-a {from{} to{}}@keyframes -global-b {from{} to{}}`,
     );
@@ -35,6 +38,7 @@ describe('transformer - globalStyle', () => {
     const template = `<style global>:local(div) .test{}</style>`;
     const opts = autoProcess();
     const preprocessed = await preprocess(template, opts);
+
     expect(preprocessed.toString()).toContain(`div :global(.test){}`);
   });
 
@@ -42,6 +46,7 @@ describe('transformer - globalStyle', () => {
     const template = `<style global>.test :local(div) .test{}</style>`;
     const opts = autoProcess();
     const preprocessed = await preprocess(template, opts);
+
     expect(preprocessed.toString()).toContain(
       `:global(.test) div :global(.test){}`,
     );
@@ -51,6 +56,7 @@ describe('transformer - globalStyle', () => {
     const template = `<style global>.test :local(div){}</style>`;
     const opts = autoProcess();
     const preprocessed = await preprocess(template, opts);
+
     expect(preprocessed.toString()).toContain(`:global(.test) div{}`);
   });
 });

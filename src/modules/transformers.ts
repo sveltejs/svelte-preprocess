@@ -1,7 +1,6 @@
 import stripIndent from 'strip-indent';
 
 import { Transformer, TransformerArgs, TransformerOptions } from '../types';
-
 import { throwError } from './errors';
 
 const TRANSFORMERS = {} as {
@@ -10,7 +9,7 @@ const TRANSFORMERS = {} as {
 
 export const runTransformer = async (
   name: string,
-  options: TransformerOptions<any>,
+  options: TransformerOptions,
   { content, map, filename }: TransformerArgs<any>,
 ): Promise<ReturnType<Transformer<unknown>>> => {
   // remove any unnecessary indentation (useful for coffee, pug and sugarss)

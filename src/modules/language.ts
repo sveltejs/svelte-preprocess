@@ -39,6 +39,7 @@ export const getLanguage = (
       throw new Error('src attribute must be string');
     }
     const parts = basename(attributes.src).split('.');
+
     lang = parts.length > 1 ? parts.pop() : defaultLang;
   }
 

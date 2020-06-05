@@ -11,8 +11,8 @@ export const CSS_PATTERN = /div(\.svelte-\w{4,7})?\s*\{\s*color:\s*(red|#f00);?\
 export const preprocess = async (input: string, opts: any) =>
   sveltePreprocess(input, opts, { filename: resolve(__dirname, 'App.svelte') });
 
-const compile = async (input: string, magicOpts: any) => {
-  const preprocessed = await exports.preprocess(input, magicOpts);
+const compile = async (input: string, opts: any) => {
+  const preprocessed = await exports.preprocess(input, opts);
   const { js, css } = svelteCompile(preprocessed.toString(), {
     css: true,
   });
@@ -22,11 +22,13 @@ const compile = async (input: string, magicOpts: any) => {
 
 export const doesCompileThrow = async (input: string, opts: any) => {
   let didThrow = false;
+
   try {
     await compile(input, opts);
   } catch (err) {
     didThrow = true;
   }
+
   return didThrow;
 };
 
@@ -34,6 +36,4 @@ export const getFixturePath = (file: string) =>
   resolve(__dirname, 'fixtures', file);
 
 export const getFixtureContent = (file: string) =>
-  readFileSync(exports.getFixturePath(file))
-    .toString()
-    .trim();
+  readFileSync(exports.getFixturePath(file)).toString().trim();

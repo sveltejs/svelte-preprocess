@@ -1,7 +1,7 @@
 import getAutoPreprocess from '../../src';
 import { preprocess, getFixtureContent, doesCompileThrow } from '../utils';
 
-const SCRIPT_LANGS: [string, string, object?][] = [
+const SCRIPT_LANGS: Array<[string, string, object?]> = [
   ['coffeescript', 'coffee'],
   [
     'typescript',
@@ -14,7 +14,7 @@ const EXPECTED_SCRIPT = getFixtureContent('script.js');
 SCRIPT_LANGS.forEach(([lang, ext, langOptions]) => {
   describe(`script - preprocessor - ${lang}`, () => {
     const template = `<div></div><script lang="${lang}">${getFixtureContent(
-      'script.' + ext,
+      `script.${ext}`,
     )}</script>`;
 
     it(`should throw parsing ${lang} when { ${lang}: false }`, async () => {
@@ -25,6 +25,7 @@ SCRIPT_LANGS.forEach(([lang, ext, langOptions]) => {
       const opts = getAutoPreprocess({
         [lang]: false,
       });
+
       expect(await doesCompileThrow(input, opts)).toBe(true);
     });
 
@@ -33,6 +34,7 @@ SCRIPT_LANGS.forEach(([lang, ext, langOptions]) => {
         [lang]: langOptions,
       });
       const preprocessed = await preprocess(template, opts);
+
       expect(preprocessed.toString()).toContain(EXPECTED_SCRIPT);
     });
   });

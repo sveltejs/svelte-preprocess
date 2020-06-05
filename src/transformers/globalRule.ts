@@ -8,6 +8,7 @@ const selectorPattern = /:global(?!\()/;
 const globalifyRulePlugin = (root: any) => {
   root.walkRules(selectorPattern, (rule: any) => {
     const [beginning, ...rest] = rule.selector.split(selectorPattern);
+
     rule.selector = [beginning, ...rest.map(globalifySelector)]
       .map((str) => str.trim())
       .join(' ')

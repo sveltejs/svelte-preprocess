@@ -1,7 +1,11 @@
 {
-  "extends": ["kaisermann/typescript"],
+  "extends": ["kiwi"],
   "env": {
     "node": true,
     "jest": true
+  },
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "off",
+    "no-console": "off"
   }
 }

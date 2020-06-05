@@ -38,6 +38,7 @@ describe('transformer - scss', () => {
       },
     });
     const preprocessed = await preprocess(template, opts);
+
     expect(preprocessed.toString()).toContain('red');
   });
 
@@ -45,6 +46,7 @@ describe('transformer - scss', () => {
     const template = `<style lang="scss">@import "fixtures/style.scss";</style>`;
     const opts = getAutoPreprocess();
     const preprocessed = await preprocess(template, opts);
+
     expect(preprocessed.dependencies).toContain(
       resolve(__dirname, '..', 'fixtures', 'style.scss').replace(/[\\/]/g, '/'),
     );
@@ -58,6 +60,7 @@ describe('transformer - scss', () => {
       },
     });
     const preprocessed = await preprocess(template, opts);
+
     expect(preprocessed.toString()).toContain('div#red{color:red}');
   });
 
@@ -70,6 +73,7 @@ describe('transformer - scss', () => {
       },
     });
     const preprocessed = await preprocess(template, opts);
+
     expect(preprocessed.toString()).toContain('blue');
   });
 
@@ -81,6 +85,7 @@ describe('transformer - scss', () => {
       },
     });
     const preprocessed = await preprocess(template, opts);
+
     expect(preprocessed.dependencies).toContain(
       resolve(__dirname, '..', 'fixtures', 'style.scss').replace(/[\\/]/g, '/'),
     );
@@ -95,6 +100,7 @@ describe('transformer - scss', () => {
       },
     });
     const preprocessed = await preprocess(template, opts);
+
     expect(preprocessed.toString()).toContain('div#green{color:green}');
   });
 });

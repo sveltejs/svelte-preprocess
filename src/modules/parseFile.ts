@@ -2,7 +2,6 @@ import { readFile, access } from 'fs';
 import { resolve, dirname } from 'path';
 
 import { PreprocessorArgs } from '../types';
-
 import { getLanguage } from './language';
 
 export const resolveSrc = (importerFile: string, srcPath: string) =>
@@ -27,12 +26,14 @@ export const parseFile = async (
   language: string,
 ) => {
   const dependencies = [];
+
   if (attributes.src) {
     // istanbul ignore if
     if (typeof attributes.src !== 'string') {
       throw new Error('src attribute must be string');
     }
     let path = attributes.src;
+
     /** Only try to get local files (path starts with ./ or ../) */
     if (path.match(/^(https?:)?\/\//) == null) {
       path = resolveSrc(filename, path);

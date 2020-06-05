@@ -5,6 +5,7 @@ import { preprocess } from '../utils';
 
 describe('transformer - less', () => {
   // TODO: waiting for https://github.com/less/less.js/issues/3508
+  // eslint-disable-next-line jest/no-disabled-tests
   it.skip('should return @imported files as dependencies', async () => {
     const template = `<style lang="less">@import "fixtures/style.less";</style>`;
     const opts = getAutoPreprocess();

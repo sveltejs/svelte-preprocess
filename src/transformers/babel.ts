@@ -17,7 +17,7 @@ const transformer: Transformer<Options.Babel> = async ({
     inputSourceMap: map as any,
     sourceType: 'module',
     // istanbul ignore next
-    sourceMaps: options.sourceMaps ? true : false,
+    sourceMaps: !!options.sourceMaps,
     filename,
     minified: false,
     ast: false,

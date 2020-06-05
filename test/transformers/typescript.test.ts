@@ -32,10 +32,10 @@ describe('transformer - typescript', () => {
   )}</script>`;
 
   it('should disallow transpilation to es5 or lower', async () => {
-    expect(
+    await expect(
       transpile('export let foo = 10', { target: 'es3' }),
     ).rejects.toThrow();
-    expect(
+    await expect(
       transpile('export let foo = 10', { target: 'es5' }),
     ).rejects.toThrow();
   });
@@ -44,6 +44,7 @@ describe('transformer - typescript', () => {
     it('should work with no compilerOptions', async () => {
       const opts = getAutoPreprocess({ typescript: { tsconfigFile: false } });
       const preprocessed = await preprocess(template, opts);
+
       expect(preprocessed.toString()).toContain('export var hello');
     });
 
@@ -55,6 +56,7 @@ describe('transformer - typescript', () => {
         },
       });
       const preprocessed = await preprocess(template, opts);
+
       expect(preprocessed.toString()).toContain(EXPECTED_SCRIPT);
     });
 
@@ -65,6 +67,7 @@ describe('transformer - typescript', () => {
         },
       });
       const preprocessed = await preprocess(template, opts);
+
       expect(preprocessed.toString()).toContain(EXPECTED_SCRIPT);
     });
 
@@ -74,6 +77,7 @@ describe('transformer - typescript', () => {
           tsconfigFile: './test/fixtures/tsconfig.syntactic.json',
         },
       });
+
       return expect(preprocess(template, opts)).rejects.toThrow('TS1005');
     });
 
@@ -83,6 +87,7 @@ describe('transformer - typescript', () => {
           tsconfigFile: './test/fixtures/tsconfig.semantic.json',
         },
       });
+
       return expect(preprocess(template, opts)).rejects.toThrow('TS6046');
     });
 
@@ -97,6 +102,7 @@ describe('transformer - typescript', () => {
         },
       });
       const { code } = await preprocess(template, opts);
+
       return expect(code).toContain(getFixtureContent('script.js'));
     });
   });
@@ -104,42 +110,48 @@ describe('transformer - typescript', () => {
   describe('code errors', () => {
     it('should report semantic errors in template', async () => {
       const { diagnostics } = await transpile('let label:string = 10');
-      expect(diagnostics.some(d => d.code === 2322)).toBe(true);
+
+      expect(diagnostics.some((d) => d.code === 2322)).toBe(true);
     });
 
     it('should report invalid relative svelte import statements', async () => {
       const { diagnostics } = await transpile(
         `import Nested from './fixtures/NonExistent.svelte'`,
       );
-      expect(diagnostics.some(d => d.code === 2307)).toBe(true);
+
+      expect(diagnostics.some((d) => d.code === 2307)).toBe(true);
     });
 
     it('should NOT report valid relative svelte import statements', async () => {
       const { diagnostics } = await transpile(
         `import Nested from './fixtures/Nested.svelte'`,
       );
-      expect(diagnostics.some(d => d.code === 2307)).toBe(false);
+
+      expect(diagnostics.some((d) => d.code === 2307)).toBe(false);
     });
 
     it('should NOT report non-relative svelte import statements', async () => {
       const { diagnostics } = await transpile(
         `import Nested from 'svelte/FakeSvelte.svelte'`,
       );
-      expect(diagnostics.some(d => d.code === 2307)).toBe(false);
+
+      expect(diagnostics.some((d) => d.code === 2307)).toBe(false);
     });
 
     it('should NOT affect non-svelte import statement', async () => {
       const { diagnostics } = await transpile(
         `import Nested from './relative/yaddaYadda.js'`,
       );
-      expect(diagnostics.some(d => d.code === 2307)).toBe(true);
+
+      expect(diagnostics.some((d) => d.code === 2307)).toBe(true);
     });
 
     it('should NOT affect import statement without file extension', async () => {
       const { diagnostics } = await transpile(
         `import Nested from './relative/noExtension'`,
       );
-      expect(diagnostics.some(d => d.code === 2307)).toBe(true);
+
+      expect(diagnostics.some((d) => d.code === 2307)).toBe(true);
     });
 
     it('should NOT report a mismatched variable name error when using reactive variables', async () => {
@@ -149,9 +161,10 @@ describe('transformer - typescript', () => {
           $user.name = "test";
         `,
       );
-      expect(diagnostics.some(d => d.code === 2552)).toBe(false);
+
+      expect(diagnostics.some((d) => d.code === 2552)).toBe(false);
     });
-    
+
     it('should report a mismatched variable name error', async () => {
       const { diagnostics } = await transpile(
         `
@@ -159,8 +172,8 @@ describe('transformer - typescript', () => {
           xuser.name = "test";
         `,
       );
-      expect(diagnostics.some(d => d.code === 2552)).toBe(true);
-    });
 
+      expect(diagnostics.some((d) => d.code === 2552)).toBe(true);
+    });
   });
 });

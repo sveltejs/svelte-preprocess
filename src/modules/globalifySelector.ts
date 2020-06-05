@@ -10,6 +10,7 @@ export function globalifySelector(selector: string) {
       if (selectorPart.startsWith(':global')) {
         return selectorPart;
       }
+
       return `:global(${selectorPart})`;
     })
     .join(' ');

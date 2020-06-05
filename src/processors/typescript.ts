@@ -9,6 +9,7 @@ export default (options: Options.Typescript): PreprocessorGroup => ({
       svelteFile,
       'javascript',
     );
+
     if (lang !== 'typescript') return { code: content };
 
     const transformed = await transformer({ content, filename, options });

@@ -6,6 +6,7 @@ export async function hasPostCssInstalled() {
   }
 
   let result = false;
+
   try {
     await import('postcss');
     result = true;

@@ -25,6 +25,7 @@ function formatDiagnostics(
       createFormatDiagnosticsHost(basePath),
     );
   }
+
   return ts.formatDiagnostic(
     diagnostics,
     createFormatDiagnosticsHost(basePath),
@@ -34,25 +35,31 @@ function formatDiagnostics(
 function getFilenameExtension(filename: string) {
   filename = basename(filename);
   const lastDotIndex = filename.lastIndexOf('.');
+
   if (lastDotIndex <= 0) return '';
+
   return filename.substr(lastDotIndex + 1);
 }
 
 function isSvelteFile(filename: string) {
   const importExtension = getFilenameExtension(filename);
+
   return importExtension === 'svelte' || importExtension === 'html';
 }
 
 const IMPORTEE_PATTERN = /['"](.*?)['"]/;
+
 function isValidSvelteImportDiagnostic(filename: string, diagnostic: any) {
   // TS2307: 'cannot find module'
   if (diagnostic.code !== 2307) return true;
 
   const importeeMatch = diagnostic.messageText.match(IMPORTEE_PATTERN);
+
   // istanbul ignore if
   if (!importeeMatch) return true;
 
   let [, importeePath] = importeeMatch;
+
   /** if we're not dealing with a relative path, assume the file exists */
   if (importeePath[0] !== '.') return false;
 
@@ -74,6 +81,7 @@ const importTransformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
         node.moduleSpecifier,
       );
     }
+
     return ts.visitEachChild(node, (child) => visit(child), context);
   };
 
@@ -85,6 +93,7 @@ const TS_TRANSFORMERS = {
 };
 
 const TS2552_REGEX = /Cannot find name '\$([a-zA-Z0-9_]+)'. Did you mean '([a-zA-Z0-9_]+)'\?/i;
+
 function isValidSvelteReactiveValueDiagnostic(
   filename: string,
   diagnostic: any,
@@ -130,6 +139,7 @@ function compileFileFromMemory(
       languageVersion,
       onError,
       shouldCreateNewSourceFile,
+      // eslint-disable-next-line max-params
     ) =>
       isDummyFile(fileName)
         ? ts.createSourceFile(dummyFileName, code, languageVersion)
@@ -210,6 +220,7 @@ const transformer: Transformer<Options.Typescript> = ({
         tsconfigFile,
         ts.sys.readFile,
       );
+
       if (error) {
         throw new Error(formatDiagnostics(error, basePath));
       }
@@ -224,6 +235,7 @@ const transformer: Transformer<Options.Typescript> = ({
     errors,
     options: convertedCompilerOptions,
   } = ts.convertCompilerOptionsFromJson(compilerOptionsJSON, basePath);
+
   if (errors.length) {
     throw new Error(formatDiagnostics(errors, basePath));
   }
@@ -242,13 +254,16 @@ const transformer: Transformer<Options.Typescript> = ({
     );
   }
 
-  let code, map, diagnostics;
+  let code;
+  let map;
+  let diagnostics;
+
   if (options.transpileOnly || compilerOptions.transpileOnly) {
     ({ outputText: code, sourceMapText: map, diagnostics } = ts.transpileModule(
       content,
       {
         fileName: filename,
-        compilerOptions: compilerOptions,
+        compilerOptions,
         reportDiagnostics: options.reportDiagnostics !== false,
         transformers: TS_TRANSFORMERS,
       },
@@ -263,6 +278,7 @@ const transformer: Transformer<Options.Typescript> = ({
   if (diagnostics.length > 0) {
     // could this be handled elsewhere?
     const formattedDiagnostics = formatDiagnostics(diagnostics, basePath);
+
     console.log(formattedDiagnostics);
   }
 

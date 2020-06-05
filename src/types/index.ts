@@ -21,7 +21,7 @@ export interface TransformerArgs<T> {
   content: string;
   filename: string;
   map?: string | object;
-  dianostics?: Array<unknown>;
+  dianostics?: unknown[];
   options?: T;
 }
 

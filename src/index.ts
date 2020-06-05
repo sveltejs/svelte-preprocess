@@ -2,6 +2,8 @@ import { autoPreprocess } from './autoProcess';
 
 // default auto processor
 // crazy es6/cjs export mix for backward compatibility
+
+// eslint-disable-next-line no-multi-assign
 export default exports = module.exports = autoPreprocess;
 
 // stand-alone processors to be included manually */

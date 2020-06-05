@@ -42,7 +42,7 @@ type AutoPreprocessOptions = {
   markupTagName?: string;
   /** @deprecated add transformer config directly to svelte-preprocess options object */
   transformers?: Transformers;
-  aliases?: [string, string][];
+  aliases?: Array<[string, string]>;
   preserve?: string[];
   typescript?: TransformerOptions<Options.Typescript>;
   scss?: TransformerOptions<Options.Sass>;
@@ -60,7 +60,7 @@ type AutoPreprocessOptions = {
   [languageName: string]:
     | string
     | Promise<string>
-    | [string, string][]
+    | Array<[string, string]>
     | string[]
     | TransformerOptions;
 };
@@ -89,7 +89,7 @@ export function autoPreprocess(
     `<${markupTagName}([\\s\\S]*?)(?:>([\\s\\S]*)<\\/${markupTagName}>|/>)`,
   );
 
-  if (aliases && aliases.length) {
+  if (aliases?.length) {
     addLanguageAlias(aliases);
   }
 
@@ -191,8 +191,10 @@ export function autoPreprocess(
         .filter(Boolean)
         .reduce((acc: Record<string, string | boolean>, attr) => {
           const [name, value] = attr.split('=');
+
           // istanbul ignore next
           acc[name] = value ? value.replace(/['"]/g, '') : true;
+
           return acc;
         }, {});
 
@@ -276,6 +278,7 @@ export function autoPreprocess(
           map,
           filename,
         });
+
         code = transformed.code;
         map = transformed.map;
       }

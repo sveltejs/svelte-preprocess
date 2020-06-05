@@ -9,6 +9,7 @@ export default (options: Options.Stylus): PreprocessorGroup => ({
       svelteFile,
       'css',
     );
+
     if (lang !== 'stylus') return { code: content };
 
     const transformed = await transformer({ content, filename, options });

@@ -51,6 +51,7 @@ describe('transformer - regex', () => {
       .repeat(2);
     const opts = autoProcess({ replace: options });
     const preprocessed = await preprocess(template, opts);
+
     expect(preprocessed.toString()).toMatchInlineSnapshot(`
       "<script>
         let foo = 1
@@ -125,6 +126,7 @@ describe('transformer - regex', () => {
     });
 
     const preprocessed = await preprocess(template, opts);
+
     expect(preprocessed.toString()).toMatchInlineSnapshot(`
 "<script>
       let isDEV = \\"test\\" === 'development';

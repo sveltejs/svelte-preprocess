@@ -6,7 +6,7 @@ describe('transformer - globalRule', () => {
     const template = `<style>:global div{color:red}:global .test{}</style>`;
     const opts = autoProcess();
 
-    expect(async () => await preprocess(template, opts)).not.toThrow();
+    expect(() => preprocess(template, opts)).not.toThrow();
   });
 
   it('wraps selector in :global(...) modifier', async () => {
