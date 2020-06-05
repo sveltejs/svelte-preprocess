@@ -175,5 +175,49 @@ describe('transformer - typescript', () => {
 
       expect(diagnostics.some((d) => d.code === 2552)).toBe(true);
     });
+
+    it('should remove imports containing types only', async () => {
+      const { code } = await transpile(
+        `
+          import { AType, AInterface } from './fixtures/types'
+          let name: AType = "test1";
+        `,
+      );
+
+      expect(code).not.toContain('/fixtures/types');
+    });
+
+    it('should remove type only imports', async () => {
+      const { code } = await transpile(
+        `
+          import type { AType, AInterface } from './fixtures/types'
+          let name: AType = "test1";
+        `,
+      );
+
+      expect(code).not.toContain('/fixtures/types');
+    });
+
+    it('should remove only the types from the imports', async () => {
+      const { code } = await transpile(
+        `
+          import { AValue, AType, AInterface } from './fixtures/types'
+          let name: AType = "test1";
+        `,
+      );
+
+      expect(code).toContain("import { AValue } from './fixtures/types'");
+    });
+
+    it('should remove the named imports completely if they were all types', async () => {
+      const { code } = await transpile(
+        `
+          import Default, { AType, AInterface } from './fixtures/types'
+          let name: AType = "test1";
+        `,
+      );
+
+      expect(code).toContain("import Default from './fixtures/types'");
+    });
   });
 });
