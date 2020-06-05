@@ -1,19 +1,15 @@
 import postcss from 'postcss';
 
 import { Transformer } from '../types';
-import { globalifyPlugin } from './globalStyle';
+import { wrapSelectorInGlobal } from './globalStyle';
 
 const globalifyRulePlugin = (root: any) => {
-  root.walkAtRules(/^global$/, (atrule: any) => {
-    globalifyPlugin(atrule);
-    let after = atrule;
-
-    atrule.each(function (child: any) {
-      after.after(child);
-      after = child;
-    });
-
-    atrule.remove();
+  root.walkRules(/:global(?!\()/, (rule: any) => {
+    const [beginning, ...rest] = rule.selector.split(/:global(?!\()/);
+    rule.selector = (
+      beginning.trim() + ' '
+      + rest.filter((x: string) => !!x).map(wrapSelectorInGlobal).join(' ')
+    ).trim();
   });
 };
 

@@ -3,7 +3,7 @@ import { preprocess } from '../utils';
 
 describe('transformer - globalRule', () => {
   it('wraps selector in :global(...) modifier', async () => {
-    const template = `<style>@global{div{color:red}.test{}}</style>`;
+    const template = `<style>:global div{color:red}:global .test{}</style>`;
     const opts = autoProcess();
     const preprocessed = await preprocess(template, opts);
     expect(preprocessed.toString()).toContain(
@@ -11,17 +11,8 @@ describe('transformer - globalRule', () => {
     );
   });
 
-  it('wraps selector in :global(...) modifier only inside the rule', async () => {
-    const template = `<style>@global{div{color:red}}.test{}</style>`;
-    const opts = autoProcess();
-    const preprocessed = await preprocess(template, opts);
-    expect(preprocessed.toString()).toContain(
-      `:global(div){color:red}.test{}`,
-    );
-  });
-
   it('wraps selector in :global(...) only if needed', async () => {
-    const template = `<style>@global{.test{}:global(.foo){}}</style>`;
+    const template = `<style>:global .test{}:global :global(.foo){}</style>`;
     const opts = autoProcess();
     const preprocessed = await preprocess(template, opts);
     expect(preprocessed.toString()).toContain(
@@ -29,14 +20,61 @@ describe('transformer - globalRule', () => {
     );
   });
 
-  it("prefixes @keyframes names with '-global-' only if needed", async () => {
-    const template = `<style>
-      @global{@keyframes a {from{} to{}}@keyframes -global-b {from{} to{}}}
-    </style>`;
+  it('wraps selector in :global(...) on multiple levels', async () => {
+    const template = '<style>:global div .cls{}</style>';
     const opts = autoProcess();
     const preprocessed = await preprocess(template, opts);
-    expect(preprocessed.toString()).toContain(
-      `@keyframes -global-a {from{} to{}}@keyframes -global-b {from{} to{}}`,
+    expect(preprocessed.toString()).toMatch(
+      // either be :global(div .cls){}
+      //        or :global(div) :global(.cls){}
+      /(:global\(div .cls\)\{\}|:global\(div\) :global\(\.cls\)\{\})/,
+    );
+  });
+
+  it('wraps selector in :global(...) on multiple levels when in the middle', async () => {
+    const template = '<style>div :global span .cls{}</style>';
+    const opts = autoProcess();
+    const preprocessed = await preprocess(template, opts);
+    expect(preprocessed.toString()).toMatch(
+      // either be div :global(span .cls) {}
+      //        or div :global(span) :global(.cls) {}
+      /div (:global\(span .cls\)\{\}|:global\(span\) :global\(\.cls\)\{\})/,
+    );
+  });
+
+  it('does not break when at the end', async () => {
+    const template = '<style>span :global{}</style>';
+    const opts = autoProcess();
+    const preprocessed = await preprocess(template, opts);
+    expect(preprocessed.toString()).toContain('span{}');
+  });
+
+  it('works with collapsed nesting several times', async () => {
+    const template = '<style>div :global span :global .cls{}</style>';
+    const opts = autoProcess();
+    const preprocessed = await preprocess(template, opts);
+    expect(preprocessed.toString()).toMatch(
+      // either be div :global(span .cls) {}
+      //        or div :global(span) :global(.cls) {}
+      /div (:global\(span .cls\)\{\}|:global\(span\) :global\(\.cls\)\{\})/,
+    );
+  });
+
+  it('does not interfere with the :global(...) syntax', async () => {
+    const template = '<style>div :global(span){}</style>';
+    const opts = autoProcess();
+    const preprocessed = await preprocess(template, opts);
+    expect(preprocessed.toString()).toContain('div :global(span){}');
+  });
+
+  it('allows mixing with the :global(...) syntax', async () => {
+    const template = '<style>div :global(span) :global .cls{}</style>';
+    const opts = autoProcess();
+    const preprocessed = await preprocess(template, opts);
+    expect(preprocessed.toString()).toMatch(
+      // either be div :global(span .cls) {}
+      //        or div :global(span) :global(.cls) {}
+      /div (:global\(span .cls\)\{\}|:global\(span\) :global\(\.cls\)\{\})/,
     );
   });
 });
