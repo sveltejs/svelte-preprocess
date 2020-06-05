@@ -46,7 +46,7 @@ export const getSrcContent = (file: string): Promise<string> => {
 };
 
 async function doesFileExist(file: string) {
-  return new Promise(resolve => access(file, 0, err => resolve(!err)));
+  return new Promise((resolve) => access(file, 0, (err) => resolve(!err)));
 }
 
 export const parseFile = async (
@@ -83,7 +83,7 @@ export const parseFile = async (
 };
 
 export const addLanguageAlias = (entries: Array<[string, string]>) =>
-  entries.forEach(entry => LANG_DICT.set(...entry));
+  entries.forEach((entry) => LANG_DICT.set(...entry));
 
 /** Paths used by preprocessors to resolve @imports */
 export const getIncludePaths = (fromFilename: string, base: string[] = []) => [
@@ -141,7 +141,7 @@ export const runTransformer = async (
 
   try {
     if (!TRANSFORMERS[name]) {
-      await import(`./transformers/${name}`).then(mod => {
+      await import(`./transformers/${name}`).then((mod) => {
         // istanbul ignore else
         TRANSFORMERS[name] = mod.default;
       });

@@ -64,8 +64,8 @@ function isValidSvelteImportDiagnostic(filename: string, diagnostic: any) {
   return existsSync(importeePath) === false;
 }
 
-const importTransformer: ts.TransformerFactory<ts.SourceFile> = context => {
-  const visit: ts.Visitor = node => {
+const importTransformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
+  const visit: ts.Visitor = (node) => {
     if (ts.isImportDeclaration(node)) {
       return ts.createImportDeclaration(
         node.decorators,
@@ -74,10 +74,10 @@ const importTransformer: ts.TransformerFactory<ts.SourceFile> = context => {
         node.moduleSpecifier,
       );
     }
-    return ts.visitEachChild(node, child => visit(child), context);
+    return ts.visitEachChild(node, (child) => visit(child), context);
   };
 
-  return node => ts.visitNode(node, visit);
+  return (node) => ts.visitNode(node, visit);
 };
 
 const TS_TRANSFORMERS = {
@@ -117,9 +117,9 @@ function compileFileFromMemory(
     ts.sys.resolvePath(fileName) === dummyFileName;
 
   const host: ts.CompilerHost = {
-    fileExists: fileName =>
+    fileExists: (fileName) =>
       isDummyFile(fileName) || realHost.fileExists(fileName),
-    getCanonicalFileName: fileName =>
+    getCanonicalFileName: (fileName) =>
       isDummyFile(fileName)
         ? ts.sys.useCaseSensitiveFileNames
           ? fileName
@@ -139,7 +139,7 @@ function compileFileFromMemory(
             onError,
             shouldCreateNewSourceFile,
           ),
-    readFile: fileName =>
+    readFile: (fileName) =>
       isDummyFile(fileName) ? content : realHost.readFile(fileName),
     writeFile: (fileName, data) => {
       if (fileName.endsWith('.map')) {
@@ -175,7 +175,7 @@ function compileFileFromMemory(
     ...emitResult.diagnostics,
     ...ts.getPreEmitDiagnostics(program),
   ].filter(
-    diagnostic =>
+    (diagnostic) =>
       isValidSvelteImportDiagnostic(filename, diagnostic) &&
       isValidSvelteReactiveValueDiagnostic(filename, diagnostic),
   );

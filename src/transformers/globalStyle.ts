@@ -17,7 +17,7 @@ const globalifyPlugin = (root: any) => {
     rule.selectors = rule.selectors.map((selector: string) => {
       return selector
         .split(' ')
-        .map(selectorPart => {
+        .map((selectorPart) => {
           if (selectorPart.startsWith(':local')) {
             return selectorPart.replace(/:local\((.+?)\)/g, '$1');
           }
