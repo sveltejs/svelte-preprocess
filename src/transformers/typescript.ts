@@ -74,6 +74,9 @@ function isValidSvelteImportDiagnostic(filename: string, diagnostic: any) {
 const importTransformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
   const visit: ts.Visitor = (node) => {
     if (ts.isImportDeclaration(node)) {
+      if (node.importClause?.isTypeOnly) {
+        return ts.createEmptyStatement();
+      }
       return ts.createImportDeclaration(
         node.decorators,
         node.modifiers,
@@ -111,6 +114,72 @@ function isValidSvelteReactiveValueDiagnostic(
 
   return !(usedVar && proposedVar && usedVar === proposedVar);
 }
+
+function createImportTransformerFromProgram(program: ts.Program) {
+  const checker = program.getTypeChecker();
+
+  const importedTypeRemoverTransformer: ts.TransformerFactory<ts.SourceFile> = context => {
+    const visit: ts.Visitor = node => {
+      if (ts.isImportDeclaration(node)) {
+
+        let newImportClause: ts.ImportClause = node.importClause;
+
+        if (node.importClause) {
+          // import type {...} from './blah'
+          if (node.importClause?.isTypeOnly) {
+            return ts.createEmptyStatement();
+          }
+          
+          // import Blah, { blah } from './blah'
+          newImportClause = ts.getMutableClone(node.importClause);
+
+          // types can't be default exports, so we just worry about { blah } and { blah as name } exports
+          if (newImportClause.namedBindings && ts.isNamedImports(newImportClause.namedBindings)) {
+            let newBindings = ts.getMutableClone(newImportClause.namedBindings);
+            let newElements = [];
+
+            for (let spec of newBindings.elements) {
+              let ident = spec.name;
+              let symbol = checker.getSymbolAtLocation(ident);
+              let aliased = checker.getAliasedSymbol(symbol);
+              if (aliased) {
+                  if ((aliased.flags & (ts.SymbolFlags.TypeAlias | ts.SymbolFlags.Interface)) > 0) {
+                     continue; //We found an imported type, don't add to our new import clause
+                  }
+              }
+              newElements.push(spec)
+            }
+
+            if (newElements.length > 0) {
+              newBindings.elements = ts.createNodeArray(newElements, newBindings.elements.hasTrailingComma);
+              newImportClause.namedBindings = newBindings;
+            } else {
+              newImportClause.namedBindings = undefined;
+            }
+          }
+
+          //we ended up removing all named bindings and we didn't have a name? nothing left to import.
+          if (!newImportClause.namedBindings && !newImportClause.name) {
+            return ts.createEmptyStatement();
+          }
+        }
+
+        return ts.createImportDeclaration(
+          node.decorators,
+          node.modifiers,
+          newImportClause,
+          node.moduleSpecifier,
+        );
+      }
+      return ts.visitEachChild(node, child => visit(child), context);
+    };
+
+    return node => ts.visitNode(node, visit);
+  };
+
+  return importedTypeRemoverTransformer;
+}
+
 
 function compileFileFromMemory(
   compilerOptions: CompilerOptions,
@@ -172,12 +241,15 @@ function compileFileFromMemory(
   };
 
   const program = ts.createProgram([dummyFileName], compilerOptions, host);
+
+  let transformers = { before: [createImportTransformerFromProgram(program)] }
+
   const emitResult = program.emit(
+    program.getSourceFile(dummyFileName),
     undefined,
     undefined,
     undefined,
-    undefined,
-    TS_TRANSFORMERS,
+    transformers
   );
 
   // collect diagnostics without svelte import errors
