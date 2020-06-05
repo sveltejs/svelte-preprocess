@@ -1,3 +1,12 @@
+# [3.8.0](https://github.com/kaisermann/svelte-preprocess/compare/v3.7.4...v3.8.0) (2020-06-05)
+
+
+### Features
+
+* add implementation option for scss ([909e0c9](https://github.com/kaisermann/svelte-preprocess/commit/909e0c91be4a36fa3f9711d1ff4bc4f90fff64d3))
+
+
+
 ## [3.7.4](https://github.com/kaisermann/svelte-preprocess/compare/v3.7.3...v3.7.4) (2020-04-23)
 
 
