@@ -1,6 +1,7 @@
 import { resolve } from 'path';
 
-import { importAny, getIncludePaths } from '../src/utils';
+import { getIncludePaths } from '../src/utils';
+import { importAny } from '../src/modules/importAny';
 
 describe('utils - importAny', () => {
   it('should throw error when none exist', () => {

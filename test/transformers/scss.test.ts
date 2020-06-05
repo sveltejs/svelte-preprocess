@@ -7,7 +7,7 @@ import { Options } from '../../src/types';
 const implementation: Options.Sass['implementation'] = {
   render(options, callback) {
     callback(null, {
-      css: Buffer.from('Foo'),
+      css: Buffer.from('div#red{color:red}'),
       stats: {
         entry: 'data',
         start: 0,
@@ -18,7 +18,7 @@ const implementation: Options.Sass['implementation'] = {
     });
   },
   renderSync: () => ({
-    css: Buffer.from('Bar'),
+    css: Buffer.from('div#green{color:green}'),
     stats: {
       entry: 'data',
       start: 0,
@@ -58,7 +58,7 @@ describe('transformer - scss', () => {
       },
     });
     const preprocessed = await preprocess(template, opts);
-    expect(preprocessed.toString()).toContain('Foo');
+    expect(preprocessed.toString()).toContain('div#red{color:red}');
   });
 
   it('should prepend scss content via `data` option property - via renderSync', async () => {
@@ -95,6 +95,6 @@ describe('transformer - scss', () => {
       },
     });
     const preprocessed = await preprocess(template, opts);
-    expect(preprocessed.toString()).toContain('Bar');
+    expect(preprocessed.toString()).toContain('div#green{color:green}');
   });
 });

@@ -16,6 +16,7 @@ import {
   Options,
   Processed,
 } from './types';
+import { hasPostCssInstalled } from './modules/hasPostcssInstalled';
 
 interface Transformers {
   typescript?: TransformerOptions<Options.Typescript>;
@@ -261,25 +262,26 @@ export function autoPreprocess(
         dependencies = concat(dependencies, transformed.dependencies);
       }
 
-      if (attributes.global) {
-        const transformed = await runTransformer('globalStyle', null, {
+      if (await hasPostCssInstalled()) {
+        if (attributes.global) {
+          const transformed = await runTransformer('globalStyle', null, {
+            content: code,
+            map,
+            filename,
+          });
+
+          code = transformed.code;
+          map = transformed.map;
+        }
+
+        const transformed = await runTransformer('globalRule', null, {
           content: code,
           map,
           filename,
         });
-
         code = transformed.code;
         map = transformed.map;
       }
-
-      const transformed = await runTransformer('globalRule', null, {
-        content: code,
-        map,
-        filename,
-      });
-
-      code = transformed.code;
-      map = transformed.map;
 
       return { code, map, dependencies };
     },
