@@ -27,10 +27,10 @@ interface Transformers {
   postcss?: TransformerOptions<Options.Postcss>;
   coffeescript?: TransformerOptions<Options.Coffeescript>;
   pug?: TransformerOptions<Options.Pug>;
-  globalStyle?: TransformerOptions<Options.Typescript>;
-  globalRule?: TransformerOptions<Options.Typescript>;
+  globalStyle?: TransformerOptions;
+  globalRule?: TransformerOptions;
   replace?: Options.Replace;
-  [languageName: string]: TransformerOptions<any>;
+  [languageName: string]: TransformerOptions;
 }
 
 type AutoPreprocessOptions = {
@@ -65,7 +65,7 @@ type AutoPreprocessOptions = {
     | Promise<string>
     | [string, string][]
     | string[]
-    | TransformerOptions<any>;
+    | TransformerOptions;
 };
 
 const SVELTE_MAJOR_VERSION = +version[0];

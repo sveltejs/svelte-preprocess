@@ -33,7 +33,7 @@ export type Transformer<T> = (
   args: TransformerArgs<T>,
 ) => Processed | Promise<Processed>;
 
-export type TransformerOptions<T> =
+export type TransformerOptions<T = any> =
   | boolean
   | Record<string, any>
   | Transformer<T>;
