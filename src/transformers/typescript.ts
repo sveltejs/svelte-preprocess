@@ -135,13 +135,13 @@ function createImportTransformerFromProgram(program: ts.Program) {
 
           // types can't be default exports, so we just worry about { blah } and { blah as name } exports
           if (newImportClause.namedBindings && ts.isNamedImports(newImportClause.namedBindings)) {
-            let newBindings = ts.getMutableClone(newImportClause.namedBindings);
-            let newElements = [];
+            const newBindings = ts.getMutableClone(newImportClause.namedBindings);
+            const newElements = [];
 
-            for (let spec of newBindings.elements) {
-              let ident = spec.name;
-              let symbol = checker.getSymbolAtLocation(ident);
-              let aliased = checker.getAliasedSymbol(symbol);
+            for (const spec of newBindings.elements) {
+              const ident = spec.name;
+              const symbol = checker.getSymbolAtLocation(ident);
+              const aliased = checker.getAliasedSymbol(symbol);
               if (aliased) {
                   if ((aliased.flags & (ts.SymbolFlags.TypeAlias | ts.SymbolFlags.Interface)) > 0) {
                      continue; //We found an imported type, don't add to our new import clause
@@ -242,7 +242,7 @@ function compileFileFromMemory(
 
   const program = ts.createProgram([dummyFileName], compilerOptions, host);
 
-  let transformers = { before: [createImportTransformerFromProgram(program)] }
+  const transformers = { before: [createImportTransformerFromProgram(program)] }
 
   const emitResult = program.emit(
     program.getSourceFile(dummyFileName),
