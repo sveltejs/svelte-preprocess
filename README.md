@@ -12,6 +12,7 @@
   - [Template tag](#template-tag)
   - [External files](#external-files)
   - [Global style](#global-style)
+  - [Global rule](#global-rule)
   - [Preprocessors](#preprocessors)
   - [Modern Javascript syntax](#modern-javascript-syntax)
   - [Replace values](#replace-values)
@@ -28,6 +29,7 @@
   - [`scss`/`sass`](#scsssass)
   - [`typescript`](#typescript)
   - [`pug`](#pug)
+  - [`coffeescript`](#coffeescript)
 - [FAQ](#faq)
   - [My VS Code is displaying a lot of errors on my templates when I try to use `x`...](#my-vs-code-is-displaying-a-lot-of-errors-on-my-templates-when-i-try-to-use-x)
   - [My `typescript` compilation is sloooooooow](#my-typescript-compilation-is-sloooooooow)
@@ -101,13 +103,15 @@ Use a `:global` rule to only expose parts of the stylesheet:
 
 ```html
 <style lang="scss">
-  .scoped-style {}
+  .scoped-style {
+  }
 
   :global {
     @import 'global-stylesheet.scss';
 
     .global-style {
-      .global-child-style {}
+      .global-child-style {
+      }
     }
   }
 </style>
@@ -224,7 +228,7 @@ Which allows to write your component like:
 
 ```html
 @if(process.env.NODE_ENV !== 'development')
-  <h1>Production environment!</h1>
+<h1>Production environment!</h1>
 @endif
 ```
 
