@@ -79,7 +79,7 @@ _Note: only for auto preprocessing_
 
 ### Global style
 
-Add a `global` attribute to your `style` tag and instead of scoping the css, all of its content will be interpreted as global style.
+Add a `global` attribute to your `style` tag and instead of scoping the CSS, all of its content will be interpreted as global style.
 
 ```html
 <style global>
@@ -89,7 +89,7 @@ Add a `global` attribute to your `style` tag and instead of scoping the css, all
 </style>
 ```
 
-_Note<sup>1</sup>: needs postcss to be installed_
+_Note<sup>1</sup>: needs PostCSS to be installed._
 
 _Note<sup>2</sup>: if you're using it as a standalone processor, it works best if added to the end of the processors array._
 
@@ -97,14 +97,14 @@ _Note<sup>3</sup>: if you need to have some styles be scoped inside a global sty
 
 ### Global rule
 
-Use a `@global` rule to only expose parts of the stylesheet:
+Use a `:global` rule to only expose parts of the stylesheet:
 
 ```html
 <style lang="scss">
   .scoped-style {}
 
-  @global {
-    import 'global-stylesheet.css';
+  :global {
+    @import 'global-stylesheet.scss';
 
     .global-style {
       .global-child-style {}
@@ -113,9 +113,13 @@ Use a `@global` rule to only expose parts of the stylesheet:
 </style>
 ```
 
-_Note<sup>1</sup>: needs postcss to be installed_
+Works best with nesting-enabled CSS preprocessors, but regular CSS selectors like `div :global .global1 .global2` are also supported.
+
+_Note<sup>1</sup>: needs PostCSS to be installed._
 
 _Note<sup>2</sup>: if you're using it as a standalone processor, it works best if added to the end of the processors array._
+
+_Note<sup>3</sup>: wrapping `@keyframes` inside `:global {}` blocks is not supported. Use the [`-global-` name prefix for global keyframes](https://svelte.dev/docs#style)._
 
 ### Preprocessors
 
