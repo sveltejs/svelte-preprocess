@@ -77,6 +77,7 @@ const importTransformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
       if (node.importClause?.isTypeOnly) {
         return ts.createEmptyStatement();
       }
+
       return ts.createImportDeclaration(
         node.decorators,
         node.modifiers,
@@ -118,68 +119,85 @@ function isValidSvelteReactiveValueDiagnostic(
 function createImportTransformerFromProgram(program: ts.Program) {
   const checker = program.getTypeChecker();
 
-  const importedTypeRemoverTransformer: ts.TransformerFactory<ts.SourceFile> = context => {
-    const visit: ts.Visitor = node => {
-      if (ts.isImportDeclaration(node)) {
+  const importedTypeRemoverTransformer: ts.TransformerFactory<ts.SourceFile> = (
+    context,
+  ) => {
+    const visit: ts.Visitor = (node) => {
+      if (!ts.isImportDeclaration(node)) {
+        return ts.visitEachChild(node, (child) => visit(child), context);
+      }
 
-        let newImportClause: ts.ImportClause = node.importClause;
+      let newImportClause: ts.ImportClause = node.importClause;
 
-        if (node.importClause) {
-          // import type {...} from './blah'
-          if (node.importClause?.isTypeOnly) {
-            return ts.createEmptyStatement();
-          }
-          
-          // import Blah, { blah } from './blah'
-          newImportClause = ts.getMutableClone(node.importClause);
+      if (node.importClause) {
+        // import type {...} from './blah'
+        if (node.importClause?.isTypeOnly) {
+          return ts.createEmptyStatement();
+        }
 
-          // types can't be default exports, so we just worry about { blah } and { blah as name } exports
-          if (newImportClause.namedBindings && ts.isNamedImports(newImportClause.namedBindings)) {
-            const newBindings = ts.getMutableClone(newImportClause.namedBindings);
-            const newElements = [];
+        // import Blah, { blah } from './blah'
+        newImportClause = ts.getMutableClone(node.importClause);
 
-            for (const spec of newBindings.elements) {
-              const ident = spec.name;
-              const symbol = checker.getSymbolAtLocation(ident);
-              const aliased = checker.getAliasedSymbol(symbol);
-              if (aliased) {
-                  if ((aliased.flags & (ts.SymbolFlags.TypeAlias | ts.SymbolFlags.Interface)) > 0) {
-                     continue; //We found an imported type, don't add to our new import clause
-                  }
+        // types can't be default exports, so we just worry about { blah } and { blah as name } exports
+        if (
+          newImportClause.namedBindings &&
+          ts.isNamedImports(newImportClause.namedBindings)
+        ) {
+          const newBindings = ts.getMutableClone(newImportClause.namedBindings);
+          const newElements = [];
+
+          newImportClause.namedBindings = undefined;
+
+          for (const spec of newBindings.elements) {
+            const ident = spec.name;
+
+            const symbol = checker.getSymbolAtLocation(ident);
+            const aliased = checker.getAliasedSymbol(symbol);
+
+            if (aliased) {
+              if (
+                (aliased.flags &
+                  (ts.SymbolFlags.TypeAlias | ts.SymbolFlags.Interface)) >
+                0
+              ) {
+                // We found an imported type, don't add to our new import clause
+                continue;
               }
-              newElements.push(spec)
             }
-
-            if (newElements.length > 0) {
-              newBindings.elements = ts.createNodeArray(newElements, newBindings.elements.hasTrailingComma);
-              newImportClause.namedBindings = newBindings;
-            } else {
-              newImportClause.namedBindings = undefined;
-            }
+            newElements.push(spec);
           }
 
-          //we ended up removing all named bindings and we didn't have a name? nothing left to import.
-          if (!newImportClause.namedBindings && !newImportClause.name) {
-            return ts.createEmptyStatement();
+          if (newElements.length > 0) {
+            newBindings.elements = ts.createNodeArray(
+              newElements,
+              newBindings.elements.hasTrailingComma,
+            );
+            newImportClause.namedBindings = newBindings;
           }
         }
 
-        return ts.createImportDeclaration(
-          node.decorators,
-          node.modifiers,
-          newImportClause,
-          node.moduleSpecifier,
-        );
+        // we ended up removing all named bindings and we didn't have a name? nothing left to import.
+        if (
+          newImportClause.namedBindings == null &&
+          newImportClause.name == null
+        ) {
+          return ts.createEmptyStatement();
+        }
       }
-      return ts.visitEachChild(node, child => visit(child), context);
+
+      return ts.createImportDeclaration(
+        node.decorators,
+        node.modifiers,
+        newImportClause,
+        node.moduleSpecifier,
+      );
     };
 
-    return node => ts.visitNode(node, visit);
+    return (node) => ts.visitNode(node, visit);
   };
 
   return importedTypeRemoverTransformer;
 }
-
 
 function compileFileFromMemory(
   compilerOptions: CompilerOptions,
@@ -242,14 +260,16 @@ function compileFileFromMemory(
 
   const program = ts.createProgram([dummyFileName], compilerOptions, host);
 
-  const transformers = { before: [createImportTransformerFromProgram(program)] }
+  const transformers = {
+    before: [createImportTransformerFromProgram(program)],
+  };
 
   const emitResult = program.emit(
     program.getSourceFile(dummyFileName),
     undefined,
     undefined,
     undefined,
-    transformers
+    transformers,
   );
 
   // collect diagnostics without svelte import errors
