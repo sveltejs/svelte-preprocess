@@ -7,16 +7,24 @@ const selectorPattern = /:global(?!\()/;
 
 const globalifyRulePlugin: postcss.Transformer = (root) => {
   root.walkRules(selectorPattern, (rule) => {
-    const modifiedSelectors = rule.selectors.map((selector) => {
-      const [beginning, ...rest] = selector.split(selectorPattern);
+    const modifiedSelectors = rule.selectors
+      .filter((selector) => selector !== ':global')
+      .map((selector) => {
+        const [beginning, ...rest] = selector.split(selectorPattern);
 
-      if (rest.length === 0) return;
+        if (rest.length === 0) return beginning;
 
-      return [beginning, ...rest.map(globalifySelector)]
-        .map((str) => str.trim())
-        .join(' ')
-        .trim();
-    });
+        return [beginning, ...rest.map(globalifySelector)]
+          .map((str) => str.trim())
+          .join(' ')
+          .trim();
+      });
+
+    if (modifiedSelectors.length === 0) {
+      rule.remove();
+
+      return;
+    }
 
     rule.replaceWith(
       rule.clone({
