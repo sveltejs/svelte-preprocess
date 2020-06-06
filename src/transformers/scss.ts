@@ -45,7 +45,7 @@ const transformer: Transformer<Options.Sass> = async ({
 
   // scss errors if passed an empty string
   if (sassOptions.data.length === 0) {
-    return { code: options.data };
+    return { code: '' };
   }
 
   if (renderSync) {

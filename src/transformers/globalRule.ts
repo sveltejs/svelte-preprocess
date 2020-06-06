@@ -19,7 +19,7 @@ const globalifyRulePlugin = (root: any) => {
 const transformer: Transformer<never> = async ({ content, filename }) => {
   const { css, map: newMap } = await postcss()
     .use(globalifyRulePlugin)
-    .process(content, { from: filename, map: true });
+    .process(content, { from: filename, map: false });
 
   return { code: css, map: newMap };
 };

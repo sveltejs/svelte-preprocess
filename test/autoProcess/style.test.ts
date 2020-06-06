@@ -15,12 +15,11 @@ const STYLE_LANGS: Array<[string, string]> = [
 
 STYLE_LANGS.forEach(([lang, ext]) => {
   describe(`style - preprocessor - ${lang}`, () => {
-    const template = `<div></div><style lang="${lang}">${getFixtureContent(
-      `style.${ext}`,
-    )}</style>`;
-    const templateExternal = `<div></div><style src="./fixtures/style.${ext}"></style>`;
-
     it(`should throw parsing ${lang} when { ${lang}: false }`, async () => {
+      const template = `<div></div><style lang="${lang}">${getFixtureContent(
+        `style.${ext}`,
+      )}</style>`;
+
       const opts = getAutoPreprocess({
         [lang]: false,
       });
@@ -29,6 +28,10 @@ STYLE_LANGS.forEach(([lang, ext]) => {
     });
 
     it(`should parse ${lang}`, async () => {
+      const template = `<div></div><style lang="${lang}">${getFixtureContent(
+        `style.${ext}`,
+      )}</style>`;
+
       const opts = getAutoPreprocess();
       const preprocessed = await preprocess(template, opts);
 
@@ -36,10 +39,29 @@ STYLE_LANGS.forEach(([lang, ext]) => {
     });
 
     it(`should parse external ${lang}`, async () => {
+      const templateExternal = `<div></div><style src="./fixtures/style.${ext}"></style>`;
       const opts = getAutoPreprocess();
       const preprocessed = await preprocess(templateExternal, opts);
 
       expect(preprocessed.toString()).toMatch(CSS_PATTERN);
+    });
+
+    it(`should parse external ${lang}`, async () => {
+      const templateExternal = `<div></div><style src="./fixtures/style.${ext}"></style>`;
+      const opts = getAutoPreprocess();
+      const preprocessed = await preprocess(templateExternal, opts);
+
+      expect(preprocessed.toString()).toMatch(CSS_PATTERN);
+    });
+
+    it(`should return empty if content is empty`, async () => {
+      const templateExternal = `<div></div><style src="./potato/style.${ext}"></style>`;
+      const opts = getAutoPreprocess({
+        [lang]: { sourceMap: false, sourcemap: false, map: false },
+      });
+      const preprocessed = await preprocess(templateExternal, opts);
+
+      expect(preprocessed.toString()).toMatch(templateExternal);
     });
   });
 });
