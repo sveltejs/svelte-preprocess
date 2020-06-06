@@ -1,6 +1,9 @@
 ## [3.9.3](https://github.com/kaisermann/svelte-preprocess/compare/v3.9.2...v3.9.3) (2020-06-06)
 
 
+### Bug Fixes
+
+* use the typescript transform to remove type imports ([3a15831](https://github.com/kaisermann/svelte-preprocess/commit/3a158318a77ca627bd1e365fb96dde1b6fefe1c0))
 
 ## [3.9.2](https://github.com/kaisermann/svelte-preprocess/compare/v3.7.4...v3.9.2) (2020-06-06)
 
