@@ -104,4 +104,15 @@ describe('transformer - globalRule', () => {
       /div (:global\(span .cls\)\{\}|:global\(span\) :global\(\.cls\)\{\})/,
     );
   });
+
+  it('remove rules with only :global its selector', async () => {
+    const template =
+      '<style>:global{/*comment*/}:global,div{/*comment*/}</style>';
+    const opts = autoProcess();
+    const preprocessed = await preprocess(template, opts);
+
+    expect(preprocessed.toString()).toContain(
+      '<style>div{/*comment*/}</style>',
+    );
+  });
 });
