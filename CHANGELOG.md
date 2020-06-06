@@ -1,3 +1,15 @@
+## [3.9.5](https://github.com/kaisermann/svelte-preprocess/compare/v3.9.2...v3.9.5) (2020-06-06)
+
+
+### Bug Fixes
+
+* add the comma into the list of combinators ([8386bf3](https://github.com/kaisermann/svelte-preprocess/commit/8386bf3adc0250bc3c3e5efaee7e21a1691cf336))
+* do not break when :global is the only selector ([3a7f0a2](https://github.com/kaisermann/svelte-preprocess/commit/3a7f0a21ceab5e2c033b1e90defb2260bf866a8f))
+* teach the globalifySelector to determine combinators ([1783c55](https://github.com/kaisermann/svelte-preprocess/commit/1783c550db0a8736c8fe27036f0cd1a8be3fa77a))
+* use the typescript transform to remove type imports ([3a15831](https://github.com/kaisermann/svelte-preprocess/commit/3a158318a77ca627bd1e365fb96dde1b6fefe1c0))
+
+
+
 ## [3.9.4](https://github.com/kaisermann/svelte-preprocess/compare/v3.9.2...v3.9.4) (2020-06-06)
 
 
