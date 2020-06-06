@@ -394,14 +394,14 @@ import { mdsvex } from 'mdsvex'
 In case you want to manually configure your preprocessing step, `svelte-preprocess` exports these named processors:
 
 - `pug`
-- `coffeescript` or `coffee`
+- `coffeescript`
 - `typescript`
 - `less`
 - `scss` or `sass`
 - `stylus`
 - `postcss`
 - `babel`
-- `globalStyle` - transform `<style global>` into global styles.
+- `globalStyle` - transform `<style global>` into global styles and supports `:global` nested selectors.
 - `replace` - replace string patterns in your markup.
 
 ```js
@@ -524,14 +524,14 @@ const options = {
   },
 
   /** Use a custom preprocess method by passing a function. */
-  pug({ content, filename }) {
+  pug({ content, filename, attributes }) {
     const code = pug.render(content);
 
     return { code, map: null };
   },
 
   /** Add a custom language preprocessor */
-  customLanguage({ content, filename }) {
+  customLanguage({ content, filename, attributes }) {
     const { code, map } = require('custom-language-compiler')(content);
 
     return { code, map };
@@ -559,11 +559,8 @@ const options = {
     [/@html\s*\((.*?)\)$/gim, '{@html $1}'],
   ],
 
-  /** Configure globalStyle and globalRule source map options */
+  /** Configure globalStyle source map options */
   globalStyle: {
-    sourceMap: true,
-  },
-  globalRule: {
     sourceMap: true,
   },
 };

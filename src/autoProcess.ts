@@ -25,7 +25,6 @@ interface Transformers {
   coffeescript?: TransformerOptions<Options.Coffeescript>;
   pug?: TransformerOptions<Options.Pug>;
   globalStyle?: Options.GlobalStyle;
-  globalRule?: Options.GlobalRule;
   replace?: Options.Replace;
   [languageName: string]: TransformerOptions;
 }
@@ -54,7 +53,6 @@ type AutoPreprocessOptions = {
   coffeescript?: TransformerOptions<Options.Coffeescript>;
   pug?: TransformerOptions<Options.Pug>;
   globalStyle?: Options.GlobalStyle;
-  globalRule?: Options.GlobalRule;
   // workaround while we don't have this
   // https://github.com/microsoft/TypeScript/issues/17867
   [languageName: string]:
@@ -121,10 +119,14 @@ export function autoPreprocess(
   const getTransformerTo = (targetLanguage: string): Preprocessor => async (
     svelteFile,
   ) => {
-    const { content, filename, lang, alias, dependencies } = await parseFile(
-      svelteFile,
-      targetLanguage,
-    );
+    const {
+      content,
+      filename,
+      lang,
+      alias,
+      dependencies,
+      attributes,
+    } = await parseFile(svelteFile, targetLanguage);
 
     if (preserve.includes(lang) || preserve.includes(alias)) {
       return;
@@ -141,7 +143,7 @@ export function autoPreprocess(
     const transformed = await runTransformer(
       lang,
       getTransformerOptions(lang, alias),
-      { content: stripIndent(content), filename },
+      { content: stripIndent(content), filename, attributes },
     );
 
     return {
@@ -228,6 +230,7 @@ export function autoPreprocess(
           content: code,
           map,
           filename,
+          attributes,
         });
 
         code = transformed.code;
@@ -253,7 +256,7 @@ export function autoPreprocess(
         const transformed = await runTransformer(
           'postcss',
           transformers.postcss,
-          { content: code, map, filename },
+          { content: code, map, filename, attributes },
         );
 
         code = transformed.code;
@@ -262,28 +265,14 @@ export function autoPreprocess(
       }
 
       if (await hasPostCssInstalled()) {
-        if (attributes.global) {
-          const transformed = await runTransformer(
-            'globalStyle',
-            transformers?.globalStyle,
-            {
-              content: code,
-              map,
-              filename,
-            },
-          );
-
-          code = transformed.code;
-          map = transformed.map;
-        }
-
         const transformed = await runTransformer(
-          'globalRule',
-          transformers?.globalRule,
+          'globalStyle',
+          transformers?.globalStyle,
           {
             content: code,
             map,
             filename,
+            attributes,
           },
         );
 
