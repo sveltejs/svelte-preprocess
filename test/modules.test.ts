@@ -2,6 +2,7 @@ import { resolve } from 'path';
 
 import { importAny } from '../src/modules/importAny';
 import { getIncludePaths } from '../src/modules/getIncludePaths';
+import { globalifySelector } from '../src/modules/globalifySelector';
 
 describe('importAny', () => {
   it('should throw error when none exist', () => {
@@ -47,5 +48,25 @@ describe('getIncludePaths', () => {
     ]);
 
     expect(paths).toEqual(['src', 'node_modules', process.cwd(), dummyDir]);
+  });
+});
+
+describe('globalifySelector', () => {
+  it('correctly treats CSS selectors with legal spaces', async () => {
+    const selector = '[attr="with spaces"]';
+
+    expect(globalifySelector(selector)).toEqual(
+      ':global([attr="with spaces"])',
+    );
+  });
+
+  it('correctly treats CSS combinators', async () => {
+    const selector = 'div > span';
+
+    expect(globalifySelector(selector)).toMatch(
+      // either be :global(div > span)
+      //        or :global(div) > :global(span)
+      /(:global\(div> span\)|:global\(div\) > :global\(span\))/,
+    );
   });
 });
