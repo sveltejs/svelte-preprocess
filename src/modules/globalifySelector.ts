@@ -1,4 +1,4 @@
-const combinatorPattern = /(\s*[ >+~]\s*)(?![^[]+\])/g;
+const combinatorPattern = /(\s*[ >+~,]\s*)(?![^[]+\])/g;
 
 export function globalifySelector(selector: string) {
   return selector

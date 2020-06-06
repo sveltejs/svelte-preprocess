@@ -61,12 +61,14 @@ describe('globalifySelector', () => {
   });
 
   it('correctly treats CSS combinators', async () => {
-    const selector = 'div > span';
+    const selector1 = 'div > span';
+    const selector2 = 'div, span';
 
-    expect(globalifySelector(selector)).toMatch(
+    expect(globalifySelector(selector1)).toMatch(
       // either be :global(div > span)
       //        or :global(div) > :global(span)
       /(:global\(div> span\)|:global\(div\) > :global\(span\))/,
     );
+    expect(globalifySelector(selector2)).toEqual(':global(div), :global(span)');
   });
 });
