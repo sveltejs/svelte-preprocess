@@ -105,7 +105,7 @@ describe('transformer - globalRule', () => {
     );
   });
 
-  it('remove rules with only :global its selector', async () => {
+  it('removes rules with only :global as its selector', async () => {
     const template =
       '<style>:global{/*comment*/}:global,div{/*comment*/}</style>';
     const opts = autoProcess();
