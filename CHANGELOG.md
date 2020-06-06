@@ -1,3 +1,14 @@
+## [3.9.6](https://github.com/kaisermann/svelte-preprocess/compare/v3.9.4...v3.9.6) (2020-06-06)
+
+
+### Bug Fixes
+
+* add the comma into the list of combinators ([3335b32](https://github.com/kaisermann/svelte-preprocess/commit/3335b3235cd8953bd8b669a20cca69e0ab5970be))
+* merge globalStyle and globalRule transformers ([a61ada6](https://github.com/kaisermann/svelte-preprocess/commit/a61ada6cf9b27452cebe8ac00cfa0ce873ce74bd))
+* teach the globalifySelector to determine combinators ([174c406](https://github.com/kaisermann/svelte-preprocess/commit/174c4068bad87d6bcb665cc51bd04d1ae367d855))
+
+
+
 ## [3.9.5](https://github.com/kaisermann/svelte-preprocess/compare/v3.9.2...v3.9.5) (2020-06-06)
 
 ### Bug Fixes
