@@ -1,3 +1,21 @@
+## [3.9.2](https://github.com/kaisermann/svelte-preprocess/compare/v3.7.4...v3.9.2) (2020-06-06)
+
+
+### Bug Fixes
+
+* 🐛 run globalRule only if postcss is installed ([3c22a20](https://github.com/kaisermann/svelte-preprocess/commit/3c22a203eb3fd565de783fdb6cb2e9faae270929))
+* 🐛 scss with empty content ([12c3af3](https://github.com/kaisermann/svelte-preprocess/commit/12c3af38aa191b15497418fa3bab8b1a241f21bb)), closes [#166](https://github.com/kaisermann/svelte-preprocess/issues/166)
+
+
+### Features
+
+* 🎸 add globalStyle.sourceMap and globalRule.sourceMap opts ([2717c5b](https://github.com/kaisermann/svelte-preprocess/commit/2717c5b62eff78c512913adfb166439242715973))
+* add implementation option for scss ([e4ca556](https://github.com/kaisermann/svelte-preprocess/commit/e4ca556821785e2b853f1668489912ebab21ee4b))
+* add the [@global](https://github.com/global) {} rule support ([453c4be](https://github.com/kaisermann/svelte-preprocess/commit/453c4be2a2318d90cd86644d78e72404c72bd774))
+* replace the [@global](https://github.com/global) for :global for CSS modules compliance ([cca29fb](https://github.com/kaisermann/svelte-preprocess/commit/cca29fba848d3f75b6ba354a9909c1de021c7971))
+
+
+
 # [3.9.0](https://github.com/kaisermann/svelte-preprocess/compare/v3.7.4...v3.9.0) (2020-06-05)
 
 
