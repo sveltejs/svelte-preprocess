@@ -4,7 +4,6 @@
 ### Bug Fixes
 
 * do not break when :global is the only selector ([f011b74](https://github.com/kaisermann/svelte-preprocess/commit/f011b74be18493de575920cea6b81a7287fc3c3a))
-* use the typescript transform to remove type imports ([3a15831](https://github.com/kaisermann/svelte-preprocess/commit/3a158318a77ca627bd1e365fb96dde1b6fefe1c0))
 
 
 
