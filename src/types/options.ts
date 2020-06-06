@@ -67,3 +67,11 @@ export interface Typescript {
   transpileOnly?: boolean;
   reportDiagnostics?: boolean;
 }
+
+export interface GlobalRule {
+  sourceMap: boolean;
+}
+
+export interface GlobalStyle {
+  sourceMap: boolean;
+}

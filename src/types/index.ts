@@ -35,5 +35,5 @@ export type Transformer<T> = (
 
 export type TransformerOptions<T = any> =
   | boolean
-  | Record<string, any>
+  | Record<keyof T | string, T[keyof T] | any>
   | Transformer<T>;

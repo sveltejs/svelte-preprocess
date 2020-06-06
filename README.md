@@ -557,7 +557,15 @@ const options = {
     [/@endawait$/gim, '{/await}'],
     [/@debug\s*\((.*?)\)$/gim, '{@debug $1}'],
     [/@html\s*\((.*?)\)$/gim, '{@html $1}'],
-  ];
+  ],
+
+  /** Configure globalStyle and globalRule source map options */
+  globalStyle: {
+    sourceMap: true,
+  },
+  globalRule: {
+    sourceMap: true,
+  },
 };
 
 svelte.preprocess(input, sveltePreprocess(options));

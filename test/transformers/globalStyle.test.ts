@@ -2,6 +2,19 @@ import autoProcess from '../../src';
 import { preprocess } from '../utils';
 
 describe('transformer - globalStyle', () => {
+  // todo: why it isn't generating a sourcemap?
+  it.skip('adds sourceMap with { sourceMap: true }', async () => {
+    const template = `<style global>div,span{color:red}.test{}</style>`;
+    const opts = autoProcess({
+      globalStyle: {
+        sourceMap: true,
+      },
+    });
+    const preprocessed = await preprocess(template, opts);
+
+    expect(preprocessed.toString()).toContain(`sourceMappingURL`);
+  });
+
   it('wraps selector in :global(...) modifier', async () => {
     const template = `<style global>div{color:red}.test{}</style>`;
     const opts = autoProcess();

@@ -24,8 +24,8 @@ interface Transformers {
   postcss?: TransformerOptions<Options.Postcss>;
   coffeescript?: TransformerOptions<Options.Coffeescript>;
   pug?: TransformerOptions<Options.Pug>;
-  globalStyle?: TransformerOptions;
-  globalRule?: TransformerOptions;
+  globalStyle?: Options.GlobalStyle;
+  globalRule?: Options.GlobalRule;
   replace?: Options.Replace;
   [languageName: string]: TransformerOptions;
 }
@@ -53,8 +53,8 @@ type AutoPreprocessOptions = {
   babel?: TransformerOptions<Options.Babel>;
   coffeescript?: TransformerOptions<Options.Coffeescript>;
   pug?: TransformerOptions<Options.Pug>;
-  globalStyle?: TransformerOptions<Options.Typescript>;
-  globalRule?: TransformerOptions<Options.Typescript>;
+  globalStyle?: Options.GlobalStyle;
+  globalRule?: Options.GlobalRule;
   // workaround while we don't have this
   // https://github.com/microsoft/TypeScript/issues/17867
   [languageName: string]:
@@ -263,21 +263,29 @@ export function autoPreprocess(
 
       if (await hasPostCssInstalled()) {
         if (attributes.global) {
-          const transformed = await runTransformer('globalStyle', null, {
-            content: code,
-            map,
-            filename,
-          });
+          const transformed = await runTransformer(
+            'globalStyle',
+            transformers?.globalStyle,
+            {
+              content: code,
+              map,
+              filename,
+            },
+          );
 
           code = transformed.code;
           map = transformed.map;
         }
 
-        const transformed = await runTransformer('globalRule', null, {
-          content: code,
-          map,
-          filename,
-        });
+        const transformed = await runTransformer(
+          'globalRule',
+          transformers?.globalRule,
+          {
+            content: code,
+            map,
+            filename,
+          },
+        );
 
         code = transformed.code;
         map = transformed.map;

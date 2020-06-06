@@ -9,6 +9,18 @@ describe('transformer - globalRule', () => {
     expect(() => preprocess(template, opts)).not.toThrow();
   });
 
+  it('adds sourceMap with { sourceMap: true }', async () => {
+    const template = `<style>:global div{color:red}:global .test{}</style>`;
+    const opts = autoProcess({
+      globalRule: {
+        sourceMap: true,
+      },
+    });
+    const preprocessed = await preprocess(template, opts);
+
+    expect(preprocessed.toString()).toContain(`sourceMappingURL`);
+  });
+
   it('wraps selector in :global(...) modifier', async () => {
     const template = `<style>:global div{color:red}:global .test{}</style>`;
     const opts = autoProcess();
