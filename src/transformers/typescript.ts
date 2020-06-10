@@ -3,8 +3,8 @@ import { dirname, basename, resolve } from 'path';
 
 import ts from 'typescript';
 
-import { Transformer, Options } from '../types';
 import { throwTypescriptError } from '../modules/errors';
+import type { Transformer, Options } from '../types';
 
 type CompilerOptions = Options.Typescript['compilerOptions'];
 

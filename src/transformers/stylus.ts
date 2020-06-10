@@ -3,7 +3,7 @@ import path from 'path';
 import stylus from 'stylus';
 
 import { getIncludePaths } from '../modules/getIncludePaths';
-import { Processed, Transformer, Options } from '../types';
+import type { Transformer, Options } from '../types';
 
 const transformer: Transformer<Options.Stylus> = ({
   content,
@@ -15,7 +15,7 @@ const transformer: Transformer<Options.Stylus> = ({
     ...options,
   };
 
-  return new Promise<Processed>((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     const style = stylus(content, {
       filename,
       ...options,
