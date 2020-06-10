@@ -9,7 +9,7 @@ export default (): PreprocessorGroup => {
 
       if (!attributes.global) return { code: content };
 
-      return transformer({ content, filename });
+      return transformer({ content, filename, attributes });
     },
   };
 };

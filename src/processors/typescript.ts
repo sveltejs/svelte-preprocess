@@ -5,14 +5,22 @@ import { concat } from '../modules/concat';
 export default (options: Options.Typescript): PreprocessorGroup => ({
   async script(svelteFile) {
     const { default: transformer } = await import('../transformers/typescript');
-    const { content, filename, lang, dependencies } = await parseFile(
-      svelteFile,
-      'javascript',
-    );
+    const {
+      content,
+      filename,
+      attributes,
+      lang,
+      dependencies,
+    } = await parseFile(svelteFile, 'javascript');
 
     if (lang !== 'typescript') return { code: content };
 
-    const transformed = await transformer({ content, filename, options });
+    const transformed = await transformer({
+      content,
+      filename,
+      attributes,
+      options,
+    });
 
     return {
       ...transformed,

@@ -6,12 +6,17 @@ export default (options: Options.Babel): PreprocessorGroup => ({
   async script(svelteFile) {
     const { default: transformer } = await import('../transformers/babel');
 
-    const { content, filename, dependencies } = await parseFile(
+    const { content, filename, dependencies, attributes } = await parseFile(
       svelteFile,
       'javascript',
     );
 
-    const transformed = await transformer({ content, filename, options });
+    const transformed = await transformer({
+      content,
+      filename,
+      attributes,
+      options,
+    });
 
     return {
       ...transformed,

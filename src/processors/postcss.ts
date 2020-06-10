@@ -6,13 +6,18 @@ import { concat } from '../modules/concat';
 export default (options: Options.Postcss): PreprocessorGroup => ({
   async style(svelteFile) {
     const { default: transformer } = await import('../transformers/postcss');
-    const { content, filename, dependencies } = await parseFile(
+    const { content, filename, attributes, dependencies } = await parseFile(
       svelteFile,
       'css',
     );
 
     /** If manually passed a plugins array, use it as the postcss config */
-    const transformed = await transformer({ content, filename, options });
+    const transformed = await transformer({
+      content,
+      filename,
+      attributes,
+      options,
+    });
 
     return {
       ...transformed,

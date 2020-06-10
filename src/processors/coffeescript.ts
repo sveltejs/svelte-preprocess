@@ -8,14 +8,22 @@ export default (options: Options.Coffeescript): PreprocessorGroup => ({
       '../transformers/coffeescript'
     );
 
-    const { content, filename, lang, dependencies } = await parseFile(
-      svelteFile,
-      'javascript',
-    );
+    const {
+      content,
+      filename,
+      attributes,
+      lang,
+      dependencies,
+    } = await parseFile(svelteFile, 'javascript');
 
     if (lang !== 'coffeescript') return { code: content };
 
-    const transformed = await transformer({ content, filename, options });
+    const transformed = await transformer({
+      content,
+      filename,
+      attributes,
+      options,
+    });
 
     return {
       ...transformed,
