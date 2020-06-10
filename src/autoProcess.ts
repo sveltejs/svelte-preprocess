@@ -3,22 +3,32 @@ import stripIndent from 'strip-indent';
 import {
   PreprocessorGroup,
   Preprocessor,
-  Options,
   Processed,
   TransformerArgs,
   TransformerOptions,
   Transformers,
+  Options,
 } from './types';
-import { hasPostCssInstalled } from './modules/hasPostcssInstalled';
+import { hasDepInstalled } from './modules/hasDepInstalled';
 import { concat } from './modules/concat';
 import { parseFile } from './modules/parseFile';
 import { addLanguageAlias } from './modules/language';
 import { throwError } from './modules/errors';
 
-type AutoPreprocessOptions = Transformers & {
+type AutoPreprocessOptions = {
   markupTagName?: string;
   aliases?: Array<[string, string]>;
   preserve?: string[];
+  typescript?: TransformerOptions<Options.Typescript>;
+  scss?: TransformerOptions<Options.Sass>;
+  sass?: TransformerOptions<Options.Sass>;
+  less?: TransformerOptions<Options.Less>;
+  stylus?: TransformerOptions<Options.Stylus>;
+  postcss?: TransformerOptions<Options.Postcss>;
+  coffeescript?: TransformerOptions<Options.Coffeescript>;
+  pug?: TransformerOptions<Options.Pug>;
+  globalStyle?: Options.GlobalStyle;
+  replace?: Options.Replace;
   // workaround while we don't have this
   // https://github.com/microsoft/TypeScript/issues/17867
   [languageName: string]:
@@ -235,28 +245,23 @@ export function autoPreprocess(
 
       let { code, map, dependencies } = transformResult;
 
-      if (transformers.postcss) {
-        const transformed = await runTransformer(
-          'postcss',
-          transformers.postcss,
-          { content: code, map, filename, attributes },
-        );
+      if (await hasDepInstalled('postcss')) {
+        if (transformers.postcss) {
+          const transformed = await runTransformer(
+            'postcss',
+            transformers.postcss,
+            { content: code, map, filename, attributes },
+          );
 
-        code = transformed.code;
-        map = transformed.map;
-        dependencies = concat(dependencies, transformed.dependencies);
-      }
+          code = transformed.code;
+          map = transformed.map;
+          dependencies = concat(dependencies, transformed.dependencies);
+        }
 
-      if (await hasPostCssInstalled()) {
         const transformed = await runTransformer(
           'globalStyle',
           transformers?.globalStyle,
-          {
-            content: code,
-            map,
-            filename,
-            attributes,
-          },
+          { content: code, map, filename, attributes },
         );
 
         code = transformed.code;

@@ -1,6 +1,6 @@
 import postcss, { AtRule } from 'postcss';
 
-import type { Transformer, Options } from '../types';
+import { Transformer, Options } from '../types';
 import { globalifySelector } from '../modules/globalifySelector';
 
 const selectorPattern = /:global(?!\()/;

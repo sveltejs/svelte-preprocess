@@ -131,7 +131,7 @@ function createImportTransformerFromProgram(program: ts.Program) {
       let newImportClause: ts.ImportClause = node.importClause;
 
       if (node.importClause) {
-        // import type {...} from './blah'
+        // import {...} from './blah'
         if (node.importClause?.isTypeOnly) {
           return ts.createEmptyStatement();
         }

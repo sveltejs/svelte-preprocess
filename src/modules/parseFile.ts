@@ -1,7 +1,7 @@
 import { readFile, access } from 'fs';
 import { resolve, dirname } from 'path';
 
-import type { PreprocessorArgs } from '../types';
+import { PreprocessorArgs } from '../types';
 import { getLanguage } from './language';
 
 export const resolveSrc = (importerFile: string, srcPath: string) =>
