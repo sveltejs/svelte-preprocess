@@ -4,7 +4,7 @@ import { parseFile } from '../modules/parseFile';
 
 export default (options?: Options.Babel): PreprocessorGroup => ({
   async script(svelteFile) {
-    const { default: transformer } = await import('../transformers/babel');
+    const { transformer } = await import('../transformers/babel');
 
     const { content, filename, dependencies, attributes } = await parseFile(
       svelteFile,

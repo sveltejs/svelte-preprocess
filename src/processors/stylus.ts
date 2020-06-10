@@ -4,7 +4,7 @@ import { concat } from '../modules/concat';
 
 export default (options?: Options.Stylus): PreprocessorGroup => ({
   async style(svelteFile) {
-    const { default: transformer } = await import('../transformers/stylus');
+    const { transformer } = await import('../transformers/stylus');
     const {
       content,
       filename,

@@ -61,4 +61,4 @@ const transformer: Transformer<Options.Sass> = async ({
   });
 };
 
-export default transformer;
+export { transformer };

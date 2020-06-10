@@ -68,4 +68,4 @@ const transformer: Transformer<Options.Postcss> = async ({
   return process(options, content, filename, map);
 };
 
-export default transformer;
+export { transformer };

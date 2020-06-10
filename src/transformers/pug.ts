@@ -68,4 +68,4 @@ const transformer: Transformer<Options.Pug> = async ({
   };
 };
 
-export default transformer;
+export { transformer };

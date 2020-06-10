@@ -1,19 +1,18 @@
 import stripIndent from 'strip-indent';
-import { version } from 'svelte/package.json';
 
 import {
   PreprocessorGroup,
-  TransformerOptions,
   Preprocessor,
   Options,
   Processed,
+  TransformerArgs,
+  TransformerOptions,
 } from './types';
 import { hasPostCssInstalled } from './modules/hasPostcssInstalled';
 import { concat } from './modules/concat';
 import { parseFile } from './modules/parseFile';
 import { addLanguageAlias } from './modules/language';
-import { runTransformer } from './modules/transformers';
-import { throwUnsupportedError } from './modules/errors';
+import { throwUnsupportedError, throwError } from './modules/errors';
 
 interface Transformers {
   typescript?: TransformerOptions<Options.Typescript>;
@@ -33,20 +32,41 @@ type AutoPreprocessOptions = Transformers & {
   markupTagName?: string;
   aliases?: Array<[string, string]>;
   preserve?: string[];
-  // workaround while we don't have this
-  // https://github.com/microsoft/TypeScript/issues/17867
-  [languageName: string]:
-    | string
-    | Promise<string>
-    | Array<[string, string]>
-    | string[]
-    | TransformerOptions;
 };
 
 const ALIAS_OPTION_OVERRIDES: Record<string, any> = {
   sass: {
     indentedSyntax: true,
   },
+};
+
+export const runTransformer = async (
+  name: string,
+  options: TransformerOptions,
+  { content, map, filename, attributes }: TransformerArgs<any>,
+): Promise<Processed> => {
+  // remove any unnecessary indentation (useful for coffee, pug and sugarss)
+  content = stripIndent(content);
+
+  if (typeof options === 'function') {
+    return options({ content, map, filename, attributes });
+  }
+
+  try {
+    const { transformer } = await import(`./transformers/${name}`);
+
+    return transformer({
+      content,
+      filename,
+      map,
+      attributes,
+      options: typeof options === 'boolean' ? null : options,
+    });
+  } catch (e) {
+    throwError(
+      `Error transforming '${name}'.\n\nMessage:\n${e.message}\n\nStack:\n${e.stack}`,
+    );
+  }
 };
 
 export function autoPreprocess(

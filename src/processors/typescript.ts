@@ -4,7 +4,7 @@ import { concat } from '../modules/concat';
 
 export default (options?: Options.Typescript): PreprocessorGroup => ({
   async script(svelteFile) {
-    const { default: transformer } = await import('../transformers/typescript');
+    const { transformer } = await import('../transformers/typescript');
     const {
       content,
       filename,

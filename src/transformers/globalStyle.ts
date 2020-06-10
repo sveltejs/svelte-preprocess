@@ -78,4 +78,4 @@ const transformer: Transformer<Options.GlobalStyle> = async ({
   return { code: css, map: newMap };
 };
 
-export default transformer;
+export { transformer };

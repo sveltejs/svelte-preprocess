@@ -393,4 +393,4 @@ const transformer: Transformer<Options.Typescript> = ({
   };
 };
 
-export default transformer;
+export { transformer };
