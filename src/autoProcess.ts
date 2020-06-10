@@ -12,7 +12,7 @@ import { hasPostCssInstalled } from './modules/hasPostcssInstalled';
 import { concat } from './modules/concat';
 import { parseFile } from './modules/parseFile';
 import { addLanguageAlias } from './modules/language';
-import { throwUnsupportedError, throwError } from './modules/errors';
+import { throwError } from './modules/errors';
 
 interface Transformers {
   typescript?: TransformerOptions<Options.Typescript>;
@@ -28,10 +28,38 @@ interface Transformers {
   [languageName: string]: TransformerOptions;
 }
 
-type AutoPreprocessOptions = Transformers & {
+type AutoPreprocessOptions = {
+  /** @deprecated for svelte v3 use instead a array of processors */
+  onBefore?: ({
+    content,
+    filename,
+  }: {
+    content: string;
+    filename: string;
+  }) => Promise<string> | string;
   markupTagName?: string;
+  /** @deprecated add transformer config directly to svelte-preprocess options object */
+  transformers?: Transformers;
   aliases?: Array<[string, string]>;
   preserve?: string[];
+  typescript?: TransformerOptions<Options.Typescript>;
+  scss?: TransformerOptions<Options.Sass>;
+  sass?: TransformerOptions<Options.Sass>;
+  less?: TransformerOptions<Options.Less>;
+  stylus?: TransformerOptions<Options.Stylus>;
+  postcss?: TransformerOptions<Options.Postcss>;
+  babel?: TransformerOptions<Options.Babel>;
+  coffeescript?: TransformerOptions<Options.Coffeescript>;
+  pug?: TransformerOptions<Options.Pug>;
+  globalStyle?: Options.GlobalStyle;
+  // workaround while we don't have this
+  // https://github.com/microsoft/TypeScript/issues/17867
+  [languageName: string]:
+    | string
+    | Promise<string>
+    | Array<[string, string]>
+    | string[]
+    | TransformerOptions;
 };
 
 const ALIAS_OPTION_OVERRIDES: Record<string, any> = {
@@ -130,12 +158,12 @@ export function autoPreprocess(
       return;
     }
 
-    if (lang === targetLanguage) {
+    if (
+      lang === targetLanguage ||
+      transformers[lang] === false ||
+      transformers[alias] === false
+    ) {
       return { code: content, dependencies };
-    }
-
-    if (transformers[lang] === false || transformers[alias] === false) {
-      throwUnsupportedError(alias, filename);
     }
 
     const transformed = await runTransformer(

@@ -1,13 +1,13 @@
 import stripIndent from 'strip-indent';
 
+import type { PreprocessorGroup, Options } from '../types';
 import { parseFile } from '../modules/parseFile';
-import { PreprocessorGroup, Options } from '../types';
 import { concat } from '../modules/concat';
 
 export default (options?: Options.Sass): PreprocessorGroup => ({
   async style(svelteFile) {
     const { transformer } = await import('../transformers/scss');
-    const {
+    let {
       content,
       filename,
       attributes,

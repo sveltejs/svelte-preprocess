@@ -1,12 +1,8 @@
-import postcss from 'postcss';
-import { Options as SassOptions, render, renderSync } from 'sass';
-import { Options as PugOptions } from 'pug';
-import { CompilerOptions } from 'typescript';
-import { TransformOptions as BabelOptions } from '@babel/core';
-
-export type Replace = Array<
-  [RegExp, string] | [RegExp, (substring: string, ...args: any[]) => string]
->;
+import type postcss from 'postcss';
+import type { Options as SassOptions, render, renderSync } from 'sass';
+import type { Options as PugOptions } from 'pug';
+import type { CompilerOptions } from 'typescript';
+import type { TransformOptions as BabelOptions } from '@babel/core';
 
 export interface Coffeescript {
   inlineMap?: boolean;
@@ -71,3 +67,7 @@ export interface Typescript {
 export interface GlobalStyle {
   sourceMap: boolean;
 }
+
+export type Replace = Array<
+  [RegExp, string] | [RegExp, (substring: string, ...args: any[]) => string]
+>;

@@ -1,4 +1,4 @@
-import { Transformer, Options } from '../types';
+import type { Transformer, Options } from '../types';
 
 const transformer: Transformer<Options.Replace> = async ({
   content,
@@ -7,7 +7,7 @@ const transformer: Transformer<Options.Replace> = async ({
   let newContent = content;
 
   for (const [regex, replacer] of options) {
-    newContent = newContent.replace(regex, replacer);
+    newContent = newContent.replace(regex, replacer as any);
   }
 
   return {

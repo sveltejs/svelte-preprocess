@@ -1,5 +1,5 @@
+import type { PreprocessorGroup, Options } from '../types';
 import { parseFile } from '../modules/parseFile';
-import { PreprocessorGroup, Options } from '../types';
 import { concat } from '../modules/concat';
 
 /** Adapted from https://github.com/TehShrike/svelte-preprocess-postcss */
