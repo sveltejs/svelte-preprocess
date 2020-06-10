@@ -1,4 +1,4 @@
-import { PreprocessorGroup, Options } from '../types';
+import type { PreprocessorGroup, Options } from '../types';
 
 export default (options: Options.Replace): PreprocessorGroup => ({
   async markup({ content, filename }) {

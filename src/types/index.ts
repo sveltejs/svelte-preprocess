@@ -1,13 +1,13 @@
-import {
+import type {
   Processed as SvelteProcessed,
   Preprocessor,
 } from 'svelte/types/compiler/preprocess';
 
-import * as Options from './options';
+import type * as Options from './options';
 
-export { Options };
+export type { Options };
 
-export {
+export type {
   Processed as SvelteProcessed,
   PreprocessorGroup,
   Preprocessor,
@@ -17,14 +17,14 @@ export type PreprocessorArgs = Preprocessor extends (options: infer T) => any
   ? T
   : never;
 
-export interface TransformerArgs<T> {
+export type TransformerArgs<T> = {
   content: string;
   filename: string;
   attributes?: Record<string, any>;
   map?: string | object;
   dianostics?: unknown[];
   options?: T;
-}
+};
 
 export type Processed = SvelteProcessed & {
   diagnostics?: any[];

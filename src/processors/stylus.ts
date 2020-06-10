@@ -1,5 +1,5 @@
+import type { Options, PreprocessorGroup } from '../types';
 import { parseFile } from '../modules/parseFile';
-import { Options, PreprocessorGroup } from '../types';
 import { concat } from '../modules/concat';
 
 export default (options?: Options.Stylus): PreprocessorGroup => ({
