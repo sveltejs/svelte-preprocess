@@ -50,4 +50,5 @@ export interface Transformers {
   pug?: TransformerOptions<Options.Pug>;
   globalStyle?: Options.GlobalStyle;
   replace?: Options.Replace;
+  [language: string]: TransformerOptions;
 }

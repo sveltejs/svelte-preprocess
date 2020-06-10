@@ -19,16 +19,6 @@ type AutoPreprocessOptions = Transformers & {
   markupTagName?: string;
   aliases?: Array<[string, string]>;
   preserve?: string[];
-  typescript?: TransformerOptions<Options.Typescript>;
-  scss?: TransformerOptions<Options.Sass>;
-  sass?: TransformerOptions<Options.Sass>;
-  less?: TransformerOptions<Options.Less>;
-  stylus?: TransformerOptions<Options.Stylus>;
-  postcss?: TransformerOptions<Options.Postcss>;
-  babel?: TransformerOptions<Options.Babel>;
-  coffeescript?: TransformerOptions<Options.Coffeescript>;
-  pug?: TransformerOptions<Options.Pug>;
-  globalStyle?: Options.GlobalStyle;
   // workaround while we don't have this
   // https://github.com/microsoft/TypeScript/issues/17867
   [languageName: string]:
