@@ -1,3 +1,13 @@
+## [3.9.7](https://github.com/kaisermann/svelte-preprocess/compare/v3.9.6...v3.9.7) (2020-06-10)
+
+
+### Bug Fixes
+
+* 🐛 attributes not being passed to transformers ([840239d](https://github.com/kaisermann/svelte-preprocess/commit/840239d225f1ef0b7b642830093a8b6745d11ceb)), closes [#175](https://github.com/kaisermann/svelte-preprocess/issues/175)
+* quotes in the release script ([#173](https://github.com/kaisermann/svelte-preprocess/issues/173)) ([5550b3e](https://github.com/kaisermann/svelte-preprocess/commit/5550b3eea390148e9e5683ec214bddae7531a405))
+
+
+
 ## [3.9.6](https://github.com/kaisermann/svelte-preprocess/compare/v3.9.4...v3.9.6) (2020-06-06)
 
 ### Bug Fixes
