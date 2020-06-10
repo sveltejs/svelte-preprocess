@@ -66,19 +66,6 @@ describe('options', () => {
     expect(preprocessed.toString()).toMatch(CSS_PATTERN);
   });
 
-  it('should execute a onBefore method before transforming markup', async () => {
-    const input = `UPPERCASE?`;
-    const opts = getAutoPreprocess({
-      async onBefore({ content }) {
-        return content.toLowerCase();
-      },
-    });
-
-    const preprocessed = await preprocess(input, opts);
-
-    expect(preprocessed.toString()).toBe(input.toLowerCase());
-  });
-
   it('should append aliases to the language alias dictionary', async () => {
     const input = `<script lang="cl"></script>`;
     const opts = getAutoPreprocess({
@@ -149,18 +136,5 @@ describe('options', () => {
     });
 
     expect(await doesCompileThrow(input, opts)).toBe(true);
-  });
-
-  it('should support the old `transformers` option', async () => {
-    const input = `<script lang="mock"></script>`;
-    const opts = getAutoPreprocess({
-      transformers: {
-        mock: () => ({ code: 'mock' }),
-      },
-    });
-
-    const preprocessed = await preprocess(input, opts);
-
-    expect(preprocessed.toString()).toBe(`<script lang="mock">mock</script>`);
   });
 });

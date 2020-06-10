@@ -29,30 +29,10 @@ interface Transformers {
   [languageName: string]: TransformerOptions;
 }
 
-type AutoPreprocessOptions = {
-  /** @deprecated for svelte v3 use instead a array of processors */
-  onBefore?: ({
-    content,
-    filename,
-  }: {
-    content: string;
-    filename: string;
-  }) => Promise<string> | string;
+type AutoPreprocessOptions = Transformers & {
   markupTagName?: string;
-  /** @deprecated add transformer config directly to svelte-preprocess options object */
-  transformers?: Transformers;
   aliases?: Array<[string, string]>;
   preserve?: string[];
-  typescript?: TransformerOptions<Options.Typescript>;
-  scss?: TransformerOptions<Options.Sass>;
-  sass?: TransformerOptions<Options.Sass>;
-  less?: TransformerOptions<Options.Less>;
-  stylus?: TransformerOptions<Options.Stylus>;
-  postcss?: TransformerOptions<Options.Postcss>;
-  babel?: TransformerOptions<Options.Babel>;
-  coffeescript?: TransformerOptions<Options.Coffeescript>;
-  pug?: TransformerOptions<Options.Pug>;
-  globalStyle?: Options.GlobalStyle;
   // workaround while we don't have this
   // https://github.com/microsoft/TypeScript/issues/17867
   [languageName: string]:
@@ -63,7 +43,6 @@ type AutoPreprocessOptions = {
     | TransformerOptions;
 };
 
-const SVELTE_MAJOR_VERSION = +version[0];
 const ALIAS_OPTION_OVERRIDES: Record<string, any> = {
   sass: {
     indentedSyntax: true,
@@ -72,7 +51,6 @@ const ALIAS_OPTION_OVERRIDES: Record<string, any> = {
 
 export function autoPreprocess(
   {
-    onBefore,
     aliases,
     markupTagName = 'template',
     preserve = [],
@@ -82,7 +60,7 @@ export function autoPreprocess(
   markupTagName = markupTagName.toLocaleLowerCase();
 
   const optionsCache: Record<string, any> = {};
-  const transformers = rest.transformers || (rest as Transformers);
+  const transformers = rest as Transformers;
   const markupPattern = new RegExp(
     `<${markupTagName}([\\s\\S]*?)(?:>([\\s\\S]*)<\\/${markupTagName}>|/>)`,
   );
@@ -158,17 +136,6 @@ export function autoPreprocess(
 
   return {
     async markup({ content, filename }) {
-      if (typeof onBefore === 'function') {
-        // istanbul ignore next
-        if (SVELTE_MAJOR_VERSION >= 3) {
-          console.warn(
-            '[svelte-preprocess] For svelte >= v3, instead of onBefore(), prefer to prepend a preprocess object to your array of preprocessors',
-          );
-        }
-
-        content = await onBefore({ content, filename });
-      }
-
       if (transformers.replace) {
         const transformed = await runTransformer(
           'replace',
