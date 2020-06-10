@@ -45,10 +45,10 @@ MARKUP_LANGS.forEach(([lang, ext]) => {
       `template.${ext}`,
     )}</template>`;
 
-    it(`should throw parsing ${lang} when { ${lang}: false }`, async () => {
+    it(`should NOT throw parsing ${lang} when { ${lang}: false }`, async () => {
       const opts = getAutoPreprocess({ pug: false });
 
-      expect(await doesCompileThrow(template, opts)).toBe(true);
+      expect(await doesCompileThrow(template, opts)).toBe(false);
     });
 
     it(`should parse ${lang}`, async () => {
