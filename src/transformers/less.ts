@@ -1,7 +1,7 @@
 import less from 'less';
 
 import { getIncludePaths } from '../modules/getIncludePaths';
-import type { Transformer, Options } from '../types';
+import { Transformer, Options } from '../types';
 
 const transformer: Transformer<Options.Less> = async ({
   content,

@@ -1,7 +1,7 @@
 import detectIndent from 'detect-indent';
 import pug from 'pug';
 
-import type { Transformer, Options } from '../types';
+import { Transformer, Options } from '../types';
 
 // Mixins to use svelte template features
 const GET_MIXINS = (identationType: 'tab' | 'space') =>

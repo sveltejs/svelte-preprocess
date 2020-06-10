@@ -1,13 +1,13 @@
-import type {
+import {
   Processed as SvelteProcessed,
   Preprocessor,
 } from 'svelte/types/compiler/preprocess';
 
-import type * as Options from './options';
+import * as Options from './options';
 
-export type { Options };
+export { Options };
 
-export type {
+export {
   Processed as SvelteProcessed,
   PreprocessorGroup,
   Preprocessor,

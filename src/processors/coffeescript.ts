@@ -1,4 +1,4 @@
-import type { PreprocessorGroup, Options } from '../types';
+import { PreprocessorGroup, Options } from '../types';
 import { parseFile } from '../modules/parseFile';
 import { concat } from '../modules/concat';
 
