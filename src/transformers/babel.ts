@@ -30,4 +30,4 @@ const transformer: Transformer<Options.Babel> = async ({
   };
 };
 
-export default transformer;
+export { transformer };

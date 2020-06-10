@@ -6,8 +6,8 @@ import { concat } from '../modules/concat';
 
 export default (options?: Options.Sass): PreprocessorGroup => ({
   async style(svelteFile) {
-    const { default: transformer } = await import('../transformers/scss');
-    let {
+    const { transformer } = await import('../transformers/scss');
+    const {
       content,
       filename,
       attributes,

@@ -17,4 +17,4 @@ const transformer: Transformer<Options.Coffeescript> = ({
   return { code, map };
 };
 
-export default transformer;
+export { transformer };

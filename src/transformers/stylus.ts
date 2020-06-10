@@ -37,4 +37,4 @@ const transformer: Transformer<Options.Stylus> = ({
   });
 };
 
-export default transformer;
+export { transformer };
