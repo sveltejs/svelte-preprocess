@@ -7,6 +7,7 @@ import {
   Processed,
   TransformerArgs,
   TransformerOptions,
+  Transformers,
 } from './types';
 import { hasPostCssInstalled } from './modules/hasPostcssInstalled';
 import { concat } from './modules/concat';
@@ -14,32 +15,8 @@ import { parseFile } from './modules/parseFile';
 import { addLanguageAlias } from './modules/language';
 import { throwError } from './modules/errors';
 
-interface Transformers {
-  typescript?: TransformerOptions<Options.Typescript>;
-  scss?: TransformerOptions<Options.Sass>;
-  sass?: TransformerOptions<Options.Sass>;
-  less?: TransformerOptions<Options.Less>;
-  stylus?: TransformerOptions<Options.Stylus>;
-  postcss?: TransformerOptions<Options.Postcss>;
-  coffeescript?: TransformerOptions<Options.Coffeescript>;
-  pug?: TransformerOptions<Options.Pug>;
-  globalStyle?: Options.GlobalStyle;
-  replace?: Options.Replace;
-  [languageName: string]: TransformerOptions;
-}
-
-type AutoPreprocessOptions = {
-  /** @deprecated for svelte v3 use instead a array of processors */
-  onBefore?: ({
-    content,
-    filename,
-  }: {
-    content: string;
-    filename: string;
-  }) => Promise<string> | string;
+type AutoPreprocessOptions = Transformers & {
   markupTagName?: string;
-  /** @deprecated add transformer config directly to svelte-preprocess options object */
-  transformers?: Transformers;
   aliases?: Array<[string, string]>;
   preserve?: string[];
   typescript?: TransformerOptions<Options.Typescript>;
