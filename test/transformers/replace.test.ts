@@ -1,7 +1,8 @@
 import autoProcess from '../../src';
 import { preprocess } from '../utils';
+import { Options } from '../../src/types';
 
-const options = [
+const options: Options.Replace = [
   [/@if\s*\((.*?)\)$/gim, '{#if $1}'],
   [/@elseif\s*\((.*?)\)$/gim, '{:else if $1}'],
   [/@else$/gim, '{:else}'],

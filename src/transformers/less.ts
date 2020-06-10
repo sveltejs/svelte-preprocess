@@ -26,4 +26,4 @@ const transformer: Transformer<Options.Less> = async ({
   };
 };
 
-export default transformer;
+export { transformer };

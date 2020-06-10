@@ -15,4 +15,4 @@ const transformer: Transformer<Options.Replace> = async ({
   };
 };
 
-export default transformer;
+export { transformer };

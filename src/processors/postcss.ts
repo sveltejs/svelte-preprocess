@@ -5,7 +5,7 @@ import { concat } from '../modules/concat';
 /** Adapted from https://github.com/TehShrike/svelte-preprocess-postcss */
 export default (options?: Options.Postcss): PreprocessorGroup => ({
   async style(svelteFile) {
-    const { default: transformer } = await import('../transformers/postcss');
+    const { transformer } = await import('../transformers/postcss');
     const { content, filename, attributes, dependencies } = await parseFile(
       svelteFile,
       'css',

@@ -5,7 +5,7 @@ import { CompilerOptions } from 'typescript';
 import { TransformOptions as BabelOptions } from '@babel/core';
 
 export type Replace = Array<
-  [RegExp, (substring: string, ...args: any[]) => string | string]
+  [RegExp, string] | [RegExp, (substring: string, ...args: any[]) => string]
 >;
 
 export interface Coffeescript {

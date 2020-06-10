@@ -4,7 +4,7 @@ import { concat } from '../modules/concat';
 
 export default (options?: Options.Less): PreprocessorGroup => ({
   async style(svelteFile) {
-    const { default: transformer } = await import('../transformers/less');
+    const { transformer } = await import('../transformers/less');
     const {
       content,
       filename,

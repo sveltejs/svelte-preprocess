@@ -4,7 +4,7 @@ import { Options, PreprocessorGroup } from '../types';
 
 export default (options?: Options.Pug): PreprocessorGroup => ({
   async markup({ content, filename }) {
-    const { default: transformer } = await import('../transformers/pug');
+    const { transformer } = await import('../transformers/pug');
 
     content = stripIndent(content);
 

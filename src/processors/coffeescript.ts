@@ -4,9 +4,7 @@ import { concat } from '../modules/concat';
 
 export default (options?: Options.Coffeescript): PreprocessorGroup => ({
   async script(svelteFile) {
-    const { default: transformer } = await import(
-      '../transformers/coffeescript'
-    );
+    const { transformer } = await import('../transformers/coffeescript');
 
     const {
       content,
