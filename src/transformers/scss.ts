@@ -1,6 +1,6 @@
-import type { Result } from 'sass';
+import { Result } from 'sass';
 
-import type { Transformer, Processed, Options } from '../types';
+import { Transformer, Processed, Options } from '../types';
 import { getIncludePaths } from '../modules/getIncludePaths';
 import { importAny } from '../modules/importAny';
 

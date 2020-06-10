@@ -1,6 +1,6 @@
 import { transformAsync } from '@babel/core';
 
-import type { Transformer, Options } from '../types';
+import { Transformer, Options } from '../types';
 
 const transformer: Transformer<Options.Babel> = async ({
   content,

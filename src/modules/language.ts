@@ -1,6 +1,6 @@
 import { basename } from 'path';
 
-import type { PreprocessorArgs } from '../types';
+import { PreprocessorArgs } from '../types';
 
 export const ALIAS_MAP = new Map([
   ['pcss', 'css'],
