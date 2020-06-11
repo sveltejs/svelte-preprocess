@@ -495,12 +495,6 @@ const options = {
     compilerOptions: {
       module: 'es2015',
     },
-
-    /**
-     * Type checking can be skipped by setting 'transpileOnly: true'.
-     * This speeds up your build process.
-     */
-    transpileOnly: true,
   },
 
   /** Use a custom preprocess method by passing a function. */
@@ -560,13 +554,15 @@ The SCSS/SASS processor accepts the default sass options alongside two other pro
 
 ### `typescript`
 
-Since `typescript` is not officially supported by `svelte` for its template language, `svelte-preprocess` only type checks code in the `<script></script>` tag.
-
 The following compiler options are not supported:
 
 - `noUnusedLocals`
 - `noEmitOnError`
 - `declarations`
+
+Since `v4`, `svelte-preprocess` doesn't type-check your component, its only concern is to transpile it into valid Javascript for the compiler. If you want to have your components type-checked, you can use [svelte-check](https://github.com/sveltejs/language-tools/blob/master/packages/svelte-check/README.md).
+
+As we're only transpiling, it's not possible to import types or interfaces into your svelte component without using the new TS 3.8 `type` import modifier: `import type { SomeInterface } from './MyModule'` otherwise bundlers will complain that the name is not exported by `MyModule`.
 
 ### `pug`
 
@@ -614,27 +610,3 @@ Since `coffeescript` transpiles variables to `var` definitions, it uses a safety
 ![image](https://user-images.githubusercontent.com/2388078/63219174-8d4d8b00-c129-11e9-9fb0-56260a125155.png)
 
 If you have configured `svelte-preprocess` to use some kind of preprocessor and `svelte-vscode` is displaying errors like it's ignoring your preprocess configuration, that's happening because `svelte-vscode` needs to know how to preprocess your components. `svelte-vscode` works by having a svelte compiler running on the background and you can configure it by [creating a `svelte.config.js`](#with-svelte-vs-code) file on your project's root. Please check this document [With Svelte VS Code](#with-svelte-vs-code) section.
-
-### My `typescript` compilation is sloooooooow
-
-If you have a medium-to-big project, the typescript processor might start to get slow. If you already have an IDE type checking your code, you can speed up the transpilation process by setting `transpileOnly` to `true`:
-
-```js
-import preprocess from 'svelte-preprocess'
-...
-{
-  ...svelteOptions,
-  preprocess: preprocess({
-    typescript: {
-      // skips type checking
-      transpileOnly: true,
-      compilerOptions: {
-        ...
-      },
-    },
-  })
-}
-...
-```
-
-Warning: If you do this, you can't import types or interfaces into your svelte component without using the new TS 3.8 `type` import modifier: `import type { SomeInterface } from './MyModule.ts'` otherwise Rollup (and possibly others) will complain that the name is not exported by `MyModule`)
