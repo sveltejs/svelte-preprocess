@@ -84,7 +84,6 @@ export function autoPreprocess(
 ): PreprocessorGroup {
   markupTagName = markupTagName.toLocaleLowerCase();
 
-  const optionsCache: Record<string, any> = {};
   const transformers = rest as Transformers;
   const markupPattern = new RegExp(
     `<${markupTagName}([\\s\\S]*?)(?:>([\\s\\S]*)<\\/${markupTagName}>|/>)`,
@@ -94,6 +93,7 @@ export function autoPreprocess(
     addLanguageAlias(aliases);
   }
 
+  const optionsCache: Record<string, any> = {};
   const getTransformerOptions = (
     lang: string,
     alias: string,
