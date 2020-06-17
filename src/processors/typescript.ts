@@ -2,7 +2,7 @@ import { Options, PreprocessorGroup } from '../types';
 import { parseFile } from '../modules/parseFile';
 import { concat } from '../modules/concat';
 
-export default (options: Options.Typescript): PreprocessorGroup => ({
+export default (options?: Options.Typescript): PreprocessorGroup => ({
   async script(svelteFile) {
     const { default: transformer } = await import('../transformers/typescript');
     const {

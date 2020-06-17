@@ -10,24 +10,29 @@ const {
   style: styleProcessor,
 } = getAutoPreprocess();
 
-const getBaseObj = (src: string) => ({
-  content: `<template src="./fixtures/template.html"></template>
-  <style src="./fixtures/style.css"></style>
-  <script src="./fixtures/script.js"></script>`,
-  filename: resolve(__dirname, '..', 'App.svelte'),
-  attributes: { src: `./fixtures/${src}` },
-});
-
-let markup: Processed;
-let script: Processed;
-let style: Processed;
-
 describe('external files', () => {
+  let markup: Processed;
+  let script: Processed;
+  let style: Processed;
+
   beforeAll(async () => {
     [markup, script, style] = [
-      await markupProcessor(getBaseObj('template.html')),
-      await scriptProcessor(getBaseObj('script.js')),
-      await styleProcessor(getBaseObj('style.css')),
+      await markupProcessor({
+        content: `<template src="./fixtures/template.html"></template>
+        <style src="./fixtures/style.css"></style>
+        <script src="./fixtures/script.js"></script>`,
+        filename: resolve(__dirname, '..', 'App.svelte'),
+      }),
+      await scriptProcessor({
+        content: ``,
+        filename: resolve(__dirname, '..', 'App.svelte'),
+        attributes: { src: `./fixtures/script.js` },
+      }),
+      await styleProcessor({
+        content: ``,
+        filename: resolve(__dirname, '..', 'App.svelte'),
+        attributes: { src: `./fixtures/style.css` },
+      }),
     ];
   });
 

@@ -2,7 +2,7 @@ import { basename } from 'path';
 
 import { PreprocessorArgs } from '../types';
 
-export const LANG_DICT = new Map([
+export const ALIAS_MAP = new Map([
   ['pcss', 'css'],
   ['postcss', 'css'],
   ['sass', 'scss'],
@@ -13,7 +13,7 @@ export const LANG_DICT = new Map([
 ]);
 
 export const addLanguageAlias = (entries: Array<[string, string]>) =>
-  entries.forEach((entry) => LANG_DICT.set(...entry));
+  entries.forEach((entry) => ALIAS_MAP.set(...entry));
 
 export const getLanguage = (
   attributes: PreprocessorArgs['attributes'],
@@ -44,7 +44,7 @@ export const getLanguage = (
   }
 
   return {
-    lang: LANG_DICT.get(lang) || lang,
+    lang: ALIAS_MAP.get(lang) || lang,
     alias: lang,
   };
 };

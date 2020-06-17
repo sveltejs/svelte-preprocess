@@ -1,5 +1,7 @@
 import { resolve } from 'path';
 
+import { getTestAppFilename, getFixtureContent } from './utils';
+import { parseFile } from '../src/modules/parseFile';
 import { importAny } from '../src/modules/importAny';
 import { getIncludePaths } from '../src/modules/getIncludePaths';
 import { globalifySelector } from '../src/modules/globalifySelector';
@@ -68,5 +70,30 @@ describe('globalifySelector', () => {
       ':global(div) > :global(span)',
     );
     expect(globalifySelector(selector2)).toEqual(':global(div), :global(span)');
+  });
+});
+
+describe(`parse svelte file`, () => {
+  it('should only include src files if content is empty', async () => {
+    let parsedFile = await parseFile(
+      {
+        content: '',
+        attributes: { src: './fixtures/style.scss' },
+        filename: getTestAppFilename(),
+      },
+      'css',
+    );
+
+    expect(parsedFile.content).toEqual(getFixtureContent('style.scss'));
+
+    parsedFile = await parseFile(
+      {
+        ...parsedFile,
+        attributes: { src: './fixtures/style.css' },
+      },
+      'css',
+    );
+
+    expect(parsedFile.content).toEqual(getFixtureContent('style.scss'));
   });
 });

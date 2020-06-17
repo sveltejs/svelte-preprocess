@@ -2,7 +2,7 @@ import { parseFile } from '../modules/parseFile';
 import { Options, PreprocessorGroup } from '../types';
 import { concat } from '../modules/concat';
 
-export default (options: Options.Stylus): PreprocessorGroup => ({
+export default (options?: Options.Stylus): PreprocessorGroup => ({
   async style(svelteFile) {
     const { default: transformer } = await import('../transformers/stylus');
     const {

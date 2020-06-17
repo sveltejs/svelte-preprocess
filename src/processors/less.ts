@@ -2,7 +2,7 @@ import { PreprocessorGroup, Options } from '../types';
 import { parseFile } from '../modules/parseFile';
 import { concat } from '../modules/concat';
 
-export default (options: Options.Less): PreprocessorGroup => ({
+export default (options?: Options.Less): PreprocessorGroup => ({
   async style(svelteFile) {
     const { default: transformer } = await import('../transformers/less');
     const {
