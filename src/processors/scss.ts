@@ -2,7 +2,7 @@ import { parseFile } from '../modules/parseFile';
 import { PreprocessorGroup, Options } from '../types';
 import { concat } from '../modules/concat';
 
-export default (options: Options.Sass): PreprocessorGroup => ({
+export default (options?: Options.Sass): PreprocessorGroup => ({
   async style(svelteFile) {
     const { default: transformer } = await import('../transformers/scss');
     const {

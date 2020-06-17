@@ -27,7 +27,8 @@ export const parseFile = async (
 ) => {
   const dependencies = [];
 
-  if (attributes.src) {
+  /** only include src file if content of tag is empty */
+  if (attributes.src && content.trim().length === 0) {
     // istanbul ignore if
     if (typeof attributes.src !== 'string') {
       throw new Error('src attribute must be string');
