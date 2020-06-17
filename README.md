@@ -141,19 +141,7 @@ Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Co
   export const hello: string = 'world';
 </script>
 
-<script type="text/coffeescript">
-  # ...and v2!
-  export default
-    methods:
-      foo: () ->
-        console.log('Hey')
-</script>
-
 <style src="./style.scss"></style>
-
-<!-- Or -->
-
-<style src="./style.styl"></style>
 
 <!-- Or -->
 
@@ -162,14 +150,6 @@ Current supported out-of-the-box preprocessors are `SCSS`, `Stylus`, `Less`, `Co
   div {
     color: $color;
   }
-</style>
-
-<!-- Or -->
-
-<style type="text/stylus">
-  $color = red
-  div
-    color: $color
 </style>
 ```
 
@@ -242,7 +222,7 @@ And the result, for a `NODE_ENV = 'production'` would be:
 
 _Note<sup>1</sup>: the `replace` transformer is executed before any other transformer._
 
-_Note<sup>2</sup>: it is **NOT** recommended to modify Svelte's syntax for a number of reasons._
+_Note<sup>2</sup>: it is **NOT** recommended to modify Svelte's syntax._
 
 ## Usage
 
@@ -361,13 +341,13 @@ _Tip: this file can be imported in your bundle config instead of having multiple
 In auto preprocessing mode, `svelte-preprocess` automatically uses the respective preprocessor for your code based on your `type="..."` or `lang="..."` attributes. It also handles the `<template>` tag for markup, external files and global styling. It's as simple as importing the module and executing the default exported method.
 
 ```js
-import sveltePreprocess from 'svelte-preprocess'
+import preprocess from 'svelte-preprocess'
 
 ...
   {
     /* svelte options */
     ...,
-    preprocess: sveltePreprocess({ /* options */ }),
+    preprocess: preprocess({ /* options */ }),
   }
 ...
 ```
@@ -375,14 +355,14 @@ import sveltePreprocess from 'svelte-preprocess'
 [Svelte v3 has added support for multiple processors](https://svelte.dev/docs#svelte_preprocess), so it's also possible to use `svelte-preprocess` with other preprocessors:
 
 ```js
-import sveltePreprocess from 'svelte-preprocess'
+import preprocess from 'svelte-preprocess'
 import { mdsvex } from 'mdsvex'
 ...
   {
     /* svelte options */
     ...,
     preprocess: [
-      sveltePreprocess({ /* svelte-preprocess options */ }),
+      preprocess({ /* svelte-preprocess options */ }),
       mdsvex({ /* mdsvex options */ })
     ],
   }
