@@ -5,10 +5,11 @@ import { Diagnostic } from 'typescript';
 import getAutoPreprocess from '../../src';
 import { Processed } from '../../src/types';
 import { preprocess, getFixtureContent } from '../utils';
+import { compileFileFromMemory } from '../../src/transformers/typescript';
 
 const EXPECTED_SCRIPT = getFixtureContent('script.js');
 
-const transpile = (content: string, compilerOptions?: any) => {
+const autoProcessTS = (content: string, compilerOptions?: any) => {
   const opts = getAutoPreprocess({
     typescript: {
       tsconfigFile: false,
@@ -26,6 +27,20 @@ const transpile = (content: string, compilerOptions?: any) => {
   }) as Processed & { diagnostics: Diagnostic[] };
 };
 
+const compileTS = (content: string, compilerOptions?: any) => {
+  return compileFileFromMemory(
+    {
+      ...compilerOptions,
+      skipLibCheck: true,
+      allowNonTsExtensions: true,
+    },
+    {
+      content,
+      filename: resolve(__dirname, '..', 'App.svelte'),
+    },
+  ) as Processed & { diagnostics: Diagnostic[] };
+};
+
 describe('transformer - typescript', () => {
   const template = `<div></div><script lang="ts">${getFixtureContent(
     'script.ts',
@@ -33,11 +48,19 @@ describe('transformer - typescript', () => {
 
   it('should disallow transpilation to es5 or lower', async () => {
     await expect(
-      transpile('export let foo = 10', { target: 'es3' }),
+      autoProcessTS('export let foo = 10', { target: 'es3' }),
     ).rejects.toThrow();
     await expect(
-      transpile('export let foo = 10', { target: 'es5' }),
+      autoProcessTS('export let foo = 10', { target: 'es5' }),
     ).rejects.toThrow();
+  });
+
+  it('should throw if errors are found', async () => {
+    await expect(
+      autoProcessTS('export let foo: string = 100'),
+    ).rejects.toThrow();
+
+    await expect(autoProcessTS('export l et 0')).rejects.toThrow();
   });
 
   describe('configuration file', () => {
@@ -109,13 +132,13 @@ describe('transformer - typescript', () => {
 
   describe('code errors', () => {
     it('should report semantic errors in template', async () => {
-      const { diagnostics } = await transpile('let label:string = 10');
+      const { diagnostics } = await compileTS('let label:string = 10');
 
       expect(diagnostics.some((d) => d.code === 2322)).toBe(true);
     });
 
     it('should report invalid relative svelte import statements', async () => {
-      const { diagnostics } = await transpile(
+      const { diagnostics } = await compileTS(
         `import Nested from './fixtures/NonExistent.svelte'`,
       );
 
@@ -123,7 +146,7 @@ describe('transformer - typescript', () => {
     });
 
     it('should NOT report valid relative svelte import statements', async () => {
-      const { diagnostics } = await transpile(
+      const { diagnostics } = await compileTS(
         `import Nested from './fixtures/Nested.svelte'`,
       );
 
@@ -131,7 +154,7 @@ describe('transformer - typescript', () => {
     });
 
     it('should NOT report non-relative svelte import statements', async () => {
-      const { diagnostics } = await transpile(
+      const { diagnostics } = await compileTS(
         `import Nested from 'svelte/FakeSvelte.svelte'`,
       );
 
@@ -139,7 +162,7 @@ describe('transformer - typescript', () => {
     });
 
     it('should NOT affect non-svelte import statement', async () => {
-      const { diagnostics } = await transpile(
+      const { diagnostics } = await compileTS(
         `import Nested from './relative/yaddaYadda.js'`,
       );
 
@@ -147,7 +170,7 @@ describe('transformer - typescript', () => {
     });
 
     it('should NOT affect import statement without file extension', async () => {
-      const { diagnostics } = await transpile(
+      const { diagnostics } = await compileTS(
         `import Nested from './relative/noExtension'`,
       );
 
@@ -155,7 +178,7 @@ describe('transformer - typescript', () => {
     });
 
     it('should NOT report a mismatched variable name error when using reactive variables', async () => {
-      const { diagnostics } = await transpile(
+      const { diagnostics } = await compileTS(
         `
           const user = {};
           $user.name = "test";
@@ -166,7 +189,7 @@ describe('transformer - typescript', () => {
     });
 
     it('should report a mismatched variable name error', async () => {
-      const { diagnostics } = await transpile(
+      const { diagnostics } = await compileTS(
         `
           const user = {};
           xuser.name = "test";
@@ -177,7 +200,7 @@ describe('transformer - typescript', () => {
     });
 
     it('should remove imports containing types only', async () => {
-      const { code } = await transpile(
+      const { code } = await autoProcessTS(
         `
           import { AType, AInterface } from './fixtures/types'
           let name: AType = "test1";
@@ -188,7 +211,7 @@ describe('transformer - typescript', () => {
     });
 
     it('should remove type only imports', async () => {
-      const { code } = await transpile(
+      const { code } = await autoProcessTS(
         `
           import type { AType, AInterface } from './fixtures/types'
           let name: AType = "test1";
@@ -199,7 +222,7 @@ describe('transformer - typescript', () => {
     });
 
     it('should remove only the types from the imports', async () => {
-      const { code } = await transpile(
+      const { code } = await autoProcessTS(
         `
           import { AValue, AType, AInterface } from './fixtures/types'
           let name: AType = "test1";
@@ -210,7 +233,7 @@ describe('transformer - typescript', () => {
     });
 
     it('should remove the named imports completely if they were all types', async () => {
-      const { code } = await transpile(
+      const { code } = await autoProcessTS(
         `
           import Default, { AType, AInterface } from './fixtures/types'
           let name: AType = "test1";

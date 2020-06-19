@@ -4,6 +4,7 @@ import { dirname, basename, resolve } from 'path';
 import ts from 'typescript';
 
 import { Transformer, Options } from '../types';
+import { throwTypescriptError } from '../modules/errors';
 
 type CompilerOptions = Options.Typescript['compilerOptions'];
 
@@ -199,7 +200,7 @@ function createImportTransformerFromProgram(program: ts.Program) {
   return importedTypeRemoverTransformer;
 }
 
-function compileFileFromMemory(
+export function compileFileFromMemory(
   compilerOptions: CompilerOptions,
   { filename, content }: { filename: string; content: string },
 ) {
@@ -348,7 +349,7 @@ const transformer: Transformer<Options.Typescript> = ({
 
   let code;
   let map;
-  let diagnostics;
+  let diagnostics: ts.Diagnostic[];
 
   if (options.transpileOnly || compilerOptions.transpileOnly) {
     ({ outputText: code, sourceMapText: map, diagnostics } = ts.transpileModule(
@@ -369,9 +370,16 @@ const transformer: Transformer<Options.Typescript> = ({
 
   if (diagnostics.length > 0) {
     // could this be handled elsewhere?
+    const hasError = diagnostics.some(
+      (d) => d.category === ts.DiagnosticCategory.Error,
+    );
     const formattedDiagnostics = formatDiagnostics(diagnostics, basePath);
 
     console.log(formattedDiagnostics);
+
+    if (hasError) {
+      throwTypescriptError();
+    }
   }
 
   return {
