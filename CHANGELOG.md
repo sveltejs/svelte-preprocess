@@ -1,3 +1,13 @@
+## [3.9.9](https://github.com/kaisermann/svelte-preprocess/compare/v3.9.7...v3.9.9) (2020-06-19)
+
+
+### Bug Fixes
+
+* 🐛 prevent including external file if content is not empty ([24e90d1](https://github.com/kaisermann/svelte-preprocess/commit/24e90d101103b043d4b9e9789d2d6582ecf31ae8)), closes [#183](https://github.com/kaisermann/svelte-preprocess/issues/183)
+* 🐛 throw if type errors are found ([6545a5c](https://github.com/kaisermann/svelte-preprocess/commit/6545a5c13ff81a568714cbd83ae2d6127d4f61a4)), closes [#182](https://github.com/kaisermann/svelte-preprocess/issues/182)
+
+
+
 ## [3.9.8](https://github.com/kaisermann/svelte-preprocess/compare/v3.9.7...v3.9.8) (2020-06-17)
 
 
