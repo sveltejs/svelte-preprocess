@@ -71,3 +71,37 @@ export interface Typescript {
 export interface GlobalStyle {
   sourceMap: boolean;
 }
+
+interface Template {
+  reset(blocks: any): void;
+  // eslint-disable-next-line @typescript-eslint/camelcase
+  render(context?: any, params?: any, allow_async?: false): string;
+  render(
+    context?: any,
+    params?: any,
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    allow_async?: boolean,
+  ): string | Promise<string>;
+  renderAsync(context?: any, params?: any): Promise<string>;
+  importFile(file: string): Template;
+  importBlocks(file: string, override?: boolean): void;
+  importMacros(file: string): Template;
+  getLoaderMethod(): string;
+  compile(options: any): string;
+}
+
+export interface Twig {
+  id?: any;
+  blocks?: any;
+  macros?: any;
+  base?: any;
+  path?: any;
+  href?: any;
+  name?: any;
+  method?: any;
+  options?: any;
+  data?: any;
+  async?: any;
+  allowInlineIncludes?: boolean;
+  load?: (template: Template) => void;
+}

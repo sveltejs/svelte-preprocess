@@ -10,6 +10,7 @@ export const ALIAS_MAP = new Map([
   ['js', 'javascript'],
   ['coffee', 'coffeescript'],
   ['ts', 'typescript'],
+  ['twig', 'twig'],
 ]);
 
 export const addLanguageAlias = (entries: Array<[string, string]>) =>

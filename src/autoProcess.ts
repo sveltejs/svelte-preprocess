@@ -24,6 +24,7 @@ interface Transformers {
   postcss?: TransformerOptions<Options.Postcss>;
   coffeescript?: TransformerOptions<Options.Coffeescript>;
   pug?: TransformerOptions<Options.Pug>;
+  twig?: TransformerOptions<Options.Twig>;
   globalStyle?: Options.GlobalStyle;
   replace?: Options.Replace;
   [languageName: string]: TransformerOptions;
@@ -52,6 +53,7 @@ type AutoPreprocessOptions = {
   babel?: TransformerOptions<Options.Babel>;
   coffeescript?: TransformerOptions<Options.Coffeescript>;
   pug?: TransformerOptions<Options.Pug>;
+  twig?: TransformerOptions<Options.Twig>;
   globalStyle?: Options.GlobalStyle;
   // workaround while we don't have this
   // https://github.com/microsoft/TypeScript/issues/17867

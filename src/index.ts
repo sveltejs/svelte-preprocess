@@ -8,6 +8,7 @@ export default exports = module.exports = autoPreprocess;
 
 // stand-alone processors to be included manually */
 export { default as pug } from './processors/pug';
+export { default as twig } from './processors/twig';
 export { default as coffeescript } from './processors/coffeescript';
 export { default as typescript } from './processors/typescript';
 export { default as less } from './processors/less';

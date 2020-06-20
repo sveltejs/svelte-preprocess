@@ -69,6 +69,7 @@
     "@types/node": "^14.0.11",
     "@types/node-sass": "^4.11.1",
     "@types/stylus": "^0.48.32",
+    "@types/twig": "^1.12.3",
     "autoprefixer": "^9.8.0",
     "babel-minify": "^0.5.1",
     "coffeescript": "^2.5.1",
@@ -90,6 +91,7 @@
     "sugarss": "^2.0.0",
     "svelte": "^3.23.0",
     "ts-jest": "^25.1.0",
+    "twig": "^1.15.1",
     "typescript": "^3.9.5"
   },
   "dependencies": {

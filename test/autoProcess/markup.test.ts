@@ -2,7 +2,10 @@ import getAutoPreprocess from '../../src';
 import { preprocess, getFixtureContent, doesCompileThrow } from '../utils';
 
 const EXPECTED_MARKUP = getFixtureContent('template.html');
-const MARKUP_LANGS: Array<[string, string]> = [['pug', 'pug']];
+const MARKUP_LANGS: Array<[string, string]> = [
+  ['pug', 'pug'],
+  ['twig', 'twig'],
+];
 
 test('should transform HTML between <template></template>', async () => {
   const input = `<script></script><template><div>Hey</div></template><style></style>`;
@@ -46,7 +49,7 @@ MARKUP_LANGS.forEach(([lang, ext]) => {
     )}</template>`;
 
     it(`should throw parsing ${lang} when { ${lang}: false }`, async () => {
-      const opts = getAutoPreprocess({ pug: false });
+      const opts = getAutoPreprocess({ [lang]: false });
 
       expect(await doesCompileThrow(template, opts)).toBe(true);
     });
