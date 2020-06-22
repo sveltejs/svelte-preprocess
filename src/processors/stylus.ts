@@ -13,7 +13,9 @@ export default (options?: Options.Stylus): PreprocessorGroup => ({
       dependencies,
     } = await parseFile(svelteFile, 'css');
 
-    if (lang !== 'stylus') return { code: content };
+    if (lang !== 'stylus') {
+      return { code: content };
+    }
 
     const transformed = await transformer({
       content,

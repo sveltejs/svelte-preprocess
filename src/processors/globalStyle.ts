@@ -7,7 +7,9 @@ export default (): PreprocessorGroup => {
         '../transformers/globalStyle'
       );
 
-      if (!attributes.global) return { code: content };
+      if (!attributes.global) {
+        return { code: content };
+      }
 
       return transformer({ content, filename, attributes });
     },

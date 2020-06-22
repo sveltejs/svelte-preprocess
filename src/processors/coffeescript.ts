@@ -16,7 +16,9 @@ export default (options?: Options.Coffeescript): PreprocessorGroup => ({
       dependencies,
     } = await parseFile(svelteFile, 'javascript');
 
-    if (lang !== 'coffeescript') return { code: content };
+    if (lang !== 'coffeescript') {
+      return { code: content };
+    }
 
     const transformed = await transformer({
       content,

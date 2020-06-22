@@ -13,7 +13,9 @@ export default (options?: Options.Typescript): PreprocessorGroup => ({
       dependencies,
     } = await parseFile(svelteFile, 'javascript');
 
-    if (lang !== 'typescript') return { code: content };
+    if (lang !== 'typescript') {
+      return { code: content };
+    }
 
     const transformed = await transformer({
       content,

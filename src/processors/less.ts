@@ -13,7 +13,9 @@ export default (options?: Options.Less): PreprocessorGroup => ({
       dependencies,
     } = await parseFile(svelteFile, 'css');
 
-    if (lang !== 'less') return { code: content };
+    if (lang !== 'less') {
+      return { code: content };
+    }
 
     const transformed = await transformer({
       content,
