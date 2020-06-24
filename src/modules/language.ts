@@ -26,18 +26,21 @@ export const getLanguage = (
     if (typeof attributes.lang !== 'string') {
       throw new Error('lang attribute must be string');
     }
+
     lang = attributes.lang;
   } else if (attributes.type) {
     // istanbul ignore if
     if (typeof attributes.type !== 'string') {
       throw new Error('type attribute must be string');
     }
+
     lang = attributes.type.replace(/^(text|application)\/(.*)$/, '$2');
   } else if (attributes.src) {
     // istanbul ignore if
     if (typeof attributes.src !== 'string') {
       throw new Error('src attribute must be string');
     }
+
     const parts = basename(attributes.src).split('.');
 
     lang = parts.length > 1 ? parts.pop() : defaultLang;

@@ -37,6 +37,7 @@ describe('transformer - postcss', () => {
         ],
       },
     });
+
     const preprocessed = await preprocess(template, optsWithoutConfigFile);
 
     expect(preprocessed.toString()).toMatch(/-webkit-/);
@@ -53,6 +54,7 @@ describe('transformer - postcss', () => {
         ],
       },
     });
+
     const preprocessed = await preprocess(templateSass, optsWithoutConfigFile);
 
     expect(preprocessed.toString()).toMatch(/-webkit-/);
@@ -79,6 +81,7 @@ describe('transformer - postcss', () => {
         plugins: [require('postcss-easy-import')],
       },
     });
+
     const preprocessed = await preprocess(template, opts);
 
     expect(preprocessed.dependencies).toContain(
@@ -91,12 +94,14 @@ describe('transformer - postcss', () => {
 div
   color: red
 </style>`;
+
     const opts = getAutoPreprocess({
       postcss: {
         parser: require('sugarss'),
         plugins: [require('postcss-easy-import')],
       },
     });
+
     const preprocessed = await preprocess(template, opts);
 
     expect(preprocessed.toString()).toContain(`div {

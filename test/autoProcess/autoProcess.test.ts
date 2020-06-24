@@ -37,6 +37,7 @@ describe('options', () => {
     const input = `<template lang="customTransformer">${getFixtureContent(
       'template.custom',
     )}</template>`;
+
     const opts = getAutoPreprocess({
       customTransformer({ content }) {
         content = content.replace('foo', 'bar').toString().trim();
@@ -44,6 +45,7 @@ describe('options', () => {
         return { code: content, map: null };
       },
     });
+
     const preprocessed = await preprocess(input, opts);
 
     expect(preprocessed.toString()).toBe('bar');
@@ -71,6 +73,7 @@ describe('options', () => {
         return content.toLowerCase();
       },
     });
+
     const preprocessed = await preprocess(input, opts);
 
     expect(preprocessed.toString()).toBe(input.toLowerCase());
@@ -126,6 +129,7 @@ describe('options', () => {
         return { code: '', map: '' };
       },
     });
+
     const preprocessed = await preprocess(input, opts);
 
     expect(preprocessed.toString()).toContain(
@@ -154,6 +158,7 @@ describe('options', () => {
         mock: () => ({ code: 'mock' }),
       },
     });
+
     const preprocessed = await preprocess(input, opts);
 
     expect(preprocessed.toString()).toBe(`<script lang="mock">mock</script>`);

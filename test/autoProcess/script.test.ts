@@ -9,6 +9,7 @@ const SCRIPT_LANGS: Array<[string, string, object?]> = [
     { tsconfigFile: false, compilerOptions: { module: 'es2015' } },
   ],
 ];
+
 const EXPECTED_SCRIPT = getFixtureContent('script.js');
 
 SCRIPT_LANGS.forEach(([lang, ext, langOptions]) => {
@@ -22,6 +23,7 @@ SCRIPT_LANGS.forEach(([lang, ext, langOptions]) => {
         <div></div>
         <script src="./fixtures/script.${ext}"></script>
       `;
+
       const opts = getAutoPreprocess({
         [lang]: false,
       });
@@ -33,6 +35,7 @@ SCRIPT_LANGS.forEach(([lang, ext, langOptions]) => {
       const opts = getAutoPreprocess({
         [lang]: langOptions,
       });
+
       const preprocessed = await preprocess(template, opts);
 
       expect(preprocessed.toString()).toContain(EXPECTED_SCRIPT);

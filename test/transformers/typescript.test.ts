@@ -78,6 +78,7 @@ describe('transformer - typescript', () => {
           tsconfigDirectory: './test/fixtures',
         },
       });
+
       const preprocessed = await preprocess(template, opts);
 
       expect(preprocessed.toString()).toContain(EXPECTED_SCRIPT);
@@ -89,6 +90,7 @@ describe('transformer - typescript', () => {
           tsconfigFile: './test/fixtures/tsconfig.json',
         },
       });
+
       const preprocessed = await preprocess(template, opts);
 
       expect(preprocessed.toString()).toContain(EXPECTED_SCRIPT);
@@ -124,6 +126,7 @@ describe('transformer - typescript', () => {
           },
         },
       });
+
       const { code } = await preprocess(template, opts);
 
       return expect(code).toContain(getFixtureContent('script.js'));

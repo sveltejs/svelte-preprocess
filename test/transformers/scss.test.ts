@@ -37,6 +37,7 @@ describe('transformer - scss', () => {
         data: '$color:red;div{color:$color}',
       },
     });
+
     const preprocessed = await preprocess(template, opts);
 
     expect(preprocessed.toString()).toContain('red');
@@ -59,6 +60,7 @@ describe('transformer - scss', () => {
         implementation,
       },
     });
+
     const preprocessed = await preprocess(template, opts);
 
     expect(preprocessed.toString()).toContain('div#red{color:red}');
@@ -72,6 +74,7 @@ describe('transformer - scss', () => {
         renderSync: true,
       },
     });
+
     const preprocessed = await preprocess(template, opts);
 
     expect(preprocessed.toString()).toContain('blue');
@@ -84,6 +87,7 @@ describe('transformer - scss', () => {
         renderSync: true,
       },
     });
+
     const preprocessed = await preprocess(template, opts);
 
     expect(preprocessed.dependencies).toContain(
@@ -99,6 +103,7 @@ describe('transformer - scss', () => {
         renderSync: true,
       },
     });
+
     const preprocessed = await preprocess(template, opts);
 
     expect(preprocessed.toString()).toContain('div#green{color:green}');

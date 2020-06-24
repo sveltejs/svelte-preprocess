@@ -33,6 +33,7 @@ export const parseFile = async (
     if (typeof attributes.src !== 'string') {
       throw new Error('src attribute must be string');
     }
+
     let path = attributes.src;
 
     /** Only try to get local files (path starts with ./ or ../) */

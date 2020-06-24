@@ -49,6 +49,7 @@ describe('transformer - regex', () => {
 @endawait`
       .trim()
       .repeat(2);
+
     const opts = autoProcess({ replace: options });
     const preprocessed = await preprocess(template, opts);
 

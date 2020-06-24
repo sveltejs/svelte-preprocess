@@ -22,9 +22,11 @@ describe('transformer - babel', () => {
     let foo = {}
     $: bar = foo?.b ?? 120
     </script>`;
+
     const opts = getAutoPreprocess({
       babel: BABEL_CONFIG,
     });
+
     const preprocessed = await preprocess(template, opts);
 
     expect(preprocessed.code).toMatchInlineSnapshot(`

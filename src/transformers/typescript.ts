@@ -165,6 +165,7 @@ function createImportTransformerFromProgram(program: ts.Program) {
                 continue;
               }
             }
+
             newElements.push(spec);
           }
 
@@ -302,6 +303,7 @@ const transformer: Transformer<Options.Typescript> = ({
   if (options.tsconfigFile !== false || options.tsconfigDirectory) {
     const fileDirectory = (options.tsconfigDirectory ||
       dirname(filename)) as string;
+
     const tsconfigFile =
       options.tsconfigFile ||
       ts.findConfigFile(fileDirectory, ts.sys.fileExists);
@@ -373,6 +375,7 @@ const transformer: Transformer<Options.Typescript> = ({
     const hasError = diagnostics.some(
       (d) => d.category === ts.DiagnosticCategory.Error,
     );
+
     const formattedDiagnostics = formatDiagnostics(diagnostics, basePath);
 
     console.log(formattedDiagnostics);

@@ -11,6 +11,7 @@ describe('transformer - globalStyle', () => {
           sourceMap: true,
         },
       });
+
       const preprocessed = await preprocess(template, opts);
 
       expect(preprocessed.toString()).toContain(`sourceMappingURL`);
@@ -40,6 +41,7 @@ describe('transformer - globalStyle', () => {
       const template = `<style global>
 @keyframes a {from{} to{}}@keyframes -global-b {from{} to{}}
 </style>`;
+
       const opts = autoProcess();
       const preprocessed = await preprocess(template, opts);
 
@@ -84,6 +86,7 @@ describe('transformer - globalStyle', () => {
             sourceMap: true,
           },
         });
+
         const preprocessed = await preprocess(template, opts);
 
         expect(preprocessed.toString()).toContain(`sourceMappingURL`);
@@ -176,6 +179,7 @@ describe('transformer - globalStyle', () => {
       it('removes rules with only :global as its selector', async () => {
         const template =
           '<style>:global{/*comment*/}:global,div{/*comment*/}</style>';
+
         const opts = autoProcess();
         const preprocessed = await preprocess(template, opts);
 

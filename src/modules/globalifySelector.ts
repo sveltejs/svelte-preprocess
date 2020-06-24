@@ -17,6 +17,7 @@ export function globalifySelector(selector: string) {
       if (selectorPart.startsWith(':local')) {
         return selectorPart.replace(/:local\((.+?)\)/g, '$1');
       }
+
       if (selectorPart.startsWith(':global')) {
         return selectorPart;
       }

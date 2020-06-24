@@ -9,6 +9,7 @@ describe('transformer - pug', () => {
 main
   header
     h1</template>`;
+
     const opts = getAutoPreprocess();
     const preprocessed = await preprocess(template, opts);
 
@@ -20,6 +21,7 @@ main
 main
 \theader
 \t\th1</template>`;
+
     const opts = getAutoPreprocess();
     const preprocessed = await preprocess(template, opts);
 
