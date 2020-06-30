@@ -71,6 +71,14 @@ describe('globalifySelector', () => {
     );
     expect(globalifySelector(selector2)).toEqual(':global(div), :global(span)');
   });
+
+  it('correctly treats selectors with escaped combinator characters', async () => {
+    const selector1 = '.\\~positive.\\!normal ~ .\\+foo';
+
+    expect(globalifySelector(selector1)).toEqual(
+      ':global(.\\~positive.\\!normal) ~ :global(.\\+foo)',
+    );
+  });
 });
 
 describe(`parse svelte file`, () => {

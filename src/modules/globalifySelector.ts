@@ -1,9 +1,14 @@
-const combinatorPattern = /(\s*[ >+~,]\s*)(?![^[]+\])/g;
+/*
+ * Split a selector string (ex: div > foo ~ .potato) by
+ * separators: space, >, +, ~ and comma (maybe not needed)
+ * We use a negative lookbehind assertion to prevent matching
+ * escaped combinators like `\~`.
+ */
+const combinatorPattern = /(?<!\\)(?:\\\\)*([ >+~,]\s*)(?![^[]+\])/g;
 
 export function globalifySelector(selector: string) {
-  return selector
-    .trim()
-    .split(combinatorPattern)
+  const parts = selector.trim().split(combinatorPattern);
+  const modifiedSelector = parts
     .map((selectorPart: string, index: number) => {
       // if this is the separator
       if (index % 2 !== 0) {
@@ -25,4 +30,6 @@ export function globalifySelector(selector: string) {
       return `:global(${selectorPart})`;
     })
     .join('');
+
+  return modifiedSelector;
 }
