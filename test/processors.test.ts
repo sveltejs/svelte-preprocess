@@ -22,6 +22,7 @@ const STYLE_LANGS: ProcessorEntries = [
   ['stylus', 'styl', stylus],
   ['postcss', 'css', postcss],
 ];
+
 const SCRIPT_LANGS: ProcessorEntries = [
   ['coffeescript', 'coffee', coffeescript],
   [
@@ -31,6 +32,7 @@ const SCRIPT_LANGS: ProcessorEntries = [
     { tsconfigFile: false, compilerOptions: { module: 'es2015' } },
   ],
 ];
+
 const MARKUP_LANGS: ProcessorEntries = [['pug', 'pug', pug]];
 
 STYLE_LANGS.forEach(([lang, ext, processor, options]) => {

@@ -165,6 +165,7 @@ export function autoPreprocess(
             '[svelte-preprocess] For svelte >= v3, instead of onBefore(), prefer to prepend a preprocess object to your array of preprocessors',
           );
         }
+
         content = await onBefore({ content, filename });
       }
 
