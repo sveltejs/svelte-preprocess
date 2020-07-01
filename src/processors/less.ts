@@ -11,7 +11,7 @@ export default (options?: Options.Less): PreprocessorGroup => ({
       attributes,
       lang,
       dependencies,
-    } = await parseFile(svelteFile, 'css');
+    } = await parseFile(svelteFile);
 
     if (lang !== 'less') {
       return { code: content };

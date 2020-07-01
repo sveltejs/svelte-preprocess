@@ -8,7 +8,6 @@ export default (options?: Options.Postcss): PreprocessorGroup => ({
     const { transformer } = await import('../transformers/postcss');
     const { content, filename, attributes, dependencies } = await parseFile(
       svelteFile,
-      'css',
     );
 
     /** If manually passed a plugins array, use it as the postcss config */
