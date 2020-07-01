@@ -34,7 +34,7 @@ describe('transformer - scss', () => {
     const template = `<style lang="scss"></style>`;
     const opts = getAutoPreprocess({
       scss: {
-        data: '$color:red;div{color:$color}',
+        prependData: '$color:red;div{color:$color}',
       },
     });
 
@@ -70,7 +70,7 @@ describe('transformer - scss', () => {
     const template = `<style lang="scss"></style>`;
     const opts = getAutoPreprocess({
       scss: {
-        data: '$color:blue;div{color:$color}',
+        prependData: '$color:blue;div{color:$color}',
         renderSync: true,
       },
     });

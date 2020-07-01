@@ -1,7 +1,7 @@
-export type AType = "test1" | "test2"
+export type AType = 'test1' | 'test2';
 export interface AInterface {
-    test: string
+  test: string;
 }
-export const AValue: string = "test"
+export const AValue: string = 'test';
 
-export default "String"
+export default 'String';
