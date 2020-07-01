@@ -1,10 +1,5 @@
 import getAutoPreprocess from '../../src';
-import {
-  preprocess,
-  getFixtureContent,
-  doesCompileThrow,
-  CSS_PATTERN,
-} from '../utils';
+import { preprocess, getFixtureContent, CSS_PATTERN } from '../utils';
 
 const STYLE_LANGS: Array<[string, string]> = [
   ['sass', 'sass'],
@@ -15,18 +10,6 @@ const STYLE_LANGS: Array<[string, string]> = [
 
 STYLE_LANGS.forEach(([lang, ext]) => {
   describe(`style - preprocessor - ${lang}`, () => {
-    it(`should throw parsing ${lang} when { ${lang}: false }`, async () => {
-      const template = `<div></div><style lang="${lang}">${getFixtureContent(
-        `style.${ext}`,
-      )}</style>`;
-
-      const opts = getAutoPreprocess({
-        [lang]: false,
-      });
-
-      expect(await doesCompileThrow(template, opts)).toBe(true);
-    });
-
     it(`should parse ${lang}`, async () => {
       const template = `<div></div><style lang="${lang}">${getFixtureContent(
         `style.${ext}`,
