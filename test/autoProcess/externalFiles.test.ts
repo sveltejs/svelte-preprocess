@@ -10,6 +10,12 @@ const {
   style: styleProcessor,
 } = getAutoPreprocess();
 
+const REMOTE_JS = [
+  'https://www.example.com/some/externally/delivered/content.js',
+  'http://www.example.com/some/externally/delivered/content.js',
+  '//www.example.com/some/externally/delivered/content.js',
+];
+
 describe('external files', () => {
   let markup: Processed;
   let script: Processed;
@@ -48,15 +54,7 @@ describe('external files', () => {
     expect(style.dependencies).toContain(getFixturePath('style.css'));
   });
 
-  const EXTERNALJS = [
-    'https://www.example.com/some/externally/delivered/content.js',
-    'http://www.example.com/some/externally/delivered/content.js',
-    '//www.example.com/some/externally/delivered/content.js',
-    'some-file.js',
-    './some-not-local-file.js',
-  ];
-
-  EXTERNALJS.forEach((url) => {
+  REMOTE_JS.forEach((url) => {
     it(`should not attempt to locally resolve ${url}`, async () => {
       const input = `<div></div><script src="${url}"></script>`;
 
@@ -65,5 +63,16 @@ describe('external files', () => {
       expect(preprocessed.toString()).toContain(input);
       expect(preprocessed.dependencies).toHaveLength(0);
     });
+  });
+
+  it("should throw if local file don't exist", async () => {
+    const spy = jest.spyOn(console, 'warn');
+    const input = `<style src="./missing-potato"></style>`;
+
+    await preprocess(input, getAutoPreprocess());
+
+    expect(spy).toHaveBeenCalledWith(expect.stringContaining('was not found'));
+
+    spy.mockRestore();
   });
 });

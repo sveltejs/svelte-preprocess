@@ -42,6 +42,8 @@ export const parseFile = async (
       if (await doesFileExist(path)) {
         content = await getSrcContent(path);
         dependencies.push(path);
+      } else {
+        console.warn(`[svelte-preprocess] The file  "${path}" was not found.`);
       }
     }
   }

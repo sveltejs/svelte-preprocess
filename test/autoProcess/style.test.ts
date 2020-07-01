@@ -55,7 +55,7 @@ STYLE_LANGS.forEach(([lang, ext]) => {
     });
 
     it(`should return empty if content is empty`, async () => {
-      const templateExternal = `<div></div><style src="./potato/style.${ext}"></style>`;
+      const templateExternal = `<div></div><style lang="${lang}"></style>`;
       const opts = getAutoPreprocess({
         [lang]: {
           sourceMap: false,
