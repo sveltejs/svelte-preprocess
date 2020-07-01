@@ -114,6 +114,7 @@ function createImportTransformerFromProgram(program: ts.Program) {
                 continue;
               }
             }
+
             newElements.push(spec);
           }
 
