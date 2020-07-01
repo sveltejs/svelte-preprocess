@@ -165,7 +165,7 @@ describe('options', () => {
     );
   });
 
-  it.only('should respect lang/type attributes even if another default language is set', async () => {
+  it('should respect lang/type attributes even if another default language is set', async () => {
     const input = `<script lang="tomatoScript">script</script>`;
 
     const opts = getAutoPreprocess({
