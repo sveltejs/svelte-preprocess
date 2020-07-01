@@ -12,13 +12,20 @@ import {
 import { hasDepInstalled } from './modules/hasDepInstalled';
 import { concat } from './modules/concat';
 import { parseFile } from './modules/parseFile';
-import { addLanguageAlias } from './modules/language';
+import { addLanguageAlias, getLanguageFromAlias } from './modules/language';
 import { throwError } from './modules/errors';
 
 type AutoPreprocessOptions = {
   markupTagName?: string;
   aliases?: Array<[string, string]>;
   preserve?: string[];
+  defaults?: {
+    markup?: string;
+    style?: string;
+    script?: string;
+  };
+
+  // transformers
   typescript?: TransformerOptions<Options.Typescript>;
   scss?: TransformerOptions<Options.Sass>;
   sass?: TransformerOptions<Options.Sass>;
@@ -27,7 +34,7 @@ type AutoPreprocessOptions = {
   postcss?: TransformerOptions<Options.Postcss>;
   coffeescript?: TransformerOptions<Options.Coffeescript>;
   pug?: TransformerOptions<Options.Pug>;
-  globalStyle?: Options.GlobalStyle;
+  globalStyle?: Options.GlobalStyle | boolean;
   replace?: Options.Replace;
   // workaround while we don't have this
   // https://github.com/microsoft/TypeScript/issues/17867
@@ -50,6 +57,10 @@ export const runTransformer = async (
   options: TransformerOptions,
   { content, map, filename, attributes }: TransformerArgs<any>,
 ): Promise<Processed> => {
+  if (options === false) {
+    return { code: content };
+  }
+
   // remove any unnecessary indentation (useful for coffee, pug and sugarss)
   content = stripIndent(content);
 
@@ -79,10 +90,18 @@ export function autoPreprocess(
     aliases,
     markupTagName = 'template',
     preserve = [],
+    defaults,
     ...rest
   }: AutoPreprocessOptions = {} as AutoPreprocessOptions,
 ): PreprocessorGroup {
   markupTagName = markupTagName.toLocaleLowerCase();
+
+  const defaultLanguages = {
+    markup: 'html',
+    style: 'css',
+    script: 'javascript',
+    ...defaults,
+  };
 
   const transformers = rest as Transformers;
   const markupPattern = new RegExp(
@@ -119,27 +138,29 @@ export function autoPreprocess(
     return (optionsCache[alias] = opts);
   };
 
-  const getTransformerTo = (targetLanguage: string): Preprocessor => async (
-    svelteFile,
-  ) => {
-    const {
+  const getTransformerTo = (
+    type: 'markup' | 'script' | 'style',
+    targetLanguage: string,
+  ): Preprocessor => async (svelteFile) => {
+    let {
       content,
       filename,
       lang,
       alias,
       dependencies,
       attributes,
-    } = await parseFile(svelteFile, targetLanguage);
+    } = await parseFile(svelteFile);
+
+    if (lang == null || alias == null) {
+      alias = defaultLanguages[type];
+      lang = getLanguageFromAlias(alias);
+    }
 
     if (preserve.includes(lang) || preserve.includes(alias)) {
       return;
     }
 
-    if (
-      lang === targetLanguage ||
-      transformers[lang] === false ||
-      transformers[alias] === false
-    ) {
+    if (lang === targetLanguage) {
       return { code: content, dependencies };
     }
 
@@ -155,9 +176,9 @@ export function autoPreprocess(
     };
   };
 
-  const scriptTransformer = getTransformerTo('javascript');
-  const cssTransformer = getTransformerTo('css');
-  const markupTransformer = getTransformerTo('html');
+  const scriptTransformer = getTransformerTo('script', 'javascript');
+  const cssTransformer = getTransformerTo('style', 'css');
+  const markupTransformer = getTransformerTo('markup', 'html');
 
   return {
     async markup({ content, filename }) {

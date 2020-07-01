@@ -15,11 +15,12 @@ export const ALIAS_MAP = new Map([
 export const addLanguageAlias = (entries: Array<[string, string]>) =>
   entries.forEach((entry) => ALIAS_MAP.set(...entry));
 
-export const getLanguage = (
-  attributes: PreprocessorArgs['attributes'],
-  defaultLang: string,
-) => {
-  let lang = defaultLang;
+export const getLanguageFromAlias = (alias: string | null) => {
+  return ALIAS_MAP.get(alias) || alias;
+};
+
+export const getLanguage = (attributes: PreprocessorArgs['attributes']) => {
+  let alias = null;
 
   if (attributes.lang) {
     // istanbul ignore if
@@ -27,14 +28,14 @@ export const getLanguage = (
       throw new Error('lang attribute must be string');
     }
 
-    lang = attributes.lang;
+    alias = attributes.lang;
   } else if (attributes.type) {
     // istanbul ignore if
     if (typeof attributes.type !== 'string') {
       throw new Error('type attribute must be string');
     }
 
-    lang = attributes.type.replace(/^(text|application)\/(.*)$/, '$2');
+    alias = attributes.type.replace(/^(text|application)\/(.*)$/, '$2');
   } else if (attributes.src) {
     // istanbul ignore if
     if (typeof attributes.src !== 'string') {
@@ -43,11 +44,13 @@ export const getLanguage = (
 
     const parts = basename(attributes.src).split('.');
 
-    lang = parts.length > 1 ? parts.pop() : defaultLang;
+    if (parts.length > 1) {
+      alias = parts.pop();
+    }
   }
 
   return {
-    lang: ALIAS_MAP.get(lang) || lang,
-    alias: lang,
+    lang: getLanguageFromAlias(alias),
+    alias,
   };
 };
