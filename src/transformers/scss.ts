@@ -34,14 +34,17 @@ const transformer: Transformer<Options.Sass> = async ({
     implementation = sass = mod.default;
   }
 
-  const { renderSync, ...sassOptions }: Options.Sass = {
+  const { renderSync, prependData, ...restOptions } = {
     sourceMap: true,
     ...options,
     includePaths: getIncludePaths(filename, options.includePaths),
     outFile: `${filename}.css`,
   };
 
-  sassOptions.data = options.data ? options.data + content : content;
+  const sassOptions = {
+    ...restOptions,
+    data: prependData ? prependData + content : content,
+  };
 
   // scss errors if passed an empty string
   if (sassOptions.data.length === 0) {
