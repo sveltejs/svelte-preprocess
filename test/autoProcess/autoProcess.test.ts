@@ -13,7 +13,6 @@ describe('detect - mimetype', () => {
     { type: 'text/some-other', targetLanguage: 'some-other' },
     { lang: 'stylus', targetLanguage: 'stylus' },
     { src: '../foo.js', targetLanguage: 'javascript' },
-    { src: '../foo', targetLanguage: 'javascript' },
     {
       src: '../foo.custom',
       lang: 'customLanguage',
@@ -25,7 +24,7 @@ describe('detect - mimetype', () => {
     it(`should detect '${
       src || type || lang
     }' as '${targetLanguage}'`, async () => {
-      const language = getLanguage({ type, lang, src }, targetLanguage);
+      const language = getLanguage({ type, lang, src });
 
       expect(language).toMatchObject({ lang: targetLanguage });
     });
@@ -136,5 +135,33 @@ describe('options', () => {
     });
 
     expect(await doesCompileThrow(input, opts)).toBe(true);
+  });
+
+  it('should accept other languages as default', async () => {
+    const input = `<template>markup</template><style>style</style><script>script</script>`;
+
+    const opts = getAutoPreprocess({
+      defaults: {
+        markup: 'customMarkup',
+        script: 'customScript',
+        style: 'customStyle',
+      },
+      globalStyle: false,
+      customMarkup({ content }) {
+        return { code: content.replace('markup', 'potato') };
+      },
+      customScript({ content }) {
+        return { code: content.replace('script', 'potato') };
+      },
+      customStyle({ content }) {
+        return { code: content.replace('style', 'potato') };
+      },
+    });
+
+    const preprocessed = await preprocess(input, opts);
+
+    expect(preprocessed.toString()).toContain(
+      'potato<style>potato</style><script>potato</script>',
+    );
   });
 });
