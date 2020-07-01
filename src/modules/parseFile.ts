@@ -21,10 +21,11 @@ async function doesFileExist(file: string) {
   return new Promise((resolve) => access(file, 0, (err) => resolve(!err)));
 }
 
-export const parseFile = async (
-  { attributes, filename, content }: PreprocessorArgs,
-  language: string,
-) => {
+export const parseFile = async ({
+  attributes,
+  filename,
+  content,
+}: PreprocessorArgs) => {
   const dependencies = [];
 
   /** only include src file if content of tag is empty */
@@ -48,7 +49,7 @@ export const parseFile = async (
     }
   }
 
-  const { lang, alias } = getLanguage(attributes, language);
+  const { lang, alias } = getLanguage(attributes);
 
   return {
     filename,

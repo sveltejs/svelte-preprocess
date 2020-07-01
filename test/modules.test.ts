@@ -75,24 +75,18 @@ describe('globalifySelector', () => {
 
 describe(`parse svelte file`, () => {
   it('should only include src files if content is empty', async () => {
-    let parsedFile = await parseFile(
-      {
-        content: '',
-        attributes: { src: './fixtures/style.scss' },
-        filename: getTestAppFilename(),
-      },
-      'css',
-    );
+    let parsedFile = await parseFile({
+      content: '',
+      attributes: { src: './fixtures/style.scss' },
+      filename: getTestAppFilename(),
+    });
 
     expect(parsedFile.content).toEqual(getFixtureContent('style.scss'));
 
-    parsedFile = await parseFile(
-      {
-        ...parsedFile,
-        attributes: { src: './fixtures/style.css' },
-      },
-      'css',
-    );
+    parsedFile = await parseFile({
+      ...parsedFile,
+      attributes: { src: './fixtures/style.css' },
+    });
 
     expect(parsedFile.content).toEqual(getFixtureContent('style.scss'));
   });
