@@ -65,7 +65,7 @@ describe('external files', () => {
     });
   });
 
-  it("should throw if local file don't exist", async () => {
+  it("should warn if local file don't exist", async () => {
     const spy = jest.spyOn(console, 'warn');
     const input = `<style src="./missing-potato"></style>`;
 
