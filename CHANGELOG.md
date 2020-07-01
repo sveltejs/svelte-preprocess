@@ -7,15 +7,6 @@
 
 
 
-## [3.9.11](https://github.com/kaisermann/svelte-preprocess/compare/v3.9.10...v3.9.11) (2020-07-01)
-
-
-### Bug Fixes
-
-* 🐛 log a warning if local external file is not found ([774aece](https://github.com/kaisermann/svelte-preprocess/commit/774aece08a5279a51707d3f428836169fc7735de)), closes [#174](https://github.com/kaisermann/svelte-preprocess/issues/174)
-
-
-
 ## [3.9.10](https://github.com/kaisermann/svelte-preprocess/compare/v3.9.9...v3.9.10) (2020-06-22)
 
 
