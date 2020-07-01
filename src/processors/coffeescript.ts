@@ -12,7 +12,7 @@ export default (options?: Options.Coffeescript): PreprocessorGroup => ({
       attributes,
       lang,
       dependencies,
-    } = await parseFile(svelteFile, 'javascript');
+    } = await parseFile(svelteFile);
 
     if (lang !== 'coffeescript') {
       return { code: content };

@@ -11,7 +11,7 @@ export default (options?: Options.Stylus): PreprocessorGroup => ({
       attributes,
       lang,
       dependencies,
-    } = await parseFile(svelteFile, 'css');
+    } = await parseFile(svelteFile);
 
     if (lang !== 'stylus') {
       return { code: content };
