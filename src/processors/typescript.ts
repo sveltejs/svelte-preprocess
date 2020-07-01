@@ -11,7 +11,7 @@ export default (options?: Options.Typescript): PreprocessorGroup => ({
       attributes,
       lang,
       dependencies,
-    } = await parseFile(svelteFile, 'javascript');
+    } = await parseFile(svelteFile);
 
     if (lang !== 'typescript') {
       return { code: content };

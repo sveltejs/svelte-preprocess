@@ -14,7 +14,7 @@ export default (options?: Options.Sass): PreprocessorGroup => ({
       lang,
       alias,
       dependencies,
-    } = await parseFile(svelteFile, 'css');
+    } = await parseFile(svelteFile);
 
     if (lang !== 'scss') {
       return { code: content };

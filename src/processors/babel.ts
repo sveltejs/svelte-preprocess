@@ -8,7 +8,6 @@ export default (options?: Options.Babel): PreprocessorGroup => ({
 
     const { content, filename, dependencies, attributes } = await parseFile(
       svelteFile,
-      'javascript',
     );
 
     const transformed = await transformer({
