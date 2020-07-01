@@ -164,4 +164,26 @@ describe('options', () => {
       'potato<style>potato</style><script>potato</script>',
     );
   });
+
+  it.only('should respect lang/type attributes even if another default language is set', async () => {
+    const input = `<script lang="tomatoScript">script</script>`;
+
+    const opts = getAutoPreprocess({
+      defaults: {
+        script: 'potatoScript',
+      },
+      potatoScript({ content }) {
+        return { code: content.replace('script', 'potato') };
+      },
+      tomatoScript({ content }) {
+        return { code: content.replace('script', 'tomato') };
+      },
+    });
+
+    const preprocessed = await preprocess(input, opts);
+
+    expect(preprocessed.toString()).toContain(
+      '<script lang="tomatoScript">tomato</script>',
+    );
+  });
 });
