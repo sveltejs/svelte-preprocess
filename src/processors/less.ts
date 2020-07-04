@@ -1,17 +1,20 @@
 import { PreprocessorGroup, Options } from '../types';
-import { parseFile } from '../modules/parseFile';
+import { getTagInfo } from '../modules/tagInfo';
 import { concat } from '../modules/concat';
+import { prepareContent } from '../modules/prepareContent';
 
 export default (options?: Options.Less): PreprocessorGroup => ({
   async style(svelteFile) {
     const { transformer } = await import('../transformers/less');
-    const {
+    let {
       content,
       filename,
       attributes,
       lang,
       dependencies,
-    } = await parseFile(svelteFile);
+    } = await getTagInfo(svelteFile);
+
+    content = prepareContent({ options, content });
 
     if (lang !== 'less') {
       return { code: content };

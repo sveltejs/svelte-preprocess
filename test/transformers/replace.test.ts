@@ -56,7 +56,7 @@ describe('transformer - regex', () => {
 
     expect(preprocessed.toString()).toMatchInlineSnapshot(`
       "<script>
-        let foo = 1
+      let foo = 1
       </script>
 
       {@debug foo}
@@ -83,7 +83,7 @@ describe('transformer - regex', () => {
       {:catch }
           catch
       @endawait<script>
-        let foo = 1
+      let foo = 1
       </script>
 
       {@debug foo}
@@ -130,9 +130,9 @@ describe('transformer - regex', () => {
     const preprocessed = await preprocess(template, opts);
 
     expect(preprocessed.toString()).toMatchInlineSnapshot(`
-"<script>
+      "<script>
       let isDEV = \\"test\\" === 'development';
-    </script>"
-`);
+          </script>"
+    `);
   });
 });

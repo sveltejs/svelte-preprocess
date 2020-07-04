@@ -26,13 +26,13 @@
   - [Standalone processors](#standalone-processors)
 - [Options](#options)
 - [Specifics and limitations](#specifics-and-limitations)
+  - [General](#general)
   - [`scss`/`sass`](#scsssass)
   - [`typescript`](#typescript)
   - [`pug`](#pug)
   - [`coffeescript`](#coffeescript)
 - [FAQ](#faq)
   - [My VS Code is displaying a lot of errors on my templates when I try to use `x`...](#my-vs-code-is-displaying-a-lot-of-errors-on-my-templates-when-i-try-to-use-x)
-  - [My `typescript` compilation is sloooooooow](#my-typescript-compilation-is-sloooooooow)
 
 <!-- /code_chunk_output -->
 
@@ -544,11 +544,33 @@ svelte.preprocess(input, sveltePreprocess(options));
 
 ## Specifics and limitations
 
+### General
+
+#### Prepending data
+
+For almost language, `svelte-preprocess` accepts a `prependData` property that allows to prepend any string content to your component's `style` or `script` sections.
+
+```js
+import preprocess from 'svelte-preprocess'
+
+expor default {
+  ...,
+  preprocess: preprocess({
+    scss: {
+      prependData: `@use theme`
+    },
+    javascript: {
+      prependData: `import { _ } from 'svelte-i18n'`
+    }
+  }),
+  ...
+}
+```
+
 ### `scss`/`sass`
 
 The SCSS/SASS processor accepts the default sass options alongside two other props:
 
-- `data: string` - a string prepended to every scss file processed.
 - `renderSync: boolean` - if `true`, use the sync render method which is faster for dart sass.
 - `implementation: object` - pass the module to use to compile sass, if unspecified, `svelte-preprocess` will first look for `node-sass` and then for `sass`.
 

@@ -1,14 +1,17 @@
 import { PreprocessorGroup, Options } from '../types';
 import { concat } from '../modules/concat';
-import { parseFile } from '../modules/parseFile';
+import { getTagInfo } from '../modules/tagInfo';
+import { prepareContent } from '../modules/prepareContent';
 
 export default (options?: Options.Babel): PreprocessorGroup => ({
   async script(svelteFile) {
     const { transformer } = await import('../transformers/babel');
 
-    const { content, filename, dependencies, attributes } = await parseFile(
+    let { content, filename, dependencies, attributes } = await getTagInfo(
       svelteFile,
     );
+
+    content = prepareContent({ options, content });
 
     const transformed = await transformer({
       content,

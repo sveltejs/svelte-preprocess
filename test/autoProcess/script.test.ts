@@ -1,5 +1,5 @@
 import getAutoPreprocess from '../../src';
-import { preprocess, getFixtureContent, doesCompileThrow } from '../utils';
+import { preprocess, getFixtureContent } from '../utils';
 
 const SCRIPT_LANGS: Array<[string, string, object?]> = [
   ['coffeescript', 'coffee'],
