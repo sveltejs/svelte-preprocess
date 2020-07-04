@@ -5,6 +5,7 @@ import { getTagInfo } from '../src/modules/tagInfo';
 import { importAny } from '../src/modules/importAny';
 import { getIncludePaths } from '../src/modules/getIncludePaths';
 import { globalifySelector } from '../src/modules/globalifySelector';
+import { hasDepInstalled } from '../src/modules/hasDepInstalled';
 
 describe('importAny', () => {
   it('should throw error when none exist', () => {
@@ -97,5 +98,15 @@ describe(`get tag information`, () => {
     });
 
     expect(parsedFile.content).toEqual(getFixtureContent('style.scss'));
+  });
+});
+
+describe('has dependency installed', () => {
+  it('should return true if dependency is installed', async () => {
+    expect(await hasDepInstalled('svelte')).toBe(true);
+  });
+
+  it('should return false if dependency is installed', async () => {
+    expect(await hasDepInstalled('potatonator')).toBe(false);
   });
 });

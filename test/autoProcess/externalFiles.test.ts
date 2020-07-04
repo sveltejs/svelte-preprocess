@@ -2,7 +2,14 @@ import { resolve } from 'path';
 
 import getAutoPreprocess from '../../src';
 import { Processed } from '../../src/types';
-import { preprocess, getFixtureContent, getFixturePath } from '../utils';
+import {
+  preprocess,
+  getFixtureContent,
+  getFixturePath,
+  spyConsole,
+} from '../utils';
+
+const { warnSpy } = spyConsole();
 
 const {
   markup: markupProcessor,
@@ -66,13 +73,12 @@ describe('external files', () => {
   });
 
   it("should warn if local file don't exist", async () => {
-    const spy = jest.spyOn(console, 'warn');
     const input = `<style src="./missing-potato"></style>`;
 
     await preprocess(input, getAutoPreprocess());
 
-    expect(spy).toHaveBeenCalledWith(expect.stringContaining('was not found'));
-
-    spy.mockRestore();
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('was not found'),
+    );
   });
 });

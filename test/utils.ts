@@ -39,3 +39,29 @@ export const getFixturePath = (file: string) =>
 
 export const getFixtureContent = (file: string) =>
   readFileSync(exports.getFixturePath(file)).toString().trim();
+
+export function spyConsole({ silent = true } = {}) {
+  const warnSpy = jest.spyOn(global.console, 'warn');
+  const errorSpy = jest.spyOn(global.console, 'error');
+  const logSpy = jest.spyOn(global.console, 'log');
+
+  if (silent) {
+    warnSpy.mockImplementation(() => {});
+    errorSpy.mockImplementation(() => {});
+    logSpy.mockImplementation(() => {});
+  }
+
+  afterAll(() => {
+    warnSpy.mockRestore();
+    errorSpy.mockRestore();
+    logSpy.mockRestore();
+  });
+
+  afterEach(() => {
+    warnSpy.mockClear();
+    errorSpy.mockClear();
+    logSpy.mockClear();
+  });
+
+  return { warnSpy, errorSpy, logSpy };
+}
