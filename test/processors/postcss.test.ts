@@ -1,5 +1,7 @@
 import { postcss } from '../../src';
-import { CSS_PATTERN, preprocess } from '../utils';
+import { CSS_PATTERN, preprocess, spyConsole } from '../utils';
+
+spyConsole();
 
 describe(`processor - postcss`, () => {
   it('should support external src files', async () => {
