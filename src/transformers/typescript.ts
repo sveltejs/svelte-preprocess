@@ -53,10 +53,6 @@ const importTransformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
   return (node) => ts.visitNode(node, visit);
 };
 
-const TS_TRANSFORMERS = {
-  before: [importTransformer],
-};
-
 const transformer: Transformer<Options.Typescript> = ({
   content,
   filename,
@@ -127,7 +123,9 @@ const transformer: Transformer<Options.Typescript> = ({
     fileName: filename,
     compilerOptions,
     reportDiagnostics: options.reportDiagnostics !== false,
-    transformers: TS_TRANSFORMERS,
+    transformers: {
+      before: [importTransformer],
+    },
   });
 
   if (diagnostics.length > 0) {

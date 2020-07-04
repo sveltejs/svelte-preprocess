@@ -9,10 +9,8 @@ type ContentModifier = {
 
 export type Coffeescript = {
   sourceMap?: boolean;
-  filename?: string;
+  filename?: never;
   bare?: never;
-  header?: boolean;
-  transpile?: any;
 } & ContentModifier;
 
 export type Postcss = postcss.ProcessOptions & {
