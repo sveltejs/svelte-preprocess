@@ -1,8 +1,7 @@
-import stripIndent from 'strip-indent';
-
 import { PreprocessorGroup, Options } from '../types';
-import { parseFile } from '../modules/parseFile';
+import { getTagInfo } from '../modules/tagInfo';
 import { concat } from '../modules/concat';
+import { prepareContent } from '../modules/prepareContent';
 
 export default (options?: Options.Sass): PreprocessorGroup => ({
   async style(svelteFile) {
@@ -14,7 +13,9 @@ export default (options?: Options.Sass): PreprocessorGroup => ({
       lang,
       alias,
       dependencies,
-    } = await parseFile(svelteFile);
+    } = await getTagInfo(svelteFile);
+
+    content = prepareContent({ options, content });
 
     if (lang !== 'scss') {
       return { code: content };
@@ -25,8 +26,6 @@ export default (options?: Options.Sass): PreprocessorGroup => ({
         ...options,
         indentedSyntax: true,
       };
-
-      content = stripIndent(content);
     }
 
     const transformed = await transformer({

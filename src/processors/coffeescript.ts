@@ -1,18 +1,21 @@
 import { PreprocessorGroup, Options } from '../types';
-import { parseFile } from '../modules/parseFile';
+import { getTagInfo } from '../modules/tagInfo';
 import { concat } from '../modules/concat';
+import { prepareContent } from '../modules/prepareContent';
 
 export default (options?: Options.Coffeescript): PreprocessorGroup => ({
   async script(svelteFile) {
     const { transformer } = await import('../transformers/coffeescript');
 
-    const {
+    let {
       content,
       filename,
       attributes,
       lang,
       dependencies,
-    } = await parseFile(svelteFile);
+    } = await getTagInfo(svelteFile);
+
+    content = prepareContent({ options, content });
 
     if (lang !== 'coffeescript') {
       return { code: content };

@@ -32,7 +32,7 @@ const transformer: Transformer<Options.Postcss> = async ({
   content,
   filename,
   options,
-  map = undefined,
+  map,
 }) => {
   if (options && Array.isArray(options.plugins)) {
     return process(options, content, filename, map);
