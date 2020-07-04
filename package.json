@@ -42,7 +42,8 @@
   "jest": {
     "collectCoverage": true,
     "collectCoverageFrom": [
-      "<rootDir>/src/**/*.ts"
+      "<rootDir>/src/**/*.ts",
+      "!<rootDir>/src/types/**/*.ts"
     ],
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
