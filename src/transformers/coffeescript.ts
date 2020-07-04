@@ -7,14 +7,24 @@ const transformer: Transformer<Options.Coffeescript> = ({
   filename,
   options,
 }) => {
-  const { js: code, sourceMap: map } = coffeescript.compile(content, {
+  const coffeeOptions = {
     filename,
-    sourceMap: true,
     bare: false,
     ...options,
-  });
+  };
 
-  return { code, map };
+  if (coffeeOptions.sourceMap) {
+    const { js: code, sourceMap: map } = coffeescript.compile(
+      content,
+      coffeeOptions,
+    );
+
+    return { code, map };
+  }
+
+  const code = coffeescript.compile(content, coffeeOptions);
+
+  return { code };
 };
 
 export { transformer };

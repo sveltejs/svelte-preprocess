@@ -1,4 +1,4 @@
-import getAutoPreprocess from '../../src';
+import autoPreprocess from '../../src';
 import { preprocess } from '../utils';
 
 const BABEL_CONFIG = {
@@ -17,26 +17,13 @@ const BABEL_CONFIG = {
 };
 
 describe('transformer - babel', () => {
-  it("doesn't do anything without options", async () => {
-    const template = `<script>
-let foo = {}
-$: bar = foo?.b ?? 120
-</script>`;
-
-    const opts = getAutoPreprocess({ babel: true });
-
-    const preprocessed = await preprocess(template, opts);
-
-    expect(preprocessed.code).toMatch(template);
-  });
-
   it('transpiles with babel', async () => {
     const template = `<script>
 let foo = {}
 $: bar = foo?.b ?? 120
 </script>`;
 
-    const opts = getAutoPreprocess({
+    const opts = autoPreprocess({
       babel: BABEL_CONFIG,
     });
 
