@@ -13,7 +13,7 @@ export function prepareContent({
 
   content = stripIndent(content);
 
-  if (options?.prependData) {
+  if (options.prependData) {
     content = `${options.prependData}\n${content}`;
   }
 

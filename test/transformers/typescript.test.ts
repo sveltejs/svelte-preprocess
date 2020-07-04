@@ -4,7 +4,9 @@ import { Diagnostic } from 'typescript';
 
 import getAutoPreprocess from '../../src';
 import { Processed } from '../../src/types';
-import { preprocess, getFixtureContent } from '../utils';
+import { preprocess, getFixtureContent, spyConsole } from '../utils';
+
+spyConsole();
 
 const EXPECTED_SCRIPT = getFixtureContent('script.js');
 

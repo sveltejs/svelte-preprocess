@@ -8,7 +8,7 @@ const transformer: Transformer<Options.Babel> = async ({
   options,
   map = undefined,
 }) => {
-  if (!options) {
+  if (!options || typeof options !== 'object') {
     return { code: content, map };
   }
 

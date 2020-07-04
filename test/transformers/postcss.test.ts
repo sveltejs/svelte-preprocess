@@ -4,7 +4,9 @@
 import { resolve } from 'path';
 
 import getAutoPreprocess from '../../src';
-import { preprocess } from '../utils';
+import { preprocess, spyConsole } from '../utils';
+
+spyConsole();
 
 describe('transformer - postcss', () => {
   it('should not transform plain css with postcss if { postcss: falsy }', async () => {
