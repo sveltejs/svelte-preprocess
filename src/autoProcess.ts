@@ -10,9 +10,20 @@ import {
 import { hasDepInstalled } from './modules/hasDepInstalled';
 import { concat } from './modules/concat';
 import { getTagInfo } from './modules/tagInfo';
-import { addLanguageAlias, getLanguageFromAlias } from './modules/language';
-import { throwError } from './modules/errors';
+import {
+  addLanguageAlias,
+  getLanguageFromAlias,
+  SOURCE_MAP_PROP_MAP,
+} from './modules/language';
 import { prepareContent } from './modules/prepareContent';
+
+type AutoPreprocessGroup = PreprocessorGroup & {
+  defaultLanguages: Readonly<{
+    markup: string;
+    style: string;
+    script: string;
+  }>;
+};
 
 type AutoPreprocessOptions = {
   markupTagName?: string;
@@ -23,6 +34,7 @@ type AutoPreprocessOptions = {
     style?: string;
     script?: string;
   };
+  sourceMap?: boolean;
 
   // transformers
   typescript?: TransformerOptions<Options.Typescript>;
@@ -64,21 +76,15 @@ export const runTransformer = async (
     return options({ content, map, filename, attributes });
   }
 
-  try {
-    const { transformer } = await import(`./transformers/${name}`);
+  const { transformer } = await import(`./transformers/${name}`);
 
-    return transformer({
-      content,
-      filename,
-      map,
-      attributes,
-      options: typeof options === 'boolean' ? null : options,
-    });
-  } catch (e) {
-    throwError(
-      `Error transforming '${name}'.\n\nMessage:\n${e.message}\n\nStack:\n${e.stack}`,
-    );
-  }
+  return transformer({
+    content,
+    filename,
+    map,
+    attributes,
+    options: typeof options === 'boolean' ? null : options,
+  });
 };
 
 export function autoPreprocess(
@@ -87,17 +93,18 @@ export function autoPreprocess(
     markupTagName = 'template',
     preserve = [],
     defaults,
+    sourceMap = false,
     ...rest
-  }: AutoPreprocessOptions = {} as AutoPreprocessOptions,
-): PreprocessorGroup {
+  } = {} as AutoPreprocessOptions,
+): AutoPreprocessGroup {
   markupTagName = markupTagName.toLocaleLowerCase();
 
-  const defaultLanguages = {
+  const defaultLanguages = Object.freeze({
     markup: 'html',
     style: 'css',
     script: 'javascript',
     ...defaults,
-  };
+  });
 
   const transformers = rest as Transformers;
   const markupPattern = new RegExp(
@@ -108,30 +115,37 @@ export function autoPreprocess(
     addLanguageAlias(aliases);
   }
 
-  const optionsCache: Record<string, any> = {};
   const getTransformerOptions = (
-    lang: string,
-    alias: string,
+    name: string,
+    alias?: string,
   ): TransformerOptions<unknown> => {
-    if (typeof transformers[alias] === 'function') return transformers[alias];
-    if (typeof transformers[lang] === 'function') return transformers[lang];
-    if (optionsCache[alias] != null) return optionsCache[alias];
+    const { [name]: nameOpts, [alias]: aliasOpts } = transformers;
+
+    if (typeof aliasOpts === 'function') return aliasOpts;
+    if (typeof nameOpts === 'function') return nameOpts;
+    if (aliasOpts === false || nameOpts === false) return false;
 
     const opts: TransformerOptions<unknown> = {};
 
-    if (typeof transformers[lang] === 'object') {
-      Object.assign(opts, transformers[lang]);
+    if (typeof nameOpts === 'object') {
+      Object.assign(opts, nameOpts);
     }
 
-    if (lang !== alias) {
+    if (name !== alias) {
       Object.assign(opts, ALIAS_OPTION_OVERRIDES[alias] || null);
 
-      if (typeof transformers[alias] === 'object') {
-        Object.assign(opts, transformers[alias]);
+      if (typeof aliasOpts === 'object') {
+        Object.assign(opts, aliasOpts);
       }
     }
 
-    return (optionsCache[alias] = opts);
+    if (sourceMap && name in SOURCE_MAP_PROP_MAP) {
+      const [propName, value] = SOURCE_MAP_PROP_MAP[name];
+
+      opts[propName] = value;
+    }
+
+    return opts;
   };
 
   const getTransformerTo = (
@@ -183,112 +197,131 @@ export function autoPreprocess(
   const cssTransformer = getTransformerTo('style', 'css');
   const markupTransformer = getTransformerTo('markup', 'html');
 
-  return {
-    async markup({ content, filename }) {
-      if (transformers.replace) {
-        const transformed = await runTransformer(
-          'replace',
-          transformers.replace,
-          { content, filename },
-        );
+  const markup: PreprocessorGroup['markup'] = async ({ content, filename }) => {
+    if (transformers.replace) {
+      const transformed = await runTransformer(
+        'replace',
+        transformers.replace,
+        { content, filename },
+      );
 
-        content = transformed.code;
-      }
+      content = transformed.code;
+    }
 
-      const templateMatch = content.match(markupPattern);
+    const templateMatch = content.match(markupPattern);
 
-      /** If no <template> was found, just return the original markup */
-      if (!templateMatch) {
-        return { code: content };
-      }
+    /** If no <template> was found, just return the original markup */
+    if (!templateMatch) {
+      return { code: content };
+    }
 
-      const [fullMatch, attributesStr, templateCode] = templateMatch;
+    const [fullMatch, attributesStr, templateCode] = templateMatch;
 
-      /** Transform an attribute string into a key-value object */
-      const attributes = attributesStr
-        .split(/\s+/)
-        .filter(Boolean)
-        .reduce((acc: Record<string, string | boolean>, attr) => {
-          const [name, value] = attr.split('=');
+    /** Transform an attribute string into a key-value object */
+    const attributes = attributesStr
+      .split(/\s+/)
+      .filter(Boolean)
+      .reduce((acc: Record<string, string | boolean>, attr) => {
+        const [name, value] = attr.split('=');
 
-          // istanbul ignore next
-          acc[name] = value ? value.replace(/['"]/g, '') : true;
+        // istanbul ignore next
+        acc[name] = value ? value.replace(/['"]/g, '') : true;
 
-          return acc;
-        }, {});
+        return acc;
+      }, {});
 
-      /** Transform the found template code */
-      let { code, map, dependencies } = await markupTransformer({
-        content: templateCode,
-        attributes,
-        filename,
-      });
+    /** Transform the found template code */
+    let { code, map, dependencies } = await markupTransformer({
+      content: templateCode,
+      attributes,
+      filename,
+    });
 
-      code =
-        content.slice(0, templateMatch.index) +
-        code +
-        content.slice(templateMatch.index + fullMatch.length);
+    code =
+      content.slice(0, templateMatch.index) +
+      code +
+      content.slice(templateMatch.index + fullMatch.length);
 
-      return { code, map, dependencies };
-    },
-    async script({ content, attributes, filename }) {
-      const transformResult: Processed = await scriptTransformer({
-        content,
-        attributes,
-        filename,
-      });
+    return { code, map, dependencies };
+  };
 
-      let { code, map, dependencies, diagnostics } = transformResult;
+  const script: PreprocessorGroup['script'] = async ({
+    content,
+    attributes,
+    filename,
+  }) => {
+    const transformResult: Processed = await scriptTransformer({
+      content,
+      attributes,
+      filename,
+    });
 
-      if (transformers.babel) {
-        const transformed = await runTransformer('babel', transformers.babel, {
+    let { code, map, dependencies, diagnostics } = transformResult;
+
+    if (transformers.babel) {
+      const transformed = await runTransformer(
+        'babel',
+        getTransformerOptions('babel'),
+        {
           content: code,
           map,
           filename,
           attributes,
-        });
+        },
+      );
 
-        code = transformed.code;
-        map = transformed.map;
-        dependencies = concat(dependencies, transformed.dependencies);
-        diagnostics = concat(diagnostics, transformed.diagnostics);
-      }
+      code = transformed.code;
+      map = transformed.map;
+      dependencies = concat(dependencies, transformed.dependencies);
+      diagnostics = concat(diagnostics, transformed.diagnostics);
+    }
 
-      return { code, map, dependencies, diagnostics };
-    },
-    async style({ content, attributes, filename }) {
-      const transformResult = await cssTransformer({
-        content,
-        attributes,
-        filename,
-      });
+    return { code, map, dependencies, diagnostics };
+  };
 
-      let { code, map, dependencies } = transformResult;
+  const style: PreprocessorGroup['style'] = async ({
+    content,
+    attributes,
+    filename,
+  }) => {
+    const transformResult = await cssTransformer({
+      content,
+      attributes,
+      filename,
+    });
 
-      if (await hasDepInstalled('postcss')) {
-        if (transformers.postcss) {
-          const transformed = await runTransformer(
-            'postcss',
-            transformers.postcss,
-            { content: code, map, filename, attributes },
-          );
+    let { code, map, dependencies } = transformResult;
 
-          code = transformed.code;
-          map = transformed.map;
-          dependencies = concat(dependencies, transformed.dependencies);
-        }
-
+    if (await hasDepInstalled('postcss')) {
+      if (transformers.postcss) {
         const transformed = await runTransformer(
-          'globalStyle',
-          transformers?.globalStyle,
+          'postcss',
+          getTransformerOptions('postcss'),
           { content: code, map, filename, attributes },
         );
 
         code = transformed.code;
         map = transformed.map;
+        dependencies = concat(dependencies, transformed.dependencies);
       }
 
-      return { code, map, dependencies };
-    },
+      const transformed = await runTransformer(
+        'globalStyle',
+        getTransformerOptions('globalStyle'),
+        { content: code, map, filename, attributes },
+      );
+
+      code = transformed.code;
+      map = transformed.map;
+    }
+
+    return { code, map, dependencies };
+  };
+
+  return {
+    defaultLanguages,
+    markup,
+    script,
+    style,
   };
 }

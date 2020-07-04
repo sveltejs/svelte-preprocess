@@ -2,7 +2,7 @@ import { resolve } from 'path';
 
 import { Diagnostic } from 'typescript';
 
-import getAutoPreprocess from '../../src';
+import autoPreprocess from '../../src';
 import { Processed } from '../../src/types';
 import { preprocess, getFixtureContent, spyConsole } from '../utils';
 
@@ -11,7 +11,7 @@ spyConsole();
 const EXPECTED_SCRIPT = getFixtureContent('script.js');
 
 const autoProcessTS = (content: string, compilerOptions?: any) => {
-  const opts = getAutoPreprocess({
+  const opts = autoPreprocess({
     typescript: {
       tsconfigFile: false,
       compilerOptions: {
@@ -48,14 +48,14 @@ describe('transformer - typescript', () => {
 
   describe('configuration file', () => {
     it('should work with no compilerOptions', async () => {
-      const opts = getAutoPreprocess({ typescript: { tsconfigFile: false } });
+      const opts = autoPreprocess({ typescript: { tsconfigFile: false } });
       const preprocessed = await preprocess(template, opts);
 
       expect(preprocessed.toString()).toContain('export var hello');
     });
 
     it('should work with tsconfigDirectory', async () => {
-      const opts = getAutoPreprocess({
+      const opts = autoPreprocess({
         typescript: {
           tsconfigFile: false,
           tsconfigDirectory: './test/fixtures',
@@ -68,7 +68,7 @@ describe('transformer - typescript', () => {
     });
 
     it('should work with tsconfigFile', async () => {
-      const opts = getAutoPreprocess({
+      const opts = autoPreprocess({
         typescript: {
           tsconfigFile: './test/fixtures/tsconfig.json',
         },
@@ -80,7 +80,7 @@ describe('transformer - typescript', () => {
     });
 
     it('should report config syntactic errors in tsconfig file', () => {
-      const opts = getAutoPreprocess({
+      const opts = autoPreprocess({
         typescript: {
           tsconfigFile: './test/fixtures/tsconfig.syntactic.json',
         },
@@ -90,7 +90,7 @@ describe('transformer - typescript', () => {
     });
 
     it('should report config semantic errors in tsconfig file', () => {
-      const opts = getAutoPreprocess({
+      const opts = autoPreprocess({
         typescript: {
           tsconfigFile: './test/fixtures/tsconfig.semantic.json',
         },
@@ -100,7 +100,7 @@ describe('transformer - typescript', () => {
     });
 
     it('should transpile ts to js', async () => {
-      const opts = getAutoPreprocess({
+      const opts = autoPreprocess({
         typescript: {
           compilerOptions: {
             module: 'es6',

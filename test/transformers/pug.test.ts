@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 
-import getAutoPreprocess from '../../src';
+import autoPreprocess from '../../src';
 import { preprocess } from '../utils';
 
 describe('transformer - pug', () => {
@@ -10,7 +10,7 @@ main
   header
     h1</template>`;
 
-    const opts = getAutoPreprocess();
+    const opts = autoPreprocess();
     const preprocessed = await preprocess(template, opts);
 
     expect(preprocessed.code).toBe('<main><header><h1></h1></header></main>');
@@ -22,7 +22,7 @@ main
 \theader
 \t\th1</template>`;
 
-    const opts = getAutoPreprocess();
+    const opts = autoPreprocess();
     const preprocessed = await preprocess(template, opts);
 
     expect(preprocessed.code).toBe('<main><header><h1></h1></header></main>');
@@ -30,7 +30,7 @@ main
 
   it('should return included files as dependencies', async () => {
     const template = `<template lang="pug">include ./fixtures/template.pug</template>`;
-    const opts = getAutoPreprocess();
+    const opts = autoPreprocess();
     const preprocessed = await preprocess(template, opts);
 
     expect(preprocessed.dependencies).toContain(

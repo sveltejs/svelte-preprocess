@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 
-import getAutoPreprocess from '../../src';
+import autoPreprocess from '../../src';
 import { Processed } from '../../src/types';
 import {
   preprocess,
@@ -15,7 +15,7 @@ const {
   markup: markupProcessor,
   script: scriptProcessor,
   style: styleProcessor,
-} = getAutoPreprocess();
+} = autoPreprocess();
 
 const REMOTE_JS = [
   'https://www.example.com/some/externally/delivered/content.js',
@@ -65,7 +65,7 @@ describe('external files', () => {
     it(`should not attempt to locally resolve ${url}`, async () => {
       const input = `<div></div><script src="${url}"></script>`;
 
-      const preprocessed = await preprocess(input, getAutoPreprocess());
+      const preprocessed = await preprocess(input, autoPreprocess());
 
       expect(preprocessed.toString()).toContain(input);
       expect(preprocessed.dependencies).toHaveLength(0);
@@ -75,7 +75,7 @@ describe('external files', () => {
   it("should warn if local file don't exist", async () => {
     const input = `<style src="./missing-potato"></style>`;
 
-    await preprocess(input, getAutoPreprocess());
+    await preprocess(input, autoPreprocess());
 
     expect(warnSpy).toHaveBeenCalledWith(
       expect.stringContaining('was not found'),

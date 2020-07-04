@@ -8,10 +8,6 @@ const transformer: Transformer<Options.Babel> = async ({
   options,
   map = undefined,
 }) => {
-  if (!options || typeof options !== 'object') {
-    return { code: content, map };
-  }
-
   const { code, map: sourcemap } = await transformAsync(content, {
     ...options,
     inputSourceMap: map as any,
