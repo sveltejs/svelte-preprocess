@@ -78,115 +78,113 @@ describe('transformer - globalStyle', () => {
   });
 
   describe('global selector', () => {
-    describe('transformer - globalRule', () => {
-      it('adds sourceMap with { sourceMap: true }', async () => {
-        const template = `<style>:global div{color:red}:global .test{}</style>`;
-        const opts = autoProcess({
-          globalStyle: {
-            sourceMap: true,
-          },
-        });
-
-        const preprocessed = await preprocess(template, opts);
-
-        expect(preprocessed.toString()).toContain(`sourceMappingURL`);
+    it('adds sourceMap with { sourceMap: true }', async () => {
+      const template = `<style>:global div{color:red}:global .test{}</style>`;
+      const opts = autoProcess({
+        globalStyle: {
+          sourceMap: true,
+        },
       });
 
-      it('wraps selector in :global(...) modifier', async () => {
-        const template = `<style>:global div{color:red}:global .test{}</style>`;
-        const opts = autoProcess();
-        const preprocessed = await preprocess(template, opts);
+      const preprocessed = await preprocess(template, opts);
 
-        expect(preprocessed.toString()).toContain(
-          `:global(div){color:red}:global(.test){}`,
-        );
-      });
+      expect(preprocessed.toString()).toContain(`sourceMappingURL`);
+    });
 
-      it('wraps selector in :global(...) only if needed', async () => {
-        const template = `<style>:global .test{}:global :global(.foo){}</style>`;
-        const opts = autoProcess();
-        const preprocessed = await preprocess(template, opts);
+    it('wraps selector in :global(...) modifier', async () => {
+      const template = `<style>:global div{color:red}:global .test{}</style>`;
+      const opts = autoProcess();
+      const preprocessed = await preprocess(template, opts);
 
-        expect(preprocessed.toString()).toContain(
-          `:global(.test){}:global(.foo){}`,
-        );
-      });
+      expect(preprocessed.toString()).toContain(
+        `:global(div){color:red}:global(.test){}`,
+      );
+    });
 
-      it('wraps selector in :global(...) on multiple levels', async () => {
-        const template = '<style>:global div .cls{}</style>';
-        const opts = autoProcess();
-        const preprocessed = await preprocess(template, opts);
+    it('wraps selector in :global(...) only if needed', async () => {
+      const template = `<style>:global .test{}:global :global(.foo){}</style>`;
+      const opts = autoProcess();
+      const preprocessed = await preprocess(template, opts);
 
-        expect(preprocessed.toString()).toMatch(
-          // either be :global(div .cls){}
-          //        or :global(div) :global(.cls){}
-          /(:global\(div .cls\)\{\}|:global\(div\) :global\(\.cls\)\{\})/,
-        );
-      });
+      expect(preprocessed.toString()).toContain(
+        `:global(.test){}:global(.foo){}`,
+      );
+    });
 
-      it('wraps selector in :global(...) on multiple levels when in the middle', async () => {
-        const template = '<style>div div :global span .cls{}</style>';
-        const opts = autoProcess();
-        const preprocessed = await preprocess(template, opts);
+    it('wraps selector in :global(...) on multiple levels', async () => {
+      const template = '<style>:global div .cls{}</style>';
+      const opts = autoProcess();
+      const preprocessed = await preprocess(template, opts);
 
-        expect(preprocessed.toString()).toMatch(
-          // either be div div :global(span .cls) {}
-          //        or div div :global(span) :global(.cls) {}
-          /div div (:global\(span .cls\)\{\}|:global\(span\) :global\(\.cls\)\{\})/,
-        );
-      });
+      expect(preprocessed.toString()).toMatch(
+        // either be :global(div .cls){}
+        //        or :global(div) :global(.cls){}
+        /(:global\(div .cls\)\{\}|:global\(div\) :global\(\.cls\)\{\})/,
+      );
+    });
 
-      it('does not break when at the end', async () => {
-        const template = '<style>span :global{}</style>';
-        const opts = autoProcess();
-        const preprocessed = await preprocess(template, opts);
+    it('wraps selector in :global(...) on multiple levels when in the middle', async () => {
+      const template = '<style>div div :global span .cls{}</style>';
+      const opts = autoProcess();
+      const preprocessed = await preprocess(template, opts);
 
-        expect(preprocessed.toString()).toContain('span{}');
-      });
+      expect(preprocessed.toString()).toMatch(
+        // either be div div :global(span .cls) {}
+        //        or div div :global(span) :global(.cls) {}
+        /div div (:global\(span .cls\)\{\}|:global\(span\) :global\(\.cls\)\{\})/,
+      );
+    });
 
-      it('works with collapsed nesting several times', async () => {
-        const template = '<style>div :global span :global .cls{}</style>';
-        const opts = autoProcess();
-        const preprocessed = await preprocess(template, opts);
+    it('does not break when at the end', async () => {
+      const template = '<style>span :global{}</style>';
+      const opts = autoProcess();
+      const preprocessed = await preprocess(template, opts);
 
-        expect(preprocessed.toString()).toMatch(
-          // either be div :global(span .cls) {}
-          //        or div :global(span) :global(.cls) {}
-          /div (:global\(span .cls\)\{\}|:global\(span\) :global\(\.cls\)\{\})/,
-        );
-      });
+      expect(preprocessed.toString()).toContain('span{}');
+    });
 
-      it('does not interfere with the :global(...) syntax', async () => {
-        const template = '<style>div :global(span){}</style>';
-        const opts = autoProcess();
-        const preprocessed = await preprocess(template, opts);
+    it('works with collapsed nesting several times', async () => {
+      const template = '<style>div :global span :global .cls{}</style>';
+      const opts = autoProcess();
+      const preprocessed = await preprocess(template, opts);
 
-        expect(preprocessed.toString()).toContain('div :global(span){}');
-      });
+      expect(preprocessed.toString()).toMatch(
+        // either be div :global(span .cls) {}
+        //        or div :global(span) :global(.cls) {}
+        /div (:global\(span .cls\)\{\}|:global\(span\) :global\(\.cls\)\{\})/,
+      );
+    });
 
-      it('allows mixing with the :global(...) syntax', async () => {
-        const template = '<style>div :global(span) :global .cls{}</style>';
-        const opts = autoProcess();
-        const preprocessed = await preprocess(template, opts);
+    it('does not interfere with the :global(...) syntax', async () => {
+      const template = '<style>div :global(span){}</style>';
+      const opts = autoProcess();
+      const preprocessed = await preprocess(template, opts);
 
-        expect(preprocessed.toString()).toMatch(
-          // either be div :global(span .cls) {}
-          //        or div :global(span) :global(.cls) {}
-          /div (:global\(span .cls\)\{\}|:global\(span\) :global\(\.cls\)\{\})/,
-        );
-      });
+      expect(preprocessed.toString()).toContain('div :global(span){}');
+    });
 
-      it('removes rules with only :global as its selector', async () => {
-        const template =
-          '<style>:global{/*comment*/}:global,div{/*comment*/}</style>';
+    it('allows mixing with the :global(...) syntax', async () => {
+      const template = '<style>div :global(span) :global .cls{}</style>';
+      const opts = autoProcess();
+      const preprocessed = await preprocess(template, opts);
 
-        const opts = autoProcess();
-        const preprocessed = await preprocess(template, opts);
+      expect(preprocessed.toString()).toMatch(
+        // either be div :global(span .cls) {}
+        //        or div :global(span) :global(.cls) {}
+        /div (:global\(span .cls\)\{\}|:global\(span\) :global\(\.cls\)\{\})/,
+      );
+    });
 
-        expect(preprocessed.toString()).toContain(
-          '<style>div{/*comment*/}</style>',
-        );
-      });
+    it('removes rules with only :global as its selector', async () => {
+      const template =
+        '<style>:global{/*comment*/}:global,div{/*comment*/}</style>';
+
+      const opts = autoProcess();
+      const preprocessed = await preprocess(template, opts);
+
+      expect(preprocessed.toString()).toContain(
+        '<style>div{/*comment*/}</style>',
+      );
     });
   });
 });

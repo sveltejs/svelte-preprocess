@@ -293,6 +293,7 @@ export function autoPreprocess(
 
     let { code, map, dependencies } = transformResult;
 
+    // istanbul ignore else
     if (await hasDepInstalled('postcss')) {
       if (transformers.postcss) {
         const transformed = await runTransformer(

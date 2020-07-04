@@ -20,10 +20,8 @@ export default {
   plugins: [
     svelte({
       preprocess: autoPreprocess({
-        transformers: {
-          postcss: {
-            plugins: [require('postcss-import')],
-          },
+        postcss: {
+          plugins: [require('postcss-import')],
         },
       }),
       // enable run-time checks when not in production
