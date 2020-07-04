@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 
 import { getTestAppFilename, getFixtureContent } from './utils';
-import { parseFile } from '../src/modules/parseFile';
+import { getTagInfo } from '../src/modules/tagInfo';
 import { importAny } from '../src/modules/importAny';
 import { getIncludePaths } from '../src/modules/getIncludePaths';
 import { globalifySelector } from '../src/modules/globalifySelector';
@@ -81,9 +81,9 @@ describe('globalifySelector', () => {
   });
 });
 
-describe(`parse svelte file`, () => {
+describe(`get tag information`, () => {
   it('should only include src files if content is empty', async () => {
-    let parsedFile = await parseFile({
+    let parsedFile = await getTagInfo({
       content: '',
       attributes: { src: './fixtures/style.scss' },
       filename: getTestAppFilename(),
@@ -91,7 +91,7 @@ describe(`parse svelte file`, () => {
 
     expect(parsedFile.content).toEqual(getFixtureContent('style.scss'));
 
-    parsedFile = await parseFile({
+    parsedFile = await getTagInfo({
       ...parsedFile,
       attributes: { src: './fixtures/style.css' },
     });

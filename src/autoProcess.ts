@@ -1,5 +1,3 @@
-import stripIndent from 'strip-indent';
-
 import {
   PreprocessorGroup,
   Preprocessor,
@@ -11,9 +9,10 @@ import {
 } from './types';
 import { hasDepInstalled } from './modules/hasDepInstalled';
 import { concat } from './modules/concat';
-import { parseFile } from './modules/parseFile';
+import { getTagInfo } from './modules/tagInfo';
 import { addLanguageAlias, getLanguageFromAlias } from './modules/language';
 import { throwError } from './modules/errors';
+import { prepareContent } from './modules/prepareContent';
 
 type AutoPreprocessOptions = {
   markupTagName?: string;
@@ -60,9 +59,6 @@ export const runTransformer = async (
   if (options === false) {
     return { code: content };
   }
-
-  // remove any unnecessary indentation (useful for coffee, pug and sugarss)
-  content = stripIndent(content);
 
   if (typeof options === 'function') {
     return options({ content, map, filename, attributes });
@@ -149,7 +145,7 @@ export function autoPreprocess(
       alias,
       dependencies,
       attributes,
-    } = await parseFile(svelteFile);
+    } = await getTagInfo(svelteFile);
 
     if (lang == null || alias == null) {
       alias = defaultLanguages[type];
@@ -157,18 +153,25 @@ export function autoPreprocess(
     }
 
     if (preserve.includes(lang) || preserve.includes(alias)) {
-      return;
+      return { code: content };
     }
+
+    const transformerOptions = getTransformerOptions(lang, alias);
+
+    content = prepareContent({
+      options: transformerOptions,
+      content,
+    });
 
     if (lang === targetLanguage) {
       return { code: content, dependencies };
     }
 
-    const transformed = await runTransformer(
-      lang,
-      getTransformerOptions(lang, alias),
-      { content: stripIndent(content), filename, attributes },
-    );
+    const transformed = await runTransformer(lang, transformerOptions, {
+      content,
+      filename,
+      attributes,
+    });
 
     return {
       ...transformed,
@@ -235,8 +238,6 @@ export function autoPreprocess(
         filename,
       });
 
-      if (transformResult == null) return;
-
       let { code, map, dependencies, diagnostics } = transformResult;
 
       if (transformers.babel) {
@@ -261,8 +262,6 @@ export function autoPreprocess(
         attributes,
         filename,
       });
-
-      if (transformResult == null) return;
 
       let { code, map, dependencies } = transformResult;
 

@@ -4,10 +4,10 @@ import { resolve, dirname } from 'path';
 import { PreprocessorArgs } from '../types';
 import { getLanguage } from './language';
 
-export const resolveSrc = (importerFile: string, srcPath: string) =>
+const resolveSrc = (importerFile: string, srcPath: string) =>
   resolve(dirname(importerFile), srcPath);
 
-export const getSrcContent = (file: string): Promise<string> => {
+const getSrcContent = (file: string): Promise<string> => {
   return new Promise((resolve, reject) => {
     readFile(file, (error: Error, data: unknown) => {
       // istanbul ignore if
@@ -21,7 +21,7 @@ async function doesFileExist(file: string) {
   return new Promise((resolve) => access(file, 0, (err) => resolve(!err)));
 }
 
-export const parseFile = async ({
+export const getTagInfo = async ({
   attributes,
   filename,
   content,
