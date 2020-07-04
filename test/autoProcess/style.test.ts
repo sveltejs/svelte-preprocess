@@ -1,4 +1,4 @@
-import getAutoPreprocess from '../../src';
+import autoPreprocess from '../../src';
 import { preprocess, getFixtureContent, CSS_PATTERN } from '../utils';
 
 const STYLE_LANGS: Array<[string, string]> = [
@@ -15,7 +15,7 @@ STYLE_LANGS.forEach(([lang, ext]) => {
         `style.${ext}`,
       )}</style>`;
 
-      const opts = getAutoPreprocess();
+      const opts = autoPreprocess();
       const preprocessed = await preprocess(template, opts);
 
       expect(preprocessed.toString()).toMatch(CSS_PATTERN);
@@ -23,7 +23,7 @@ STYLE_LANGS.forEach(([lang, ext]) => {
 
     it(`should parse external ${lang}`, async () => {
       const templateExternal = `<div></div><style src="./fixtures/style.${ext}"></style>`;
-      const opts = getAutoPreprocess();
+      const opts = autoPreprocess();
       const preprocessed = await preprocess(templateExternal, opts);
 
       expect(preprocessed.toString()).toMatch(CSS_PATTERN);
@@ -31,7 +31,7 @@ STYLE_LANGS.forEach(([lang, ext]) => {
 
     it(`should parse external ${lang}`, async () => {
       const templateExternal = `<div></div><style src="./fixtures/style.${ext}"></style>`;
-      const opts = getAutoPreprocess();
+      const opts = autoPreprocess();
       const preprocessed = await preprocess(templateExternal, opts);
 
       expect(preprocessed.toString()).toMatch(CSS_PATTERN);
@@ -39,7 +39,7 @@ STYLE_LANGS.forEach(([lang, ext]) => {
 
     it(`should return empty if content is empty`, async () => {
       const templateExternal = `<div></div><style lang="${lang}"></style>`;
-      const opts = getAutoPreprocess({
+      const opts = autoPreprocess({
         [lang]: {
           sourceMap: false,
           sourcemap: false,

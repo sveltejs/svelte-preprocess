@@ -1,4 +1,4 @@
-import getAutoPreprocess from '../../src';
+import autoPreprocess from '../../src';
 import { preprocess, getFixtureContent } from '../utils';
 
 const SCRIPT_LANGS: Array<[string, string, object?]> = [
@@ -19,7 +19,7 @@ SCRIPT_LANGS.forEach(([lang, ext, langOptions]) => {
     )}</script>`;
 
     it(`should parse ${lang}`, async () => {
-      const opts = getAutoPreprocess({
+      const opts = autoPreprocess({
         [lang]: langOptions,
       });
 

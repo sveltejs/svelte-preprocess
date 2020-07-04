@@ -8,7 +8,7 @@ type ContentModifier = {
 };
 
 export type Coffeescript = {
-  inlineMap?: boolean;
+  sourceMap?: boolean;
   filename?: string;
   bare?: never;
   header?: boolean;

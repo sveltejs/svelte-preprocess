@@ -35,7 +35,6 @@ const transformer: Transformer<Options.Sass> = async ({
   }
 
   const { renderSync, prependData, ...restOptions } = {
-    sourceMap: true,
     ...options,
     includePaths: getIncludePaths(filename, options.includePaths),
     outFile: `${filename}.css`,

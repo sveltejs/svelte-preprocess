@@ -2,6 +2,17 @@ import { basename } from 'path';
 
 import { PreprocessorArgs } from '../types';
 
+export const SOURCE_MAP_PROP_MAP: Record<string, [string, any]> = {
+  babel: ['sourceMaps', true],
+  typescript: ['sourceMap', true],
+  scss: ['sourceMap', true],
+  less: ['sourceMap', {}],
+  stylus: ['sourcemap', true],
+  postcss: ['map', true],
+  coffeescript: ['sourceMap', true],
+  globalStyle: ['sourceMap', true],
+};
+
 export const ALIAS_MAP = new Map([
   ['pcss', 'css'],
   ['postcss', 'css'],
