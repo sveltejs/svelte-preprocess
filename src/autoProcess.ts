@@ -47,6 +47,7 @@ type AutoPreprocessOptions = {
   pug?: TransformerOptions<Options.Pug>;
   globalStyle?: Options.GlobalStyle | boolean;
   replace?: Options.Replace;
+
   // workaround while we don't have this
   // https://github.com/microsoft/TypeScript/issues/17867
   [languageName: string]:
@@ -212,7 +213,7 @@ export function autoPreprocess(
 
     /** If no <template> was found, just return the original markup */
     if (!templateMatch) {
-      return { code: content };
+      return markupTransformer({ content, attributes: {}, filename });
     }
 
     const [fullMatch, attributesStr, templateCode] = templateMatch;

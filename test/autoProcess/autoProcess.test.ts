@@ -186,4 +186,21 @@ describe('options', () => {
       '<script lang="tomatoScript">tomato</script>',
     );
   });
+
+  it('should be able to use default markup language with template tags', async () => {
+    const input = `potato`;
+
+    const opts = autoPreprocess({
+      defaults: {
+        markup: 'potatoScript',
+      },
+      potatoScript({ content }) {
+        return { code: content.replace('potato', 'french-fries') };
+      },
+    });
+
+    const preprocessed = await preprocess(input, opts);
+
+    expect(preprocessed.toString()).toContain('french-fries');
+  });
 });
