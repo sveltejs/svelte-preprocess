@@ -26,14 +26,14 @@ $ npm install -D svelte-preprocess
 
 `svelte-preprocess` doesn't have any language specific dependency, so it's up to us to install the rest of tools we are going to use:
 
-- `babel`: `npm install -D @babel/core @babel/preset-...`
-- `coffeescript`: `npm install -D coffeescript`
-- `typescript`: `npm install -D typescript`
-- `postcss`: `npm install -D postcss postcss-load-config`
-- `less`: `npm install -D less`
-- `sass`: `npm install -D node-sass` or `npm install -D sass`
-- `pug`: `npm install -D pug`
-- `stylus`: `npm install -D stylus`
+- Babel: `npm install -D @babel/core @babel/preset-...`
+- CoffeeScript: `npm install -D coffeescript`
+- TypeScript: `npm install -D typescript`
+- PostCSS: `npm install -D postcss postcss-load-config`
+- Less: `npm install -D less`
+- Sass: `npm install -D node-sass` or `npm install -D sass`
+- Pug: `npm install -D pug`
+- Stylus: `npm install -D stylus`
 
 For now, let's just install the main library.
 
@@ -70,21 +70,21 @@ export default {
 }
 ```
 
-Now our app's code can be written in any of the syntaxes supported by `svelte-preprocess`: `SCSS`, `Stylus`, `Less`, `Coffeescript`, `TypeScript`, `Pug`, `PostCSS`, `Babel`.
+Now our app's code can be written in any of the syntaxes supported by `svelte-preprocess`: Sass, Stylus, Less, CoffeeScript, TypeScript, Pug, PostCSS, Babel.
 
 _**Note:** If you use VS Code, check [its usage guide](/docs/usage.md#with-svelte-vs-code) to make the Svelte VS Code extension understand the content of your components._
 
 ## 3. Configuring preprocessors
 
-Now let's assume our app markup is going to be written in `pug`, our scripts in `Typescript`, and our styles in `SCSS`. We also want our styles to be auto-prefixed, so we're also going to need `postcss`. Let's install these dependencies:
+Now let's assume our app markup is going to be written in Pug, our scripts in TypeScript, and our styles in Sass. We also want our styles to be auto-prefixed, so we're also going to need PostCSS. Let's install these dependencies:
 
-**Important:** `svelte-preprocess` only handles content passed to it by `svelte-loader`, `rollup-plugin-svelte` and similar tools. If our `typescript` component import a `typescript` file, the bundler will be the one responsible for handling it. We must make sure it knows how to handle it!
+**Important:** `svelte-preprocess` only handles content passed to it by `svelte-loader`, `rollup-plugin-svelte` and similar tools. If our TypeScript component import a TypeScript file, the bundler will be the one responsible for handling it. We must make sure it knows how to handle it!
 
 ```shell
 $ npm i -D typescript sass postcss autoprefixer pug @rollup/plugin-typescript
 ```
 
-After the installation is complete, we still need to configure our `postcss` options and add `@rollup/plugin-typescript` to our config.
+After the installation is complete, we still need to configure our PostCSS options and add `@rollup/plugin-typescript` to our config.
 
 ```diff
 import svelte from 'rollup-plugin-svelte'
@@ -143,7 +143,7 @@ And we're done! Our components can now be written as:
 
 ### 3.1. Setting default languages
 
-Ok, we now can write our entire app with `pug`, `typescript` and `scss`, but typing `lang="..."` in every file can become an obnoxious process. In [auto-preprocessing mode](/docs/preprocessing.md#auto-preprocessing), `svelte-preprocess` [lets us define the default languages](/docs/preprocessing.md#auto-preprocessing-options) of our components. It's setted by default to `html`, `javascript` and `css`. Let's change that so we don't need those `lang` attributes.
+Ok, we now can write our entire app with Pug, TypeScript and SCSS, but typing `lang="..."` in every file can become an obnoxious process. In [auto-preprocessing mode](/docs/preprocessing.md#auto-preprocessing), `svelte-preprocess` [lets us define the default languages](/docs/preprocessing.md#auto-preprocessing-options) of our components. It's setted by default to HTML, JavaScript and CSS. Let's change that so we don't need those `lang` attributes.
 
 _**Disclaimer**: The Svelte VS Code extension uses the `lang` or `type` attribute to correctly highlight your code. At the time of writing, the extension doesn't support default languages. Doing this can lead to errors on your IDE._
 
@@ -202,18 +202,18 @@ Now our components are a bit leaner!
 </style>
 ```
 
-_**Note**: If the `<template>` tag is not found and the default language is not `html`, `svelte-preprocess` expects the whole markup to be written in that language. In example, for `pug`, this means the `script` and `style` tags must be written following pug's syntax._
+_**Note**: If the `<template>` tag is not found and the default language is not HTML, `svelte-preprocess` expects the whole markup to be written in that language. In example, for Pug, this means the `script` and `style` tags must be written following pug's syntax._
 
 ### 3.2 Prepending content
 
-Now we're in need of a `scss` file to hold some variables. Let's assume it's created at `src/styles/variables.scss`.
+Now we're in need of a SCSS file to hold some variables. Let's assume it's created at `src/styles/variables.scss`.
 
 ```scss
 // src/styles/variables.scss
 $primary-color: red;
 ```
 
-As in any `scss` project, we could just `@use './path/to/variables.scss`, but that can also become boring. `svelte-preprocess` [accepts a `prependData`](/docs/preprocessing.md#preprocessors) for almost every processor. Let's use it to prepend our import!
+As in any SCSS project, we could just `@use './path/to/variables.scss`, but that can also become boring. `svelte-preprocess` [accepts a `prependData`](/docs/preprocessing.md#preprocessors) for almost every processor. Let's use it to prepend our import!
 
 ```diff
 + import path from 'path'

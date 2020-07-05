@@ -1,6 +1,6 @@
 # Svelte Preprocess
 
-> A [Svelte](https://svelte.dev) preprocessor with sensible defaults and support for: PostCSS, SCSS, Less, Stylus, Coffeescript, TypeScript, Pug and much more.
+> A [Svelte](https://svelte.dev) preprocessor with sensible defaults and support for: PostCSS, SCSS, Less, Stylus, CoffeeScript, TypeScript, Pug and much more.
 
 <p>
   <a href="https://www.npmjs.com/package/svelte-preprocess">
@@ -25,26 +25,26 @@
   - [Template tag](#template-tag)
   - [External files](#external-files)
   - [Global style](#global-style)
-  - [Modern Javascript syntax](#modern-javascript-syntax)
+  - [Modern JavaScript syntax](#modern-javascript-syntax)
   - [Replace values](#replace-values)
   - [Built-in support for commonly used languages](#built-in-support-for-commonly-used-languages)
 
 ## What is it?
 
-`Svelte`'s own parser understands only Javascript, CSS and its HTML-like syntax. To make it possible to write components in other languages, such as `Typescript` or `scss`, `Svelte` provides the [preprocess API](https://svelte.dev/docs#svelte_preprocess), which allows to easily transform the content of your `markup` and your `style`/`script` tags.
+`Svelte`'s own parser understands only JavaScript, CSS and its HTML-like syntax. To make it possible to write components in other languages, such as TypeScript or SCSS, `Svelte` provides the [preprocess API](https://svelte.dev/docs#svelte_preprocess), which allows to easily transform the content of your `markup` and your `style`/`script` tags.
 
-Writing your own preprocessor for, i.e `scss` is easy enough, but it can be cumbersome to have to always configure multiple preprocessors for the languages you'll be using.
+Writing your own preprocessor for, i.e SCSS is easy enough, but it can be cumbersome to have to always configure multiple preprocessors for the languages you'll be using.
 
 `svelte-preprocess` is a custom svelte preprocessor that acts as a facilitator to use other languages with Svelte, providing multiple features, sensible defaults and a less noisy development experience.
 
 ```js
 import svelte from 'rollup-plugin-svelte'
-import sveltePreprocess from 'svelte-preprocess'
+import autoPreprocess from 'svelte-preprocess'
 
 export default {
   plugins: [
     svelte({
-      preprocess: sveltePreprocess({ ... })
+      preprocess: autoPreprocess({ ... })
     })
   ]
 }
@@ -114,9 +114,9 @@ Works best with nesting-enabled CSS preprocessors, but regular CSS selectors lik
 
 _**Note**: needs PostCSS to be installed._
 
-### Modern Javascript syntax
+### Modern JavaScript syntax
 
-`svelte-preprocess` allows you to run your component code through `babel` before sending it to the compiler, allowing you to use new language features such as optional operators and nullish coalescing. However, note that `babel` should transpile your component code to the javascript version supported by the Svelte compiler, so ES6+.
+`svelte-preprocess` allows you to run your component code through Babel before sending it to the compiler, allowing you to use new language features such as optional operators and nullish coalescing. However, note that Babel should transpile your component code to the javascript version supported by the Svelte compiler, so ES6+.
 
 For example, with `@babel/preset-env` your config could be:
 
@@ -153,7 +153,7 @@ Replace a set of string patterns in your components markup by passing an array o
 In example, to replace inject the value of `process.env.NODE_ENV`:
 
 ```js
-sveltePreprocess({
+autoPreprocess({
   replace: ['process.env.NODE_ENV', JSON.stringify(process.env.NODE_ENV)],
 });
 ```
@@ -176,7 +176,7 @@ into
 
 ### Built-in support for commonly used languages
 
-The current supported languages out-of-the-box are `SCSS`, `Stylus`, `Less`, `Coffeescript`, `TypeScript`, `Pug`, `PostCSS`, `Babel`.
+The current supported languages out-of-the-box are Sass, Stylus, Less, CoffeeScript, TypeScript, Pug, PostCSS, Babel.
 
 ```html
 <template lang="pug">

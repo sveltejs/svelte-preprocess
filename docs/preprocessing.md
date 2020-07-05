@@ -7,22 +7,22 @@
 - [Preprocessor Modes](#preprocessor-modes)
   - [Auto Preprocessing](#auto-preprocessing)
   - [Stand-alone processors](#stand-alone-processors)
+  - [Difference between the auto and stand-alone modes](#difference-between-the-auto-and-stand-alone-modes)
 - [Preprocessors](#preprocessors)
-  - [`babel`](#babel)
-  - [`coffeescript`](#coffeescript)
+  - [Babel](#babel)
+  - [CoffeeScript](#coffeescript)
+  - [Less](#less)
+  - [PostCSS](#postcss)
+  - [Pug](#pug)
+  - [scss / sass](#scss-sass)
+  - [Stylus](#stylus)
+  - [TypeScript](#typescript)
   - [`globalStyle`](#globalstyle)
-  - [`less`](#less)
-  - [`postcss`](#postcss)
-  - [`pug`](#pug)
   - [`replace`](#replace)
-  - [`scss/sass`](#scsssass)
-  - [`stylus`](#stylus)
-  - [`typescript`](#typescript)
-- [Difference between the auto and stand-alone modes](#difference-between-the-auto-and-stand-alone-modes)
 
 <!-- /code_chunk_output -->
 
-`svelte-preprocess` can be used in two ways: _auto preprocessing_ and with _stand-alone_ processors.
+`svelte-preprocess` can be used in two ways: _auto-preprocessing_ and with _stand-alone_ processors.
 
 The examples below are going to be using a hypothetical `rollup.config.js`, but `svelte-preprocess` can be used in multiple scenarios, see "[Usage](docs/usage.md)".
 
@@ -34,12 +34,12 @@ In auto preprocessing mode, `svelte-preprocess` automatically uses the respectiv
 
 ```js
 import svelte from 'rollup-plugin-svelte'
-import sveltePreprocess from 'svelte-preprocess'
+import autoPreprocess from 'svelte-preprocess'
 
 export default {
   plugins: [
     svelte({
-      preprocess: sveltePreprocess({ ... })
+      preprocess: autoPreprocess({ ... })
     })
   ]
 }
@@ -70,33 +70,35 @@ The following options can be passed to the preprocessor. None are required:
 | `markupTagName` | `"template"`                                             | `string` that sets the name of the tag `svelte-preprocess` looks for markup in custom languages.<br><br>i.e `markup` makes it possible to write your markup between `<markup lang="..."></markup>` tag.                                                                                                               |
 | `aliases`       | `null`                                                   | A list of tuples `[alias: string, language: string]` that correlates an `alias` to a `language`<br><br>i.e `['cst', 'customLanguage']` means<br>`<... src="./file.cst">`<br>`<... lang="cst">`<br>`<... type="text/customLanguage">`<br>`<... type="application/customLanguage">`<br>are treated as `customLanguage`. |
 | preserve        | `[]`                                                     | A `string` list of languages/aliases that shouldn't pass through the preprocessor. (i.e `ld+json`)                                                                                                                                                                                                                    |
-| `defaults`      | `{ markup: 'html', script: 'javascript', style: 'css' }` | An `object` that defines the default languages of your components.<br><br>i.e: `{ script: 'typescript' }` makes Typescript the default language, removing the need of adding `lang="ts"` to `script` tags.                                                                                                            |
-| `sourceMap`     | `true`                                                   | If `true`, `svelte-preprocess` generates sourcemap for every language that supports it.                                                                                                                                                                                                                               | `typescript` | `undefined` | Define options passed to the `typescript` processor |
+| `defaults`      | `{ markup: 'html', script: 'javascript', style: 'css' }` | An `object` that defines the default languages of your components.<br><br>i.e: `{ script: 'typescript' }` makes TypeScript the default language, removing the need of adding `lang="ts"` to `script` tags.                                                                                                            |
+| `sourceMap`     | `true`                                                   | If `true`, `svelte-preprocess` generates sourcemap for every language that supports it.                                                                                                                                                                                                                               |
 
 ##### Configuring preprocessors
 
 Alongside the options above, you can also configure options of specific preprocessors:
 
 ```js
-import sveltePreprocess from 'svelte-preprocess'
+import svelte from 'rollup-plugin-svelte';
+import autoPreprocess from 'svelte-preprocess';
 
-...
-  {
-    /* svelte options */
-    preprocess: sveltePreprocess({
-      globalStyle: { ... },
-      replace: { ... },
-      typescript: { ... },
-      scss: { ... },
-      sass: { ... },
-      less: { ... },
-      stylus: { ... },
-      postcss: { ... },
-      coffeescript: { ... },
-      pug: { ... },
+export default {
+  plugins: [
+    svelte({
+      preprocess: autoPreprocess({
+        globalStyle: { ... },
+        replace: { ... },
+        typescript: { ... },
+        scss: { ... },
+        sass: { ... },
+        less: { ... },
+        stylus: { ... },
+        postcss: { ... },
+        coffeescript: { ... },
+        pug: { ... },
+      }),
     }),
-  }
-...
+  ],
+};
 ```
 
 See the section below for options for each preprocessor.
@@ -106,34 +108,66 @@ See the section below for options for each preprocessor.
 It's also possible to create custom preprocessors, taking advantage of the automatic language detection of `svelte-preprocess`:
 
 ```js
-import sveltePreprocess from 'svelte-preprocess'
+import svelte from 'rollup-plugin-svelte';
+import autoPreprocess from 'svelte-preprocess';
 
-...
-  {
-    /* svelte options */
-    preprocess: sveltePreprocess({
-      aliases: [
-        ['potato', 'potatoLanguage'],
-        ['pot', 'potatoLanguage'],
-      ],
-      /** Add a custom language preprocessor */
-      potatoLanguage({ content, filename, attributes }) {
-        const { code, map } = require('potato-language').render(content);
+export default {
+  plugins: [
+    svelte({
+      preprocess: autoPreprocess({
+        aliases: [
+          ['potato', 'potatoLanguage'],
+          ['pot', 'potatoLanguage'],
+        ],
+        /** Add a custom language preprocessor */
+        potatoLanguage({ content, filename, attributes }) {
+          const { code, map } = require('potato-language').render(content);
 
-        return { code, map };
-      },
+          return { code, map };
+        },
+      }),
     }),
-  }
-...
+  ],
+};
 ```
 
 Now `svelte-preprocess` will use the `potatoLanguage` preprocessor whenever it finds a tag with `lang="potato"`, `type="text/potatoLanguage"` or `src="./index.pot"`.
 
 These methods receive the same arguments and act exactly like a [common svelte preprocessor](https://svelte.dev/docs#svelte_preprocess), but the concept of `markup`/`style`/`script` is abstracted as they are executed whenever `svelte-preprocess` find the aforementioned attributes.
 
+##### Overriding preprocessors
+
+We've seen that we can easily create custom preprocessors within `svelte-preprocess`, but wait, there's more! Using the same mechanism, it's possible to override the default preprocessor for a language!
+
+Let's use TypeScript as an example. The `tsc` compiler is fast enough at the beginning, but as a project grows, it can really become cumbersome. `esbuild` is a JavaScript bundler written in Go and can transpile TypeScript [much faster](https://github.com/evanw/esbuild#benchmarks) than our good and old `tsc`.
+
+To integrate `esbuild` with `svelte-preprocss` we can override the default TypeScript preprocessor as follows:
+
+```js
+import svelte from 'rollup-plugin-svelte';
+import autoPreprocess from 'svelte-preprocess';
+import { transformSync } from 'esbuild';
+
+export default {
+  plugins: [
+    svelte({
+      preprocess: autoPreprocess({
+        typescript({ content, filename }) {
+          const { js: code } = transformSync(content, {
+            loader: 'ts',
+          });
+
+          return { code };
+        },
+      }),
+    }),
+  ],
+};
+```
+
 ### Stand-alone processors
 
-In case you want to manually configure your preprocessing step while taking advantage of `svelte-preprocess` features, such as language detection and external file support, the following preprocessors are available: `pug`, `coffeescript`, `typescript`, `less`, `scss`, `sass`, `stylus`, `postcss`, `babel`, `globalStyle` `replace`.
+In case you want to manually configure your preprocessing step while taking advantage of `svelte-preprocess` features, such as language detection and external file support, the following preprocessors are available: Pug, CoffeeScript, TypeScript, Less, SCSS, Sass, Stylus, PostCSS, Babel, `globalStyle` `replace`.
 
 Every processor accepts an option object which is passed to its respective underlying tool. See the section below for options for each preprocessor.
 
@@ -152,9 +186,64 @@ svelte.preprocess(input, [
 ]);
 ```
 
-Stand-alone markup preprocessors such as `pug` are executed over the whole markup and not only inside a custom tag.
+Stand-alone markup preprocessors such as Pug are executed over the whole markup and not only inside a custom tag.
 
-The preprocessors are language aware, which means you can enqueue multiple ones and you won't have `scss` and `stylus` conflicting over the same content.
+The preprocessors are language aware, which means you can enqueue multiple ones and you won't have SCSS and Stylus conflicting over the same content.
+
+### Difference between the auto and stand-alone modes
+
+The auto preprocessing mode is the recommended way of using `svelte-preprocess` as it's the least verbose and most straightforward way of supporting multiple language preprocessors.
+
+`svelte-preprocess` was built in a way that the underlying transpilers and compilers are only required/imported if a portion of your component matches its language. With that said, the auto-preprocessing mode is roughly equivalent to using all the stand-alone preprocessors in the following order:
+
+```js
+import svelte from 'rollup-plugin-svelte';
+import {
+  pug,
+  coffeescript,
+  typescript,
+  less,
+  scss,
+  sass,
+  stylus,
+  postcss,
+  globalStyle,
+  babel,
+  replace,
+} from 'svelte-preprocess';
+
+export default {
+  plugins: [
+    svelte({
+      preprocess: [
+        replace(),
+        pug(),
+        coffeescript(),
+        typescript(),
+        less(),
+        scss(),
+        sass(),
+        stylus(),
+        babel(),
+        postcss(),
+        globalStyle(),
+      ],
+    }),
+  ],
+};
+
+// vs
+import svelte from 'rollup-plugin-svelte';
+import autoPreprocess from 'svelte-preprocess';
+
+export default {
+  plugins: [
+    svelte({
+      preprocess: autoPreprocess(),
+    }),
+  ],
+};
+```
 
 ## Preprocessors
 
@@ -164,17 +253,118 @@ Besides the options of each preprocessors, `svelte-preprocess` also supports the
 | ------------- | ------- | -------------------------------------------------------------------------------------- |
 | `prependData` | `''`    | `string` will be prepended to every component part that runs through the preprocessor. |
 
-### `babel`
+### Babel
 
-The `babel` preprocessor accepts an option object which is passed onto the babel runtime. You can check the [`babel` API reference](https://babeljs.io/docs/en/options#primary-options) for specific options.
+The Babel preprocessor accepts an option object which is passed onto the babel runtime. You can check the [Babel API reference](https://babeljs.io/docs/en/options#primary-options) for specific options.
 
-**Note**: `Svelte` expects your Javascript to be in at least ES6 format, so make sure to set your `babel` configuration accordingly.
+**Note**: `Svelte` expects your JavaScript to be in at least ES6 format, so make sure to set your Babel configuration accordingly.
 
 _Note: If you want to transpile your app to be supported in older browsers, you must run babel from the context of your bundler._
 
-### `coffeescript`
+### CoffeeScript
 
-The `coffeescript` processor accepts no extra options and only transpiles Coffeescript code down to esm compliant Javascript code.
+The CoffeeScript processor accepts no extra options and only transpiles CoffeeScript code down to esm compliant JavaScript code.
+
+### Less
+
+You can check the [Less API reference](http://lesscss.org/usage/#less-options) for Less specific options.
+
+### PostCSS
+
+The PostCSS preprocessor accepts three options:
+
+| Option    | Default     | Description                                      |
+| --------- | ----------- | ------------------------------------------------ |
+| `plugins` | `undefined` | a list of `postcss plugins`.                     |
+| `parser`  | `undefined` | the name of the module to be used as the parser. |
+| `syntax`  | `undefined` | the syntax to be used.                           |
+
+**Note**: In auto-preprocessing mode, you can set `postcss: true` if `postcss-load-config` is installed and `svelte-preprocess` will look for a PostCSS config file in your project.
+
+You can check the [PostCSS API reference](https://api.postcss.org/) for PostCSS specific options.
+
+### Pug
+
+You can check the [Pug API reference](https://pugjs.org/api/reference.html) for more options. The only overriden property is `doctype`, which is set to HTML.
+
+**Template blocks:**
+
+Some of Svelte's template syntax is invalid in Pug. `svelte-preprocess` provides some pug mixins to represent svelte's `{#...}{/...}` blocks: `+if()`, `+else()`, `+elseif()`, `+each()`, `+await()`, `+then()`, `+catch()`, `+debug()`.
+
+```pug
+ul
+  +if('posts && posts.length > 1')
+    +each('posts as post')
+      li
+        a(rel="prefetch" href="blog/{post.slug}") {post.title}
+    +else()
+      span No posts :c
+```
+
+**Element attributes:**
+
+Pug encodes everything inside an element attribute to html entities, so `attr="{foo && bar}"` becomes `attr="foo &amp;&amp; bar"`. To prevent this from happening, instead of using the `=` operator use `!=` which won't encode your attribute value:
+
+```pug
+button(disabled!="{foo && bar}")
+```
+
+**Svelte Element directives:**
+
+Syntax for use Svelte Element directives with Pug
+
+```pug
+input(bind:value="{foo}")
+input(on:input="{bar}")
+```
+
+### scss / sass
+
+The `scss/sass` preprocessor accepts the default sass options alongside two other props:
+
+| Option           | Default     | Description                                                                                                                    |
+| ---------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `renderSync`     | `false`     | if `true`, use the sync render method which is faster for dart sass.                                                           |
+| `implementation` | `undefined` | pass the module to use to compile sass, if unspecified, `svelte-preprocess` will first look for `node-sass` and then for Sass. |
+
+You can check the [Sass API reference](https://sass-lang.com/documentation/js-api) for specific Sass options. The `file` and `data` properties are not supported.
+
+**Note**: When `svelte-preprocess` detects the language as Sass, it automatically sets `indentedSyntax` to `true.
+
+### Stylus
+
+You can check the [Stylus API reference](https://stylus-lang.com/docs/js.html) for specific Stylus options. The `filename` is not supported.
+
+```js
+import svelte from 'rollup-plugin-svelte'
+
+import { stylus } from 'svelte-preprocess'
+
+export default {
+  ...
+  plugins: [
+    svelte({
+      preprocess: [
+        stylus({ ... }),
+      ]
+    })
+  ]
+}
+```
+
+### TypeScript
+
+| Option              | Default     | Description                                                                                                 |
+| ------------------- | ----------- | ----------------------------------------------------------------------------------------------------------- |
+| `tsconfigDirectory` | `undefined` | optional `string` that specifies from where to load the tsconfig from.<br><br>i.e `'./configs'`             |
+| `tsconfigFile`      | `undefined` | optional `string` pointing torwards a `tsconfig` file.<br><br>i.e `'./tsconfig.app.json'`                   |
+| `compilerOptions`   | `undefined` | optional compiler options configuration. These will be merged with options from the tsconfig file if found. |
+
+You can check the [`compilerOptions` reference](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) for specific TypeScript options.
+
+Since `v4`, `svelte-preprocess` doesn't type-check your component, its only concern is to transpile it into valid JavaScript for the compiler. If you want to have your components type-checked, you can use [svelte-check](https://github.com/sveltejs/language-tools/blob/master/packages/svelte-check/README.md).
+
+As we're only transpiling, it's not possible to import types or interfaces into your svelte component without using the new TS 3.8 `type` import modifier: `import type { SomeInterface } from './MyModule'` otherwise bundlers will complain that the name is not exported by `MyModule`.
 
 ### `globalStyle`
 
@@ -221,59 +411,6 @@ _Note<sup>2</sup>: if you're using it as a standalone processor, it works best i
 _Note<sup>3</sup>: wrapping `@keyframes` inside `:global {}` blocks is not supported. Use the [`-global-` name prefix for global keyframes](https://svelte.dev/docs#style)._
 
 _Note<sup>4</sup>: if you need to have some styles be scoped inside a global style tag, use `:local` in the same way you'd use `:global`._
-
-### `less`
-
-You can check the [`less` API reference](http://lesscss.org/usage/#less-options) for `less` specific options.
-
-### `postcss`
-
-The `postcss` preprocessor accepts three options:
-
-| Option    | Default     | Description                                      |
-| --------- | ----------- | ------------------------------------------------ |
-| `plugins` | `undefined` | a list of `postcss plugins`.                     |
-| `parser`  | `undefined` | the name of the module to be used as the parser. |
-| `syntax`  | `undefined` | the syntax to be used.                           |
-
-**Note**: In auto-preprocessing mode, you can set `postcss: true` if `postcss-load-config` is installed and `svelte-preprocess` will look for a `postcss` config file in your project.
-
-You can check the [`postcss` API reference](https://api.postcss.org/) for `postcss` specific options.
-
-### `pug`
-
-You can check the [`pug` API reference](https://pugjs.org/api/reference.html) for more options. The only overriden property is `doctype`, which is set to `html`.
-
-**Template blocks:**
-
-Some of Svelte's template syntax is invalid in `pug`. `svelte-preprocess` provides some pug mixins to represent svelte's `{#...}{/...}` blocks: `+if()`, `+else()`, `+elseif()`, `+each()`, `+await()`, `+then()`, `+catch()`, `+debug()`.
-
-```pug
-ul
-  +if('posts && posts.length > 1')
-    +each('posts as post')
-      li
-        a(rel="prefetch" href="blog/{post.slug}") {post.title}
-    +else()
-      span No posts :c
-```
-
-**Element attributes:**
-
-Pug encodes everything inside an element attribute to html entities, so `attr="{foo && bar}"` becomes `attr="foo &amp;&amp; bar"`. To prevent this from happening, instead of using the `=` operator use `!=` which won't encode your attribute value:
-
-```pug
-button(disabled!="{foo && bar}")
-```
-
-**Svelte Element directives:**
-
-Syntax for use Svelte Element directives with Pug
-
-```pug
-input(bind:value="{foo}")
-input(on:input="{bar}")
-```
 
 ### `replace`
 
@@ -327,107 +464,4 @@ And the result, with a `NODE_ENV = 'production'` would be:
 {#if "production" !== 'development'}
   <h1>Production environment!</h1>
 {/if}
-```
-
-### `scss/sass`
-
-The `scss/sass` preprocessor accepts the default sass options alongside two other props:
-
-| Option           | Default     | Description                                                                                                                      |
-| ---------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `renderSync`     | `false`     | if `true`, use the sync render method which is faster for dart sass.                                                             |
-| `implementation` | `undefined` | pass the module to use to compile sass, if unspecified, `svelte-preprocess` will first look for `node-sass` and then for `sass`. |
-
-You can check the [`sass` API reference](https://sass-lang.com/documentation/js-api) for specific `sass` options. The `file` and `data` properties are not supported.
-
-**Note**: When `svelte-preprocess` detects the language as `sass`, it automatically sets `indentedSyntax` to `true.
-
-### `stylus`
-
-You can check the [`stylus` API reference](https://stylus-lang.com/docs/js.html) for specific `stylus` options. The `filename` is not supported.
-
-```js
-import svelte from 'rollup-plugin-svelte'
-
-import { stylus } from 'svelte-preprocess'
-
-export default {
-  ...
-  plugins: [
-    svelte({
-      preprocess: [
-        stylus({ ... }),
-      ]
-    })
-  ]
-}
-```
-
-### `typescript`
-
-| Option              | Default     | Description                                                                                                 |
-| ------------------- | ----------- | ----------------------------------------------------------------------------------------------------------- |
-| `tsconfigDirectory` | `undefined` | optional `string` that specifies from where to load the tsconfig from.<br><br>i.e `'./configs'`             |
-| `tsconfigFile`      | `undefined` | optional `string` pointing torwards a `tsconfig` file.<br><br>i.e `'./tsconfig.app.json'`                   |
-| `compilerOptions`   | `undefined` | optional compiler options configuration. These will be merged with options from the tsconfig file if found. |
-
-You can check te [`compilerOptions` reference](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) for specific `typescript` options.
-
-Since `v4`, `svelte-preprocess` doesn't type-check your component, its only concern is to transpile it into valid Javascript for the compiler. If you want to have your components type-checked, you can use [svelte-check](https://github.com/sveltejs/language-tools/blob/master/packages/svelte-check/README.md).
-
-As we're only transpiling, it's not possible to import types or interfaces into your svelte component without using the new TS 3.8 `type` import modifier: `import type { SomeInterface } from './MyModule'` otherwise bundlers will complain that the name is not exported by `MyModule`.
-
-## Difference between the auto and stand-alone modes
-
-The auto preprocessing mode is the recommended way of using `svelte-preprocess` as it's the least verbose and most straightforward way of supporting multiple language preprocessors.
-
-`svelte-preprocess` was built in a way that the underlying transpilers and compilers are only required/imported if a portion of your component matches its language. With that said, the auto-preprocessing mode is roughly equivalent to using all the stand-alone preprocessors in the following order:
-
-```js
-import svelte from 'rollup-plugin-svelte';
-import {
-  pug,
-  coffeescript,
-  typescript,
-  less,
-  scss,
-  sass,
-  stylus,
-  postcss,
-  globalStyle,
-  babel,
-  replace,
-} from 'svelte-preprocess';
-
-export default {
-  plugins: [
-    svelte({
-      preprocess: [
-        replace(),
-        pug(),
-        coffeescript(),
-        typescript(),
-        less(),
-        scss(),
-        sass(),
-        stylus(),
-        babel(),
-        postcss(),
-        globalStyle(),
-      ],
-    }),
-  ],
-};
-
-// vs
-import svelte from 'rollup-plugin-svelte';
-import sveltePreprocess from 'svelte-preprocess';
-
-export default {
-  plugins: [
-    svelte({
-      preprocess: sveltePreprocess(),
-    }),
-  ],
-};
 ```
