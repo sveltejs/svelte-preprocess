@@ -73,9 +73,9 @@ export default {
 
 ```js
 // ...
-import sveltePreprocess from 'svelte-preprocess';
+import autoPreprocess from 'svelte-preprocess';
 
-const preprocess = sveltePreprocess({
+const preprocess = autoPreprocess({
   postcss: true,
   // ...
 });
@@ -107,10 +107,10 @@ export default {
 
 ```js
 // svelte.config.js
-import sveltePreprocess from 'svelte-preprocess';
+import autoPreprocess from 'svelte-preprocess';
 
 module.exports = {
-  preprocess: sveltePreprocess({
+  preprocess: autoPreprocess({
     // ...svelte-preprocess options
   }),
   // ...other svelte options
