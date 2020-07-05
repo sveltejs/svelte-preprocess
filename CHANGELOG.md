@@ -1,3 +1,39 @@
+# [4.0.0-alpha.1](https://github.com/sveltejs/svelte-preprocess/compare/v3.9.11...v4.0.0-alpha.1) (2020-07-05)
+
+
+### Bug Fixes
+
+* 🐛 bump minimum node version to 9.11.2 ([74ea309](https://github.com/sveltejs/svelte-preprocess/commit/74ea3093b5cc27d07de5c0f39d7b39497c2c4960))
+* 🐛 prevent globalify to wrongly split escaped selectors ([64d734d](https://github.com/sveltejs/svelte-preprocess/commit/64d734dfb4c4b9c9dcc0fd4fca86fa86f25df963)), closes [#191](https://github.com/sveltejs/svelte-preprocess/issues/191)
+* 🐛 rename scss prepend option from `data` to `prependData` ([7a69f08](https://github.com/sveltejs/svelte-preprocess/commit/7a69f0834abc9cb9836430ed1dfc59804684d04f))
+
+
+### Code Refactoring
+
+* 💡 remove deprecated autoProcess props ([fcccccc](https://github.com/sveltejs/svelte-preprocess/commit/fcccccc47c4ae99e230031dd85978867db6353db))
+
+
+### Features
+
+* 🎸 add sourceMap prop to configuration object ([45e9fea](https://github.com/sveltejs/svelte-preprocess/commit/45e9feaf06d0009c6eba675ea9a1c1ff322771e9))
+* 🎸 support defining default languages ([b329dcd](https://github.com/sveltejs/svelte-preprocess/commit/b329dcd23d8b231d41c3aacf971a60ffb5056994)), closes [#189](https://github.com/sveltejs/svelte-preprocess/issues/189)
+* 🎸 support markup preprocessing with no tags ([f299c6a](https://github.com/sveltejs/svelte-preprocess/commit/f299c6a40fe87b8cc06852657c804d4e15cc2f93))
+* 🎸 support prependData for almost every preprocessor ([41d55ca](https://github.com/sveltejs/svelte-preprocess/commit/41d55ca71de03d61c87f8770e1a4293e99b555df))
+
+
+### BREAKING CHANGES
+
+* 🧨 This is a general evolution of the specific `scss.data` property that
+was used to prepend data to components written in scss.
+`{preprocessorOptions}.prependData` is now the way to prepend some
+string to any preprocessor.
+* 🧨 Node versions below 9.11.2 won't be supported anymore
+* 🧨 Uses Lookbehind assertions, so Node 9.11.2+ is needed
+* 🧨 Content passed through the `data` property won't be prepended anymore.
+* 🧨 `onBefore` and `transformers` were removed
+
+
+
 ## [3.9.11](https://github.com/kaisermann/svelte-preprocess/compare/v3.9.10...v3.9.11) (2020-07-01)
 
 
