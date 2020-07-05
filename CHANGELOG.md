@@ -1,3 +1,12 @@
+## [3.9.12](https://github.com/kaisermann/svelte-preprocess/compare/v3.9.11...v3.9.12) (2020-07-05)
+
+
+### Bug Fixes
+
+* 🐛 set bare option to true ([312bbb9](https://github.com/kaisermann/svelte-preprocess/commit/312bbb9bbf2668e1750296dbfc8b83bb39f291e8))
+
+
+
 ## [3.9.11](https://github.com/kaisermann/svelte-preprocess/compare/v3.9.10...v3.9.11) (2020-07-01)
 
 
