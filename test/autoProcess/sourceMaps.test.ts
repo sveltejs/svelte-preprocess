@@ -15,34 +15,34 @@ const TRANSFORMERS: Record<string, any> = {
     transformer: babelTransformer,
     template: `<script>console.log('potato')</script>`,
   },
-  // typescript: {
-  //   transformer: typescriptTransformer,
-  //   template: `<script lang="ts">console.log('potato')</script>`,
-  // },
-  // coffeescript: {
-  //   transformer: coffeeTransformer,
-  //   template: `<script lang="coffeescript">console.log('potato')</script>`,
-  // },
-  // scss: {
-  //   transformer: scssTransformer,
-  //   template: `<style lang="scss">div{}</style>`,
-  // },
-  // less: {
-  //   transformer: lessTransformer,
-  //   template: `<style lang="less">div{}</style>`,
-  // },
-  // stylus: {
-  //   transformer: stylusTransformer,
-  //   template: `<style lang="stylus">div{}</style>`,
-  // },
-  // postcss: {
-  //   transformer: postcssTransformer,
-  //   template: `<style>div{}</style>`,
-  // },
-  // globalStyle: {
-  //   transformer: globalStyleTransformer,
-  //   template: `<style>div{}</style>`,
-  // },
+  typescript: {
+    transformer: typescriptTransformer,
+    template: `<script lang="ts">console.log('potato')</script>`,
+  },
+  coffeescript: {
+    transformer: coffeeTransformer,
+    template: `<script lang="coffeescript">console.log('potato')</script>`,
+  },
+  scss: {
+    transformer: scssTransformer,
+    template: `<style lang="scss">div{}</style>`,
+  },
+  less: {
+    transformer: lessTransformer,
+    template: `<style lang="less">div{}</style>`,
+  },
+  stylus: {
+    transformer: stylusTransformer,
+    template: `<style lang="stylus">div{}</style>`,
+  },
+  postcss: {
+    transformer: postcssTransformer,
+    template: `<style>div{}</style>`,
+  },
+  globalStyle: {
+    transformer: globalStyleTransformer,
+    template: `<style>div{}</style>`,
+  },
 };
 
 // todo: is there a better way to do this?
