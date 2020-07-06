@@ -1,6 +1,6 @@
 {
   "name": "svelte-preprocess",
-  "version": "4.0.0-alpha.1",
+  "version": "4.0.0-alpha.2",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -36,8 +36,7 @@
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 1 && git add CHANGELOG.md",
     "tag": "git tag -a v$npm_package_version -m \"Release v$npm_package_version\"",
     "release": "npm run version && yarn && git add package.json yarn.lock && git commit -m \"chore(release): v$npm_package_version :tada:\"",
-    "minify": "babel-minify dist -d dist",
-    "prepublishOnly": "npm run test -- --no-cache && npm run build && npm run minify && npm run release && npm run tag"
+    "prepublishOnly": "npm run test -- --no-cache && npm run build && npm run release && npm run tag"
   },
   "jest": {
     "collectCoverage": true,
