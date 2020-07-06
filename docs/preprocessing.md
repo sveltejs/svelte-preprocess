@@ -333,24 +333,7 @@ You can check the [Sass API reference](https://sass-lang.com/documentation/js-ap
 
 ### Stylus
 
-You can check the [Stylus API reference](https://stylus-lang.com/docs/js.html) for specific Stylus options. The `filename` is not supported.
-
-```js
-import svelte from 'rollup-plugin-svelte'
-
-import { stylus } from 'svelte-preprocess'
-
-export default {
-  ...
-  plugins: [
-    svelte({
-      preprocess: [
-        stylus({ ... }),
-      ]
-    })
-  ]
-}
-```
+You can check the [Stylus API reference](https://stylus-lang.com/docs/js.html) for specific Stylus options. The `filename` property is overriden.
 
 ### TypeScript
 
