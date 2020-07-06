@@ -28,7 +28,7 @@ const transformer: Transformer<Options.Sass> = async ({
   let implementation = options?.implementation ?? sass;
 
   if (implementation == null) {
-    const mod = await importAny('node-sass', 'sass');
+    const mod = await importAny('sass', 'node-sass');
 
     // eslint-disable-next-line no-multi-assign
     implementation = sass = mod.default;
