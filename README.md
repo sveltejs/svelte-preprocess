@@ -19,6 +19,7 @@
 - [What is it?](#what-is-it)
 - [Getting Started](docs/getting-started.md)
 - [Usage](docs/usage.md)
+- [Migration Guide](docs/migration-guide.md)
 - [Preprocessing](docs/preprocessing.md)
   - [Preprocessors](docs/preprocessing.md#preprocessors)
 - [Features](#features)
@@ -199,6 +200,8 @@ The current supported languages out-of-the-box are Sass, Stylus, Less, CoffeeScr
 ### [Preprocessing documentation](/docs/preprocessing.md)
 
 ### [Usage documentation](/docs/usage.md)
+
+### [Migration Guide](/docs/migration-guide.md)
 
 ---
 
