@@ -1,3 +1,12 @@
+# [4.0.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.0-alpha.2...v4.0.0) (2020-07-07)
+
+
+### Bug Fixes
+
+* 🐛 try to use sass before node-sass ([89aba0e](https://github.com/sveltejs/svelte-preprocess/commit/89aba0e6f03208787cdb7e212979634089405c15)), closes [#163](https://github.com/sveltejs/svelte-preprocess/issues/163)
+
+
+
 # [4.0.0-alpha.2](https://github.com/sveltejs/svelte-preprocess/compare/v3.9.12...v4.0.0-alpha.2) (2020-07-06)
 
 ### Bug Fixes
