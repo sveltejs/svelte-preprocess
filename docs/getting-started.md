@@ -102,6 +102,8 @@ export default {
     file: 'public/bundle.js',
   },
   plugins: [
++    // teach rollup how to handle typescript imports
++    typescript({ sourceMap: !production }),
     svelte({
 +      preprocess: autoPreprocess({
 +         sourceMap: !production,
@@ -109,8 +111,6 @@ export default {
 +           plugins: [require('autoprefixer')()]
 +         }
 +      }),
-+     // teach rollup how to handle typescript imports
-+     typescript({ sourceMap: !production }),
       // enable run-time checks when not in production
       dev: !production,
       // we'll extract any component CSS out into
