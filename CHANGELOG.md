@@ -1,19 +1,12 @@
 # [4.0.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.0-alpha.2...v4.0.0) (2020-07-07)
 
-
 ### Bug Fixes
 
-* 🐛 try to use sass before node-sass ([89aba0e](https://github.com/sveltejs/svelte-preprocess/commit/89aba0e6f03208787cdb7e212979634089405c15)), closes [#163](https://github.com/sveltejs/svelte-preprocess/issues/163)
+- 🐛 try to use sass before node-sass ([89aba0e](https://github.com/sveltejs/svelte-preprocess/commit/89aba0e6f03208787cdb7e212979634089405c15)), closes [#163](https://github.com/sveltejs/svelte-preprocess/issues/163)
 
-
-
-# [4.0.0-alpha.2](https://github.com/sveltejs/svelte-preprocess/compare/v3.9.12...v4.0.0-alpha.2) (2020-07-06)
-
-### Bug Fixes
-
-- 🐛 bump minimum node version to 9.11.2 ([0befa7f](https://github.com/sveltejs/svelte-preprocess/commit/0befa7f4ff2aa3ba9f0129c3ed3994dd29fb991b))
-- 🐛 prevent globalify to wrongly split escaped selectors ([f461320](https://github.com/sveltejs/svelte-preprocess/commit/f461320ec05a534021afbe20de0fe097d1016871)), closes [#191](https://github.com/sveltejs/svelte-preprocess/issues/191)
-- 🐛 rename scss prepend option from `data` to `prependData` ([16b1325](https://github.com/sveltejs/svelte-preprocess/commit/16b13253bdf19073c084cb1590ed527695133836))
+* 🐛 bump minimum node version to 9.11.2 ([0befa7f](https://github.com/sveltejs/svelte-preprocess/commit/0befa7f4ff2aa3ba9f0129c3ed3994dd29fb991b))
+* 🐛 prevent globalify to wrongly split escaped selectors ([f461320](https://github.com/sveltejs/svelte-preprocess/commit/f461320ec05a534021afbe20de0fe097d1016871)), closes [#191](https://github.com/sveltejs/svelte-preprocess/issues/191)
+* 🐛 rename scss prepend option from `data` to `prependData` ([16b1325](https://github.com/sveltejs/svelte-preprocess/commit/16b13253bdf19073c084cb1590ed527695133836))
 
 ### Code Refactoring
 
