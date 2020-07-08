@@ -1,3 +1,21 @@
+## [4.0.2](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.1...v4.0.2) (2020-07-08)
+
+
+### Bug Fixes
+
+* 🐛 transformers type completion ([45ed796](https://github.com/sveltejs/svelte-preprocess/commit/45ed796492f28a974af7f821e8305e9905a4c1cf))
+
+
+
+## [4.0.2](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.1...v4.0.2) (2020-07-08)
+
+
+### Bug Fixes
+
+* 🐛 transformers type completion ([45ed796](https://github.com/sveltejs/svelte-preprocess/commit/45ed796492f28a974af7f821e8305e9905a4c1cf))
+
+
+
 ## [4.0.1](https://github.com/sveltejs/svelte-preprocess/compare/v3.9.12...v4.0.1) (2020-07-07)
 
 
