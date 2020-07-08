@@ -34,10 +34,7 @@ export type Transformer<T> = (
   args: TransformerArgs<T>,
 ) => Processed | Promise<Processed>;
 
-export type TransformerOptions<T = any> =
-  | boolean
-  | Record<keyof T | string, T[keyof T] | any>
-  | Transformer<T>;
+export type TransformerOptions<T = any> = boolean | T | Transformer<T>;
 
 export interface Transformers {
   typescript?: TransformerOptions<Options.Typescript>;
