@@ -1,3 +1,13 @@
+## [4.0.6](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.4...v4.0.6) (2020-07-08)
+
+
+### Bug Fixes
+
+* 🐛 even more type fixes ([34af056](https://github.com/sveltejs/svelte-preprocess/commit/34af05698823c1a679305214dad30598d9b514c0))
+* 🐛 remove loose log ([e72650c](https://github.com/sveltejs/svelte-preprocess/commit/e72650c5abf04659fb9ac62d346251c431b0dad1))
+
+
+
 ## [4.0.5](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.4...v4.0.5) (2020-07-08)
 
 ### Bug Fixes

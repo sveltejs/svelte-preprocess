@@ -1,6 +1,6 @@
 {
   "name": "svelte-preprocess",
-  "version": "4.0.5",
+  "version": "4.0.6",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -24,7 +24,7 @@
     "dist/"
   ],
   "scripts": {
-    "prebuild": "rm -rf dist/ && npm run lint",
+    "prebuild": "rm -rf dist/",
     "build": "tsc --build tsconfig.build.json",
     "dev": "npm run build -- -w",
     "test": "jest",
