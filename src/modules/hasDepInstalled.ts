@@ -12,7 +12,6 @@ export async function hasDepInstalled(dep: string) {
 
     result = true;
   } catch (e) {
-    console.log(e);
     result = false;
   }
 
