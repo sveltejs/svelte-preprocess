@@ -1,3 +1,21 @@
+## [4.0.3](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.2...v4.0.3) (2020-07-08)
+
+
+### Bug Fixes
+
+* 🐛 another type error :shrug: ([c55ad93](https://github.com/sveltejs/svelte-preprocess/commit/c55ad935c0251579ef62d5e93b3abf7c4c672360))
+
+
+
+## [4.0.3](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.2...v4.0.3) (2020-07-08)
+
+
+### Bug Fixes
+
+* 🐛 another type error :shrug: ([c55ad93](https://github.com/sveltejs/svelte-preprocess/commit/c55ad935c0251579ef62d5e93b3abf7c4c672360))
+
+
+
 ## [4.0.2](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.1...v4.0.2) (2020-07-08)
 
 
