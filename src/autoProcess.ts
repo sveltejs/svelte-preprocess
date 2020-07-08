@@ -126,7 +126,7 @@ export function autoPreprocess(
     if (typeof nameOpts === 'function') return nameOpts;
     if (aliasOpts === false || nameOpts === false) return false;
 
-    const opts: TransformerOptions<unknown> = {};
+    const opts: Record<string, any> = {};
 
     if (typeof nameOpts === 'object') {
       Object.assign(opts, nameOpts);
