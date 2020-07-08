@@ -25,8 +25,8 @@
   ],
   "scripts": {
     "prebuild": "rm -rf dist/ && npm run lint",
-    "build": "tsc",
-    "dev": "tsc -w",
+    "build": "tsc --build tsconfig.build.json",
+    "dev": "npm run build -- -w",
     "test": "jest",
     "test:watch": "jest --watchAll",
     "test:ci": "jest --silent --no-cache",

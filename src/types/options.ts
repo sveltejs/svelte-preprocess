@@ -14,7 +14,7 @@ export type Coffeescript = {
 } & ContentModifier;
 
 export type Postcss = postcss.ProcessOptions & {
-  plugins: postcss.AcceptedPlugin[];
+  plugins?: postcss.AcceptedPlugin[];
   // custom
   configFilePath?: string;
 } & ContentModifier;

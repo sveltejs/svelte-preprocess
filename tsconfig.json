@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "sourceMap": false,
     "module": "commonjs",
     "moduleResolution": "node",
@@ -11,6 +11,6 @@
     "types": ["jest", "node"],
     "outDir": "dist"
   },
-  "include": ["src/**/*.ts"],
+  "include": ["**/*.ts"],
   "exclude": ["node_modules/**/*", "dist"]
 }

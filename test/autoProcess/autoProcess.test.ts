@@ -57,7 +57,7 @@ describe('options', () => {
       autoPreprocess({
         scss: {
           sourceMap: false,
-          includedPaths: ['node_modules'],
+          includePaths: ['node_modules'],
         },
       }),
     );

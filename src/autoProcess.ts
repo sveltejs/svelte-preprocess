@@ -51,12 +51,7 @@ type AutoPreprocessOptions = {
 
   // workaround while we don't have this
   // https://github.com/microsoft/TypeScript/issues/17867
-  [languageName: string]:
-    | string
-    | Promise<string>
-    | Array<[string, string]>
-    | string[]
-    | TransformerOptions;
+  [languageName: string]: TransformerOptions;
 };
 
 const ALIAS_OPTION_OVERRIDES: Record<string, any> = {
