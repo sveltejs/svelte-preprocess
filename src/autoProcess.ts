@@ -37,6 +37,7 @@ type AutoPreprocessOptions = {
   sourceMap?: boolean;
 
   // transformers
+  babel?: TransformerOptions<Options.Babel>;
   typescript?: TransformerOptions<Options.Typescript>;
   scss?: TransformerOptions<Options.Sass>;
   sass?: TransformerOptions<Options.Sass>;

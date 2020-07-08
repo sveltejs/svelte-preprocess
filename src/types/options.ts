@@ -27,7 +27,8 @@ export type Babel = BabelOptions & {
   sourceMaps?: boolean;
 } & ContentModifier;
 
-export type Pug = PugOptions & ContentModifier;
+export type Pug = Omit<PugOptions, 'filename' | 'doctype' | 'compileDebug'> &
+  ContentModifier;
 
 export type Sass = Omit<SassOptions, 'file' | 'data'> & {
   // custom
