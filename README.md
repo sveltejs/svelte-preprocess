@@ -11,7 +11,7 @@
     <img src="https://img.shields.io/npm/l/svelte-preprocess.svg" alt="license">
   </a>
 
-  <a href="https://github.com/sveltejs/svelte/blob/master/LICENSE">
+  <a href="https://github.com/sveltejs/svelte-preprocess/actions?query=workflow%3ACI">
     <img src="https://github.com/sveltejs/svelte-preprocess/workflows/CI/badge.svg" alt="action-CI">
   </a>
 </p>
