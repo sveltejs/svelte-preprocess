@@ -1,112 +1,58 @@
 ## [4.0.5](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.4...v4.0.5) (2020-07-08)
 
-
 ### Bug Fixes
 
-* 🐛 remove loose log ([e72650c](https://github.com/sveltejs/svelte-preprocess/commit/e72650c5abf04659fb9ac62d346251c431b0dad1))
-
-
-
-## [4.0.5](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.4...v4.0.5) (2020-07-08)
-
-
-### Bug Fixes
-
-* 🐛 remove loose log ([e72650c](https://github.com/sveltejs/svelte-preprocess/commit/e72650c5abf04659fb9ac62d346251c431b0dad1))
-
-
+- 🐛 remove loose log ([e72650c](https://github.com/sveltejs/svelte-preprocess/commit/e72650c5abf04659fb9ac62d346251c431b0dad1))
 
 ## [4.0.4](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.3...v4.0.4) (2020-07-08)
 
-
 ### Bug Fixes
 
-* 🐛 more type fixes ([06dff79](https://github.com/sveltejs/svelte-preprocess/commit/06dff79334a1c6a36aed9d6a30ac421ce09fb82e))
-
-
-
-## [4.0.4](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.3...v4.0.4) (2020-07-08)
-
-
-### Bug Fixes
-
-* 🐛 more type fixes ([06dff79](https://github.com/sveltejs/svelte-preprocess/commit/06dff79334a1c6a36aed9d6a30ac421ce09fb82e))
-
-
+- 🐛 more type fixes ([06dff79](https://github.com/sveltejs/svelte-preprocess/commit/06dff79334a1c6a36aed9d6a30ac421ce09fb82e))
 
 ## [4.0.3](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.2...v4.0.3) (2020-07-08)
 
-
 ### Bug Fixes
 
-* 🐛 another type error :shrug: ([c55ad93](https://github.com/sveltejs/svelte-preprocess/commit/c55ad935c0251579ef62d5e93b3abf7c4c672360))
-
-
-
-## [4.0.3](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.2...v4.0.3) (2020-07-08)
-
-
-### Bug Fixes
-
-* 🐛 another type error :shrug: ([c55ad93](https://github.com/sveltejs/svelte-preprocess/commit/c55ad935c0251579ef62d5e93b3abf7c4c672360))
-
-
+- 🐛 another type error :shrug: ([c55ad93](https://github.com/sveltejs/svelte-preprocess/commit/c55ad935c0251579ef62d5e93b3abf7c4c672360))
 
 ## [4.0.2](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.1...v4.0.2) (2020-07-08)
 
-
 ### Bug Fixes
 
-* 🐛 transformers type completion ([45ed796](https://github.com/sveltejs/svelte-preprocess/commit/45ed796492f28a974af7f821e8305e9905a4c1cf))
-
-
-
-## [4.0.2](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.1...v4.0.2) (2020-07-08)
-
-
-### Bug Fixes
-
-* 🐛 transformers type completion ([45ed796](https://github.com/sveltejs/svelte-preprocess/commit/45ed796492f28a974af7f821e8305e9905a4c1cf))
-
-
+- 🐛 transformers type completion ([45ed796](https://github.com/sveltejs/svelte-preprocess/commit/45ed796492f28a974af7f821e8305e9905a4c1cf))
 
 ## [4.0.1](https://github.com/sveltejs/svelte-preprocess/compare/v3.9.12...v4.0.1) (2020-07-07)
 
-
 ### Bug Fixes
 
-* 🐛 bump minimum node version to 9.11.2 ([b8e0568](https://github.com/sveltejs/svelte-preprocess/commit/b8e05688d8a2bcc390abd262cfe5e3338b06cc2b))
-* 🐛 postcss installation check ([7df673a](https://github.com/sveltejs/svelte-preprocess/commit/7df673a73ae2b12b89c174046b833bace7d97297))
-* 🐛 prevent globalify to wrongly split escaped selectors ([e9c4031](https://github.com/sveltejs/svelte-preprocess/commit/e9c4031835ac18d713b5b50d909995677d516959)), closes [#191](https://github.com/sveltejs/svelte-preprocess/issues/191)
-* 🐛 rename scss prepend option from `data` to `prependData` ([bd1caca](https://github.com/sveltejs/svelte-preprocess/commit/bd1caca79d863cf08de353ed837de42b5ec063a1))
-* 🐛 try to use sass before node-sass ([10af027](https://github.com/sveltejs/svelte-preprocess/commit/10af027bbff20ce5bb3a8e9829bba5cf9c461b98)), closes [#163](https://github.com/sveltejs/svelte-preprocess/issues/163)
-
+- 🐛 bump minimum node version to 9.11.2 ([b8e0568](https://github.com/sveltejs/svelte-preprocess/commit/b8e05688d8a2bcc390abd262cfe5e3338b06cc2b))
+- 🐛 postcss installation check ([7df673a](https://github.com/sveltejs/svelte-preprocess/commit/7df673a73ae2b12b89c174046b833bace7d97297))
+- 🐛 prevent globalify to wrongly split escaped selectors ([e9c4031](https://github.com/sveltejs/svelte-preprocess/commit/e9c4031835ac18d713b5b50d909995677d516959)), closes [#191](https://github.com/sveltejs/svelte-preprocess/issues/191)
+- 🐛 rename scss prepend option from `data` to `prependData` ([bd1caca](https://github.com/sveltejs/svelte-preprocess/commit/bd1caca79d863cf08de353ed837de42b5ec063a1))
+- 🐛 try to use sass before node-sass ([10af027](https://github.com/sveltejs/svelte-preprocess/commit/10af027bbff20ce5bb3a8e9829bba5cf9c461b98)), closes [#163](https://github.com/sveltejs/svelte-preprocess/issues/163)
 
 ### Code Refactoring
 
-* 💡 remove deprecated autoProcess props ([7fbff08](https://github.com/sveltejs/svelte-preprocess/commit/7fbff088f08039cee25534385dfaebc590a0d813))
-
+- 💡 remove deprecated autoProcess props ([7fbff08](https://github.com/sveltejs/svelte-preprocess/commit/7fbff088f08039cee25534385dfaebc590a0d813))
 
 ### Features
 
-* 🎸 add sourceMap prop to configuration object ([9156efc](https://github.com/sveltejs/svelte-preprocess/commit/9156efc0d25e0a3642bf66e931b310eb62c4ec2f))
-* 🎸 support defining default languages ([6483879](https://github.com/sveltejs/svelte-preprocess/commit/6483879e4a316d60a2e0655746a342c6debb90be)), closes [#189](https://github.com/sveltejs/svelte-preprocess/issues/189)
-* 🎸 support markup preprocessing with no tags ([a1a3360](https://github.com/sveltejs/svelte-preprocess/commit/a1a33602bf1badd49e01188a9d63b8ef653a13a9))
-* 🎸 support prependData for almost every preprocessor ([b80ca90](https://github.com/sveltejs/svelte-preprocess/commit/b80ca90802d2c17fa249b06fb17e678fff443656))
-
+- 🎸 add sourceMap prop to configuration object ([9156efc](https://github.com/sveltejs/svelte-preprocess/commit/9156efc0d25e0a3642bf66e931b310eb62c4ec2f))
+- 🎸 support defining default languages ([6483879](https://github.com/sveltejs/svelte-preprocess/commit/6483879e4a316d60a2e0655746a342c6debb90be)), closes [#189](https://github.com/sveltejs/svelte-preprocess/issues/189)
+- 🎸 support markup preprocessing with no tags ([a1a3360](https://github.com/sveltejs/svelte-preprocess/commit/a1a33602bf1badd49e01188a9d63b8ef653a13a9))
+- 🎸 support prependData for almost every preprocessor ([b80ca90](https://github.com/sveltejs/svelte-preprocess/commit/b80ca90802d2c17fa249b06fb17e678fff443656))
 
 ### BREAKING CHANGES
 
-* 🧨 This is a general evolution of the specific `scss.data` property that
-was used to prepend data to components written in scss.
-`{preprocessorOptions}.prependData` is now the way to prepend some
-string to any preprocessor.
-* 🧨 Node versions below 9.11.2 won't be supported anymore
-* 🧨 Uses Lookbehind assertions, so Node 9.11.2+ is needed
-* 🧨 Content passed through the `data` property won't be prepended anymore.
-* 🧨 `onBefore` and `transformers` were removed
-
-
+- 🧨 This is a general evolution of the specific `scss.data` property that
+  was used to prepend data to components written in scss.
+  `{preprocessorOptions}.prependData` is now the way to prepend some
+  string to any preprocessor.
+- 🧨 Node versions below 9.11.2 won't be supported anymore
+- 🧨 Uses Lookbehind assertions, so Node 9.11.2+ is needed
+- 🧨 Content passed through the `data` property won't be prepended anymore.
+- 🧨 `onBefore` and `transformers` were removed
 
 # [4.0.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.0-alpha.2...v4.0.0) (2020-07-07)
 
