@@ -1,6 +1,6 @@
 import { Options, PreprocessorGroup } from '../types';
 import { getTagInfo } from '../modules/tagInfo';
-import { concat } from '../modules/concat';
+import { concat } from '../modules/utils';
 import { prepareContent } from '../modules/prepareContent';
 
 export default (options?: Options.Stylus): PreprocessorGroup => ({

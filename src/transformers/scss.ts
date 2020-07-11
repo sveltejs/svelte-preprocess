@@ -1,8 +1,7 @@
 import { Result } from 'sass';
 
 import { Transformer, Processed, Options } from '../types';
-import { getIncludePaths } from '../modules/getIncludePaths';
-import { importAny } from '../modules/importAny';
+import { getIncludePaths, importAny } from '../modules/utils';
 
 let sass: Options.Sass['implementation'];
 

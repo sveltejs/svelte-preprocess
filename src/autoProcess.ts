@@ -7,8 +7,7 @@ import {
   Transformers,
   Options,
 } from './types';
-import { hasDepInstalled } from './modules/hasDepInstalled';
-import { concat } from './modules/concat';
+import { hasDepInstalled, concat } from './modules/utils';
 import { getTagInfo } from './modules/tagInfo';
 import {
   addLanguageAlias,

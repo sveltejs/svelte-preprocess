@@ -1,5 +1,5 @@
 import { PreprocessorGroup, Options } from '../types';
-import { concat } from '../modules/concat';
+import { concat } from '../modules/utils';
 import { getTagInfo } from '../modules/tagInfo';
 import { prepareContent } from '../modules/prepareContent';
 

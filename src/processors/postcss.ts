@@ -1,6 +1,6 @@
 import { PreprocessorGroup, Options } from '../types';
 import { getTagInfo } from '../modules/tagInfo';
-import { concat } from '../modules/concat';
+import { concat } from '../modules/utils';
 import { prepareContent } from '../modules/prepareContent';
 
 /** Adapted from https://github.com/TehShrike/svelte-preprocess-postcss */

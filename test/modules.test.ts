@@ -2,10 +2,12 @@ import { resolve } from 'path';
 
 import { getTestAppFilename, getFixtureContent } from './utils';
 import { getTagInfo } from '../src/modules/tagInfo';
-import { importAny } from '../src/modules/importAny';
-import { getIncludePaths } from '../src/modules/getIncludePaths';
+import {
+  importAny,
+  getIncludePaths,
+  hasDepInstalled,
+} from '../src/modules/utils';
 import { globalifySelector } from '../src/modules/globalifySelector';
-import { hasDepInstalled } from '../src/modules/hasDepInstalled';
 
 describe('importAny', () => {
   it('should throw error when none exist', () => {
