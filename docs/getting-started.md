@@ -216,7 +216,7 @@ $primary-color: red;
 As in any SCSS project, we could just `@use './path/to/variables.scss`, but that can also become boring. `svelte-preprocess` [accepts a `prependData`](/docs/preprocessing.md#preprocessors) for almost every processor. Let's use it to prepend our import!
 
 ```diff
-+ import { posix } from 'path'
++ import path from 'path'
 import svelte from 'rollup-plugin-svelte'
 import autoPreprocess from 'svelte-preprocess';
 
@@ -241,7 +241,7 @@ export default {
 +          // We need an absolute path here because each component is
 +          // preprocessed from its directory.
 +          // Obs: must pass a posix-style path to scss
-+          prependData: `@use '${posix.resolve(process.cwd(), 'src/styles/variables.scss')}';`
++          prependData: `@use '${path.resolve(process.cwd(), 'src/styles/variables.scss').replace(/\\/g, '/')}';`
 +        },
          postcss: {
            plugins: [require('autoprefixer')()]
