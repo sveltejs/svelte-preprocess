@@ -1,3 +1,12 @@
+## [4.0.7](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.6...v4.0.7) (2020-07-11)
+
+
+### Bug Fixes
+
+* 🐛 add more meaningful log to importAny ([2f7053e](https://github.com/sveltejs/svelte-preprocess/commit/2f7053eeae6e1f779aca0868fb345e445d53bb90))
+
+
+
 ## [4.0.6](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.4...v4.0.6) (2020-07-08)
 
 
