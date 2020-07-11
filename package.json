@@ -35,7 +35,7 @@
     "postinstall": "echo \"[svelte-preprocess] Don't forget to install the preprocessors packages that will be used: node-sass/sass, stylus, less, postcss & postcss-load-config, coffeescript, pug, etc...\"",
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 1 && git add CHANGELOG.md",
     "tag": "git tag -a v$npm_package_version -m \"Release v$npm_package_version\"",
-    "release": "npm run version && yarn && git add package.json yarn.lock && git commit -m \"chore(release): v$npm_package_version :tada:\"",
+    "release": "yarn && git add package.json yarn.lock && git commit -m \"chore(release): v$npm_package_version :tada:\"",
     "prepublishOnly": "npm run test  && npm run build && npm run release && npm run tag"
   },
   "jest": {
