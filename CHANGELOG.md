@@ -1,3 +1,12 @@
+## [4.0.8](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.7...v4.0.8) (2020-07-14)
+
+
+### Bug Fixes
+
+* 🐛 scss prepending twice ([b734901](https://github.com/sveltejs/svelte-preprocess/commit/b7349012f2a2fdb3e0c1be5339cd581399fbcaa4)), closes [#200](https://github.com/sveltejs/svelte-preprocess/issues/200)
+
+
+
 ## [4.0.7](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.6...v4.0.7) (2020-07-11)
 
 
