@@ -3,8 +3,18 @@ import { Options as SassOptions, render, renderSync } from 'sass';
 import { Options as PugOptions } from 'pug';
 import { TransformOptions as BabelOptions } from '@babel/core';
 
-type ContentModifier = {
+type AdditionalDataMethod = ({
+  content,
+  filename,
+}: {
+  content: string;
+  filename: string;
+}) => string;
+
+export type ContentModifier = {
+  /** @deprecated Use additionalData instead */
   prependData?: string;
+  additionalData?: string | AdditionalDataMethod;
 };
 
 export type Coffeescript = {

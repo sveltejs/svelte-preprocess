@@ -9,6 +9,7 @@
   - [Stand-alone processors](#stand-alone-processors)
   - [Difference between the auto and stand-alone modes](#difference-between-the-auto-and-stand-alone-modes)
 - [Preprocessors](#preprocessors)
+  - [Options](#options)
   - [Babel](#babel)
   - [CoffeeScript](#coffeescript)
   - [Less](#less)
@@ -247,11 +248,49 @@ export default {
 
 ## Preprocessors
 
+### Options
+
 Besides the options of each preprocessors, `svelte-preprocess` also supports these custom options:
 
-| Option        | Default | Description                                                                            |
-| ------------- | ------- | -------------------------------------------------------------------------------------- |
-| `prependData` | `''`    | `string` will be prepended to every component part that runs through the preprocessor. |
+| Option                              | Default     | Description                                                                                                                                                                  |
+| ----------------------------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`additionalData`](#additionalData) | `undefined` | If a `string`, the value will be prepended to every component part that runs through the preprocessor. If a `function`, it expects to return the content to be preprocessed. |
+
+#### `additionalData`
+
+Type: `string | ({ content: string, filename: string }) => string`
+
+If a `string`, the value will be prepended to every component part that runs through the preprocessor. If a `function`, it expects to return the content to be preprocessed.
+
+```js
+import svelte from 'rollup-plugin-svelte';
+
+import autoPreprocess from 'svelte-preprocess';
+
+export default {
+  plugins: [
+    svelte({
+      preprocess: autoPreprocess({
+        typescript: {
+          additionalData: '// prepended content',
+        },
+        scss: {
+          // Passing a function
+          additionalData({ content, filename }) {
+            return [
+              // prepended
+              `// I'm at the top of the file`,
+              content,
+              // appended
+              `// And I'm at the bottom!`,
+            ].join('\n');
+          },
+        },
+      }),
+    }),
+  ],
+};
+```
 
 ### Babel
 

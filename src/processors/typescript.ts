@@ -14,7 +14,7 @@ export default (options?: Options.Typescript): PreprocessorGroup => ({
       dependencies,
     } = await getTagInfo(svelteFile);
 
-    content = prepareContent({ options, content });
+    content = prepareContent({ options, content, filename });
 
     if (lang !== 'typescript') {
       return { code: content };

@@ -11,7 +11,7 @@ export default (options?: Options.Postcss): PreprocessorGroup => ({
       svelteFile,
     );
 
-    content = prepareContent({ options, content });
+    content = prepareContent({ options, content, filename });
 
     /** If manually passed a plugins array, use it as the postcss config */
     const transformed = await transformer({

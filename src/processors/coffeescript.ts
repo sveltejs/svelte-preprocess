@@ -15,7 +15,7 @@ export default (options?: Options.Coffeescript): PreprocessorGroup => ({
       dependencies,
     } = await getTagInfo(svelteFile);
 
-    content = prepareContent({ options, content });
+    content = prepareContent({ options, content, filename });
 
     if (lang !== 'coffeescript') {
       return { code: content };

@@ -28,17 +28,17 @@ sveltePreprocess({
 });
 ```
 
-In `v4`, not only `scss`, but every language preprocessor accepts the new `prependData` property. The `data` property is no longer supported.
+In `v4`, not only `scss`, but every language preprocessor accepts the new `additionalData` property. The `data` property is no longer supported.
 
 ```js
 import sveltePreprocess from 'svelte-preprocess';
 
 sveltePreprocess({
   scss: {
-    prependData: '// prepended content for scss',
+    additionalData: '// prepended content for scss',
   },
   typescript: {
-    prependData: '// prepended content for ts',
+    additionalData: '// prepended content for ts',
   },
 });
 ```

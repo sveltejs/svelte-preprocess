@@ -33,7 +33,7 @@ const transformer: Transformer<Options.Sass> = async ({
     implementation = sass = mod.default;
   }
 
-  const { renderSync, prependData, ...restOptions } = {
+  const { renderSync, ...restOptions } = {
     ...options,
     includePaths: getIncludePaths(filename, options.includePaths),
     outFile: `${filename}.css`,

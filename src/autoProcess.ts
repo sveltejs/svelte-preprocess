@@ -169,6 +169,7 @@ export function autoPreprocess(
     const transformerOptions = getTransformerOptions(lang, alias);
 
     content = prepareContent({
+      filename,
       options: transformerOptions,
       content,
     });

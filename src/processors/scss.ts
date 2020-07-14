@@ -15,7 +15,7 @@ export default (options?: Options.Sass): PreprocessorGroup => ({
       dependencies,
     } = await getTagInfo(svelteFile);
 
-    content = prepareContent({ options, content });
+    content = prepareContent({ options, content, filename });
 
     if (lang !== 'scss') {
       return { code: content };

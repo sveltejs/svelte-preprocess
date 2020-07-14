@@ -11,7 +11,7 @@ export default (options?: Options.Babel): PreprocessorGroup => ({
       svelteFile,
     );
 
-    content = prepareContent({ options, content });
+    content = prepareContent({ options, content, filename });
 
     const transformed = await transformer({
       content,

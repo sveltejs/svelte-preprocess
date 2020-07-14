@@ -213,7 +213,7 @@ Now we're in need of a SCSS file to hold some variables. Let's assume it's creat
 $primary-color: red;
 ```
 
-As in any SCSS project, we could just `@use './path/to/variables.scss`, but that can also become boring. `svelte-preprocess` [accepts a `prependData`](/docs/preprocessing.md#preprocessors) for almost every processor. Let's use it to prepend our import!
+As in any SCSS project, we could just `@use './path/to/variables.scss`, but that can also become boring. `svelte-preprocess` [accepts a `additionalData`](/docs/preprocessing.md#preprocessors) for almost every processor. Let's use it to prepend our import!
 
 ```diff
 import svelte from 'rollup-plugin-svelte'
@@ -240,7 +240,7 @@ export default {
 +          // We can use a path relative to the root because
 +          // svelte-preprocess automatically adds it to `includePaths`
 +          // if none is defined.
-+          prependData: `@import 'src/styles/variables.scss';`
++          additionalData: `@import 'src/styles/variables.scss';`
 +        },
          postcss: {
            plugins: [require('autoprefixer')()]
