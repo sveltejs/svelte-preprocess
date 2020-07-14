@@ -41,7 +41,7 @@ const transformer: Transformer<Options.Sass> = async ({
 
   const sassOptions = {
     ...restOptions,
-    data: prependData ? `${prependData}${content}` : content,
+    data: content,
   };
 
   // scss errors if passed an empty string
