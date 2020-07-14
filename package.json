@@ -1,6 +1,6 @@
 {
   "name": "svelte-preprocess",
-  "version": "4.0.8",
+  "version": "4.0.7",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -28,14 +28,12 @@
     "build": "tsc --build tsconfig.build.json",
     "dev": "npm run build -- -w",
     "test": "jest",
-    "test:watch": "jest --watchAll",
     "test:ci": "jest --silent --no-cache",
     "lint": "eslint --ext js,ts .",
     "format": "prettier --write \"**/*.{ts,js,json}\"",
     "postinstall": "echo \"[svelte-preprocess] Don't forget to install the preprocessors packages that will be used: node-sass/sass, stylus, less, postcss & postcss-load-config, coffeescript, pug, etc...\"",
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 1 && git add CHANGELOG.md",
-    "release": "yarn && git add package.json yarn.lock && git commit -m \"chore(release): v$npm_package_version :tada:\"",
-    "prepublishOnly": "npm run test && npm run build && npm run release"
+    "prepublishOnly": "npm run test && npm run build"
   },
   "jest": {
     "collectCoverage": true,
