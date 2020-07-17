@@ -83,7 +83,7 @@ export const runTransformer = async (
   });
 };
 
-export function autoPreprocess(
+export function sveltePreprocess(
   {
     aliases,
     markupTagName = 'template',

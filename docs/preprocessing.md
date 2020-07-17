@@ -34,12 +34,12 @@ In auto preprocessing mode, `svelte-preprocess` automatically uses the respectiv
 
 ```js
 import svelte from 'rollup-plugin-svelte'
-import autoPreprocess from 'svelte-preprocess'
+import sveltePreprocess from 'svelte-preprocess'
 
 export default {
   plugins: [
     svelte({
-      preprocess: autoPreprocess({ ... })
+      preprocess: sveltePreprocess({ ... })
     })
   ]
 }
@@ -79,12 +79,12 @@ Alongside the options above, you can also configure options of specific preproce
 
 ```js
 import svelte from 'rollup-plugin-svelte';
-import autoPreprocess from 'svelte-preprocess';
+import sveltePreprocess from 'svelte-preprocess';
 
 export default {
   plugins: [
     svelte({
-      preprocess: autoPreprocess({
+      preprocess: sveltePreprocess({
         globalStyle: { ... },
         replace: { ... },
         typescript: { ... },
@@ -109,12 +109,12 @@ It's also possible to create custom preprocessors, taking advantage of the autom
 
 ```js
 import svelte from 'rollup-plugin-svelte';
-import autoPreprocess from 'svelte-preprocess';
+import sveltePreprocess from 'svelte-preprocess';
 
 export default {
   plugins: [
     svelte({
-      preprocess: autoPreprocess({
+      preprocess: sveltePreprocess({
         aliases: [
           ['potato', 'potatoLanguage'],
           ['pot', 'potatoLanguage'],
@@ -145,13 +145,13 @@ To integrate `esbuild` with `svelte-preprocss` we can override the default TypeS
 
 ```js
 import svelte from 'rollup-plugin-svelte';
-import autoPreprocess from 'svelte-preprocess';
+import sveltePreprocess from 'svelte-preprocess';
 import { transformSync } from 'esbuild';
 
 export default {
   plugins: [
     svelte({
-      preprocess: autoPreprocess({
+      preprocess: sveltePreprocess({
         typescript({ content, filename }) {
           const { js: code } = transformSync(content, {
             loader: 'ts',
@@ -234,12 +234,12 @@ export default {
 
 // vs
 import svelte from 'rollup-plugin-svelte';
-import autoPreprocess from 'svelte-preprocess';
+import sveltePreprocess from 'svelte-preprocess';
 
 export default {
   plugins: [
     svelte({
-      preprocess: autoPreprocess(),
+      preprocess: sveltePreprocess(),
     }),
   ],
 };

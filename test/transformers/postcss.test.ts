@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 import { resolve } from 'path';
 
-import autoPreprocess from '../../src';
+import sveltePreprocess from '../../src';
 import { preprocess, spyConsole } from '../utils';
 
 spyConsole();
@@ -11,7 +11,7 @@ spyConsole();
 describe('transformer - postcss', () => {
   it('should not transform plain css with postcss if { postcss: falsy }', async () => {
     const template = `<div></div><style>div{appearance:none;}</style>`;
-    const preprocessed = await preprocess(template, autoPreprocess());
+    const preprocessed = await preprocess(template, sveltePreprocess());
 
     expect(preprocessed.toString()).not.toMatch(/-webkit-/);
   });
@@ -20,7 +20,7 @@ describe('transformer - postcss', () => {
     const template = `<div></div><style>div{appearance:none;}</style>`;
     const preprocessed = await preprocess(
       template,
-      autoPreprocess({
+      sveltePreprocess({
         postcss: true,
       }),
     );
@@ -30,7 +30,7 @@ describe('transformer - postcss', () => {
 
   it('should transform plain css with postcss if { postcss: { plugins... } }', async () => {
     const template = `<div></div><style>div{appearance:none;}</style>`;
-    const optsWithoutConfigFile = autoPreprocess({
+    const optsWithoutConfigFile = sveltePreprocess({
       postcss: {
         plugins: [
           require('autoprefixer')({
@@ -47,7 +47,7 @@ describe('transformer - postcss', () => {
 
   it('should transform async preprocessed css with postcss if { postcss: { plugins... } }', async () => {
     const templateSass = `<div></div><style lang="scss">div{appearance:none;}</style>`;
-    const optsWithoutConfigFile = autoPreprocess({
+    const optsWithoutConfigFile = sveltePreprocess({
       postcss: {
         plugins: [
           require('autoprefixer')({
@@ -66,7 +66,7 @@ describe('transformer - postcss', () => {
     const template = `<div></div><style>div{appearance:none;}</style>`;
     const preprocessed = await preprocess(
       template,
-      autoPreprocess({
+      sveltePreprocess({
         postcss: {
           configFilePath: './test/fixtures/',
         },
@@ -78,7 +78,7 @@ describe('transformer - postcss', () => {
 
   it('should return @imported files as dependencies', async () => {
     const template = `<style>@import './fixtures/style.css';</style>`;
-    const opts = autoPreprocess({
+    const opts = sveltePreprocess({
       postcss: {
         plugins: [require('postcss-easy-import')],
       },
@@ -97,7 +97,7 @@ div
   color: red
 </style>`;
 
-    const opts = autoPreprocess({
+    const opts = sveltePreprocess({
       postcss: {
         parser: require('sugarss'),
         plugins: [require('postcss-easy-import')],

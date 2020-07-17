@@ -40,12 +40,12 @@ Writing your own preprocessor for, i.e SCSS is easy enough, but it can be cumber
 
 ```js
 import svelte from 'rollup-plugin-svelte'
-import autoPreprocess from 'svelte-preprocess'
+import sveltePreprocess from 'svelte-preprocess'
 
 export default {
   plugins: [
     svelte({
-      preprocess: autoPreprocess({ ... })
+      preprocess: sveltePreprocess({ ... })
     })
   ]
 }

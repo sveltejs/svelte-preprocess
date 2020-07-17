@@ -1,4 +1,4 @@
-import autoPreprocess from '../../src';
+import sveltePreprocess from '../../src';
 import {
   preprocess,
   getFixtureContent,
@@ -37,7 +37,7 @@ describe('options', () => {
       'template.custom',
     )}</template>`;
 
-    const opts = autoPreprocess({
+    const opts = sveltePreprocess({
       customTransformer({ content }) {
         content = content.replace('foo', 'bar').toString().trim();
 
@@ -54,7 +54,7 @@ describe('options', () => {
     const input = `<div></div><style src="./fixtures/style.scss"></style>`;
     const preprocessed = await preprocess(
       input,
-      autoPreprocess({
+      sveltePreprocess({
         scss: {
           sourceMap: false,
           includePaths: ['node_modules'],
@@ -67,7 +67,7 @@ describe('options', () => {
 
   it('should append aliases to the language alias dictionary', async () => {
     const input = `<script lang="cl"></script>`;
-    const opts = autoPreprocess({
+    const opts = sveltePreprocess({
       aliases: [['cl', 'javascript']],
     });
 
@@ -76,7 +76,7 @@ describe('options', () => {
 
   it('should allow to pass a method as an language alias transformer', async () => {
     const input = `<style lang="cl"></style>`;
-    const opts = autoPreprocess({
+    const opts = sveltePreprocess({
       aliases: [['cl', 'customLanguage']],
       cl() {
         return { code: 'div{}' };
@@ -92,7 +92,7 @@ describe('options', () => {
 
   it('should allow to pass a method as an language transformer', async () => {
     const input = `<style lang="cl"></style>`;
-    const opts = autoPreprocess({
+    const opts = sveltePreprocess({
       aliases: [['cl', 'customLanguage']],
       customLanguage() {
         return { code: 'div{}' };
@@ -108,7 +108,7 @@ describe('options', () => {
 
   it('should NOT preprocess preserved languages', async () => {
     const input = `<div></div><script type="application/ld+json">{"json":true}</script>`;
-    const opts = autoPreprocess({
+    const opts = sveltePreprocess({
       preserve: ['ld+json'],
       aliases: [['ld+json', 'structuredData']],
       structuredData() {
@@ -128,7 +128,7 @@ describe('options', () => {
       'style.sass',
     )}</style>`;
 
-    const opts = autoPreprocess({
+    const opts = sveltePreprocess({
       sass: {
         indentedSyntax: false,
       },
@@ -140,7 +140,7 @@ describe('options', () => {
   it('should accept other languages as default', async () => {
     const input = `<template>markup</template><style>style</style><script>script</script>`;
 
-    const opts = autoPreprocess({
+    const opts = sveltePreprocess({
       defaults: {
         markup: 'customMarkup',
         script: 'customScript',
@@ -168,7 +168,7 @@ describe('options', () => {
   it('should respect lang/type attributes even if another default language is set', async () => {
     const input = `<script lang="tomatoScript">script</script>`;
 
-    const opts = autoPreprocess({
+    const opts = sveltePreprocess({
       defaults: {
         script: 'potatoScript',
       },
@@ -190,7 +190,7 @@ describe('options', () => {
   it('should be able to use default markup language with template tags', async () => {
     const input = `potato`;
 
-    const opts = autoPreprocess({
+    const opts = sveltePreprocess({
       defaults: {
         markup: 'potatoScript',
       },

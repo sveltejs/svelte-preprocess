@@ -1,4 +1,4 @@
-import autoPreprocess from '../../src';
+import sveltePreprocess from '../../src';
 import { preprocess } from '../utils';
 import { transformer as babelTransformer } from '../../src/transformers/babel';
 import { transformer as coffeeTransformer } from '../../src/transformers/coffeescript';
@@ -79,7 +79,7 @@ describe(`sourcemap generation`, () => {
   Object.entries(TRANSFORMERS).forEach(
     ([transformerName, { transformer, template }]) => {
       it(`${transformerName} - pass the appropriate source map option downwards to the transformer`, async () => {
-        const opts = autoPreprocess({
+        const opts = sveltePreprocess({
           sourceMap: true,
           [transformerName]: true,
         });

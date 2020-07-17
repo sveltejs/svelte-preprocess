@@ -1,10 +1,10 @@
-import { autoPreprocess } from './autoProcess';
+import { sveltePreprocess } from './autoProcess';
 
 // default auto processor
 // crazy es6/cjs export mix for backward compatibility
 
 // eslint-disable-next-line no-multi-assign
-export default exports = module.exports = autoPreprocess;
+export default exports = module.exports = sveltePreprocess;
 
 // stand-alone processors to be included manually */
 export { default as pug } from './processors/pug';

@@ -1,4 +1,4 @@
-import autoPreprocess from '../../src';
+import sveltePreprocess from '../../src';
 import { preprocess } from '../utils';
 
 const BABEL_CONFIG = {
@@ -26,7 +26,7 @@ let foo = {}
 $: bar = foo?.b ?? 120
 </script>`;
 
-    const opts = autoPreprocess({
+    const opts = sveltePreprocess({
       babel: BABEL_CONFIG,
     });
 

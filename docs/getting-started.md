@@ -43,7 +43,7 @@ Let's use `svelte-preprocess` in [auto-preprocessing mode](/docs/preprocessing##
 
 ```diff
 import svelte from 'rollup-plugin-svelte'
-+ import autoPreprocess from 'svelte-preprocess';
++ import sveltePreprocess from 'svelte-preprocess';
 
 const production = !process.env.ROLLUP_WATCH
 
@@ -57,7 +57,7 @@ export default {
   },
   plugins: [
     svelte({
-+      preprocess: autoPreprocess(),
++      preprocess: sveltePreprocess(),
       // enable run-time checks when not in production
       dev: !production,
       // we'll extract any component CSS out into
@@ -88,7 +88,7 @@ After the installation is complete, we still need to configure our PostCSS optio
 
 ```diff
 import svelte from 'rollup-plugin-svelte'
-import autoPreprocess from 'svelte-preprocess';
+import sveltePreprocess from 'svelte-preprocess';
 + import typescript from '@rollup/plugin-typescript';
 
 const production = !process.env.ROLLUP_WATCH
@@ -105,7 +105,7 @@ export default {
 +    // teach rollup how to handle typescript imports
 +    typescript({ sourceMap: !production }),
     svelte({
-+      preprocess: autoPreprocess({
++      preprocess: sveltePreprocess({
 +         sourceMap: !production,
 +         postcss: {
 +           plugins: [require('autoprefixer')()]
@@ -149,7 +149,7 @@ _**Disclaimer**: The Svelte VS Code extension uses the `lang` or `type` attribut
 
 ```diff
 import svelte from 'rollup-plugin-svelte'
-import autoPreprocess from 'svelte-preprocess';
+import sveltePreprocess from 'svelte-preprocess';
 
 export default {
   input: 'src/main.js',
@@ -161,7 +161,7 @@ export default {
   },
   plugins: [
     svelte({
-      preprocess: autoPreprocess({
+      preprocess: sveltePreprocess({
          sourceMap: !production,
 +        defaults: {
 +          markup: 'pug',
@@ -217,7 +217,7 @@ As in any SCSS project, we could just `@use './path/to/variables.scss`, but that
 
 ```diff
 import svelte from 'rollup-plugin-svelte'
-import autoPreprocess from 'svelte-preprocess';
+import sveltePreprocess from 'svelte-preprocess';
 
 export default {
   input: 'src/main.js',
@@ -229,7 +229,7 @@ export default {
   },
   plugins: [
     svelte({
-      preprocess: autoPreprocess({
+      preprocess: sveltePreprocess({
          sourceMap: !production,
          defaults: {
            markup: 'pug',

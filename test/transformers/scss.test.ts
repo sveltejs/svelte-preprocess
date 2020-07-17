@@ -3,7 +3,7 @@
 
 import { resolve } from 'path';
 
-import autoPreprocess from '../../src';
+import sveltePreprocess from '../../src';
 import { preprocess } from '../utils';
 import { Options } from '../../src/types';
 
@@ -35,7 +35,7 @@ const implementation: Options.Sass['implementation'] = {
 describe('transformer - scss', () => {
   it('should return @imported files as dependencies - via default async render', async () => {
     const template = `<style lang="scss">@import "fixtures/style.scss";</style>`;
-    const opts = autoPreprocess({
+    const opts = sveltePreprocess({
       scss: {
         // we force the node-sass implementation here because of
         // https://github.com/sveltejs/svelte-preprocess/issues/163#issuecomment-639694477
@@ -52,7 +52,7 @@ describe('transformer - scss', () => {
 
   it('should return @imported files as dependencies - via renderSync', async () => {
     const template = `<style lang="scss">@import "fixtures/style.scss";</style>`;
-    const opts = autoPreprocess({
+    const opts = sveltePreprocess({
       scss: {
         // we force the node-sass implementation here because of
         // https://github.com/sveltejs/svelte-preprocess/issues/163#issuecomment-639694477
@@ -70,7 +70,7 @@ describe('transformer - scss', () => {
 
   it('should use the specified implementation via the `implementation` option property - via default async render', async () => {
     const template = `<style lang="scss">h1{}</style>`;
-    const opts = autoPreprocess({
+    const opts = sveltePreprocess({
       scss: {
         implementation,
       },
@@ -83,7 +83,7 @@ describe('transformer - scss', () => {
 
   it('should prepend scss content via `data` option property - via renderSync', async () => {
     const template = `<style lang="scss"></style>`;
-    const opts = autoPreprocess({
+    const opts = sveltePreprocess({
       scss: {
         prependData: '$color:blue;div{color:$color}',
         renderSync: true,
@@ -97,7 +97,7 @@ describe('transformer - scss', () => {
 
   it('should use the specified implementation via the `implementation` option property - via renderSync', async () => {
     const template = `<style lang="scss">h1{}</style>`;
-    const opts = autoPreprocess({
+    const opts = sveltePreprocess({
       scss: {
         implementation,
         renderSync: true,

@@ -16,7 +16,7 @@
 ```js
 // rollup.config.js
 import svelte from 'rollup-plugin-svelte';
-import autoPreprocess from 'svelte-preprocess'
+import sveltePreprocess from 'svelte-preprocess'
 import { scss, coffeescript, pug } from 'svelte-preprocess'
 
 export default {
@@ -27,7 +27,7 @@ export default {
        * Auto preprocess supported languages with
        * '<template>'/'external src files' support
        **/
-      preprocess: autoPreprocess({ /* options */ })
+      preprocess: sveltePreprocess({ /* options */ })
       /**
        * It is also possible to manually enqueue
        * stand-alone processors
@@ -73,9 +73,9 @@ export default {
 
 ```js
 // ...
-import autoPreprocess from 'svelte-preprocess';
+import sveltePreprocess from 'svelte-preprocess';
 
-const preprocess = autoPreprocess({
+const preprocess = sveltePreprocess({
   postcss: true,
   // ...
 });
@@ -107,10 +107,10 @@ export default {
 
 ```js
 // svelte.config.js
-import autoPreprocess from 'svelte-preprocess';
+import sveltePreprocess from 'svelte-preprocess';
 
 module.exports = {
-  preprocess: autoPreprocess({
+  preprocess: sveltePreprocess({
     // ...svelte-preprocess options
   }),
   // ...other svelte options

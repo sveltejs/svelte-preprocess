@@ -4,8 +4,8 @@ import commonjs from 'rollup-plugin-commonjs'
 import livereload from 'rollup-plugin-livereload'
 import { terser } from 'rollup-plugin-terser'
 
-// import autoPreprocess from 'svelte-preprocess';
-const autoPreprocess = require('../../dist/index.js')
+// import sveltePreprocess from 'svelte-preprocess';
+const sveltePreprocess = require('../../dist/index.js')
 
 const production = !process.env.ROLLUP_WATCH
 
@@ -19,7 +19,7 @@ export default {
   },
   plugins: [
     svelte({
-      preprocess: autoPreprocess({
+      preprocess: sveltePreprocess({
         postcss: {
           plugins: [require('postcss-import')],
         },
