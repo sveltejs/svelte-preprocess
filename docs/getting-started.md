@@ -12,7 +12,7 @@
 
 <!-- /code_chunk_output -->
 
-_Note: The examples below are going to be using a hypothetical `rollup.config.js` as if we were configuring a simple Svelte application, but `svelte-preprocess` can be used in various setups. See "[Usage](docs/usage.md)"._
+_Note: The examples below are going to be using a hypothetical `rollup.config.js` as if we were configuring a simple Svelte application, but `svelte-preprocess` can be used in various setups. See "[Usage](usage.md)"._
 
 ## 1. Installation
 
