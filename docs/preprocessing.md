@@ -345,6 +345,8 @@ You can check the [Stylus API reference](https://stylus-lang.com/docs/js.html) f
 
 You can check the [`compilerOptions` reference](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) for specific TypeScript options.
 
+#### Typescript - Limitations
+
 Since `v4`, `svelte-preprocess` doesn't type-check your component, its only concern is to transpile it into valid JavaScript for the compiler. If you want to have your components type-checked, you can use [svelte-check](https://github.com/sveltejs/language-tools/blob/master/packages/svelte-check/README.md).
 
 As we're only transpiling, it's not possible to import types or interfaces into your svelte component without using the new TS 3.8 `type` import modifier: `import type { SomeInterface } from './MyModule'` otherwise bundlers will complain that the name is not exported by `MyModule`.
