@@ -1,5 +1,5 @@
 {
-  "extends": ["kiwi"],
+  "extends": ["@kiwi"],
   "env": {
     "node": true,
     "jest": true
