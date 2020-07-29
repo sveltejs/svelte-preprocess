@@ -101,8 +101,9 @@ const transformer: Transformer<Options.Typescript> = ({
     throw new Error(formatDiagnostics(errors, basePath));
   }
 
-  const compilerOptions = {
+  const compilerOptions: CompilerOptions = {
     ...(convertedCompilerOptions as CompilerOptions),
+    importsNotUsedAsValues: ts.ImportsNotUsedAsValues.Error,
     allowNonTsExtensions: true,
   };
 
