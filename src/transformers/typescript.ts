@@ -56,7 +56,7 @@ const importTransformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
 const transformer: Transformer<Options.Typescript> = ({
   content,
   filename,
-  options,
+  options = {},
 }) => {
   // default options
   const compilerOptionsJSON = {
