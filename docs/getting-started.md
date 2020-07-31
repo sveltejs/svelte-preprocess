@@ -143,7 +143,7 @@ And we're done! Our components can now be written as:
 
 ### 3.1. Setting default languages
 
-Ok, we now can write our entire app with Pug, TypeScript and SCSS, but typing `lang="..."` in every file can become an obnoxious process. In [auto-preprocessing mode](/docs/preprocessing.md#auto-preprocessing), `svelte-preprocess` [lets us define the default languages](/docs/preprocessing.md#auto-preprocessing-options) of our components. It's setted by default to HTML, JavaScript and CSS. Let's change that so we don't need those `lang` attributes.
+Ok, we now can write our entire app with Pug, TypeScript and SCSS, but typing `lang="..."` in every file can become an obnoxious process. In [auto-preprocessing mode](/docs/preprocessing.md#auto-preprocessing), `svelte-preprocess` [lets us define the default languages](/docs/preprocessing.md#auto-preprocessing-options) of our components. It defaults to HTML, JavaScript and CSS. Let's change that so we don't need those `lang` attributes.
 
 _**Disclaimer**: The Svelte VS Code extension uses the `lang` or `type` attribute to correctly highlight your code. At the time of writing, the extension doesn't support default languages. Doing this can lead to errors on your IDE._
 
