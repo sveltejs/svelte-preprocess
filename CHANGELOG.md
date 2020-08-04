@@ -1,3 +1,14 @@
+## [4.0.10](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.7...v4.0.10) (2020-08-04)
+
+
+### Bug Fixes
+
+* 🐛 scss prepending twice ([bc34b44](https://github.com/sveltejs/svelte-preprocess/commit/bc34b44ddd23061df17cd0b8ae04c44c4b74d904)), closes [#200](https://github.com/sveltejs/svelte-preprocess/issues/200)
+* 🐛 strip indent from indentation-sensitive languages only ([8d735bd](https://github.com/sveltejs/svelte-preprocess/commit/8d735bde959709fc204de12cc5543194a29e28a0))
+* default ts option object ([07ba62f](https://github.com/sveltejs/svelte-preprocess/commit/07ba62f1fc8e73b547648744c805617e651acc9f))
+
+
+
 ## [4.0.8](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.7...v4.0.8) (2020-07-14)
 
 
