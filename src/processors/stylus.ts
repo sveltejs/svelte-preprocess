@@ -14,7 +14,13 @@ export default (options?: Options.Stylus): PreprocessorGroup => ({
       dependencies,
     } = await getTagInfo(svelteFile);
 
-    content = prepareContent({ options, content });
+    content = prepareContent({
+      options: {
+        ...options,
+        stripIndent: true,
+      },
+      content,
+    });
 
     if (lang !== 'stylus') {
       return { code: content };

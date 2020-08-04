@@ -15,7 +15,13 @@ export default (options?: Options.Coffeescript): PreprocessorGroup => ({
       dependencies,
     } = await getTagInfo(svelteFile);
 
-    content = prepareContent({ options, content });
+    content = prepareContent({
+      options: {
+        ...options,
+        stripIndent: true,
+      },
+      content,
+    });
 
     if (lang !== 'coffeescript') {
       return { code: content };

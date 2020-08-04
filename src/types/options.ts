@@ -5,6 +5,7 @@ import { TransformOptions as BabelOptions } from '@babel/core';
 
 type ContentModifier = {
   prependData?: string;
+  stripIndent?: boolean;
 };
 
 export type Coffeescript = {

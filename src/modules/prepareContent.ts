@@ -11,7 +11,9 @@ export function prepareContent({
     return content;
   }
 
-  content = stripIndent(content);
+  if (options.stripIndent) {
+    content = stripIndent(content);
+  }
 
   if (options.prependData) {
     content = `${options.prependData}\n${content}`;

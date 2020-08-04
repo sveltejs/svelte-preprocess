@@ -53,9 +53,19 @@ type AutoPreprocessOptions = {
   [languageName: string]: TransformerOptions;
 };
 
-const ALIAS_OPTION_OVERRIDES: Record<string, any> = {
+const LANG_SPECIFIC_OPTIONS: Record<string, any> = {
   sass: {
     indentedSyntax: true,
+    stripIndent: true,
+  },
+  pug: {
+    stripIndent: true,
+  },
+  coffeescript: {
+    stripIndent: true,
+  },
+  stylus: {
+    stripIndent: true,
   },
 };
 
@@ -128,7 +138,7 @@ export function sveltePreprocess(
     }
 
     if (name !== alias) {
-      Object.assign(opts, ALIAS_OPTION_OVERRIDES[alias] || null);
+      Object.assign(opts, LANG_SPECIFIC_OPTIONS[alias] || null);
 
       if (typeof aliasOpts === 'object') {
         Object.assign(opts, aliasOpts);

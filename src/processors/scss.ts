@@ -15,17 +15,18 @@ export default (options?: Options.Sass): PreprocessorGroup => ({
       dependencies,
     } = await getTagInfo(svelteFile);
 
+    if (alias === 'sass') {
+      options = {
+        ...options,
+        stripIndent: true,
+        indentedSyntax: true,
+      };
+    }
+
     content = prepareContent({ options, content });
 
     if (lang !== 'scss') {
       return { code: content };
-    }
-
-    if (alias === 'sass') {
-      options = {
-        ...options,
-        indentedSyntax: true,
-      };
     }
 
     const transformed = await transformer({
