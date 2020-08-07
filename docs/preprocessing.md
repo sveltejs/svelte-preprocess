@@ -278,6 +278,7 @@ The PostCSS preprocessor accepts three options:
 | `plugins` | `undefined` | a list of `postcss plugins`.                     |
 | `parser`  | `undefined` | the name of the module to be used as the parser. |
 | `syntax`  | `undefined` | the syntax to be used.                           |
+| `configFilePath` | `undefined` | the path of the directory containing the PostCSS configuration. |
 
 **Note**: In auto-preprocessing mode, you can set `postcss: true` if `postcss-load-config` is installed and `svelte-preprocess` will look for a PostCSS config file in your project.
 
