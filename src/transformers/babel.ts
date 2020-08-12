@@ -1,4 +1,4 @@
-import { transformAsync } from '@babel/core';
+import { transformAsync, TransformOptions } from '@babel/core';
 
 import { Transformer, Options } from '../types';
 
@@ -8,9 +8,10 @@ const transformer: Transformer<Options.Babel> = async ({
   options,
   map = undefined,
 }) => {
-  const { code, map: sourcemap } = await transformAsync(content, {
+  const babelOptions = {
     ...options,
-    inputSourceMap: map as any,
+    inputSourceMap:
+      typeof map === 'string' ? JSON.parse(map) : map ?? undefined,
     sourceType: 'module',
     // istanbul ignore next
     sourceMaps: !!options.sourceMaps,
@@ -18,7 +19,11 @@ const transformer: Transformer<Options.Babel> = async ({
     minified: false,
     ast: false,
     code: true,
-  });
+  } as TransformOptions;
+
+  console.log(babelOptions);
+
+  const { code, map: sourcemap } = await transformAsync(content, babelOptions);
 
   return {
     code,
