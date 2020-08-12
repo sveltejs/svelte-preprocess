@@ -1,3 +1,12 @@
+## [4.0.11](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.10...v4.0.11) (2020-08-12)
+
+
+### Bug Fixes
+
+* 🐛 babel inputSourceMap object ([3b6fc3e](https://github.com/sveltejs/svelte-preprocess/commit/3b6fc3e9c7b59a20d8a5ee7a643c9a1dac4a7cd9)), closes [#215](https://github.com/sveltejs/svelte-preprocess/issues/215)
+
+
+
 ## [4.0.10](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.7...v4.0.10) (2020-08-04)
 
 
