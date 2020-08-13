@@ -3,7 +3,6 @@
 
 ### Bug Fixes
 
-* 🐛 babel inputSourceMap object ([b81b268](https://github.com/sveltejs/svelte-preprocess/commit/b81b268116523d419ee2d9ad95f422a1f91b6133)), closes [#215](https://github.com/sveltejs/svelte-preprocess/issues/215)
 * 🐛 remove accidental console.log ([09e9aa8](https://github.com/sveltejs/svelte-preprocess/commit/09e9aa8eca59c7fb9a946f17936e1156eada8113))
 
 
