@@ -21,8 +21,6 @@ const transformer: Transformer<Options.Babel> = async ({
     code: true,
   } as TransformOptions;
 
-  console.log(babelOptions);
-
   const { code, map: sourcemap } = await transformAsync(content, babelOptions);
 
   return {
