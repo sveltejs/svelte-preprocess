@@ -328,7 +328,49 @@ The `scss/sass` preprocessor accepts the default sass options alongside two othe
 | `renderSync`     | `false`     | if `true`, use the sync render method which is faster for dart sass.                                                           |
 | `implementation` | `undefined` | pass the module to use to compile sass, if unspecified, `svelte-preprocess` will first look for `node-sass` and then for Sass. |
 
-You can check the [Sass API reference](https://sass-lang.com/documentation/js-api) for specific Sass options. The `file` and `data` properties are not supported.
+You can check the [Sass API reference](https://sass-lang.com/documentation/js-api) for specific Sass options. The `file` and `data` properties are not supported. Instead you may use svelte custom option `prependData`.
+
+SCSS Example: Prepend `@import "${__dirname}/src/scss/_variables.scss";` in every `<style lang="scss">`.
+
+```
+const sveltePreprocess = require("svelte-preprocess");
+
+module.exports = {
+  preprocess: sveltePreprocess({
+    scss: {
+      prependData: `@import "${__dirname}/src/scss/_variables.scss";`
+    }
+  })
+};
+```
+
+
+```
+//rollup.config.js
+
+import { scss } from "svelte-preprocess";
+
+const preprocess = scss({
+  prependData: `@import "${__dirname}/src/scss/_variables.scss";`,
+});
+
+export default {
+  client: {
+    plugins: [
+      svelte({
+        preprocess,
+      }),
+    ]
+  },
+  server: {
+    plugins: [
+      svelte({
+        preprocess,
+      }),
+    ]
+  }
+}
+```
 
 **Note**: When `svelte-preprocess` detects the language as Sass, it automatically sets `indentedSyntax` to `true.
 
