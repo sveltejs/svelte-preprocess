@@ -104,8 +104,6 @@ export function sveltePreprocess(
     ...rest
   } = {} as AutoPreprocessOptions,
 ): AutoPreprocessGroup {
-  markupTagName = markupTagName.toLocaleLowerCase();
-
   const defaultLanguages = Object.freeze({
     markup: 'html',
     style: 'css',
@@ -213,6 +211,8 @@ export function sveltePreprocess(
     }
 
     return transformMarkup({ content, filename }, markupTransformer, {
+      // we only pass the markupTagName because the rest of options
+      // is fetched internally by the `markupTransformer`
       markupTagName,
     });
   };

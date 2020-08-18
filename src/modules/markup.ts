@@ -5,7 +5,10 @@ export async function transformMarkup(
   transformer: Preprocessor | Transformer<unknown>,
   options: Record<string, any> = {},
 ) {
-  const { markupTagName = 'template' } = options;
+  let { markupTagName = 'template' } = options;
+
+  markupTagName = markupTagName.toLocaleLowerCase();
+
   const markupPattern = new RegExp(
     `<${markupTagName}([\\s\\S]*?)(?:>([\\s\\S]*)<\\/${markupTagName}>|/>)`,
   );
