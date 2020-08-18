@@ -262,7 +262,7 @@ Voila! We can now reference a variable from our file without having to explicitl
 
 ```html
 <template>
-  h1 {world}
+  h1 {name}
 </template>
 
 <script>
