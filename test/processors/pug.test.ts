@@ -18,4 +18,15 @@ describe(`processor - pug`, () => {
 
     expect(preprocessed.toString()).toContain(`<!-- potato-->`);
   });
+
+  it('should support template tag wrapper', async () => {
+    const template = `<markup>
+h1 HEY
+</markup>`;
+
+    const options = { markupTagName: `markup` };
+    const preprocessed = await preprocess(template, [pug(options)]);
+
+    expect(preprocessed.toString()).toContain(`<h1>HEY</h1>`);
+  });
 });

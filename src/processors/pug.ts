@@ -1,5 +1,7 @@
-import { Options, PreprocessorGroup } from '../types';
+import { Options, PreprocessorGroup } from '../types/index';
 import { prepareContent } from '../modules/prepareContent';
+import { Pug } from '../types/options';
+import { transformMarkup } from '../modules/markup';
 
 export default (options?: Options.Pug): PreprocessorGroup => ({
   async markup({ content, filename }) {
@@ -13,6 +15,6 @@ export default (options?: Options.Pug): PreprocessorGroup => ({
       content,
     });
 
-    return transformer({ content, filename, options });
+    return transformMarkup({ content, filename }, transformer, options);
   },
 });

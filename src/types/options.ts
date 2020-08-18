@@ -8,6 +8,10 @@ type ContentModifier = {
   stripIndent?: boolean;
 };
 
+type MarkupOptions = {
+  markupTagName?: string;
+};
+
 export type Coffeescript = {
   sourceMap?: boolean;
   filename?: never;
@@ -29,7 +33,8 @@ export type Babel = BabelOptions & {
 } & ContentModifier;
 
 export type Pug = Omit<PugOptions, 'filename' | 'doctype' | 'compileDebug'> &
-  ContentModifier;
+  ContentModifier &
+  MarkupOptions;
 
 export type Sass = Omit<SassOptions, 'file' | 'data'> & {
   // custom

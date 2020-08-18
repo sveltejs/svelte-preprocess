@@ -15,6 +15,7 @@ import {
   SOURCE_MAP_PROP_MAP,
 } from './modules/language';
 import { prepareContent } from './modules/prepareContent';
+import { transformMarkup } from './modules/markup';
 
 type AutoPreprocessGroup = PreprocessorGroup & {
   defaultLanguages: Readonly<{
@@ -113,9 +114,6 @@ export function sveltePreprocess(
   });
 
   const transformers = rest as Transformers;
-  const markupPattern = new RegExp(
-    `<${markupTagName}([\\s\\S]*?)(?:>([\\s\\S]*)<\\/${markupTagName}>|/>)`,
-  );
 
   if (aliases?.length) {
     addLanguageAlias(aliases);
@@ -214,41 +212,9 @@ export function sveltePreprocess(
       content = transformed.code;
     }
 
-    const templateMatch = content.match(markupPattern);
-
-    /** If no <template> was found, just return the original markup */
-    if (!templateMatch) {
-      return markupTransformer({ content, attributes: {}, filename });
-    }
-
-    const [fullMatch, attributesStr, templateCode] = templateMatch;
-
-    /** Transform an attribute string into a key-value object */
-    const attributes = attributesStr
-      .split(/\s+/)
-      .filter(Boolean)
-      .reduce((acc: Record<string, string | boolean>, attr) => {
-        const [name, value] = attr.split('=');
-
-        // istanbul ignore next
-        acc[name] = value ? value.replace(/['"]/g, '') : true;
-
-        return acc;
-      }, {});
-
-    /** Transform the found template code */
-    let { code, map, dependencies } = await markupTransformer({
-      content: templateCode,
-      attributes,
-      filename,
+    return transformMarkup({ content, filename }, markupTransformer, {
+      markupTagName,
     });
-
-    code =
-      content.slice(0, templateMatch.index) +
-      code +
-      content.slice(templateMatch.index + fullMatch.length);
-
-    return { code, map, dependencies };
   };
 
   const script: PreprocessorGroup['script'] = async ({

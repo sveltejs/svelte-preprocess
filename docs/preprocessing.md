@@ -273,11 +273,11 @@ You can check the [Less API reference](http://lesscss.org/usage/#less-options) f
 
 The PostCSS preprocessor accepts three options:
 
-| Option    | Default     | Description                                      |
-| --------- | ----------- | ------------------------------------------------ |
-| `plugins` | `undefined` | a list of `postcss plugins`.                     |
-| `parser`  | `undefined` | the name of the module to be used as the parser. |
-| `syntax`  | `undefined` | the syntax to be used.                           |
+| Option           | Default     | Description                                                     |
+| ---------------- | ----------- | --------------------------------------------------------------- |
+| `plugins`        | `undefined` | a list of `postcss plugins`.                                    |
+| `parser`         | `undefined` | the name of the module to be used as the parser.                |
+| `syntax`         | `undefined` | the syntax to be used.                                          |
 | `configFilePath` | `undefined` | the path of the directory containing the PostCSS configuration. |
 
 **Note**: In auto-preprocessing mode, you can set `postcss: true` if `postcss-load-config` is installed and `svelte-preprocess` will look for a PostCSS config file in your project.
@@ -286,7 +286,14 @@ You can check the [PostCSS API reference](https://api.postcss.org/) for PostCSS 
 
 ### Pug
 
-You can check the [Pug API reference](https://pugjs.org/api/reference.html) for more options. The only overriden property is `doctype`, which is set to HTML.
+You can check the [Pug API reference](https://pugjs.org/api/reference.html) for information about its options. The only overridden property is `doctype`, which is set to HTML.
+
+Apart from those, the Pug preprocessor accepts:
+
+| Option           | Default     | Description                                                                                                         |
+| ---------------- | ----------- | ------------------------------------------------------------------------------------------------------------------- |
+| `markupTagName`  | `template`  | the tag name used to look for the optional markup wrapper. If none is found, `pug` is executed over the whole file. |
+| `configFilePath` | `undefined` | the path of the directory containing the PostCSS configuration.                                                     |
 
 **Template blocks:**
 
