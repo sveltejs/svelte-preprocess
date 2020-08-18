@@ -1,3 +1,12 @@
+## [4.1.1](https://github.com/sveltejs/svelte-preprocess/compare/v4.1.0...v4.1.1) (2020-08-18)
+
+
+### Bug Fixes
+
+* 🐛 guarantee lowercase markup tagname ([b277bb3](https://github.com/sveltejs/svelte-preprocess/commit/b277bb3a65c643e9a2e24f0aff05533655562e2c))
+
+
+
 # [4.1.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.12...v4.1.0) (2020-08-18)
 
 
