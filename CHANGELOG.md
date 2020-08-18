@@ -1,3 +1,12 @@
+# [4.1.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.12...v4.1.0) (2020-08-18)
+
+
+### Features
+
+* 🎸 support template wrappers in separate markup processors ([dc52009](https://github.com/sveltejs/svelte-preprocess/commit/dc520096d4ae7d0a8f610f2e3cdc8ea7f2abfb1b)), closes [#211](https://github.com/sveltejs/svelte-preprocess/issues/211)
+
+
+
 ## [4.0.12](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.10...v4.0.12) (2020-08-13)
 
 
