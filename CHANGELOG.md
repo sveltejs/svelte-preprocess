@@ -1,3 +1,12 @@
+## [4.1.2](https://github.com/sveltejs/svelte-preprocess/compare/v4.1.1...v4.1.2) (2020-08-28)
+
+
+### Bug Fixes
+
+* 🐛 language specific options not being set ([788a4b1](https://github.com/sveltejs/svelte-preprocess/commit/788a4b1782c833a02433482265084f330d9e1e6b)), closes [#231](https://github.com/sveltejs/svelte-preprocess/issues/231)
+
+
+
 ## [4.1.1](https://github.com/sveltejs/svelte-preprocess/compare/v4.1.0...v4.1.1) (2020-08-18)
 
 
