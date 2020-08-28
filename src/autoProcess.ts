@@ -13,6 +13,7 @@ import {
   addLanguageAlias,
   getLanguageFromAlias,
   SOURCE_MAP_PROP_MAP,
+  LANG_SPECIFIC_OPTIONS,
 } from './modules/language';
 import { prepareContent } from './modules/prepareContent';
 import { transformMarkup } from './modules/markup';
@@ -52,22 +53,6 @@ type AutoPreprocessOptions = {
   // workaround while we don't have this
   // https://github.com/microsoft/TypeScript/issues/17867
   [languageName: string]: TransformerOptions;
-};
-
-const LANG_SPECIFIC_OPTIONS: Record<string, any> = {
-  sass: {
-    indentedSyntax: true,
-    stripIndent: true,
-  },
-  pug: {
-    stripIndent: true,
-  },
-  coffeescript: {
-    stripIndent: true,
-  },
-  stylus: {
-    stripIndent: true,
-  },
 };
 
 export const runTransformer = async (
@@ -133,12 +118,10 @@ export function sveltePreprocess(
       Object.assign(opts, nameOpts);
     }
 
-    if (name !== alias) {
-      Object.assign(opts, LANG_SPECIFIC_OPTIONS[alias] || null);
+    Object.assign(opts, LANG_SPECIFIC_OPTIONS[alias]);
 
-      if (typeof aliasOpts === 'object') {
-        Object.assign(opts, aliasOpts);
-      }
+    if (name !== alias && typeof aliasOpts === 'object') {
+      Object.assign(opts, aliasOpts);
     }
 
     if (sourceMap && name in SOURCE_MAP_PROP_MAP) {

@@ -2,6 +2,22 @@ import { basename } from 'path';
 
 import { PreprocessorArgs } from '../types';
 
+export const LANG_SPECIFIC_OPTIONS: Record<string, any> = {
+  sass: {
+    indentedSyntax: true,
+    stripIndent: true,
+  },
+  pug: {
+    stripIndent: true,
+  },
+  coffeescript: {
+    stripIndent: true,
+  },
+  stylus: {
+    stripIndent: true,
+  },
+};
+
 export const SOURCE_MAP_PROP_MAP: Record<string, [string, any]> = {
   babel: ['sourceMaps', true],
   typescript: ['sourceMap', true],

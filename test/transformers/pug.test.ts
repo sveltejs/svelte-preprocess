@@ -4,6 +4,17 @@ import sveltePreprocess from '../../src';
 import { preprocess } from '../utils';
 
 describe('transformer - pug', () => {
+  it('should de-indent if necessary', async () => {
+    const template = `<template lang="pug">
+  main
+    header
+      h1</template>`;
+
+    const opts = sveltePreprocess();
+    const preprocessed = await preprocess(template, opts);
+
+    expect(preprocessed.code).toBe('<main><header><h1></h1></header></main>');
+  });
   it('should correctly prepend mixins with space TABS', async () => {
     const template = `<template lang="pug">
 main
