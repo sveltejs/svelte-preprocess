@@ -1,7 +1,7 @@
 import sveltePreprocess from '../../src';
 import { preprocess, getFixtureContent } from '../utils';
 
-const SCRIPT_LANGS: Array<[string, string, object?]> = [
+const SCRIPT_LANGS: Array<[string, string, any?]> = [
   ['coffeescript', 'coffee'],
   [
     'typescript',
