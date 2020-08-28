@@ -89,7 +89,9 @@ describe(`sourcemap generation`, () => {
         await preprocess(template, opts);
 
         expect(transformer).toHaveBeenCalledWith(
-          expect.objectContaining({ options: { [key]: val } }),
+          expect.objectContaining({
+            options: expect.objectContaining({ [key]: val }),
+          }),
         );
       });
     },
