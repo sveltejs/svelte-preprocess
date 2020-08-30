@@ -81,5 +81,6 @@ export interface GlobalStyle {
 }
 
 export type Replace = Array<
-  [RegExp, string] | [RegExp, (substring: string, ...args: any[]) => string]
+  | [string | RegExp, string]
+  | [RegExp, (substring: string, ...args: any[]) => string]
 >;
