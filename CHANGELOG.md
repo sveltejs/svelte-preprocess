@@ -1,93 +1,70 @@
 ## [4.1.3](https://github.com/sveltejs/svelte-preprocess/compare/v4.1.1...v4.1.3) (2020-08-30)
 
+### Bug Fixes
+
+- 🐛 replacer preprocessor options types ([d3543da](https://github.com/sveltejs/svelte-preprocess/commit/d3543dabfa434622bd28061099acc4c863f62710)), closes [#228](https://github.com/sveltejs/svelte-preprocess/issues/228)
+
+## [4.1.2](https://github.com/sveltejs/svelte-preprocess/compare/v4.1.1...v4.1.2) (2020-08-28)
 
 ### Bug Fixes
 
-* 🐛 language specific options not being set ([f3df8b0](https://github.com/sveltejs/svelte-preprocess/commit/f3df8b06d62d38c7c5f4a100a0e7b2049fd3fd86)), closes [#231](https://github.com/sveltejs/svelte-preprocess/issues/231)
-* 🐛 replacer preprocessor options types ([d3543da](https://github.com/sveltejs/svelte-preprocess/commit/d3543dabfa434622bd28061099acc4c863f62710)), closes [#228](https://github.com/sveltejs/svelte-preprocess/issues/228)
-
-
+- 🐛 language specific options not being set ([f3df8b0](https://github.com/sveltejs/svelte-preprocess/commit/f3df8b06d62d38c7c5f4a100a0e7b2049fd3fd86)), closes [#231](https://github.com/sveltejs/svelte-preprocess/issues/231)
 
 ## [4.1.1](https://github.com/sveltejs/svelte-preprocess/compare/v4.1.0...v4.1.1) (2020-08-18)
 
-
 ### Bug Fixes
 
-* 🐛 guarantee lowercase markup tagname ([b277bb3](https://github.com/sveltejs/svelte-preprocess/commit/b277bb3a65c643e9a2e24f0aff05533655562e2c))
-
-
+- 🐛 guarantee lowercase markup tagname ([b277bb3](https://github.com/sveltejs/svelte-preprocess/commit/b277bb3a65c643e9a2e24f0aff05533655562e2c))
 
 # [4.1.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.12...v4.1.0) (2020-08-18)
 
-
 ### Features
 
-* 🎸 support template wrappers in separate markup processors ([dc52009](https://github.com/sveltejs/svelte-preprocess/commit/dc520096d4ae7d0a8f610f2e3cdc8ea7f2abfb1b)), closes [#211](https://github.com/sveltejs/svelte-preprocess/issues/211)
-
-
+- 🎸 support template wrappers in separate markup processors ([dc52009](https://github.com/sveltejs/svelte-preprocess/commit/dc520096d4ae7d0a8f610f2e3cdc8ea7f2abfb1b)), closes [#211](https://github.com/sveltejs/svelte-preprocess/issues/211)
 
 ## [4.0.12](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.10...v4.0.12) (2020-08-13)
 
-
 ### Bug Fixes
 
-* 🐛 remove accidental console.log ([09e9aa8](https://github.com/sveltejs/svelte-preprocess/commit/09e9aa8eca59c7fb9a946f17936e1156eada8113))
-
-
+- 🐛 remove accidental console.log ([09e9aa8](https://github.com/sveltejs/svelte-preprocess/commit/09e9aa8eca59c7fb9a946f17936e1156eada8113))
 
 ## [4.0.11](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.10...v4.0.11) (2020-08-12)
 
-
 ### Bug Fixes
 
-* 🐛 babel inputSourceMap object ([3b6fc3e](https://github.com/sveltejs/svelte-preprocess/commit/3b6fc3e9c7b59a20d8a5ee7a643c9a1dac4a7cd9)), closes [#215](https://github.com/sveltejs/svelte-preprocess/issues/215)
-
-
+- 🐛 babel inputSourceMap object ([3b6fc3e](https://github.com/sveltejs/svelte-preprocess/commit/3b6fc3e9c7b59a20d8a5ee7a643c9a1dac4a7cd9)), closes [#215](https://github.com/sveltejs/svelte-preprocess/issues/215)
 
 ## [4.0.10](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.7...v4.0.10) (2020-08-04)
 
-
 ### Bug Fixes
 
-* 🐛 strip indent from indentation-sensitive languages only ([8d735bd](https://github.com/sveltejs/svelte-preprocess/commit/8d735bde959709fc204de12cc5543194a29e28a0))
+- 🐛 strip indent from indentation-sensitive languages only ([8d735bd](https://github.com/sveltejs/svelte-preprocess/commit/8d735bde959709fc204de12cc5543194a29e28a0))
 
 ## [4.0.9](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.8...v4.0.9) (2020-08-04)
 
-
 ### Bug Fixes
 
-* 🐛 scss prepending twice ([bc34b44](https://github.com/sveltejs/svelte-preprocess/commit/bc34b44ddd23061df17cd0b8ae04c44c4b74d904)), closes [#200](https://github.com/sveltejs/svelte-preprocess/issues/200)
-* default ts option object ([07ba62f](https://github.com/sveltejs/svelte-preprocess/commit/07ba62f1fc8e73b547648744c805617e651acc9f))
-
-
+- 🐛 scss prepending twice ([bc34b44](https://github.com/sveltejs/svelte-preprocess/commit/bc34b44ddd23061df17cd0b8ae04c44c4b74d904)), closes [#200](https://github.com/sveltejs/svelte-preprocess/issues/200)
+- default ts option object ([07ba62f](https://github.com/sveltejs/svelte-preprocess/commit/07ba62f1fc8e73b547648744c805617e651acc9f))
 
 ## [4.0.8](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.7...v4.0.8) (2020-07-14)
 
-
 ### Bug Fixes
 
-* 🐛 scss prepending twice ([b734901](https://github.com/sveltejs/svelte-preprocess/commit/b7349012f2a2fdb3e0c1be5339cd581399fbcaa4)), closes [#200](https://github.com/sveltejs/svelte-preprocess/issues/200)
-
-
+- 🐛 scss prepending twice ([b734901](https://github.com/sveltejs/svelte-preprocess/commit/b7349012f2a2fdb3e0c1be5339cd581399fbcaa4)), closes [#200](https://github.com/sveltejs/svelte-preprocess/issues/200)
 
 ## [4.0.7](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.6...v4.0.7) (2020-07-11)
 
-
 ### Bug Fixes
 
-* 🐛 add more meaningful log to importAny ([2f7053e](https://github.com/sveltejs/svelte-preprocess/commit/2f7053eeae6e1f779aca0868fb345e445d53bb90))
-
-
+- 🐛 add more meaningful log to importAny ([2f7053e](https://github.com/sveltejs/svelte-preprocess/commit/2f7053eeae6e1f779aca0868fb345e445d53bb90))
 
 ## [4.0.6](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.4...v4.0.6) (2020-07-08)
 
-
 ### Bug Fixes
 
-* 🐛 even more type fixes ([34af056](https://github.com/sveltejs/svelte-preprocess/commit/34af05698823c1a679305214dad30598d9b514c0))
-* 🐛 remove loose log ([e72650c](https://github.com/sveltejs/svelte-preprocess/commit/e72650c5abf04659fb9ac62d346251c431b0dad1))
-
-
+- 🐛 even more type fixes ([34af056](https://github.com/sveltejs/svelte-preprocess/commit/34af05698823c1a679305214dad30598d9b514c0))
+- 🐛 remove loose log ([e72650c](https://github.com/sveltejs/svelte-preprocess/commit/e72650c5abf04659fb9ac62d346251c431b0dad1))
 
 ## [4.0.5](https://github.com/sveltejs/svelte-preprocess/compare/v4.0.4...v4.0.5) (2020-07-08)
 
