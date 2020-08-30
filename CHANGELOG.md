@@ -1,3 +1,12 @@
+# [4.2.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.1.3...v4.2.0) (2020-08-30)
+
+
+### Features
+
+* 🎸 enable sourceMap for dev environment automatically ([4df9031](https://github.com/sveltejs/svelte-preprocess/commit/4df9031d942dd4ecc0f47878c21c54cd15552285))
+
+
+
 ## [4.1.3](https://github.com/sveltejs/svelte-preprocess/compare/v4.1.1...v4.1.3) (2020-08-30)
 
 ### Bug Fixes
