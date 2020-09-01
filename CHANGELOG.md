@@ -1,3 +1,12 @@
+## [4.2.1](https://github.com/sveltejs/svelte-preprocess/compare/v4.2.0...v4.2.1) (2020-09-01)
+
+
+### Bug Fixes
+
+* 🐛 self-closing templates with external source ([217a09d](https://github.com/sveltejs/svelte-preprocess/commit/217a09dab1beae2d6f309760d425001ead74217f)), closes [#235](https://github.com/sveltejs/svelte-preprocess/issues/235)
+
+
+
 # [4.2.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.1.3...v4.2.0) (2020-08-30)
 
 
