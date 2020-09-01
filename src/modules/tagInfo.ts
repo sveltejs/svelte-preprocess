@@ -27,9 +27,11 @@ export const getTagInfo = async ({
   content,
 }: PreprocessorArgs) => {
   const dependencies = [];
+  // catches empty content and self-closing tags
+  const isEmptyContent = content == null || content.trim().length === 0;
 
   /** only include src file if content of tag is empty */
-  if (attributes.src && content.trim().length === 0) {
+  if (attributes.src && isEmptyContent) {
     // istanbul ignore if
     if (typeof attributes.src !== 'string') {
       throw new Error('src attribute must be string');

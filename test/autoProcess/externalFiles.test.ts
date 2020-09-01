@@ -1,7 +1,6 @@
 import { resolve } from 'path';
 
 import sveltePreprocess from '../../src';
-import { Processed } from '../../src/types';
 import {
   preprocess,
   getFixtureContent,
@@ -24,12 +23,8 @@ const REMOTE_JS = [
 ];
 
 describe('external files', () => {
-  let markup: Processed;
-  let script: Processed;
-  let style: Processed;
-
-  beforeAll(async () => {
-    [markup, script, style] = [
+  it('should insert external file content and add as deps', async () => {
+    const [markup, script, style] = [
       await markupProcessor({
         content: `<template src="./fixtures/template.html"></template>
         <style src="./fixtures/style.css"></style>
@@ -47,18 +42,22 @@ describe('external files', () => {
         attributes: { src: `./fixtures/style.css` },
       }),
     ];
-  });
 
-  it('should insert external file content', async () => {
     expect(markup.code).toContain(getFixtureContent('template.html'));
     expect(script.code).toContain(getFixtureContent('script.js'));
     expect(style.code).toContain(getFixtureContent('style.css'));
-  });
-
-  it('should add a external file as a dependency', async () => {
     expect(markup.dependencies).toContain(getFixturePath('template.html'));
     expect(script.dependencies).toContain(getFixturePath('script.js'));
     expect(style.dependencies).toContain(getFixturePath('style.css'));
+  });
+
+  it('should support self-closing tags', async () => {
+    const markup = await markupProcessor({
+      content: `<template src="./fixtures/template.html"/>`,
+      filename: resolve(__dirname, '..', 'App.svelte'),
+    });
+
+    expect(markup.code).toContain(getFixtureContent('template.html'));
   });
 
   REMOTE_JS.forEach((url) => {
