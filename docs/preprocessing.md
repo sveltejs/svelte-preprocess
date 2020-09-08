@@ -24,7 +24,7 @@
 
 `svelte-preprocess` can be used in two ways: _auto-preprocessing_ and with _stand-alone_ processors.
 
-The examples below are going to be using a hypothetical `rollup.config.js`, but `svelte-preprocess` can be used in multiple scenarios, see "[Usage](usage.md)".
+The examples below are going to be using a hypothetical `rollup.config.js`, but `svelte-preprocess` can be used in multiple scenarios, see "[Usage](/docs/usage.md)".
 
 ## Preprocessor Modes
 
