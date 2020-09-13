@@ -36,6 +36,9 @@ mixin catch(error)
 %_| {:catch !{error}}
 %_block
 
+mixin html(expression)
+%_| {@html !{expression}}
+
 mixin debug(variables)
 %_| {@debug !{variables}}`.replace(
     /%_/g,
