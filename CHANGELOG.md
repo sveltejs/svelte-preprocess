@@ -1,3 +1,12 @@
+# [4.3.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.2.2...v4.3.0) (2020-09-16)
+
+
+### Features
+
+* add +html mixin for pug ([#245](https://github.com/sveltejs/svelte-preprocess/issues/245)) ([d2d6d13](https://github.com/sveltejs/svelte-preprocess/commit/d2d6d13318668818682b5dda8ac318b98c499384))
+
+
+
 ## [4.2.2](https://github.com/sveltejs/svelte-preprocess/compare/v4.2.0...v4.2.2) (2020-09-16)
 
 
