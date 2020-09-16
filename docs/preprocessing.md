@@ -337,7 +337,7 @@ The `scss/sass` preprocessor accepts the default sass options alongside two othe
 
 You can check the [Sass API reference](https://sass-lang.com/documentation/js-api) for specific Sass options. The `file` and `data` properties are not supported. Instead, use the `prependData` property if you want to prepend some content to your scss content.
 
-**Note**: When `svelte-preprocess` detects the language as Sass, it automatically sets `indentedSyntax` to `true.
+**Note**: When `svelte-preprocess` detects the language as Sass, it automatically sets `indentedSyntax` to `true`.
 
 ### Stylus
 
