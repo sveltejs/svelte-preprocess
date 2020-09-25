@@ -54,9 +54,12 @@ const transformer: Transformer<Options.Postcss> = async ({
   } catch (e) {
     /** Something went wrong, do nothing */
     // istanbul ignore next
-    if (e.code === 'MODULE_NOT_FOUND') {
+    if (
+      e.code === 'MODULE_NOT_FOUND' &&
+      e.message.includes(`Cannot find module 'postcss-load-config'`)
+    ) {
       console.error(
-        `[svelte-preprocess] PostCSS configuration was not passed. If you expect to load it from a file, make sure to install "postcss-load-config" and try again ʕ•ᴥ•ʔ`,
+        `[svelte-preprocess] PostCSS configuration was not passed. If you expect to load it from a file make sure to install "postcss-load-config" and try again.`,
       );
     } else {
       console.error(e);
