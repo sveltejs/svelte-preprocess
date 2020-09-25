@@ -4,10 +4,11 @@
  * We use a negative lookbehind assertion to prevent matching
  * escaped combinators like `\~`.
  */
-const combinatorPattern = /(?<!\\)(?:\\\\)*([ >+~,]\s*)(?![^[]+\])/g;
+const combinatorPattern = /(?<!\\)(?:\\\\)*([ >+~,]\s*)(?![^[]+\]|\d)/g;
 
 export function globalifySelector(selector: string) {
   const parts = selector.trim().split(combinatorPattern);
+
   const modifiedSelector = parts
     .map((selectorPart: string, index: number) => {
       // if this is the separator

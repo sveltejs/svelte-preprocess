@@ -1,13 +1,12 @@
 import { resolve } from 'path';
 
-import { getTestAppFilename, getFixtureContent } from './utils';
-import { getTagInfo } from '../src/modules/tagInfo';
+import { getTestAppFilename, getFixtureContent } from '../utils';
+import { getTagInfo } from '../../src/modules/tagInfo';
 import {
   importAny,
   getIncludePaths,
   hasDepInstalled,
-} from '../src/modules/utils';
-import { globalifySelector } from '../src/modules/globalifySelector';
+} from '../../src/modules/utils';
 
 describe('importAny', () => {
   it('should throw error when none exist', () => {
@@ -53,34 +52,6 @@ describe('getIncludePaths', () => {
     ]);
 
     expect(paths).toEqual(['src', 'node_modules', process.cwd(), dummyDir]);
-  });
-});
-
-describe('globalifySelector', () => {
-  it('correctly treats CSS selectors with legal spaces', async () => {
-    const selector = '[attr="with spaces"]';
-
-    expect(globalifySelector(selector)).toEqual(
-      ':global([attr="with spaces"])',
-    );
-  });
-
-  it('correctly treats CSS combinators', async () => {
-    const selector1 = 'div > span';
-    const selector2 = 'div, span';
-
-    expect(globalifySelector(selector1)).toEqual(
-      ':global(div) > :global(span)',
-    );
-    expect(globalifySelector(selector2)).toEqual(':global(div), :global(span)');
-  });
-
-  it('correctly treats selectors with escaped combinator characters', async () => {
-    const selector1 = '.\\~positive.\\!normal ~ .\\+foo';
-
-    expect(globalifySelector(selector1)).toEqual(
-      ':global(.\\~positive.\\!normal) ~ :global(.\\+foo)',
-    );
   });
 });
 
