@@ -1,3 +1,12 @@
+## [4.3.1](https://github.com/sveltejs/svelte-preprocess/compare/v4.3.0...v4.3.1) (2020-09-25)
+
+
+### Bug Fixes
+
+* 🐛 nth-child not being correctly globalified ([c78b260](https://github.com/sveltejs/svelte-preprocess/commit/c78b26038f12cd698d65a09f53fb798c6abb7f03)), closes [#224](https://github.com/sveltejs/svelte-preprocess/issues/224)
+
+
+
 # [4.3.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.2.2...v4.3.0) (2020-09-16)
 
 
