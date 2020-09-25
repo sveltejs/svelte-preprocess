@@ -1,3 +1,13 @@
+## [4.3.2](https://github.com/sveltejs/svelte-preprocess/compare/v4.3.0...v4.3.2) (2020-09-25)
+
+
+### Bug Fixes
+
+* 🐛 nth-child not being correctly globalified ([fa7249f](https://github.com/sveltejs/svelte-preprocess/commit/fa7249f6988931f73c82e18554dcdf702bda5146)), closes [#224](https://github.com/sveltejs/svelte-preprocess/issues/224)
+* 🐛 prevent supressing generic errors on postcss transformer ([9a7dd49](https://github.com/sveltejs/svelte-preprocess/commit/9a7dd4991ecbb9443bffe1d69b0cc68f513f59a7)), closes [#216](https://github.com/sveltejs/svelte-preprocess/issues/216)
+
+
+
 ## [4.3.1](https://github.com/sveltejs/svelte-preprocess/compare/v4.3.0...v4.3.1) (2020-09-25)
 
 
