@@ -4,6 +4,7 @@
  * We use a negative lookbehind assertion to prevent matching
  * escaped combinators like `\~`.
  */
+// TODO: maybe replace this ugly pattern with an actual selector parser? (https://github.com/leaverou/parsel, 2kb)
 const combinatorPattern = /(?<!\\)(?:\\\\)*([ >+~,]\s*)(?![^[]+\]|\d)/g;
 
 export function globalifySelector(selector: string) {
