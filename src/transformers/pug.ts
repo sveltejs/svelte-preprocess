@@ -18,6 +18,11 @@ mixin elseif(condition)
 %_| {:else if !{condition}}
 %_block
 
+mixin key(expression)
+%_| {#key !{expression}}
+%_block
+%_| {/key}
+
 mixin each(loop)
 %_| {#each !{loop}}
 %_block
