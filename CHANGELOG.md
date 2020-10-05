@@ -1,3 +1,12 @@
+# [4.4.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.3.2...v4.4.0) (2020-10-05)
+
+
+### Features
+
+* add new syntax {key} for `pug` ([#259](https://github.com/sveltejs/svelte-preprocess/issues/259)) ([707206f](https://github.com/sveltejs/svelte-preprocess/commit/707206f7457cf5e066c95a18d3f99f48ea61481d))
+
+
+
 ## [4.3.2](https://github.com/sveltejs/svelte-preprocess/compare/v4.3.0...v4.3.2) (2020-09-25)
 
 
