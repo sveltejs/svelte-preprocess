@@ -55,7 +55,7 @@ type AutoPreprocessOptions = {
   [languageName: string]: TransformerOptions;
 };
 
-export const runTransformer = async (
+export const transform = async (
   name: string,
   options: TransformerOptions,
   { content, map, filename, attributes }: TransformerArgs<any>,
@@ -68,6 +68,7 @@ export const runTransformer = async (
     return options({ content, map, filename, attributes });
   }
 
+  // todo: maybe add a try-catch here looking for module-not-found errors
   const { transformer } = await import(`./transformers/${name}`);
 
   return transformer({
@@ -166,7 +167,7 @@ export function sveltePreprocess(
       return { code: content, dependencies };
     }
 
-    const transformed = await runTransformer(lang, transformerOptions, {
+    const transformed = await transform(lang, transformerOptions, {
       content,
       filename,
       attributes,
@@ -184,11 +185,10 @@ export function sveltePreprocess(
 
   const markup: PreprocessorGroup['markup'] = async ({ content, filename }) => {
     if (transformers.replace) {
-      const transformed = await runTransformer(
-        'replace',
-        transformers.replace,
-        { content, filename },
-      );
+      const transformed = await transform('replace', transformers.replace, {
+        content,
+        filename,
+      });
 
       content = transformed.code;
     }
@@ -214,7 +214,7 @@ export function sveltePreprocess(
     let { code, map, dependencies, diagnostics } = transformResult;
 
     if (transformers.babel) {
-      const transformed = await runTransformer(
+      const transformed = await transform(
         'babel',
         getTransformerOptions('babel'),
         {
@@ -250,7 +250,7 @@ export function sveltePreprocess(
     // istanbul ignore else
     if (await hasDepInstalled('postcss')) {
       if (transformers.postcss) {
-        const transformed = await runTransformer(
+        const transformed = await transform(
           'postcss',
           getTransformerOptions('postcss'),
           { content: code, map, filename, attributes },
@@ -261,7 +261,7 @@ export function sveltePreprocess(
         dependencies = concat(dependencies, transformed.dependencies);
       }
 
-      const transformed = await runTransformer(
+      const transformed = await transform(
         'globalStyle',
         getTransformerOptions('globalStyle'),
         { content: code, map, filename, attributes },

@@ -8,7 +8,7 @@ import {
   spyConsole,
 } from '../utils';
 
-const { warnSpy } = spyConsole();
+const { warnSpy } = spyConsole({ silent: true });
 
 const {
   markup: markupProcessor,
@@ -23,6 +23,8 @@ const REMOTE_JS = [
 ];
 
 describe('external files', () => {
+  afterEach(warnSpy.mockClear);
+
   it('should insert external file content and add as deps', async () => {
     const [markup, script, style] = [
       await markupProcessor({

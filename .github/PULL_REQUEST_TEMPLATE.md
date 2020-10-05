@@ -6,4 +6,4 @@
 
 ### Tests
 
-- [ ] Run the tests tests with `npm test` or `yarn test`
+- [ ] Run the tests with `npm test` or `yarn test`
