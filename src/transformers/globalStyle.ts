@@ -46,7 +46,8 @@ const globalAttrPlugin = (root: postcss.Root) => {
   });
 
   root.walkRules((rule) => {
-    if ((rule?.parent as AtRule)?.name === 'keyframes') {
+    // we use endsWith for checking @keyframes and prefixed @-{prefix}-keyframes
+    if ((rule?.parent as AtRule)?.name?.endsWith('keyframes')) {
       return;
     }
 
