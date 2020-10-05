@@ -1,3 +1,13 @@
+## [4.4.2](https://github.com/sveltejs/svelte-preprocess/compare/v4.4.0...v4.4.2) (2020-10-05)
+
+
+### Bug Fixes
+
+* 🐛 prefixed keyframes globalization ([903d95b](https://github.com/sveltejs/svelte-preprocess/commit/903d95b931da10cf861fc71c15e6ab43fcfef590)), closes [#264](https://github.com/sveltejs/svelte-preprocess/issues/264)
+* 🐛 prevent trying to resolve interpolated src values ([e71157c](https://github.com/sveltejs/svelte-preprocess/commit/e71157c001ec7ba9f47b1ce4ad747a8a1a3258d5)), closes [#226](https://github.com/sveltejs/svelte-preprocess/issues/226)
+
+
+
 ## [4.4.1](https://github.com/sveltejs/svelte-preprocess/compare/v4.4.0...v4.4.1) (2020-10-05)
 
 
