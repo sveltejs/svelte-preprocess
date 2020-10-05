@@ -3,6 +3,7 @@ import { resolve, dirname } from 'path';
 
 import { PreprocessorArgs } from '../types';
 import { getLanguage } from './language';
+import { isValidLocalPath } from './utils';
 
 const resolveSrc = (importerFile: string, srcPath: string) =>
   resolve(dirname(importerFile), srcPath);
@@ -40,7 +41,7 @@ export const getTagInfo = async ({
     let path = attributes.src;
 
     /** Only try to get local files (path starts with ./ or ../) */
-    if (path.match(/^(https?:)?\/\//) == null) {
+    if (isValidLocalPath(path)) {
       path = resolveSrc(filename, path);
       if (await doesFileExist(path)) {
         content = await getSrcContent(path);

@@ -1,6 +1,7 @@
 import { basename } from 'path';
 
 import { PreprocessorArgs } from '../types';
+import { isValidLocalPath } from './utils';
 
 export const LANG_SPECIFIC_OPTIONS: Record<string, any> = {
   sass: {
@@ -63,12 +64,10 @@ export const getLanguage = (attributes: PreprocessorArgs['attributes']) => {
     }
 
     alias = attributes.type.replace(/^(text|application)\/(.*)$/, '$2');
-  } else if (attributes.src) {
-    // istanbul ignore if
-    if (typeof attributes.src !== 'string') {
-      throw new Error('src attribute must be string');
-    }
-
+  } else if (
+    typeof attributes.src === 'string' &&
+    isValidLocalPath(attributes.src)
+  ) {
     const parts = basename(attributes.src).split('.');
 
     if (parts.length > 1) {

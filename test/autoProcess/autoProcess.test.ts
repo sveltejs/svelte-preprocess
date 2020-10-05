@@ -18,6 +18,10 @@ describe('detect - mimetype', () => {
       lang: 'customLanguage',
       targetLanguage: 'customLanguage',
     },
+    {
+      src: '{_potato("foo")}',
+      targetLanguage: null,
+    },
   ];
 
   MIMETYPES.forEach(({ type, lang, src, targetLanguage }) => {
