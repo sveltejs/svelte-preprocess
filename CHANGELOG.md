@@ -1,3 +1,12 @@
+## [4.4.1](https://github.com/sveltejs/svelte-preprocess/compare/v4.4.0...v4.4.1) (2020-10-05)
+
+
+### Bug Fixes
+
+* 🐛 prevent trying to resolve interpolated src values ([780b09a](https://github.com/sveltejs/svelte-preprocess/commit/780b09a43a0d7cf01067a0ffd378f65961de97c2)), closes [#226](https://github.com/sveltejs/svelte-preprocess/issues/226)
+
+
+
 # [4.4.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.3.2...v4.4.0) (2020-10-05)
 
 
