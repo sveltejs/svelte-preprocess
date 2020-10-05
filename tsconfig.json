@@ -9,7 +9,8 @@
     "lib": ["es2018"],
     "declaration": true,
     "types": ["jest", "node"],
-    "outDir": "dist"
+    "outDir": "dist",
+    "resolveJsonModule": true
   },
   "include": ["**/*.ts"],
   "exclude": ["node_modules/**/*", "dist"]

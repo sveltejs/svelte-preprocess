@@ -94,6 +94,7 @@
     "@types/pug": "^2.0.4",
     "@types/sass": "^1.16.0",
     "detect-indent": "^6.0.0",
+    "sade": "^1.7.4",
     "strip-indent": "^3.0.0"
   },
   "peerDependencies": {
