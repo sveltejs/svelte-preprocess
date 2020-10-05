@@ -50,6 +50,19 @@ describe('transformer - globalStyle', () => {
       );
     });
 
+    it('supports prefixed @keyframes', async () => {
+      const template = `<style global>
+@-webkit-keyframes a {from{} to{}}@-webkit-keyframes -global-b {from{} to{}}
+</style>`;
+
+      const opts = autoProcess();
+      const preprocessed = await preprocess(template, opts);
+
+      expect(preprocessed.toString()).toContain(
+        `@-webkit-keyframes -global-a {from{} to{}}@-webkit-keyframes -global-b {from{} to{}}`,
+      );
+    });
+
     it('allows to use :local() at the beginning of a selector', async () => {
       const template = `<style global>:local(div) .test{}</style>`;
       const opts = autoProcess();
