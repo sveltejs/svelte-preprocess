@@ -1,3 +1,12 @@
+## [4.5.1](https://github.com/sveltejs/svelte-preprocess/compare/v4.5.0...v4.5.1) (2020-10-07)
+
+
+### Bug Fixes
+
+* 🐛 add sugarss as optional dependency ([9ed25ee](https://github.com/sveltejs/svelte-preprocess/commit/9ed25ee88c72ae28c5621e7228cddf53b4e7d791))
+
+
+
 # [4.5.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.4.3...v4.5.0) (2020-10-07)
 
 
