@@ -45,7 +45,7 @@ export default {
 }
 ```
 
-As `svelte-preprocess` is just a Svelte preprocessor like any oter, it's also possible to use it alongside other preprocessors:
+As `svelte-preprocess` is just a Svelte preprocessor like any other, it's also possible to use it alongside other preprocessors:
 
 ```js
 import preprocess from 'svelte-preprocess'
@@ -169,7 +169,7 @@ export default {
 
 In case you want to manually configure your preprocessing step while taking advantage of `svelte-preprocess` features, such as language detection and external file support, the following preprocessors are available: Pug, CoffeeScript, TypeScript, Less, SCSS, Sass, Stylus, PostCSS, Babel, `globalStyle` `replace`.
 
-Every processor accepts an option object which is passed to its respective underlying tool. See the section below for options for each preprocessor.
+Every processor accepts an options object which is passed to its respective underlying tool. See the section below for options for each preprocessor.
 
 ```js
 import { scss, postcss } from 'svelte-preprocess';
@@ -188,7 +188,7 @@ svelte.preprocess(input, [
 
 Stand-alone markup preprocessors such as Pug are executed over the whole markup and not only inside a custom tag.
 
-The preprocessors are language aware, which means you can enqueue multiple ones and you won't have SCSS and Stylus conflicting over the same content.
+The preprocessors are language-aware, which means you can enqueue multiple ones and you won't have SCSS and Stylus conflicting over the same content.
 
 ### Difference between the auto and stand-alone modes
 
@@ -247,7 +247,7 @@ export default {
 
 ## Preprocessors
 
-Besides the options of each preprocessors, `svelte-preprocess` also supports these custom options:
+Besides the options of each preprocessor, `svelte-preprocess` also supports these custom options:
 
 | Option        | Default | Description                                                                            |
 | ------------- | ------- | -------------------------------------------------------------------------------------- |
@@ -255,7 +255,7 @@ Besides the options of each preprocessors, `svelte-preprocess` also supports the
 
 ### Babel
 
-The Babel preprocessor accepts an option object which is passed onto the babel runtime. You can check the [Babel API reference](https://babeljs.io/docs/en/options#primary-options) for specific options.
+The Babel preprocessor accepts an options object which is passed onto the babel runtime. You can check the [Babel API reference](https://babeljs.io/docs/en/options#primary-options) for specific options.
 
 **Note**: `Svelte` expects your JavaScript to be in at least ES6 format, so make sure to set your Babel configuration accordingly.
 
@@ -319,7 +319,7 @@ button(disabled!="{foo && bar}")
 
 **Svelte Element directives:**
 
-Syntax for use Svelte Element directives with Pug
+Syntax to use Svelte Element directives with Pug
 
 ```pug
 input(bind:value="{foo}")
