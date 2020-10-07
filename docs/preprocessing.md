@@ -269,7 +269,7 @@ The CoffeeScript processor accepts no extra options and only transpiles CoffeeSc
 
 You can check the [Less API reference](http://lesscss.org/usage/#less-options) for Less specific options.
 
-### PostCSS
+### PostCSS / SugarSS
 
 The PostCSS preprocessor accepts three options:
 
@@ -341,7 +341,7 @@ You can check the [Sass API reference](https://sass-lang.com/documentation/js-ap
 
 ### Stylus
 
-You can check the [Stylus API reference](https://stylus-lang.com/docs/js.html) for specific Stylus options. The `filename` property is overriden.
+You can check the [Stylus API reference](https://stylus-lang.com/docs/js.html) for specific Stylus options. The `filename` property is overridden.
 
 ### TypeScript
 
@@ -361,7 +361,7 @@ As we're only transpiling, it's not possible to import types or interfaces into 
 
 ### `globalStyle`
 
-The `globalStyle` preprocessor extends the functionalities of Svelte's `:global` pseudo selector.
+The `globalStyle` preprocessor extends the functionalities of Svelte's `:global` pseudo-selector.
 
 **`global` attribute:**
 
