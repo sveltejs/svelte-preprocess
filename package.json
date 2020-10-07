@@ -105,6 +105,7 @@
     "pug": "^3.0.0",
     "sass": "^1.26.8",
     "stylus": "^0.54.7",
+    "sugarss": "^2.0.0",
     "svelte": "^3.23.0",
     "typescript": "^3.9.5 || ^4.0.0"
   },
@@ -134,6 +135,9 @@
       "optional": true
     },
     "stylus": {
+      "optional": true
+    },
+    "sugarss": {
       "optional": true
     },
     "svelte": {
