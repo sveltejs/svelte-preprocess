@@ -1,3 +1,17 @@
+# [4.5.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.4.3...v4.5.0) (2020-10-07)
+
+
+### Bug Fixes
+
+* 🐛 postcss config file support for sugarss ([4876426](https://github.com/sveltejs/svelte-preprocess/commit/48764269205c6617f790adad50b61f8614bff3d0))
+
+
+### Features
+
+* 🎸 add support for lang=sugarss & type=text/sugarss ([683715d](https://github.com/sveltejs/svelte-preprocess/commit/683715d214022e53f0653ee3e6872adf6bdf72be)), closes [#250](https://github.com/sveltejs/svelte-preprocess/issues/250)
+
+
+
 ## [4.4.3](https://github.com/sveltejs/svelte-preprocess/compare/v4.4.0...v4.4.3) (2020-10-07)
 
 ### Bug Fixes
