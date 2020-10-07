@@ -1,11 +1,12 @@
-import postcss, { AtRule } from 'postcss';
+import postcss from 'postcss';
+import type * as pcss from 'postcss';
 
 import { Transformer, Options } from '../types';
 import { globalifySelector } from '../modules/globalifySelector';
 
 const selectorPattern = /:global(?!\()/;
 
-const globalifyRulePlugin: postcss.Transformer = (root) => {
+const globalifyRulePlugin = (root: pcss.Root) => {
   root.walkRules(selectorPattern, (rule) => {
     const modifiedSelectors = rule.selectors
       .filter((selector) => selector !== ':global')
@@ -34,7 +35,7 @@ const globalifyRulePlugin: postcss.Transformer = (root) => {
   });
 };
 
-const globalAttrPlugin = (root: postcss.Root) => {
+const globalAttrPlugin = (root: pcss.Root) => {
   root.walkAtRules(/keyframes$/, (atrule) => {
     if (!atrule.params.startsWith('-global-')) {
       atrule.replaceWith(
@@ -47,7 +48,7 @@ const globalAttrPlugin = (root: postcss.Root) => {
 
   root.walkRules((rule) => {
     // we use endsWith for checking @keyframes and prefixed @-{prefix}-keyframes
-    if ((rule?.parent as AtRule)?.name?.endsWith('keyframes')) {
+    if ((rule?.parent as pcss.AtRule)?.name?.endsWith('keyframes')) {
       return;
     }
 

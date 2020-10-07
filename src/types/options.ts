@@ -1,4 +1,4 @@
-import postcss from 'postcss';
+import type * as postcss from 'postcss';
 import { Options as SassOptions, render, renderSync } from 'sass';
 import { Options as PugOptions } from 'pug';
 import { TransformOptions as BabelOptions } from '@babel/core';
