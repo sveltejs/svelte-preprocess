@@ -114,16 +114,14 @@ div
     `);
   });
 
-  it('should support lang=sugarss without automatic indentation removal', async () => {
+  it('automatically removes indentation for lang=sugarss ', async () => {
     const template = `<style lang="sugarss">
       div
         color: red
     </style>`;
 
     const opts = sveltePreprocess({
-      postcss: {
-        plugins: [],
-      },
+      postcss: true,
     });
 
     const preprocessed = await preprocess(template, opts);

@@ -6,7 +6,7 @@ import sveltePreprocess from '../../src';
 import { Processed } from '../../src/types';
 import { preprocess, getFixtureContent, spyConsole } from '../utils';
 
-spyConsole();
+spyConsole({ silent: true });
 
 const EXPECTED_SCRIPT = getFixtureContent('script.js');
 
