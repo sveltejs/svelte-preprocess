@@ -3,7 +3,7 @@ import { basename } from 'path';
 import { PreprocessorArgs } from '../types';
 import { isValidLocalPath } from './utils';
 
-const LANG_SPECIFIC_OPTIONS: Record<string, any> = {
+const LANGUAGE_DEFAULTS: Record<string, any> = {
   sass: {
     indentedSyntax: true,
     stripIndent: true,
@@ -26,7 +26,7 @@ const LANG_SPECIFIC_OPTIONS: Record<string, any> = {
 };
 
 export function getLanguageDefaults(lang: string): null | Record<string, any> {
-  const defaults = LANG_SPECIFIC_OPTIONS[lang];
+  const defaults = LANGUAGE_DEFAULTS[lang];
 
   if (!defaults) return null;
   if (typeof defaults === 'function') {
