@@ -1,96 +1,63 @@
 ## [4.4.3](https://github.com/sveltejs/svelte-preprocess/compare/v4.4.0...v4.4.3) (2020-10-07)
 
-
 ### Bug Fixes
 
-* 🐛 prefixed keyframes globalization ([cdb5ae4](https://github.com/sveltejs/svelte-preprocess/commit/cdb5ae4a31aa4c0d1934a7aa82337b3c86eed92e)), closes [#264](https://github.com/sveltejs/svelte-preprocess/issues/264)
-* 🐛 prevent trying to resolve interpolated src values ([e71157c](https://github.com/sveltejs/svelte-preprocess/commit/e71157c001ec7ba9f47b1ce4ad747a8a1a3258d5)), closes [#226](https://github.com/sveltejs/svelte-preprocess/issues/226)
-* 🐛 types for postcss 8 ([9b3cd3b](https://github.com/sveltejs/svelte-preprocess/commit/9b3cd3b3b8b347a4c99efa189437c27f037ef6f5)), closes [#258](https://github.com/sveltejs/svelte-preprocess/issues/258)
-
-
+- 🐛 types for postcss 8 ([9b3cd3b](https://github.com/sveltejs/svelte-preprocess/commit/9b3cd3b3b8b347a4c99efa189437c27f037ef6f5)), closes [#258](https://github.com/sveltejs/svelte-preprocess/issues/258)
 
 ## [4.4.2](https://github.com/sveltejs/svelte-preprocess/compare/v4.4.0...v4.4.2) (2020-10-05)
 
-
 ### Bug Fixes
 
-* 🐛 prefixed keyframes globalization ([903d95b](https://github.com/sveltejs/svelte-preprocess/commit/903d95b931da10cf861fc71c15e6ab43fcfef590)), closes [#264](https://github.com/sveltejs/svelte-preprocess/issues/264)
-* 🐛 prevent trying to resolve interpolated src values ([e71157c](https://github.com/sveltejs/svelte-preprocess/commit/e71157c001ec7ba9f47b1ce4ad747a8a1a3258d5)), closes [#226](https://github.com/sveltejs/svelte-preprocess/issues/226)
-
-
+- 🐛 prefixed keyframes globalization ([903d95b](https://github.com/sveltejs/svelte-preprocess/commit/903d95b931da10cf861fc71c15e6ab43fcfef590)), closes [#264](https://github.com/sveltejs/svelte-preprocess/issues/264)
 
 ## [4.4.1](https://github.com/sveltejs/svelte-preprocess/compare/v4.4.0...v4.4.1) (2020-10-05)
 
-
 ### Bug Fixes
 
-* 🐛 prevent trying to resolve interpolated src values ([780b09a](https://github.com/sveltejs/svelte-preprocess/commit/780b09a43a0d7cf01067a0ffd378f65961de97c2)), closes [#226](https://github.com/sveltejs/svelte-preprocess/issues/226)
-
-
+- 🐛 prevent trying to resolve interpolated src values ([780b09a](https://github.com/sveltejs/svelte-preprocess/commit/780b09a43a0d7cf01067a0ffd378f65961de97c2)), closes [#226](https://github.com/sveltejs/svelte-preprocess/issues/226)
 
 # [4.4.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.3.2...v4.4.0) (2020-10-05)
 
-
 ### Features
 
-* add new syntax {key} for `pug` ([#259](https://github.com/sveltejs/svelte-preprocess/issues/259)) ([707206f](https://github.com/sveltejs/svelte-preprocess/commit/707206f7457cf5e066c95a18d3f99f48ea61481d))
-
-
+- add new syntax {key} for `pug` ([#259](https://github.com/sveltejs/svelte-preprocess/issues/259)) ([707206f](https://github.com/sveltejs/svelte-preprocess/commit/707206f7457cf5e066c95a18d3f99f48ea61481d))
 
 ## [4.3.2](https://github.com/sveltejs/svelte-preprocess/compare/v4.3.0...v4.3.2) (2020-09-25)
 
-
 ### Bug Fixes
 
-* 🐛 nth-child not being correctly globalified ([fa7249f](https://github.com/sveltejs/svelte-preprocess/commit/fa7249f6988931f73c82e18554dcdf702bda5146)), closes [#224](https://github.com/sveltejs/svelte-preprocess/issues/224)
-* 🐛 prevent supressing generic errors on postcss transformer ([9a7dd49](https://github.com/sveltejs/svelte-preprocess/commit/9a7dd4991ecbb9443bffe1d69b0cc68f513f59a7)), closes [#216](https://github.com/sveltejs/svelte-preprocess/issues/216)
-
-
+- 🐛 nth-child not being correctly globalified ([fa7249f](https://github.com/sveltejs/svelte-preprocess/commit/fa7249f6988931f73c82e18554dcdf702bda5146)), closes [#224](https://github.com/sveltejs/svelte-preprocess/issues/224)
+- 🐛 prevent supressing generic errors on postcss transformer ([9a7dd49](https://github.com/sveltejs/svelte-preprocess/commit/9a7dd4991ecbb9443bffe1d69b0cc68f513f59a7)), closes [#216](https://github.com/sveltejs/svelte-preprocess/issues/216)
 
 ## [4.3.1](https://github.com/sveltejs/svelte-preprocess/compare/v4.3.0...v4.3.1) (2020-09-25)
 
-
 ### Bug Fixes
 
-* 🐛 nth-child not being correctly globalified ([c78b260](https://github.com/sveltejs/svelte-preprocess/commit/c78b26038f12cd698d65a09f53fb798c6abb7f03)), closes [#224](https://github.com/sveltejs/svelte-preprocess/issues/224)
-
-
+- 🐛 nth-child not being correctly globalified ([c78b260](https://github.com/sveltejs/svelte-preprocess/commit/c78b26038f12cd698d65a09f53fb798c6abb7f03)), closes [#224](https://github.com/sveltejs/svelte-preprocess/issues/224)
 
 # [4.3.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.2.2...v4.3.0) (2020-09-16)
 
-
 ### Features
 
-* add +html mixin for pug ([#245](https://github.com/sveltejs/svelte-preprocess/issues/245)) ([d2d6d13](https://github.com/sveltejs/svelte-preprocess/commit/d2d6d13318668818682b5dda8ac318b98c499384))
-
-
+- add +html mixin for pug ([#245](https://github.com/sveltejs/svelte-preprocess/issues/245)) ([d2d6d13](https://github.com/sveltejs/svelte-preprocess/commit/d2d6d13318668818682b5dda8ac318b98c499384))
 
 ## [4.2.2](https://github.com/sveltejs/svelte-preprocess/compare/v4.2.0...v4.2.2) (2020-09-16)
 
-
 ### Bug Fixes
 
-* allow typescript v4 ([c584bcf](https://github.com/sveltejs/svelte-preprocess/commit/c584bcff7fcb1021cd21b82b79c8b4608f2f8d5a))
-
-
+- allow typescript v4 ([c584bcf](https://github.com/sveltejs/svelte-preprocess/commit/c584bcff7fcb1021cd21b82b79c8b4608f2f8d5a))
 
 ## [4.2.1](https://github.com/sveltejs/svelte-preprocess/compare/v4.2.0...v4.2.1) (2020-09-01)
 
-
 ### Bug Fixes
 
-* 🐛 self-closing templates with external source ([217a09d](https://github.com/sveltejs/svelte-preprocess/commit/217a09dab1beae2d6f309760d425001ead74217f)), closes [#235](https://github.com/sveltejs/svelte-preprocess/issues/235)
-
-
+- 🐛 self-closing templates with external source ([217a09d](https://github.com/sveltejs/svelte-preprocess/commit/217a09dab1beae2d6f309760d425001ead74217f)), closes [#235](https://github.com/sveltejs/svelte-preprocess/issues/235)
 
 # [4.2.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.1.3...v4.2.0) (2020-08-30)
 
-
 ### Features
 
-* 🎸 enable sourceMap for dev environment automatically ([4df9031](https://github.com/sveltejs/svelte-preprocess/commit/4df9031d942dd4ecc0f47878c21c54cd15552285))
-
-
+- 🎸 enable sourceMap for dev environment automatically ([4df9031](https://github.com/sveltejs/svelte-preprocess/commit/4df9031d942dd4ecc0f47878c21c54cd15552285))
 
 ## [4.1.3](https://github.com/sveltejs/svelte-preprocess/compare/v4.1.1...v4.1.3) (2020-08-30)
 
