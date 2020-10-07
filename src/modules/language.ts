@@ -3,7 +3,7 @@ import { basename } from 'path';
 import { PreprocessorArgs } from '../types';
 import { isValidLocalPath } from './utils';
 
-export const LANG_SPECIFIC_OPTIONS: Record<string, any> = {
+const LANG_SPECIFIC_OPTIONS: Record<string, any> = {
   sass: {
     indentedSyntax: true,
     stripIndent: true,
@@ -17,7 +17,24 @@ export const LANG_SPECIFIC_OPTIONS: Record<string, any> = {
   stylus: {
     stripIndent: true,
   },
+  // We need to defer this require to make sugarss an optional dependency.
+  sugarss: () => ({
+    stripIndent: true,
+    // eslint-disable-next-line @typescript-eslint/no-require-imports, global-require
+    parser: require('sugarss'),
+  }),
 };
+
+export function getLanguageDefaults(lang: string): null | Record<string, any> {
+  const defaults = LANG_SPECIFIC_OPTIONS[lang];
+
+  if (!defaults) return null;
+  if (typeof defaults === 'function') {
+    return defaults();
+  }
+
+  return defaults;
+}
 
 export const SOURCE_MAP_PROP_MAP: Record<string, [string, any]> = {
   babel: ['sourceMaps', true],
@@ -33,6 +50,7 @@ export const SOURCE_MAP_PROP_MAP: Record<string, [string, any]> = {
 export const ALIAS_MAP = new Map([
   ['pcss', 'css'],
   ['postcss', 'css'],
+  ['sugarss', 'css'],
   ['sass', 'scss'],
   ['styl', 'stylus'],
   ['js', 'javascript'],

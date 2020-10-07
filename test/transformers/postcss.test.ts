@@ -6,7 +6,7 @@ import { resolve } from 'path';
 import sveltePreprocess from '../../src';
 import { preprocess, spyConsole } from '../utils';
 
-spyConsole();
+spyConsole({ silent: true });
 
 describe('transformer - postcss', () => {
   it('should not transform plain css with postcss if { postcss: falsy }', async () => {
@@ -106,8 +106,33 @@ div
 
     const preprocessed = await preprocess(template, opts);
 
-    expect(preprocessed.toString()).toContain(`div {
-  color: red
-}`);
+    expect(preprocessed.toString()).toMatchInlineSnapshot(`
+      "<style>
+      div {
+        color: red
+      }</style>"
+    `);
+  });
+
+  it('should support lang=sugarss without automatic indentation removal', async () => {
+    const template = `<style lang="sugarss">
+      div
+        color: red
+    </style>`;
+
+    const opts = sveltePreprocess({
+      postcss: {
+        plugins: [],
+      },
+    });
+
+    const preprocessed = await preprocess(template, opts);
+
+    expect(preprocessed.toString()).toMatchInlineSnapshot(`
+      "<style lang=\\"sugarss\\">
+      div {
+        color: red
+      }</style>"
+    `);
   });
 });

@@ -13,7 +13,8 @@ import {
   addLanguageAlias,
   getLanguageFromAlias,
   SOURCE_MAP_PROP_MAP,
-  LANG_SPECIFIC_OPTIONS,
+  getLanguage,
+  getLanguageDefaults,
 } from './modules/language';
 import { prepareContent } from './modules/prepareContent';
 import { transformMarkup } from './modules/markup';
@@ -119,7 +120,7 @@ export function sveltePreprocess(
       Object.assign(opts, nameOpts);
     }
 
-    Object.assign(opts, LANG_SPECIFIC_OPTIONS[alias]);
+    Object.assign(opts, getLanguageDefaults(name), getLanguageDefaults(alias));
 
     if (name !== alias && typeof aliasOpts === 'object') {
       Object.assign(opts, aliasOpts);
@@ -250,9 +251,11 @@ export function sveltePreprocess(
     // istanbul ignore else
     if (await hasDepInstalled('postcss')) {
       if (transformers.postcss) {
+        const { alias } = getLanguage(attributes);
+
         const transformed = await transform(
           'postcss',
-          getTransformerOptions('postcss'),
+          getTransformerOptions('postcss', alias),
           { content: code, map, filename, attributes },
         );
 
