@@ -24,12 +24,13 @@ $ cd my-svelte-app
 $ npm install -D svelte-preprocess
 ```
 
-`svelte-preprocess` doesn't have any language specific dependency, so it's up to us to install the rest of tools we are going to use:
+`svelte-preprocess` doesn't have any language-specific dependency, so it's up to us to install the rest of tools we are going to use:
 
 - Babel: `npm install -D @babel/core @babel/preset-...`
 - CoffeeScript: `npm install -D coffeescript`
 - TypeScript: `npm install -D typescript`
 - PostCSS: `npm install -D postcss postcss-load-config`
+- SugarSS: `npm install -D postcss sugarss`
 - Less: `npm install -D less`
 - Sass: `npm install -D node-sass` or `npm install -D sass`
 - Pug: `npm install -D pug`
