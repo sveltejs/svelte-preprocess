@@ -71,7 +71,7 @@ The following options can be passed to the preprocessor. None are required:
 | `aliases`       | `null`                                                   | A list of tuples `[alias: string, language: string]` that correlates an `alias` to a `language`<br><br>i.e `['cst', 'customLanguage']` means<br>`<... src="./file.cst">`<br>`<... lang="cst">`<br>`<... type="text/customLanguage">`<br>`<... type="application/customLanguage">`<br>are treated as `customLanguage`. |
 | preserve        | `[]`                                                     | A `string` list of languages/aliases that shouldn't pass through the preprocessor. (i.e `ld+json`)                                                                                                                                                                                                                    |
 | `defaults`      | `{ markup: 'html', script: 'javascript', style: 'css' }` | An `object` that defines the default languages of your components.<br><br>i.e: `{ script: 'typescript' }` makes TypeScript the default language, removing the need of adding `lang="ts"` to `script` tags.                                                                                                            |
-| `sourceMap`     | `false`                                                   | If `true`, `svelte-preprocess` generates sourcemap for every language that supports it.                                                                                                                                                                                                                               |
+| `sourceMap`     | `false`                                                  | If `true`, `svelte-preprocess` generates sourcemap for every language that supports it.                                                                                                                                                                                                                               |
 
 ##### Configuring preprocessors
 
@@ -257,7 +257,7 @@ Besides the options of each preprocessor, `svelte-preprocess` also supports thes
 
 The Babel preprocessor accepts an options object which is passed onto the babel runtime. You can check the [Babel API reference](https://babeljs.io/docs/en/options#primary-options) for specific options.
 
-**Note**: `Svelte` expects your JavaScript to be in at least ES6 format, so make sure to set your Babel configuration accordingly.
+`Svelte` expects your JavaScript to be in at least ES6 format, so make sure to set your Babel configuration accordingly.
 
 _Note: If you want to transpile your app to be supported in older browsers, you must run babel from the context of your bundler._
 
@@ -280,7 +280,9 @@ The PostCSS preprocessor accepts three options:
 | `syntax`         | `undefined` | the syntax to be used.                                          |
 | `configFilePath` | `undefined` | the path of the directory containing the PostCSS configuration. |
 
-**Note**: In auto-preprocessing mode, you can set `postcss: true` if `postcss-load-config` is installed and `svelte-preprocess` will look for a PostCSS config file in your project.
+In auto-preprocessing mode, you can set `postcss: true` if `postcss-load-config` is installed and `svelte-preprocess` will look for a PostCSS config file in your project.
+
+When a `lang="sugarss"`/`type="text/sugarss"` is found, `sugarss` is automatically loaded and extra indentation is removed.
 
 You can check the [PostCSS API reference](https://api.postcss.org/) for PostCSS specific options.
 
@@ -335,9 +337,9 @@ The `scss/sass` preprocessor accepts the default sass options alongside two othe
 | `renderSync`     | `false`     | if `true`, use the sync render method which is faster for dart sass.                                                           |
 | `implementation` | `undefined` | pass the module to use to compile sass, if unspecified, `svelte-preprocess` will first look for `node-sass` and then for Sass. |
 
-You can check the [Sass API reference](https://sass-lang.com/documentation/js-api) for specific Sass options. The `file` and `data` properties are not supported. Instead, use the `prependData` property if you want to prepend some content to your scss content.
+You can check the [Sass API reference](https://sass-lang.com/documentation/js-api) for specific Sass options. The `file` and `data` properties are not supported. Instead, use the `prependData` property if you want to prepend some content to your `scss` content.
 
-**Note**: When `svelte-preprocess` detects the language as Sass, it automatically sets `indentedSyntax` to `true`.
+When a `lang="sass"`/`type="text/sass"` is found, `indentedSyntax` is automatically set to `true`.
 
 ### Stylus
 
