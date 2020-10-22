@@ -269,6 +269,8 @@ The CoffeeScript processor accepts no extra options and only transpiles CoffeeSc
 
 You can check the [Less API reference](http://lesscss.org/usage/#less-options) for Less specific options.
 
+Note: `svelte-preprocess` automatically configures inclusion paths for your root directory, `node_modules` and for the current file's directory.
+
 ### PostCSS / SugarSS
 
 The PostCSS preprocessor accepts three options:
@@ -339,6 +341,8 @@ The `scss/sass` preprocessor accepts the default sass options alongside two othe
 
 You can check the [Sass API reference](https://sass-lang.com/documentation/js-api) for specific Sass options. The `file` and `data` properties are not supported. Instead, use the `prependData` property if you want to prepend some content to your `scss` content.
 
+Note: `svelte-preprocess` automatically configures inclusion paths for your root directory, `node_modules` and for the current file's directory.
+
 Note: when a `lang="sass"`/`type="text/sass"` is found, `indentedSyntax` is automatically set to `true`.
 
 Note: `sass`, with indented syntax, and `scss` are not interchangeable so make sure to configure the correct one that fits your needs.
@@ -346,6 +350,8 @@ Note: `sass`, with indented syntax, and `scss` are not interchangeable so make s
 ### Stylus
 
 You can check the [Stylus API reference](https://stylus-lang.com/docs/js.html) for specific Stylus options. The `filename` property is overridden.
+
+Note: `svelte-preprocess` automatically configures inclusion paths for your root directory, `node_modules` and for the current file's directory.
 
 ### TypeScript
 
