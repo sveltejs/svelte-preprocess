@@ -12,7 +12,7 @@
   - [Babel](#babel)
   - [CoffeeScript](#coffeescript)
   - [Less](#less)
-  - [PostCSS](#postcss)
+  - [PostCSS / SugarSS](#postcss-sugarss)
   - [Pug](#pug)
   - [scss / sass](#scss-sass)
   - [Stylus](#stylus)
@@ -328,7 +328,7 @@ input(bind:value="{foo}")
 input(on:input="{bar}")
 ```
 
-### scss / sass
+### scss, sass
 
 The `scss/sass` preprocessor accepts the default sass options alongside two other props:
 
