@@ -339,7 +339,9 @@ The `scss/sass` preprocessor accepts the default sass options alongside two othe
 
 You can check the [Sass API reference](https://sass-lang.com/documentation/js-api) for specific Sass options. The `file` and `data` properties are not supported. Instead, use the `prependData` property if you want to prepend some content to your `scss` content.
 
-When a `lang="sass"`/`type="text/sass"` is found, `indentedSyntax` is automatically set to `true`.
+Note: when a `lang="sass"`/`type="text/sass"` is found, `indentedSyntax` is automatically set to `true`.
+
+Note: `sass`, with indented syntax, and `scss` are not interchangeable so make sure to configure the correct one that fits your needs.
 
 ### Stylus
 
