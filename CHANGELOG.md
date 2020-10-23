@@ -1,3 +1,13 @@
+## 4.5.2 (2020-10-23)
+
+
+### Bug Fixes
+
+* 🐛 inline :local without a scope not working ([2683fda](https://github.com/sveltejs/svelte-preprocess/commit/2683fda481d4d84bd37206f25c79a47787f6dc3f)), closes [#238](https://github.com/sveltejs/svelte-preprocess/issues/238)
+* 🐛 warn when global attr is used without potcss ([1be483b](https://github.com/sveltejs/svelte-preprocess/commit/1be483b34f2731b7fcc189d4453c5103a241aa9f))
+
+
+
 ## [4.5.1](https://github.com/sveltejs/svelte-preprocess/compare/v4.5.0...v4.5.1) (2020-10-07)
 
 
