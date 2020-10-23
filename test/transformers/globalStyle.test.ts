@@ -88,6 +88,40 @@ describe('transformer - globalStyle', () => {
 
       expect(preprocessed.toString()).toContain(`:global(.test) div{}`);
     });
+
+    it(':local allows the rest of selectors to be local', async () => {
+      const template = `<style global>
+      .test :local div *::before {}
+      .test :local div + a:hover {}
+      </style>`;
+
+      const opts = autoProcess();
+      const preprocessed = await preprocess(template, opts);
+
+      expect(preprocessed.toString()).toContain(
+        `:global(.test) div *::before {}`,
+      );
+      expect(preprocessed.toString()).toContain(
+        `:global(.test) div + a:hover {}`,
+      );
+    });
+
+    it(':local allows the rest of selectors to be local until the next :global', async () => {
+      const template = `<style global>
+      .test :local main > :global section div::before {}
+      .test :local div > .potato :global(p) a:hover {}
+      </style>`;
+
+      const opts = autoProcess();
+      const preprocessed = await preprocess(template, opts);
+
+      expect(preprocessed.toString()).toContain(
+        `:global(.test) main > :global(section) :global(div::before) {}`,
+      );
+      expect(preprocessed.toString()).toContain(
+        `:global(.test) div > .potato :global(p) :global(a:hover) {}`,
+      );
+    });
   });
 
   describe('global selector', () => {
