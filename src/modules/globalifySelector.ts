@@ -1,3 +1,4 @@
+/* eslint-disable line-comment-position */
 /*
  * Split a selector string (ex: div > foo ~ .potato) by
  * separators: space, >, +, ~ and comma (maybe not needed)
@@ -10,28 +11,42 @@ const combinatorPattern = /(?<!\\)(?:\\\\)*([ >+~,]\s*)(?![^[]+\]|\d)/g;
 export function globalifySelector(selector: string) {
   const parts = selector.trim().split(combinatorPattern);
 
-  const modifiedSelector = parts
-    .map((selectorPart: string, index: number) => {
-      // if this is the separator
-      if (index % 2 !== 0) {
-        return selectorPart;
-      }
+  const newSelector = [];
 
-      if (selectorPart === '') {
-        return selectorPart;
-      }
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i];
 
-      if (selectorPart.startsWith(':local')) {
-        return selectorPart.replace(/:local\((.+?)\)/g, '$1');
-      }
+    // if this is a separator or a :global
+    if (i % 2 !== 0 || part === '' || part.startsWith(':global')) {
+      newSelector.push(part);
+      continue;
+    }
 
-      if (selectorPart.startsWith(':global')) {
-        return selectorPart;
-      }
+    // :local() with scope
+    if (part.startsWith(':local(')) {
+      newSelector.push(part.replace(/:local\((.+?)\)/g, '$1'));
+      continue;
+    }
 
-      return `:global(${selectorPart})`;
-    })
-    .join('');
+    // :local inlined in a selector
+    if (part.startsWith(':local')) {
+      // + 2 to ignore the :local and space combinator
+      const startIndex = i + 2;
+      let endIndex = parts.findIndex(
+        (p, idx) => idx > startIndex && p.startsWith(':global'),
+      );
 
-  return modifiedSelector;
+      endIndex = endIndex === -1 ? parts.length - 1 : endIndex;
+
+      newSelector.push(...parts.slice(startIndex, endIndex + 1));
+
+      i = endIndex;
+
+      continue;
+    }
+
+    newSelector.push(`:global(${part})`);
+  }
+
+  return newSelector.join('');
 }
