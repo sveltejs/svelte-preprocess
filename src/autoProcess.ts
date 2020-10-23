@@ -272,6 +272,10 @@ export function sveltePreprocess(
 
       code = transformed.code;
       map = transformed.map;
+    } else if ('global' in attributes) {
+      console.warn(
+        `[svelte-preprocess] 'global' attribute found, but 'postcss' is not installed.`,
+      );
     }
 
     return { code, map, dependencies };
