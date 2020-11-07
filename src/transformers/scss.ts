@@ -1,6 +1,6 @@
-import { Result } from 'sass';
+import type { Importer, Result } from 'sass';
 
-import { Transformer, Processed, Options } from '../types';
+import type { Transformer, Processed, Options } from '../types';
 import { getIncludePaths, importAny } from '../modules/utils';
 
 let sass: Options.Sass['implementation'];
@@ -18,6 +18,14 @@ function getResultForResolve(result: Result): ResolveResult {
     dependencies: result.stats.includedFiles,
   };
 }
+
+const tildeImporter: Importer = (url, _prev, done) => {
+  if (url.startsWith('~')) {
+    return done({ file: url.slice(1) });
+  }
+
+  return done({ file: url });
+};
 
 const transformer: Transformer<Options.Sass> = async ({
   content,
@@ -43,6 +51,14 @@ const transformer: Transformer<Options.Sass> = async ({
     ...restOptions,
     data: content,
   };
+
+  if (Array.isArray(sassOptions.importer)) {
+    sassOptions.importer = [tildeImporter, ...sassOptions.importer];
+  } else if (sassOptions.importer == null) {
+    sassOptions.importer = [tildeImporter];
+  } else {
+    sassOptions.importer = [sassOptions.importer, tildeImporter];
+  }
 
   // scss errors if passed an empty string
   if (sassOptions.data.length === 0) {
