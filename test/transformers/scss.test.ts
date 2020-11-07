@@ -108,4 +108,13 @@ describe('transformer - scss', () => {
 
     expect(preprocessed.toString()).toContain('div#green{color:green}');
   });
+
+  it('supports ~ tilde imports (removes the character)', async () => {
+    const template = `<style lang="scss">@import '~scss-package/main.scss'</style>`;
+    const opts = sveltePreprocess();
+
+    const preprocessed = await preprocess(template, opts);
+
+    expect(preprocessed.toString()).toContain('div{color:red}');
+  });
 });
