@@ -1,3 +1,6 @@
+import { dirname, join } from 'path';
+import { existsSync } from 'fs';
+
 import type { Importer, Result } from 'sass';
 
 import type { Transformer, Processed, Options } from '../types';
@@ -21,10 +24,38 @@ function getResultForResolve(result: Result): ResolveResult {
 
 const tildeImporter: Importer = (url, _prev) => {
   if (url.startsWith('~')) {
-    return { file: url.slice(1) };
+    const cwd = process.cwd();
+
+    // not sure why this ends up here, but let's remove it
+    _prev = _prev.replace('http://localhost', '');
+
+    // possible dirs where a node_modules may live in, includes cwd
+    const possibleDirs = dirname(_prev).slice(cwd.length).split('/');
+
+    const existingNodeModules = possibleDirs
+      // innermost dirs first
+      .reverse()
+      // return the first existing one
+      .find((_, i, arr) => {
+        const absPath = join(cwd, ...arr.slice(0, i + 1), 'node_modules');
+
+        return existsSync(absPath);
+      });
+
+    // istanbul ignore if
+    if (existingNodeModules == null) return null;
+
+    const resolvedUrl = join(
+      cwd,
+      existingNodeModules,
+      'node_modules',
+      url.slice(1),
+    );
+
+    return { file: resolvedUrl };
   }
 
-  return { file: url };
+  return null;
 };
 
 const transformer: Transformer<Options.Sass> = async ({
@@ -49,6 +80,7 @@ const transformer: Transformer<Options.Sass> = async ({
 
   const sassOptions = {
     ...restOptions,
+    file: filename,
     data: content,
   };
 
