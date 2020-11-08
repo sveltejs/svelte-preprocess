@@ -1,4 +1,4 @@
-import { dirname, join } from 'path';
+import { dirname, join, sep } from 'path';
 import { existsSync } from 'fs';
 
 import type { Importer, Result } from 'sass';
@@ -29,15 +29,23 @@ const tildeImporter: Importer = (url, _prev) => {
     // not sure why this ends up here, but let's remove it
     _prev = _prev.replace('http://localhost', '');
 
+    if (process.platform === 'win32') {
+      _prev = decodeURIComponent(_prev);
+    }
+
     // possible dirs where a node_modules may live in, includes cwd
-    const possibleDirs = dirname(_prev).slice(cwd.length).split('/');
+    const possibleDirs = dirname(_prev).slice(cwd.length).split(sep);
 
     const existingNodeModules = possibleDirs
       // innermost dirs first
       .reverse()
       // return the first existing one
       .find((_, i, arr) => {
-        const absPath = join(cwd, ...arr.slice(0, i + 1), 'node_modules');
+        const absPath = join(
+          cwd,
+          ...arr.slice(0, i + sep.length),
+          'node_modules',
+        );
 
         return existsSync(absPath);
       });
@@ -49,7 +57,7 @@ const tildeImporter: Importer = (url, _prev) => {
       cwd,
       existingNodeModules,
       'node_modules',
-      url.slice(1),
+      url.slice(1).replace('/', sep),
     );
 
     return { file: resolvedUrl };
