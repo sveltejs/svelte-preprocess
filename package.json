@@ -28,7 +28,6 @@
     "build": "tsc --build tsconfig.build.json",
     "dev": "npm run build -- -w",
     "test": "jest",
-    "test:ci": "jest --silent --no-cache",
     "lint": "eslint --ext js,ts .",
     "format": "prettier --write \"**/*.{ts,js,json}\"",
     "postinstall": "echo \"[svelte-preprocess] Don't forget to install the preprocessors packages that will be used: node-sass/sass, stylus, less, postcss & postcss-load-config, coffeescript, pug, etc...\"",
