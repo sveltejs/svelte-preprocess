@@ -115,6 +115,10 @@ describe('transformer - scss', () => {
 
     const preprocessed = await preprocess(template, opts);
 
-    expect(preprocessed.toString()).toContain('div{color:red}');
+    expect(preprocessed.toString()).toMatchInlineSnapshot(`
+      "<style lang=\\"scss\\">div {
+        color: pink;
+      }</style>"
+    `);
   });
 });
