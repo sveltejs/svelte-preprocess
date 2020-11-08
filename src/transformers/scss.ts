@@ -19,12 +19,12 @@ function getResultForResolve(result: Result): ResolveResult {
   };
 }
 
-const tildeImporter: Importer = (url, _prev, done) => {
+const tildeImporter: Importer = (url, _prev) => {
   if (url.startsWith('~')) {
-    return done({ file: url.slice(1) });
+    return { file: url.slice(1) };
   }
 
-  return done({ file: url });
+  return { file: url };
 };
 
 const transformer: Transformer<Options.Sass> = async ({
