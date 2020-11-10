@@ -1,7 +1,7 @@
-import { dirname, join, sep } from 'path';
-import { existsSync } from 'fs';
+import { join } from 'path';
 
 import type { Importer, Result } from 'sass';
+import findUp from 'find-up';
 
 import type { Transformer, Processed, Options } from '../types';
 import { getIncludePaths, importAny } from '../modules/utils';
@@ -22,45 +22,35 @@ function getResultForResolve(result: Result): ResolveResult {
   };
 }
 
-const tildeImporter: Importer = (url, _prev) => {
+const tildeImporter: Importer = (url, prev) => {
   if (url.startsWith('~')) {
-    const cwd = process.cwd();
-
     // not sure why this ends up here, but let's remove it
-    _prev = _prev.replace('http://localhost', '');
+    prev = prev.replace('http://localhost', '');
 
     if (process.platform === 'win32') {
-      _prev = decodeURIComponent(_prev);
+      prev = decodeURIComponent(prev);
     }
 
-    // possible dirs where a node_modules may live in, includes cwd
-    const possibleDirs = dirname(_prev).slice(cwd.length).split(sep);
+    const modulePath = join('node_modules', ...url.slice(1).split(/[\\/]/g));
 
-    const existingNodeModules = possibleDirs
-      // innermost dirs first
-      .reverse()
-      // return the first existing one
-      .find((_, i, arr) => {
-        const absPath = join(
-          cwd,
-          ...arr.slice(0, i + sep.length),
-          'node_modules',
-        );
+    // todo: maybe create a smaller findup utility method?
+    const foundPath = findUp.sync(modulePath, { cwd: prev });
 
-        return existsSync(absPath);
-      });
+    console.log({
+      foundPath,
+      encoded: encodeURIComponent(foundPath),
+      modulePath,
+      prev,
+    });
 
     // istanbul ignore if
-    if (existingNodeModules == null) return null;
+    if (foundPath == null) return null;
 
-    const resolvedUrl = join(
-      cwd,
-      existingNodeModules,
-      'node_modules',
-      url.slice(1).replace('/', sep),
-    );
+    if (process.platform === 'win32') {
+      return { file: encodeURIComponent(foundPath) };
+    }
 
-    return { file: resolvedUrl };
+    return { file: foundPath };
   }
 
   return null;
