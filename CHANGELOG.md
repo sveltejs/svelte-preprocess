@@ -1,3 +1,18 @@
+# [4.6.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.5.6...v4.6.0) (2020-11-17)
+
+
+### Bug Fixes
+
+* 🐛 replace separator for windows support ([b60a0a8](https://github.com/sveltejs/svelte-preprocess/commit/b60a0a830119eebd606245e71fdb6aadcee19135))
+* 🐛 sass tilde importer ([934fc04](https://github.com/sveltejs/svelte-preprocess/commit/934fc04f197ada737b3b15780538bae3ab60bede))
+
+
+### Features
+
+* 🎸 add scss support for tilde (~) imports ([5b5c692](https://github.com/sveltejs/svelte-preprocess/commit/5b5c6924829910d363fe27ba4658cab7a0f06de0)), closes [#277](https://github.com/sveltejs/svelte-preprocess/issues/277)
+
+
+
 ## 4.5.2 (2020-10-23)
 
 
