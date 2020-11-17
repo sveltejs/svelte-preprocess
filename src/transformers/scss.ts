@@ -1,3 +1,4 @@
+import { readFileSync } from 'fs';
 import { join } from 'path';
 
 import type { Importer, Result } from 'sass';
@@ -36,21 +37,12 @@ const tildeImporter: Importer = (url, prev) => {
     // todo: maybe create a smaller findup utility method?
     const foundPath = findUp.sync(modulePath, { cwd: prev });
 
-    console.log({
-      foundPath,
-      encoded: encodeURIComponent(foundPath),
-      modulePath,
-      prev,
-    });
-
     // istanbul ignore if
     if (foundPath == null) return null;
 
-    if (process.platform === 'win32') {
-      return { file: encodeURIComponent(foundPath) };
-    }
+    const contents = readFileSync(foundPath).toString();
 
-    return { file: foundPath };
+    return { contents };
   }
 
   return null;
