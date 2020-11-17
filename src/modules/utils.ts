@@ -1,4 +1,5 @@
-import { dirname } from 'path';
+import { existsSync } from 'fs';
+import { dirname, join, parse } from 'path';
 
 export async function importAny(...modules: string[]) {
   try {
@@ -66,4 +67,26 @@ export function isValidLocalPath(path: string) {
     !path.startsWith('{') &&
     !path.endsWith('}')
   );
+}
+
+// finds a existing path up the tree
+export function findUp({ what, from }) {
+  const { root, dir } = parse(from);
+  let cur = dir;
+
+  try {
+    while (cur !== root) {
+      const possiblePath = join(cur, what);
+
+      if (existsSync(possiblePath)) {
+        return possiblePath;
+      }
+
+      cur = dirname(cur);
+    }
+  } catch (e) {
+    console.error(e);
+  }
+
+  return null;
 }
