@@ -2,10 +2,9 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 
 import type { Importer, Result } from 'sass';
-import findUp from 'find-up';
 
+import { getIncludePaths, importAny, findUp } from '../modules/utils';
 import type { Transformer, Processed, Options } from '../types';
-import { getIncludePaths, importAny } from '../modules/utils';
 
 let sass: Options.Sass['implementation'];
 
@@ -24,28 +23,31 @@ function getResultForResolve(result: Result): ResolveResult {
 }
 
 const tildeImporter: Importer = (url, prev) => {
-  if (url.startsWith('~')) {
-    // not sure why this ends up here, but let's remove it
-    prev = prev.replace('http://localhost', '');
-
-    if (process.platform === 'win32') {
-      prev = decodeURIComponent(prev);
-    }
-
-    const modulePath = join('node_modules', ...url.slice(1).split(/[\\/]/g));
-
-    // todo: maybe create a smaller findup utility method?
-    const foundPath = findUp.sync(modulePath, { cwd: prev });
-
-    // istanbul ignore if
-    if (foundPath == null) return null;
-
-    const contents = readFileSync(foundPath).toString();
-
-    return { contents };
+  if (!url.startsWith('~')) {
+    return null;
   }
 
-  return null;
+  // not sure why this ends up here, but let's remove it
+  prev = prev.replace('http://localhost', '');
+
+  // on windows, path comes encoded
+  if (process.platform === 'win32') {
+    prev = decodeURIComponent(prev);
+  }
+
+  const modulePath = join('node_modules', ...url.slice(1).split(/[\\/]/g));
+
+  // todo: maybe create a smaller findup utility method?
+  const foundPath = findUp({ what: modulePath, from: prev });
+
+  // istanbul ignore if
+  if (foundPath == null) {
+    return null;
+  }
+
+  const contents = readFileSync(foundPath).toString();
+
+  return { contents };
 };
 
 const transformer: Transformer<Options.Sass> = async ({
