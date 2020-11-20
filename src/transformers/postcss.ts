@@ -15,7 +15,7 @@ async function process({
 }) {
   const { css, map, messages } = await postcss(plugins).process(content, {
     from: filename,
-    map: { prev: sourceMap },
+    map: { prev: sourceMap, inline: false },
     parser,
     syntax,
   });
