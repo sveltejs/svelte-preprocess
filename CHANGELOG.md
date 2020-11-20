@@ -1,3 +1,12 @@
+## [4.6.1](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.0...v4.6.1) (2020-11-20)
+
+
+### Bug Fixes
+
+* 🐛 postcss sourcemap ([8fe6543](https://github.com/sveltejs/svelte-preprocess/commit/8fe6543a376be15a7a761a9bacdb66903b0388da)), closes [#251](https://github.com/sveltejs/svelte-preprocess/issues/251)
+
+
+
 # [4.6.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.5.6...v4.6.0) (2020-11-17)
 
 
