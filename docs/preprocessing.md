@@ -14,7 +14,7 @@
   - [Less](#less)
   - [PostCSS / SugarSS](#postcss-sugarss)
   - [Pug](#pug)
-  - [scss / sass](#scss-sass)
+  - [scss, sass](#scss-sass)
   - [Stylus](#stylus)
   - [TypeScript](#typescript)
   - [`globalStyle`](#globalstyle)
@@ -271,7 +271,7 @@ You can check the [Less API reference](http://lesscss.org/usage/#less-options) f
 
 Note: `svelte-preprocess` automatically configures inclusion paths for your root directory, `node_modules` and for the current file's directory.
 
-### PostCSS / SugarSS
+### PostCSS, SugarSS
 
 The PostCSS preprocessor accepts four options:
 
