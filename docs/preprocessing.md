@@ -273,7 +273,7 @@ Note: `svelte-preprocess` automatically configures inclusion paths for your root
 
 ### PostCSS / SugarSS
 
-The PostCSS preprocessor accepts three options:
+The PostCSS preprocessor accepts four options:
 
 | Option           | Default     | Description                                                     |
 | ---------------- | ----------- | --------------------------------------------------------------- |
