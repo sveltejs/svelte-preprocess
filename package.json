@@ -79,7 +79,7 @@
     "node-sass": "^4.14.1",
     "postcss": "^8",
     "postcss-easy-import": "^3.0.0",
-    "postcss-load-config": "^2.1.0",
+    "postcss-load-config": "^3.0.0",
     "prettier": "^2.0.5",
     "pug": "^3.0.0",
     "sass": "^1.26.8",
