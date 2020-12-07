@@ -130,7 +130,7 @@ div
     `);
 });
 
-test('automatically removes indentation for lang=sugarss ', async () => {
+test('automatically removes indentation for lang=sugarss', async () => {
   const template = `<style lang="sugarss">
       div
         color: red
