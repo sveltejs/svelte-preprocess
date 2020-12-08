@@ -79,16 +79,6 @@ describe('transformer - typescript', () => {
       expect(preprocessed.toString()).toContain(EXPECTED_SCRIPT);
     });
 
-    it('should report config syntactic errors in tsconfig file', () => {
-      const opts = sveltePreprocess({
-        typescript: {
-          tsconfigFile: './test/fixtures/tsconfig.syntactic.json',
-        },
-      });
-
-      return expect(preprocess(template, opts)).rejects.toThrow('TS1005');
-    });
-
     it('should report config semantic errors in tsconfig file', () => {
       const opts = sveltePreprocess({
         typescript: {
