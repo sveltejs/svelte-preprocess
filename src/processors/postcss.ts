@@ -1,4 +1,4 @@
-import { PreprocessorGroup, Options } from '../types';
+import type { PreprocessorGroup, Options } from '../types';
 import { getTagInfo } from '../modules/tagInfo';
 import { concat } from '../modules/utils';
 import { prepareContent } from '../modules/prepareContent';

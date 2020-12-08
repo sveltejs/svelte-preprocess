@@ -1,6 +1,6 @@
 import postcss from 'postcss';
 
-import { Transformer, Options } from '../types';
+import type { Transformer, Options } from '../types';
 
 async function process({
   options: { plugins = [], parser, syntax } = {},

@@ -1,4 +1,4 @@
-import { Transformer, Preprocessor } from '../types';
+import type { Transformer, Preprocessor } from '../types';
 
 export async function transformMarkup(
   { content, filename }: { content: string; filename: string },

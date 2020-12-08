@@ -1,4 +1,4 @@
-import { Transformer, Options } from '../types';
+import type { Transformer, Options } from '../types';
 
 const transformer: Transformer<Options.Replace> = async ({
   content,

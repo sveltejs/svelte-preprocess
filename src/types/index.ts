@@ -1,4 +1,4 @@
-import {
+import type {
   Processed as SvelteProcessed,
   Preprocessor,
 } from 'svelte/types/compiler/preprocess';

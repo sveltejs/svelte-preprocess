@@ -1,4 +1,4 @@
-import { Options, PreprocessorGroup } from '../types/index';
+import type { Options, PreprocessorGroup } from '../types/index';
 import { prepareContent } from '../modules/prepareContent';
 import { Pug } from '../types/options';
 import { transformMarkup } from '../modules/markup';

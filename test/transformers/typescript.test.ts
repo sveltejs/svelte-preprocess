@@ -1,9 +1,9 @@
 import { resolve } from 'path';
 
-import { Diagnostic } from 'typescript';
+import type { Diagnostic } from 'typescript';
 
 import sveltePreprocess from '../../src';
-import { Processed } from '../../src/types';
+import type { Processed } from '../../src/types';
 import { preprocess, getFixtureContent, spyConsole } from '../utils';
 
 spyConsole({ silent: true });

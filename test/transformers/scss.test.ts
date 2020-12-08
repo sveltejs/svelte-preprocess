@@ -5,7 +5,7 @@ import { resolve } from 'path';
 
 import sveltePreprocess from '../../src';
 import { preprocess } from '../utils';
-import { Options } from '../../src/types';
+import type { Options } from '../../src/types';
 
 const implementation: Options.Sass['implementation'] = {
   render(options, callback) {

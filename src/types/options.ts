@@ -1,7 +1,7 @@
 import type * as postcss from 'postcss';
-import { Options as SassOptions, render, renderSync } from 'sass';
-import { Options as PugOptions } from 'pug';
-import { TransformOptions as BabelOptions } from '@babel/core';
+import type { Options as SassOptions, render, renderSync } from 'sass';
+import type { Options as PugOptions } from 'pug';
+import type { TransformOptions as BabelOptions } from '@babel/core';
 
 type ContentModifier = {
   prependData?: string;
