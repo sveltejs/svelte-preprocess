@@ -25,9 +25,7 @@ const transformer: Transformer<Options.Coffeescript> = ({
     return { code, map };
   }
 
-  const code = coffeescript.compile(content, coffeeOptions);
-
-  return { code };
+  return { code: coffeescript.compile(content, coffeeOptions) };
 };
 
 export { transformer };
