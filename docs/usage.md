@@ -51,7 +51,7 @@ export default {
       ...
       {
         test: /\.(html|svelte)$/,
-        exclude: /node_modules/,
+        exclude: [],
         use: {
           loader: 'svelte-loader',
           options: {
