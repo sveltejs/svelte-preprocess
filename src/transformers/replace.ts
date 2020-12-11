@@ -1,9 +1,7 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Transformer, Options } from '../types';
 
-const transformer: Transformer<Options.Replace> = async ({
-  content,
-  options,
-}) => {
+const transformer: Transformer<Options.Replace> = ({ content, options }) => {
   let newContent = content;
 
   for (const [regex, replacer] of options) {
@@ -15,4 +13,6 @@ const transformer: Transformer<Options.Replace> = async ({
   };
 };
 
-export { transformer };
+const is_sync = true;
+
+export { transformer, is_sync };

@@ -15,6 +15,25 @@ export default (options?: Options.Pug): PreprocessorGroup => ({
       content,
     });
 
-    return transformMarkup({ content, filename }, transformer, options);
+    return transformMarkup(false, { content, filename }, transformer, options);
+  },
+
+  markup_sync({ content, filename }) {
+    const { transformer } = require('../transformers/pug');
+
+    content = prepareContent({
+      options: {
+        ...options,
+        stripIndent: true,
+      },
+      content,
+    });
+
+    return transformMarkup<true>(
+      true,
+      { content, filename },
+      transformer,
+      options,
+    );
   },
 });

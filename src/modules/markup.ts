@@ -1,10 +1,12 @@
+import pipe, { EventuallyProcessed } from '../pipe';
 import { Transformer, Preprocessor } from '../types';
 
-export async function transformMarkup(
+export function transformMarkup<S>(
+  sync: S,
   { content, filename }: { content: string; filename: string },
   transformer: Preprocessor | Transformer<unknown>,
   options: Record<string, any> = {},
-) {
+): EventuallyProcessed<S> {
   let { markupTagName = 'template' } = options;
 
   markupTagName = markupTagName.toLocaleLowerCase();
@@ -17,7 +19,12 @@ export async function transformMarkup(
 
   /** If no <template> was found, run the transformer over the whole thing */
   if (!templateMatch) {
-    return transformer({ content, attributes: {}, filename, options });
+    return transformer({
+      content,
+      attributes: {},
+      filename,
+      options,
+    }) as EventuallyProcessed<S>;
   }
 
   const [fullMatch, attributesStr, templateCode] = templateMatch;
@@ -36,17 +43,22 @@ export async function transformMarkup(
     }, {});
 
   /** Transform the found template code */
-  let { code, map, dependencies } = await transformer({
-    content: templateCode,
-    attributes,
-    filename,
-    options,
-  });
+  return pipe<S>(
+    sync,
+    () =>
+      transformer({
+        content: templateCode,
+        attributes,
+        filename,
+        options,
+      }) as EventuallyProcessed<S>,
+    ({ code, map, dependencies }) => {
+      code =
+        content.slice(0, templateMatch.index) +
+        code +
+        content.slice(templateMatch.index + fullMatch.length);
 
-  code =
-    content.slice(0, templateMatch.index) +
-    code +
-    content.slice(templateMatch.index + fullMatch.length);
-
-  return { code, map, dependencies };
+      return { code, map, dependencies } as EventuallyProcessed<S>;
+    },
+  );
 }

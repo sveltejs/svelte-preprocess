@@ -1,12 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import {
-  PreprocessorOptions,
-  SyncPreprocessor,
-} from 'svelte/types/compiler/preprocess';
+import { PreprocessorOptions } from 'svelte/types/compiler/preprocess';
 
 import {
   PreprocessorGroup,
-  Processed,
   TransformerArgs,
   TransformerOptions,
   Transformers,
@@ -23,6 +19,7 @@ import {
 } from './modules/language';
 import { prepareContent } from './modules/prepareContent';
 import { transformMarkup } from './modules/markup';
+import { default as pipe, EventuallyProcessed } from './pipe';
 
 type AutoPreprocessGroup = PreprocessorGroup & {
   defaultLanguages: Readonly<{
@@ -61,16 +58,12 @@ type AutoPreprocessOptions = {
   [languageName: string]: TransformerOptions;
 };
 
-type EventuallyProcessed<S> = S extends true
-  ? Processed
-  : Processed | Promise<Processed>;
-
-export const transform = <S>(
+export function transform<Sync>(
   name: string,
   options: TransformerOptions,
   { content, map, filename, attributes }: TransformerArgs<any>,
-  sync: S,
-): EventuallyProcessed<S> => {
+  sync: Sync,
+): EventuallyProcessed<Sync> {
   if (options === false) {
     const res = { code: content };
 
@@ -91,7 +84,7 @@ export const transform = <S>(
       code: content,
       map,
       dependencies: [],
-    } as EventuallyProcessed<S>;
+    } as EventuallyProcessed<Sync>;
   }
 
   return transformer({
@@ -101,40 +94,6 @@ export const transform = <S>(
     attributes,
     options: typeof options === 'boolean' ? null : options,
   });
-};
-
-const pipe: <S>(
-  sync: S,
-  start: () => EventuallyProcessed<S>,
-  ...then: Array<(processed: Processed) => EventuallyProcessed<S>>
-) => EventuallyProcessed<S> = (sync, start, ...then) =>
-  ((sync ? pipe_sync : pipe_async) as any)(start, ...then);
-
-async function pipe_async(
-  start: () => Promise<Processed>,
-  ...then: Array<(processed: Processed) => Promise<Processed>>
-) {
-  let processed = await start();
-
-  for (let i = 0; i < then.length; i++) {
-    // eslint-disable-next-line no-await-in-loop
-    processed = await then[i](processed);
-  }
-
-  return processed;
-}
-
-function pipe_sync(
-  start: () => Processed,
-  ...then: Array<(processed: Processed) => Processed>
-) {
-  let processed = start();
-
-  for (let i = 0; i < then.length; i++) {
-    processed = then[i](processed);
-  }
-
-  return processed;
 }
 
 export function sveltePreprocess(
@@ -191,11 +150,11 @@ export function sveltePreprocess(
     return opts;
   };
 
-  const getTransformerTo = <S>(
+  const getTransformerTo = <Sync>(
     type: 'markup' | 'script' | 'style',
     targetLanguage: string,
-    sync: S,
-  ) => (svelteFile): EventuallyProcessed<S> => {
+    sync: Sync,
+  ) => (svelteFile): EventuallyProcessed<Sync> => {
     let {
       content,
       filename,
@@ -211,7 +170,7 @@ export function sveltePreprocess(
     }
 
     if (preserve.includes(lang) || preserve.includes(alias)) {
-      return { code: content } as EventuallyProcessed<S>;
+      return { code: content } as EventuallyProcessed<Sync>;
     }
 
     const transformerOptions = getTransformerOptions(lang, alias);
@@ -222,10 +181,10 @@ export function sveltePreprocess(
     });
 
     if (lang === targetLanguage) {
-      return { code: content, dependencies } as EventuallyProcessed<S>;
+      return { code: content, dependencies } as EventuallyProcessed<Sync>;
     }
 
-    return pipe<S>(
+    return pipe<Sync>(
       sync,
       () =>
         transform(
@@ -242,56 +201,56 @@ export function sveltePreprocess(
         ({
           ...processed,
           dependencies: concat(dependencies, processed.dependencies),
-        } as EventuallyProcessed<S>),
+        } as EventuallyProcessed<Sync>),
     );
   };
 
-  const scriptTransformer = getTransformerTo('script', 'javascript', false);
-  const scriptTransformerSync: SyncPreprocessor = getTransformerTo(
-    'script',
-    'javascript',
-    true,
-  ) as any;
-
-  const cssTransformer = getTransformerTo('style', 'css', false);
   const markupTransformer = getTransformerTo('markup', 'html', false);
 
-  const markup: PreprocessorGroup['markup'] = ({ content, filename }) => {
-    return pipe(
-      false,
-      () => {
-        if (transformers.replace) {
-          return transform(
-            'replace',
-            transformers.replace,
+  function buildMarkupProcessor<Sync>(
+    sync: Sync,
+  ): (options: PreprocessorOptions) => EventuallyProcessed<Sync> {
+    return ({ content, filename }) => {
+      return pipe<Sync>(
+        sync,
+        () => {
+          if (transformers.replace) {
+            return transform<Sync>(
+              'replace',
+              transformers.replace,
+              {
+                content,
+                filename,
+              },
+              sync,
+            );
+          }
+
+          return { code: content } as EventuallyProcessed<Sync>;
+        },
+        ({ code }) =>
+          transformMarkup<Sync>(
+            sync,
+            { content: code, filename },
+            markupTransformer,
             {
-              content,
-              filename,
+              // we only pass the markupTagName because the rest of options
+              // is fetched internally by the `markupTransformer`
+              markupTagName,
             },
-            false,
-          );
-        }
+          ),
+      );
+    };
+  }
 
-        return { code: content };
-      },
-      ({ code }) => {
-        return transformMarkup({ content: code, filename }, markupTransformer, {
-          // we only pass the markupTagName because the rest of options
-          // is fetched internally by the `markupTransformer`
-          markupTagName,
-        });
-      },
-    );
-  };
-
-  function buildScriptProcessor<S>(
-    sync: S,
-  ): (options: PreprocessorOptions) => EventuallyProcessed<S> {
+  function buildScriptProcessor<Sync>(
+    sync: Sync,
+  ): (options: PreprocessorOptions) => EventuallyProcessed<Sync> {
     return ({ content, attributes, filename }) =>
-      pipe<S>(
+      pipe<Sync>(
         sync,
         () =>
-          getTransformerTo<S>(
+          getTransformerTo<Sync>(
             'script',
             'javascript',
             sync,
@@ -302,10 +261,10 @@ export function sveltePreprocess(
           }),
         ({ code, map, dependencies, diagnostics }) => {
           if (transformers.babel) {
-            return pipe<S>(
+            return pipe<Sync>(
               sync,
               () =>
-                transform<S>(
+                transform<Sync>(
                   'babel',
                   getTransformerOptions('babel'),
                   {
@@ -327,7 +286,7 @@ export function sveltePreprocess(
                   map,
                   dependencies,
                   diagnostics,
-                } as EventuallyProcessed<S>;
+                } as EventuallyProcessed<Sync>;
               },
             );
           }
@@ -337,26 +296,21 @@ export function sveltePreprocess(
             map,
             dependencies,
             diagnostics,
-          } as EventuallyProcessed<S>;
+          } as EventuallyProcessed<Sync>;
         },
       );
   }
 
-  const script: PreprocessorGroup['script'] = buildScriptProcessor(false);
-  const script_sync: PreprocessorGroup['script_sync'] = buildScriptProcessor<
-    true
-  >(true);
-
-  function buildStyleProcessor<S>(
-    sync: S,
-  ): (options: PreprocessorOptions) => EventuallyProcessed<S> {
+  function buildStyleProcessor<Sync>(
+    sync: Sync,
+  ): (options: PreprocessorOptions) => EventuallyProcessed<Sync> {
     return ({ content, attributes, filename }) => {
       const hasPostCss = hasDepInstalled('postcss');
 
-      return pipe<S>(
+      return pipe<Sync>(
         sync,
         () =>
-          getTransformerTo<S>(
+          getTransformerTo<Sync>(
             'style',
             'css',
             sync,
@@ -369,7 +323,7 @@ export function sveltePreprocess(
           if (hasPostCss && transformers.postcss) {
             const { alias } = getLanguage(attributes);
 
-            return pipe<S>(
+            return pipe<Sync>(
               sync,
               () =>
                 transform(
@@ -383,15 +337,15 @@ export function sveltePreprocess(
                   code: t.code,
                   map: t.map,
                   dependencies: concat(dependencies, t.dependencies),
-                } as EventuallyProcessed<S>),
+                } as EventuallyProcessed<Sync>),
             );
           }
 
-          return { code, map, dependencies } as EventuallyProcessed<S>;
+          return { code, map, dependencies } as EventuallyProcessed<Sync>;
         },
         ({ code, map, dependencies }) => {
           if (hasPostCss) {
-            return pipe<S>(
+            return pipe<Sync>(
               sync,
               () =>
                 transform(
@@ -405,23 +359,38 @@ export function sveltePreprocess(
                   code: t.code,
                   map: t.map,
                   dependencies,
-                } as EventuallyProcessed<S>),
+                } as EventuallyProcessed<Sync>),
             );
           }
 
-          return { code, map, dependencies } as EventuallyProcessed<S>;
+          return { code, map, dependencies } as EventuallyProcessed<Sync>;
         },
       );
     };
   }
 
+  const markup: PreprocessorGroup['markup'] = buildMarkupProcessor(false);
+  const markup_sync: PreprocessorGroup['markup_sync'] = buildMarkupProcessor<
+    true
+  >(true);
+
+  const script: PreprocessorGroup['script'] = buildScriptProcessor(false);
+  const script_sync: PreprocessorGroup['script_sync'] = buildScriptProcessor<
+    true
+  >(true);
+
   const style: PreprocessorGroup['style'] = buildStyleProcessor(false);
+  const style_sync: PreprocessorGroup['style_sync'] = buildStyleProcessor<true>(
+    true,
+  );
 
   return {
     defaultLanguages,
     markup,
+    markup_sync,
     script,
     script_sync,
     style,
+    style_sync,
   };
 }
