@@ -1,18 +1,14 @@
 import { Options, PreprocessorGroup } from '../types';
-import { getTagInfo } from '../modules/tagInfo';
+import { getTagInfoSync } from '../modules/tagInfo';
 import { concat } from '../modules/utils';
 import { prepareContent } from '../modules/prepareContent';
 
-export default (options?: Options.Typescript): PreprocessorGroup => ({
-  async script(svelteFile) {
-    const { transformer } = await import('../transformers/typescript');
-    let {
-      content,
-      filename,
-      attributes,
-      lang,
-      dependencies,
-    } = await getTagInfo(svelteFile);
+export default (options?: Options.Typescript): PreprocessorGroup => {
+  const script = (svelteFile) => {
+    const { transformer } = require('../transformers/typescript');
+    let { content, filename, attributes, lang, dependencies } = getTagInfoSync(
+      svelteFile,
+    );
 
     content = prepareContent({ options, content });
 
@@ -20,7 +16,7 @@ export default (options?: Options.Typescript): PreprocessorGroup => ({
       return { code: content };
     }
 
-    const transformed = await transformer({
+    const transformed = transformer({
       content,
       filename,
       attributes,
@@ -31,5 +27,10 @@ export default (options?: Options.Typescript): PreprocessorGroup => ({
       ...transformed,
       dependencies: concat(dependencies, transformed.dependencies),
     };
-  },
-});
+  };
+
+  return {
+    script,
+    script_sync: script,
+  };
+};

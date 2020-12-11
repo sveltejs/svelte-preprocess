@@ -1,6 +1,11 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+import {
+  PreprocessorOptions,
+  SyncPreprocessor,
+} from 'svelte/types/compiler/preprocess';
+
 import {
   PreprocessorGroup,
-  Preprocessor,
   Processed,
   TransformerArgs,
   TransformerOptions,
@@ -8,7 +13,7 @@ import {
   Options,
 } from './types';
 import { hasDepInstalled, concat } from './modules/utils';
-import { getTagInfo } from './modules/tagInfo';
+import { getTagInfoSync } from './modules/tagInfo';
 import {
   addLanguageAlias,
   getLanguageFromAlias,
@@ -56,13 +61,20 @@ type AutoPreprocessOptions = {
   [languageName: string]: TransformerOptions;
 };
 
-export const transform = async (
+type EventuallyProcessed<S> = S extends true
+  ? Processed
+  : Processed | Promise<Processed>;
+
+export const transform = <S>(
   name: string,
   options: TransformerOptions,
   { content, map, filename, attributes }: TransformerArgs<any>,
-): Promise<Processed> => {
+  sync: S,
+): EventuallyProcessed<S> => {
   if (options === false) {
-    return { code: content };
+    const res = { code: content };
+
+    return (sync ? res : Promise.resolve(res)) as any;
   }
 
   if (typeof options === 'function') {
@@ -70,7 +82,17 @@ export const transform = async (
   }
 
   // todo: maybe add a try-catch here looking for module-not-found errors
-  const { transformer } = await import(`./transformers/${name}`);
+  const { transformer, is_sync } = require(`./transformers/${name}`);
+
+  if (sync && !is_sync) {
+    console.error(`Transfomer ${name} does not support sync calls.`)
+
+    return {
+      code: content,
+      map,
+      dependencies: [],
+    } as EventuallyProcessed<S>;
+  }
 
   return transformer({
     content,
@@ -80,6 +102,40 @@ export const transform = async (
     options: typeof options === 'boolean' ? null : options,
   });
 };
+
+const pipe: <S>(
+  sync: S,
+  start: () => EventuallyProcessed<S>,
+  ...then: Array<(processed: Processed) => EventuallyProcessed<S>>
+) => EventuallyProcessed<S> = (sync, start, ...then) =>
+  ((sync ? pipe_sync : pipe_async) as any)(start, ...then);
+
+async function pipe_async(
+  start: () => Promise<Processed>,
+  ...then: Array<(processed: Processed) => Promise<Processed>>
+) {
+  let processed = await start();
+
+  for (let i = 0; i < then.length; i++) {
+    // eslint-disable-next-line no-await-in-loop
+    processed = await then[i](processed);
+  }
+
+  return processed;
+}
+
+function pipe_sync(
+  start: () => Processed,
+  ...then: Array<(processed: Processed) => Processed>
+) {
+  let processed = start();
+
+  for (let i = 0; i < then.length; i++) {
+    processed = then[i](processed);
+  }
+
+  return processed;
+}
 
 export function sveltePreprocess(
   {
@@ -135,10 +191,11 @@ export function sveltePreprocess(
     return opts;
   };
 
-  const getTransformerTo = (
+  const getTransformerTo = <S>(
     type: 'markup' | 'script' | 'style',
     targetLanguage: string,
-  ): Preprocessor => async (svelteFile) => {
+    sync: S,
+  ) => (svelteFile): EventuallyProcessed<S> => {
     let {
       content,
       filename,
@@ -146,7 +203,7 @@ export function sveltePreprocess(
       alias,
       dependencies,
       attributes,
-    } = await getTagInfo(svelteFile);
+    } = getTagInfoSync(svelteFile);
 
     if (lang == null || alias == null) {
       alias = defaultLanguages[type];
@@ -154,7 +211,7 @@ export function sveltePreprocess(
     }
 
     if (preserve.includes(lang) || preserve.includes(alias)) {
-      return { code: content };
+      return { code: content } as EventuallyProcessed<S>;
     }
 
     const transformerOptions = getTransformerOptions(lang, alias);
@@ -165,122 +222,206 @@ export function sveltePreprocess(
     });
 
     if (lang === targetLanguage) {
-      return { code: content, dependencies };
+      return { code: content, dependencies } as EventuallyProcessed<S>;
     }
 
-    const transformed = await transform(lang, transformerOptions, {
-      content,
-      filename,
-      attributes,
-    });
-
-    return {
-      ...transformed,
-      dependencies: concat(dependencies, transformed.dependencies),
-    };
+    return pipe<S>(
+      sync,
+      () =>
+        transform(
+          lang,
+          transformerOptions,
+          {
+            content,
+            filename,
+            attributes,
+          },
+          sync,
+        ),
+      (processed) =>
+        ({
+          ...processed,
+          dependencies: concat(dependencies, processed.dependencies),
+        } as EventuallyProcessed<S>),
+    );
   };
 
-  const scriptTransformer = getTransformerTo('script', 'javascript');
-  const cssTransformer = getTransformerTo('style', 'css');
-  const markupTransformer = getTransformerTo('markup', 'html');
+  const scriptTransformer = getTransformerTo('script', 'javascript', false);
+  const scriptTransformerSync: SyncPreprocessor = getTransformerTo(
+    'script',
+    'javascript',
+    true,
+  ) as any;
 
-  const markup: PreprocessorGroup['markup'] = async ({ content, filename }) => {
-    if (transformers.replace) {
-      const transformed = await transform('replace', transformers.replace, {
-        content,
-        filename,
-      });
+  const cssTransformer = getTransformerTo('style', 'css', false);
+  const markupTransformer = getTransformerTo('markup', 'html', false);
 
-      content = transformed.code;
-    }
+  const markup: PreprocessorGroup['markup'] = ({ content, filename }) => {
+    return pipe(
+      false,
+      () => {
+        if (transformers.replace) {
+          return transform(
+            'replace',
+            transformers.replace,
+            {
+              content,
+              filename,
+            },
+            false,
+          );
+        }
 
-    return transformMarkup({ content, filename }, markupTransformer, {
-      // we only pass the markupTagName because the rest of options
-      // is fetched internally by the `markupTransformer`
-      markupTagName,
-    });
+        return { code: content };
+      },
+      ({ code }) => {
+        return transformMarkup({ content: code, filename }, markupTransformer, {
+          // we only pass the markupTagName because the rest of options
+          // is fetched internally by the `markupTransformer`
+          markupTagName,
+        });
+      },
+    );
   };
 
-  const script: PreprocessorGroup['script'] = async ({
-    content,
-    attributes,
-    filename,
-  }) => {
-    const transformResult: Processed = await scriptTransformer({
-      content,
-      attributes,
-      filename,
-    });
+  function buildScriptProcessor<S>(
+    sync: S,
+  ): (options: PreprocessorOptions) => EventuallyProcessed<S> {
+    return ({ content, attributes, filename }) =>
+      pipe<S>(
+        sync,
+        () =>
+          getTransformerTo<S>(
+            'script',
+            'javascript',
+            sync,
+          )({
+            content,
+            attributes,
+            filename,
+          }),
+        ({ code, map, dependencies, diagnostics }) => {
+          if (transformers.babel) {
+            return pipe<S>(
+              sync,
+              () =>
+                transform<S>(
+                  'babel',
+                  getTransformerOptions('babel'),
+                  {
+                    content: code,
+                    map,
+                    filename,
+                    attributes,
+                  },
+                  sync,
+                ),
+              (transformed) => {
+                code = transformed.code;
+                map = transformed.map;
+                dependencies = concat(dependencies, transformed.dependencies);
+                diagnostics = concat(diagnostics, transformed.diagnostics);
 
-    let { code, map, dependencies, diagnostics } = transformResult;
+                return {
+                  code,
+                  map,
+                  dependencies,
+                  diagnostics,
+                } as EventuallyProcessed<S>;
+              },
+            );
+          }
 
-    if (transformers.babel) {
-      const transformed = await transform(
-        'babel',
-        getTransformerOptions('babel'),
-        {
-          content: code,
-          map,
-          filename,
-          attributes,
+          return {
+            code,
+            map,
+            dependencies,
+            diagnostics,
+          } as EventuallyProcessed<S>;
         },
       );
+  }
 
-      code = transformed.code;
-      map = transformed.map;
-      dependencies = concat(dependencies, transformed.dependencies);
-      diagnostics = concat(diagnostics, transformed.diagnostics);
-    }
+  const script: PreprocessorGroup['script'] = buildScriptProcessor(false);
+  const script_sync: PreprocessorGroup['script_sync'] = buildScriptProcessor<
+    true
+  >(true);
 
-    return { code, map, dependencies, diagnostics };
-  };
+  function buildStyleProcessor<S>(
+    sync: S,
+  ): (options: PreprocessorOptions) => EventuallyProcessed<S> {
+    return ({ content, attributes, filename }) => {
+      const hasPostCss = hasDepInstalled('postcss');
 
-  const style: PreprocessorGroup['style'] = async ({
-    content,
-    attributes,
-    filename,
-  }) => {
-    const transformResult = await cssTransformer({
-      content,
-      attributes,
-      filename,
-    });
+      return pipe<S>(
+        sync,
+        () =>
+          getTransformerTo<S>(
+            'style',
+            'css',
+            sync,
+          )({
+            content,
+            attributes,
+            filename,
+          }),
+        ({ code, map, dependencies }) => {
+          if (hasPostCss && transformers.postcss) {
+            const { alias } = getLanguage(attributes);
 
-    let { code, map, dependencies } = transformResult;
+            return pipe<S>(
+              sync,
+              () =>
+                transform(
+                  'postcss',
+                  getTransformerOptions('postcss', alias),
+                  { content: code, map, filename, attributes },
+                  sync,
+                ),
+              (t) =>
+                ({
+                  code: t.code,
+                  map: t.map,
+                  dependencies: concat(dependencies, t.dependencies),
+                } as EventuallyProcessed<S>),
+            );
+          }
 
-    // istanbul ignore else
-    if (await hasDepInstalled('postcss')) {
-      if (transformers.postcss) {
-        const { alias } = getLanguage(attributes);
+          return { code, map, dependencies } as EventuallyProcessed<S>;
+        },
+        ({ code, map, dependencies }) => {
+          if (hasPostCss) {
+            return pipe<S>(
+              sync,
+              () =>
+                transform(
+                  'globalStyle',
+                  getTransformerOptions('globalStyle'),
+                  { content: code, map, filename, attributes },
+                  sync,
+                ),
+              (t) =>
+                ({
+                  code: t.code,
+                  map: t.map,
+                  dependencies,
+                } as EventuallyProcessed<S>),
+            );
+          }
 
-        const transformed = await transform(
-          'postcss',
-          getTransformerOptions('postcss', alias),
-          { content: code, map, filename, attributes },
-        );
-
-        code = transformed.code;
-        map = transformed.map;
-        dependencies = concat(dependencies, transformed.dependencies);
-      }
-
-      const transformed = await transform(
-        'globalStyle',
-        getTransformerOptions('globalStyle'),
-        { content: code, map, filename, attributes },
+          return { code, map, dependencies } as EventuallyProcessed<S>;
+        },
       );
+    };
+  }
 
-      code = transformed.code;
-      map = transformed.map;
-    }
-
-    return { code, map, dependencies };
-  };
+  const style: PreprocessorGroup['style'] = buildStyleProcessor(false);
 
   return {
     defaultLanguages,
     markup,
     script,
+    script_sync,
     style,
   };
 }

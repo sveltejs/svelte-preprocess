@@ -1,4 +1,4 @@
-import { readFile, access } from 'fs';
+import { readFile, access, accessSync, readFileSync } from 'fs';
 import { resolve, dirname } from 'path';
 
 import { PreprocessorArgs } from '../types';
@@ -18,9 +18,67 @@ const getSrcContent = (file: string): Promise<string> => {
   });
 };
 
+const getSrcContentSync = (file: string) => {
+  const data = readFileSync(file);
+
+  return data.toString();
+};
+
 async function doesFileExist(file: string) {
   return new Promise((resolve) => access(file, 0, (err) => resolve(!err)));
 }
+
+function doesFileExistSync(file: string) {
+  try {
+    accessSync(file, 0);
+
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+export const getTagInfoSync = ({
+  attributes,
+  filename,
+  content,
+}: PreprocessorArgs) => {
+  const dependencies = [];
+  // catches empty content and self-closing tags
+  const isEmptyContent = content == null || content.trim().length === 0;
+
+  /** only include src file if content of tag is empty */
+  if (attributes.src && isEmptyContent) {
+    // istanbul ignore if
+    if (typeof attributes.src !== 'string') {
+      throw new Error('src attribute must be string');
+    }
+
+    let path = attributes.src;
+
+    /** Only try to get local files (path starts with ./ or ../) */
+    if (isValidLocalPath(path)) {
+      path = resolveSrc(filename, path);
+      if (doesFileExistSync(path)) {
+        content = getSrcContentSync(path);
+        dependencies.push(path);
+      } else {
+        console.warn(`[svelte-preprocess] The file  "${path}" was not found.`);
+      }
+    }
+  }
+
+  const { lang, alias } = getLanguage(attributes);
+
+  return {
+    filename,
+    attributes,
+    content,
+    lang,
+    alias,
+    dependencies,
+  };
+};
 
 export const getTagInfo = async ({
   attributes,

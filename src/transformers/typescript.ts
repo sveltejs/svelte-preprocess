@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { dirname } from 'path';
 
 import ts from 'typescript';
@@ -151,4 +152,6 @@ const transformer: Transformer<Options.Typescript> = ({
   };
 };
 
-export { transformer };
+const is_sync = true;
+
+export { transformer, is_sync };

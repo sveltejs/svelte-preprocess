@@ -32,6 +32,7 @@ describe('external files', () => {
         <style src="./fixtures/style.css"></style>
         <script src="./fixtures/script.js"></script>`,
         filename: resolve(__dirname, '..', 'App.svelte'),
+        attributes: {},
       }),
       await scriptProcessor({
         content: ``,
@@ -57,6 +58,7 @@ describe('external files', () => {
     const markup = await markupProcessor({
       content: `<template src="./fixtures/template.html"/>`,
       filename: resolve(__dirname, '..', 'App.svelte'),
+      attributes: {},
     });
 
     expect(markup.code).toContain(getFixtureContent('template.html'));

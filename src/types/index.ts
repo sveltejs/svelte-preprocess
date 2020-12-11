@@ -34,6 +34,8 @@ export type Transformer<T> = (
   args: TransformerArgs<T>,
 ) => Processed | Promise<Processed>;
 
+export type SyncTransformer<T> = (args: TransformerArgs<T>) => Processed;
+
 export type TransformerOptions<T = any> = boolean | T | Transformer<T>;
 
 export interface Transformers {

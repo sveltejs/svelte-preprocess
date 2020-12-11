@@ -39,7 +39,7 @@ const cachedResult: Record<string, boolean> = {};
  * @param {string} dep
  * @returns boolean
  */
-export async function hasDepInstalled(dep: string) {
+export function hasDepInstalled(dep: string) {
   if (cachedResult[dep] != null) {
     return cachedResult[dep];
   }
@@ -47,7 +47,7 @@ export async function hasDepInstalled(dep: string) {
   let result = false;
 
   try {
-    await import(dep);
+    require(dep);
 
     result = true;
   } catch (e) {
