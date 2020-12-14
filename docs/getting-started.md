@@ -146,7 +146,7 @@ And we're done! Our components can now be written as:
 
 Ok, we now can write our entire app with Pug, TypeScript and SCSS, but typing `lang="..."` in every file can become an obnoxious process. In [auto-preprocessing mode](/docs/preprocessing.md#auto-preprocessing), `svelte-preprocess` [lets us define the default languages](/docs/preprocessing.md#auto-preprocessing-options) of our components. It defaults to HTML, JavaScript and CSS. Let's change that so we don't need those `lang` attributes.
 
-_**Disclaimer**: The Svelte VS Code extension uses the `lang` or `type` attribute to correctly highlight your code. At the time of writing, the extension doesn't support default languages. Doing this can lead to errors on your IDE._
+_**Disclaimer**: The Svelte VS Code extension cannot read the defaults from the rollup config and needs a separate `svelte.config.js` file with the defaults in it. See the [usage guide](/docs/usage.md#with-svelte-vs-code) for an example of setting up a `svelte.config.js` file.
 
 ```diff
 import svelte from 'rollup-plugin-svelte'
