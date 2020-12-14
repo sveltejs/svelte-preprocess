@@ -1,6 +1,5 @@
 import type { Options, PreprocessorGroup } from '../types/index';
 import { prepareContent } from '../modules/prepareContent';
-import { Pug } from '../types/options';
 import { transformMarkup } from '../modules/markup';
 
 export default (options?: Options.Pug): PreprocessorGroup => ({

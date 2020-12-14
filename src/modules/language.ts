@@ -20,7 +20,7 @@ const LANGUAGE_DEFAULTS: Record<string, any> = {
   // We need to defer this require to make sugarss an optional dependency.
   sugarss: () => ({
     stripIndent: true,
-    // eslint-disable-next-line @typescript-eslint/no-require-imports, global-require
+    // eslint-disable-next-line @typescript-eslint/no-require-imports, node/global-require
     parser: require('sugarss'),
   }),
 };

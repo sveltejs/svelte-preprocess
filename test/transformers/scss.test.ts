@@ -1,4 +1,4 @@
-/* eslint-disable global-require */
+/* eslint-disable node/global-require */
 /* eslint-disable @typescript-eslint/no-require-imports */
 
 import { resolve } from 'path';
