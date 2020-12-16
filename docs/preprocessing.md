@@ -141,7 +141,7 @@ We've seen that we can easily create custom preprocessors within `svelte-preproc
 
 Let's use TypeScript as an example. The `tsc` compiler is fast enough at the beginning, but as a project grows, it can really become cumbersome. `esbuild` is a JavaScript bundler written in Go and can transpile TypeScript [much faster](https://github.com/evanw/esbuild#benchmarks) than our good and old `tsc`.
 
-To integrate `esbuild` with `svelte-preprocss` we can override the default TypeScript preprocessor as follows:
+To integrate `esbuild` with `svelte-preprocess` we can override the default TypeScript preprocessor as follows:
 
 ```js
 import svelte from 'rollup-plugin-svelte';
