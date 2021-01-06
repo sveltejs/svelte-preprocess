@@ -68,6 +68,7 @@ const transformer: Transformer<Options.Sass> = async ({
     ...options,
     includePaths: getIncludePaths(filename, options.includePaths),
     outFile: `${filename}.css`,
+    omitSourceMapUrl: true, // return sourcemap only in result.map
   };
 
   const sassOptions = {
