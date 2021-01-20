@@ -62,7 +62,6 @@ const transformer: Transformer<Options.Typescript> = ({
   const compilerOptionsJSON = {
     moduleResolution: 'node',
     target: 'es6',
-    sourceMap: true, // generate sourcemap + attach '\n//# source'+'MappingURL=Component.svelte.js.map' to result.code
   };
 
   let basePath = process.cwd();
@@ -106,6 +105,7 @@ const transformer: Transformer<Options.Typescript> = ({
     ...(convertedCompilerOptions as CompilerOptions),
     importsNotUsedAsValues: ts.ImportsNotUsedAsValues.Error,
     allowNonTsExtensions: true,
+    sourceMap: !!options.sourceMap,
   };
 
   if (
