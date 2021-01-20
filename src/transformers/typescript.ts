@@ -105,7 +105,6 @@ const transformer: Transformer<Options.Typescript> = ({
     ...(convertedCompilerOptions as CompilerOptions),
     importsNotUsedAsValues: ts.ImportsNotUsedAsValues.Error,
     allowNonTsExtensions: true,
-    sourceMap: !!options.sourceMap,
   };
 
   if (
