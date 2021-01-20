@@ -88,13 +88,16 @@ describe(`sourcemap generation`, () => {
         const expectedOptions = {};
         const pathParts = propPath.split('.');
         let parentObj = expectedOptions;
-        let i;
-        for (i = 0; i < pathParts.length - 1; i++) {
+
+        for (let i = 0; i < pathParts.length - 1; i++) {
           const propName = pathParts[i];
+
           parentObj[propName] = {};
           parentObj = parentObj[propName];
         }
-        const propName = pathParts[i];
+
+        const propName = pathParts[pathParts.length - 1];
+
         parentObj[propName] = value;
 
         await preprocess(template, opts);
