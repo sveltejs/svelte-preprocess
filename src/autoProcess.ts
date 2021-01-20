@@ -131,9 +131,9 @@ export function sveltePreprocess(
       const pathParts = propPath.split('.');
       let parentObj = opts;
       let i;
-      for (i = 0; i < (pathParts.length - 1); i++) {
+      for (i = 0; i < pathParts.length - 1; i++) {
         const propName = pathParts[i];
-        if (typeof parentObj[propName] != 'object') parentObj[propName] = {};
+        if (typeof parentObj[propName] !== 'object') parentObj[propName] = {};
         parentObj = parentObj[propName];
       }
       const propName = pathParts[i];
