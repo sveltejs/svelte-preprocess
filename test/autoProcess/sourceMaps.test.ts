@@ -84,13 +84,24 @@ describe(`sourcemap generation`, () => {
           [transformerName]: true,
         });
 
-        const [key, val] = SOURCE_MAP_PROP_MAP[transformerName];
+        const [propPath, value] = SOURCE_MAP_PROP_MAP[transformerName];
+        const expectedOptions = {};
+        const pathParts = propPath.split('.');
+        let parentObj = expectedOptions;
+        let i;
+        for (i = 0; i < pathParts.length - 1; i++) {
+          const propName = pathParts[i];
+          parentObj[propName] = {};
+          parentObj = parentObj[propName];
+        }
+        const propName = pathParts[i];
+        parentObj[propName] = value;
 
         await preprocess(template, opts);
 
         expect(transformer).toHaveBeenCalledWith(
           expect.objectContaining({
-            options: expect.objectContaining({ [key]: val }),
+            options: expect.objectContaining(expectedOptions),
           }),
         );
       });
