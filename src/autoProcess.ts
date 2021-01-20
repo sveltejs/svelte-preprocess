@@ -127,9 +127,17 @@ export function sveltePreprocess(
     }
 
     if (sourceMap && name in SOURCE_MAP_PROP_MAP) {
-      const [propName, value] = SOURCE_MAP_PROP_MAP[name];
-
-      opts[propName] = value;
+      const [propPath, value] = SOURCE_MAP_PROP_MAP[name];
+      const pathParts = propPath.split('.');
+      let parentObj = opts;
+      let i;
+      for (i = 0; i < (pathParts.length - 1); i++) {
+        const propName = pathParts[i];
+        if (typeof parentObj[propName] != 'object') parentObj[propName] = {};
+        parentObj = parentObj[propName];
+      }
+      const propName = pathParts[i];
+      parentObj[propName] = value;
     }
 
     return opts;
