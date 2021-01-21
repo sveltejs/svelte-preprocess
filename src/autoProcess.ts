@@ -7,7 +7,7 @@ import type {
   Transformers,
   Options,
 } from './types';
-import { hasDepInstalled, concat } from './modules/utils';
+import { hasDepInstalled, concat, setProp } from './modules/utils';
 import { getTagInfo } from './modules/tagInfo';
 import {
   addLanguageAlias,
@@ -127,9 +127,7 @@ export function sveltePreprocess(
     }
 
     if (sourceMap && name in SOURCE_MAP_PROP_MAP) {
-      const [propName, value] = SOURCE_MAP_PROP_MAP[name];
-
-      opts[propName] = value;
+      setProp(opts, ...SOURCE_MAP_PROP_MAP[name]);
     }
 
     return opts;

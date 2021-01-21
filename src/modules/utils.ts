@@ -90,3 +90,20 @@ export function findUp({ what, from }) {
 
   return null;
 }
+
+// set deep property in object
+export function setProp(obj, keyList, val) {
+  let i = 0;
+
+  for (; i < keyList.length - 1; i++) {
+    const key = keyList[i];
+
+    if (typeof obj[key] !== 'object') {
+      obj[key] = {};
+    }
+
+    obj = obj[key];
+  }
+
+  obj[keyList[i]] = val;
+}
