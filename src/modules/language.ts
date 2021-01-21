@@ -36,9 +36,9 @@ export function getLanguageDefaults(lang: string): null | Record<string, any> {
   return defaults;
 }
 
-export const SOURCE_MAP_PROP_MAP: Record<string, [string, any]> = {
+export const SOURCE_MAP_PROP_MAP: Record<string, any[]> = {
   babel: ['sourceMaps', true],
-  typescript: ['compilerOptions.sourceMap', true],
+  typescript: ['compilerOptions', 'sourceMap', true],
   scss: ['sourceMap', true],
   less: ['sourceMap', {}],
   stylus: ['sourcemap', true],

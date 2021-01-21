@@ -90,3 +90,21 @@ export function findUp({ what, from }) {
 
   return null;
 }
+
+// set deep property in object
+// args = array of prop-names, last arg = value
+export function setProp(obj, ...args) {
+  let i = 0;
+
+  for (; i < args.length - 2; i++) {
+    const key = args[i];
+
+    if (typeof obj[key] !== 'object') {
+      obj[key] = {};
+    }
+
+    obj = obj[key];
+  }
+
+  obj[args[i]] = args[i + 1];
+}

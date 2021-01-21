@@ -9,6 +9,7 @@ import { transformer as scssTransformer } from '../../src/transformers/scss';
 import { transformer as stylusTransformer } from '../../src/transformers/stylus';
 import { transformer as typescriptTransformer } from '../../src/transformers/typescript';
 import { SOURCE_MAP_PROP_MAP } from '../../src/modules/language';
+import { setProp } from '../../src/modules/utils';
 
 const TRANSFORMERS: Record<string, any> = {
   babel: {
@@ -84,21 +85,9 @@ describe(`sourcemap generation`, () => {
           [transformerName]: true,
         });
 
-        const [propPath, value] = SOURCE_MAP_PROP_MAP[transformerName];
         const expectedOptions = {};
-        const pathParts = propPath.split('.');
-        let parentObj = expectedOptions;
 
-        for (let i = 0; i < pathParts.length - 1; i++) {
-          const propName = pathParts[i];
-
-          parentObj[propName] = {};
-          parentObj = parentObj[propName];
-        }
-
-        const propName = pathParts[pathParts.length - 1];
-
-        parentObj[propName] = value;
+        setProp(expectedOptions, ...SOURCE_MAP_PROP_MAP[transformerName]);
 
         await preprocess(template, opts);
 
