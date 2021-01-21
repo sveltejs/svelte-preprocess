@@ -92,12 +92,11 @@ export function findUp({ what, from }) {
 }
 
 // set deep property in object
-// args = array of prop-names, last arg = value
-export function setProp(obj, ...args) {
+export function setProp(obj, keyList, val) {
   let i = 0;
 
-  for (; i < args.length - 2; i++) {
-    const key = args[i];
+  for (; i < keyList.length - 1; i++) {
+    const key = keyList[i];
 
     if (typeof obj[key] !== 'object') {
       obj[key] = {};
@@ -106,5 +105,5 @@ export function setProp(obj, ...args) {
     obj = obj[key];
   }
 
-  obj[args[i]] = args[i + 1];
+  obj[keyList[i]] = val;
 }
