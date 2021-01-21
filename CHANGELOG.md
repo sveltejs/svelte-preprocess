@@ -1,3 +1,12 @@
+## [4.6.3](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.2...v4.6.3) (2021-01-21)
+
+
+### Bug Fixes
+
+* 🐛 make postcss config error explicit ([21e3086](https://github.com/sveltejs/svelte-preprocess/commit/21e30861ccc6d6c6b80cd9aad4a81b9e29a96c5e)), closes [#298](https://github.com/sveltejs/svelte-preprocess/issues/298)
+
+
+
 ## [4.6.2](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.1...v4.6.2) (2021-01-21)
 
 
