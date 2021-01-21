@@ -1,3 +1,12 @@
+## [4.6.2](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.1...v4.6.2) (2021-01-21)
+
+
+### Bug Fixes
+
+* translate options.sourceMap to options.compilerOptions.sourceMap for ts ([#286](https://github.com/sveltejs/svelte-preprocess/issues/286)) ([#299](https://github.com/sveltejs/svelte-preprocess/issues/299)) ([c8a3cd6](https://github.com/sveltejs/svelte-preprocess/commit/c8a3cd6736054510bc0eeccc242b8f5c4f0b7c5a))
+
+
+
 ## [4.6.1](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.0...v4.6.1) (2020-11-20)
 
 
