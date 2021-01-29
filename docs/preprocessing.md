@@ -48,17 +48,19 @@ export default {
 As `svelte-preprocess` is just a Svelte preprocessor like any other, it's also possible to use it alongside other preprocessors:
 
 ```js
-import preprocess from 'svelte-preprocess'
-import { mdsvex } from 'mdsvex'
-...
-  {
-    /* svelte options */
-    preprocess: [
-      preprocess({ ... }),
-      mdsvex({ ... })
-    ],
-  }
-...
+import svelte from 'rollup-plugin-svelte'
+import sveltePreprocess from 'svelte-preprocess'
+
+export default {
+  plugins: [
+    svelte({
+      preprocess: [
+        sveltePreprocess({ ... }),
+        mdsvex({ ... })
+      ]
+    })
+  ]
+}
 ```
 
 #### Auto preprocessing options
@@ -92,6 +94,7 @@ export default {
         sass: { ... },
         less: { ... },
         stylus: { ... },
+        babel: { ... },
         postcss: { ... },
         coffeescript: { ... },
         pug: { ... },
@@ -167,7 +170,7 @@ export default {
 
 ### Stand-alone processors
 
-In case you want to manually configure your preprocessing step while taking advantage of `svelte-preprocess` features, such as language detection and external file support, the following preprocessors are available: Pug, CoffeeScript, TypeScript, Less, SCSS, Sass, Stylus, PostCSS, Babel, `globalStyle` `replace`.
+In case you want to manually configure your preprocessing step while taking advantage of `svelte-preprocess` features, such as language detection and external file support, the following preprocessors are available: Pug, CoffeeScript, TypeScript, Less, SCSS, Sass, Stylus, PostCSS, Babel, `globalStyle`, and `replace`.
 
 Every processor accepts an options object which is passed to its respective underlying tool. See the section below for options for each preprocessor.
 
@@ -216,30 +219,18 @@ export default {
   plugins: [
     svelte({
       preprocess: [
-        replace(),
-        pug(),
-        coffeescript(),
-        typescript(),
-        less(),
-        scss(),
-        sass(),
-        stylus(),
-        babel(),
-        postcss(),
-        globalStyle(),
+        replace({ ... }),
+        pug({ ... }),
+        coffeescript({ ... }),
+        typescript({ ... }),
+        less({ ... }),
+        scss({ ... }),
+        sass({ ... }),
+        stylus({ ... }),
+        babel({ ... }),
+        postcss({ ... }),
+        globalStyle({ ... }),
       ],
-    }),
-  ],
-};
-
-// vs
-import svelte from 'rollup-plugin-svelte';
-import sveltePreprocess from 'svelte-preprocess';
-
-export default {
-  plugins: [
-    svelte({
-      preprocess: sveltePreprocess(),
     }),
   ],
 };
@@ -373,6 +364,8 @@ As we're only transpiling, it's not possible to import types or interfaces into 
 
 The `globalStyle` preprocessor extends the functionalities of Svelte's `:global` pseudo-selector.
 
+First, install `postcss` by running `npm install --save-dev postcss`. Then use the rules below.
+
 **`global` attribute:**
 
 Add a `global` attribute to your `style` tag and instead of scoping the CSS, all of its content will be interpreted as global style.
@@ -407,13 +400,11 @@ Use a `:global` rule to only expose parts of the stylesheet:
 
 Works best with nesting-enabled CSS preprocessors, but regular CSS selectors like `div :global .global1 .global2` are also supported.
 
-_Note<sup>1</sup>: needs PostCSS to be installed._
+**Usage notes**
 
-_Note<sup>2</sup>: if you're using it as a standalone processor, it works best if added to the end of the processors array._
-
-_Note<sup>3</sup>: wrapping `@keyframes` inside `:global {}` blocks is not supported. Use the [`-global-` name prefix for global keyframes](https://svelte.dev/docs#style)._
-
-_Note<sup>4</sup>: if you need to have some styles be scoped inside a global style tag, use `:local` in the same way you'd use `:global`._
+* If you're using it as a standalone processor, it works best if added to the end of the processors array._
+* Wrapping `@keyframes` inside `:global {}` blocks is not supported. Use the [`-global-` name prefix for global keyframes](https://svelte.dev/docs#style)._
+* If you need to have some styles be scoped inside a global style tag, use `:local` in the same way you'd use `:global`._
 
 ### `replace`
 
