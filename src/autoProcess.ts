@@ -272,7 +272,7 @@ export function sveltePreprocess(
       map = transformed.map;
     } else if ('global' in attributes) {
       console.warn(
-        `[svelte-preprocess] 'global' attribute found, but 'postcss' is not installed.`,
+        `[svelte-preprocess] 'global' attribute found, but 'postcss' is not installed. 'postcss' is used to walk through the CSS and transform any necessary selector.`,
       );
     }
 
