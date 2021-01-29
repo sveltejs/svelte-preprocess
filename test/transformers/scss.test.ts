@@ -6,6 +6,7 @@ import { resolve } from 'path';
 import sveltePreprocess from '../../src';
 import { preprocess } from '../utils';
 import type { Options } from '../../src/types';
+import { transformer } from '../../src/transformers/scss';
 
 const implementation: Options.Sass['implementation'] = {
   render(options, callback) {
@@ -120,5 +121,18 @@ describe('transformer - scss', () => {
         color: pink;
       }</style>"
     `);
+  });
+
+  it('returns the source map and removes sourceMappingURL from code', async () => {
+    const content = 'div{color:red}';
+    const filename = '/file';
+    const options = {
+      sourceMap: true,
+    };
+
+    const { map, code } = await transformer({ content, filename, options });
+
+    expect(code).not.toContain('sourceMappingURL');
+    expect(map).toBeTruthy();
   });
 });
