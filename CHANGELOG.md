@@ -1,3 +1,12 @@
+## [4.6.5](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.4...v4.6.5) (2021-01-29)
+
+
+### Bug Fixes
+
+* [scss] remove sourceMappingURL from result.code ([#297](https://github.com/sveltejs/svelte-preprocess/issues/297)) ([2ff48f8](https://github.com/sveltejs/svelte-preprocess/commit/2ff48f8c4fa94ae5782f24b39889f8a6a893eed1))
+
+
+
 ## [4.6.4](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.3...v4.6.4) (2021-01-29)
 
 
