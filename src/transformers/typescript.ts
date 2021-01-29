@@ -1,4 +1,4 @@
-import { dirname } from 'path';
+import { dirname, join } from 'path';
 
 import ts from 'typescript';
 
@@ -32,32 +32,10 @@ function formatDiagnostics(
   );
 }
 
-const importTransformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
-  const visit: ts.Visitor = (node) => {
-    if (ts.isImportDeclaration(node)) {
-      if (node.importClause?.isTypeOnly) {
-        return ts.createEmptyStatement();
-      }
-
-      return ts.createImportDeclaration(
-        node.decorators,
-        node.modifiers,
-        node.importClause,
-        node.moduleSpecifier,
-      );
-    }
-
-    return ts.visitEachChild(node, (child) => visit(child), context);
-  };
-
-  return (node) => ts.visitNode(node, visit);
-};
-
-const transformer: Transformer<Options.Typescript> = ({
-  content,
-  filename,
-  options = {},
-}) => {
+export function getTypeScriptOptions(
+  filename: string,
+  options: Options.Typescript,
+) {
   // default options
   const compilerOptionsJSON = {
     moduleResolution: 'node',
@@ -87,6 +65,21 @@ const transformer: Transformer<Options.Typescript> = ({
       }
 
       Object.assign(compilerOptionsJSON, config.compilerOptions);
+
+      // Support extending another tsconfig
+      if (typeof config.extends === 'string') {
+        const parentConfigPath = join(
+          process.cwd(),
+          dirname(tsconfigFile),
+          config.extends,
+        );
+
+        Object.assign(
+          compilerOptionsJSON,
+          // eslint-disable-next-line @typescript-eslint/no-var-requires, node/global-require, @typescript-eslint/no-require-imports
+          require(parentConfigPath).compilerOptions,
+        );
+      }
     }
   }
 
@@ -102,10 +95,44 @@ const transformer: Transformer<Options.Typescript> = ({
   }
 
   const compilerOptions: CompilerOptions = {
-    ...(convertedCompilerOptions as CompilerOptions),
+    ...convertedCompilerOptions,
     importsNotUsedAsValues: ts.ImportsNotUsedAsValues.Error,
     allowNonTsExtensions: true,
   };
+
+  return {
+    basePath,
+    compilerOptions,
+  };
+}
+
+const importTransformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
+  const visit: ts.Visitor = (node) => {
+    if (ts.isImportDeclaration(node)) {
+      if (node.importClause?.isTypeOnly) {
+        return ts.createEmptyStatement();
+      }
+
+      return ts.createImportDeclaration(
+        node.decorators,
+        node.modifiers,
+        node.importClause,
+        node.moduleSpecifier,
+      );
+    }
+
+    return ts.visitEachChild(node, (child) => visit(child), context);
+  };
+
+  return (node) => ts.visitNode(node, visit);
+};
+
+const transformer: Transformer<Options.Typescript> = ({
+  content,
+  filename,
+  options = {},
+}) => {
+  const { basePath, compilerOptions } = getTypeScriptOptions(filename, options);
 
   if (
     compilerOptions.target === ts.ScriptTarget.ES3 ||

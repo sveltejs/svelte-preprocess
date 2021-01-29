@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
     "module": "es2015",
-    "skipLibCheck": true,
+    "skipLibCheck": true
   }
 }
