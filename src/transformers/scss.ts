@@ -37,7 +37,6 @@ const tildeImporter: Importer = (url, prev) => {
 
   const modulePath = join('node_modules', ...url.slice(1).split(/[\\/]/g));
 
-  // todo: maybe create a smaller findup utility method?
   const foundPath = findUp({ what: modulePath, from: prev });
 
   // istanbul ignore if
