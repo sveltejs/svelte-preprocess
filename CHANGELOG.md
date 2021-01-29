@@ -1,3 +1,12 @@
+## [4.6.4](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.3...v4.6.4) (2021-01-29)
+
+
+### Bug Fixes
+
+* 🐛 better missing postcss message ([cafb6c6](https://github.com/sveltejs/svelte-preprocess/commit/cafb6c6d7e369c11a7feda212a182f08c0f3a156)), closes [#301](https://github.com/sveltejs/svelte-preprocess/issues/301)
+
+
+
 ## [4.6.3](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.2...v4.6.3) (2021-01-21)
 
 
