@@ -312,6 +312,12 @@ Pug encodes everything inside an element attribute to html entities, so `attr="{
 button(disabled!="{foo && bar}")
 ```
 
+This is also necessary to pass callbacks:
+
+```pug
+button(on:click!="{(e) => doTheThing(e)}")
+```
+
 **Svelte Element directives:**
 
 Syntax to use Svelte Element directives with Pug
