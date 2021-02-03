@@ -100,7 +100,7 @@
     "coffeescript": "^2.5.1",
     "less": "^3.11.3",
     "postcss": "^7 || ^8",
-    "postcss-load-config": "^3.0.0",
+    "postcss-load-config": "^2.1.0 || ^3.0.0",
     "pug": "^3.0.0",
     "sass": "^1.26.8",
     "stylus": "^0.54.7",
