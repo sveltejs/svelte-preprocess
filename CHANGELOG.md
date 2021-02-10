@@ -1,3 +1,13 @@
+## [4.6.7](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.5...v4.6.7) (2021-02-10)
+
+
+### Bug Fixes
+
+* 🐛 language custom transformer overriding postcss ([2a188bc](https://github.com/sveltejs/svelte-preprocess/commit/2a188bc0886f9950ab3a23c9b24ac30a29dd81bb)), closes [#309](https://github.com/sveltejs/svelte-preprocess/issues/309)
+* accept postcss-load-config v2 or v3 ([#307](https://github.com/sveltejs/svelte-preprocess/issues/307)) ([a31e794](https://github.com/sveltejs/svelte-preprocess/commit/a31e79403f94cfd7db252a6152f120772acd4d6d))
+
+
+
 ## [4.6.6](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.5...v4.6.6) (2021-02-03)
 
 
