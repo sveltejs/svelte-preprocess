@@ -15,6 +15,7 @@ import {
   SOURCE_MAP_PROP_MAP,
   getLanguage,
   getLanguageDefaults,
+  isAliasOf,
 } from './modules/language';
 import { prepareContent } from './modules/prepareContent';
 import { transformMarkup } from './modules/markup';
@@ -104,16 +105,8 @@ export function sveltePreprocess(
     addLanguageAlias(aliases);
   }
 
-  const getTransformerOptions = (
-    name: string,
-    alias?: string,
-  ): TransformerOptions<unknown> => {
+  function resolveLanguageArgs(name: string, alias?: string) {
     const { [name]: nameOpts, [alias]: aliasOpts } = transformers;
-
-    if (typeof aliasOpts === 'function') return aliasOpts;
-    if (typeof nameOpts === 'function') return nameOpts;
-    if (aliasOpts === false || nameOpts === false) return false;
-
     const opts: Record<string, any> = {};
 
     if (typeof nameOpts === 'object') {
@@ -127,11 +120,30 @@ export function sveltePreprocess(
     }
 
     if (sourceMap && name in SOURCE_MAP_PROP_MAP) {
-      setProp(opts, ...SOURCE_MAP_PROP_MAP[name]);
+      const [path, value] = SOURCE_MAP_PROP_MAP[name];
+
+      setProp(opts, path, value);
     }
 
     return opts;
-  };
+  }
+
+  function getTransformerOptions(
+    lang: string,
+    alias?: string,
+    { ignoreAliasOverride }: { ignoreAliasOverride?: boolean } = {},
+  ): TransformerOptions<unknown> {
+    const { [lang]: langOpts, [alias]: aliasOpts } = transformers;
+
+    if (!ignoreAliasOverride && typeof aliasOpts === 'function') {
+      return aliasOpts;
+    }
+
+    if (typeof langOpts === 'function') return langOpts;
+    if (aliasOpts === false || langOpts === false) return false;
+
+    return resolveLanguageArgs(lang, alias);
+  }
 
   const getTransformerTo = (
     type: 'markup' | 'script' | 'style',
@@ -163,6 +175,13 @@ export function sveltePreprocess(
     });
 
     if (lang === targetLanguage) {
+      // has override method for alias
+      // example: sugarss override should work apart from postcss
+      if (typeof transformerOptions === 'function' && alias !== lang) {
+        return transformerOptions({ content, filename, attributes });
+      }
+
+      // otherwise, we're done here
       return { code: content, dependencies };
     }
 
@@ -216,12 +235,7 @@ export function sveltePreprocess(
       const transformed = await transform(
         'babel',
         getTransformerOptions('babel'),
-        {
-          content: code,
-          map,
-          filename,
-          attributes,
-        },
+        { content: code, map, filename, attributes },
       );
 
       code = transformed.code;
@@ -249,13 +263,20 @@ export function sveltePreprocess(
     // istanbul ignore else
     if (await hasDepInstalled('postcss')) {
       if (transformers.postcss) {
-        const { alias } = getLanguage(attributes);
-
-        const transformed = await transform(
+        const { alias, lang } = getLanguage(attributes);
+        const postcssOptions = getTransformerOptions(
           'postcss',
-          getTransformerOptions('postcss', alias),
-          { content: code, map, filename, attributes },
+          isAliasOf(alias, lang) ? alias : null,
+          // todo: this seems wrong and ugly
+          { ignoreAliasOverride: true },
         );
+
+        const transformed = await transform('postcss', postcssOptions, {
+          content: code,
+          map,
+          filename,
+          attributes,
+        });
 
         code = transformed.code;
         map = transformed.map;

@@ -25,16 +25,16 @@ const LANGUAGE_DEFAULTS: Record<string, any> = {
   }),
 };
 
-export function getLanguageDefaults(lang: string): null | Record<string, any> {
-  const defaults = LANGUAGE_DEFAULTS[lang];
-
-  if (!defaults) return null;
-  if (typeof defaults === 'function') {
-    return defaults();
-  }
-
-  return defaults;
-}
+export const ALIAS_MAP = new Map([
+  ['pcss', 'css'],
+  ['postcss', 'css'],
+  ['sugarss', 'css'],
+  ['sass', 'scss'],
+  ['styl', 'stylus'],
+  ['js', 'javascript'],
+  ['coffee', 'coffeescript'],
+  ['ts', 'typescript'],
+]);
 
 export const SOURCE_MAP_PROP_MAP: Record<string, [string[], any]> = {
   babel: [['sourceMaps'], true],
@@ -47,23 +47,28 @@ export const SOURCE_MAP_PROP_MAP: Record<string, [string[], any]> = {
   globalStyle: [['sourceMap'], true],
 };
 
-export const ALIAS_MAP = new Map([
-  ['pcss', 'css'],
-  ['postcss', 'css'],
-  ['sugarss', 'css'],
-  ['sass', 'scss'],
-  ['styl', 'stylus'],
-  ['js', 'javascript'],
-  ['coffee', 'coffeescript'],
-  ['ts', 'typescript'],
-]);
+export function getLanguageDefaults(lang: string): null | Record<string, any> {
+  const defaults = LANGUAGE_DEFAULTS[lang];
 
-export const addLanguageAlias = (entries: Array<[string, string]>) =>
-  entries.forEach((entry) => ALIAS_MAP.set(...entry));
+  if (!defaults) return null;
+  if (typeof defaults === 'function') {
+    return defaults();
+  }
 
-export const getLanguageFromAlias = (alias: string | null) => {
+  return defaults;
+}
+
+export function addLanguageAlias(entries: Array<[string, string]>) {
+  return entries.forEach((entry) => ALIAS_MAP.set(...entry));
+}
+
+export function getLanguageFromAlias(alias: string | null) {
   return ALIAS_MAP.get(alias) || alias;
-};
+}
+
+export function isAliasOf(alias: string, lang: string) {
+  return lang !== alias && getLanguageFromAlias(alias) === lang;
+}
 
 export const getLanguage = (attributes: PreprocessorArgs['attributes']) => {
   let alias = null;

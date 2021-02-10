@@ -149,3 +149,31 @@ test('automatically removes indentation for lang=sugarss', async () => {
       }</style>"
     `);
 });
+
+test('should not override postcss with custom style language', async () => {
+  const custom = jest.fn(({ content }) => ({ code: content }));
+  const postcss = jest.fn(({ content }) => ({ code: content }));
+  const opts = sveltePreprocess({ custom, postcss });
+
+  await preprocess(
+    `<div></div><style lang="custom">div{color:red}</style>`,
+    opts,
+  );
+
+  expect(custom).toHaveBeenCalledTimes(1);
+  expect(postcss).toHaveBeenCalledTimes(1);
+});
+
+test('should execute postcss alias override before postcss', async () => {
+  const sugarss = jest.fn(({ content }) => ({ code: content }));
+  const postcss = jest.fn(({ content }) => ({ code: content }));
+  const opts = sveltePreprocess({ sugarss, postcss });
+
+  await preprocess(
+    `<div></div><style lang="sugarss">div{color:red}</style>`,
+    opts,
+  );
+
+  expect(sugarss).toHaveBeenCalledTimes(1);
+  expect(postcss).toHaveBeenCalledTimes(1);
+});
