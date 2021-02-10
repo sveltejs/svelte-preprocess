@@ -260,8 +260,10 @@ export function sveltePreprocess(
 
     let { code, map, dependencies } = transformResult;
 
+    const hasPostcss = await hasDepInstalled('postcss');
+
     // istanbul ignore else
-    if (await hasDepInstalled('postcss')) {
+    if (hasPostcss) {
       if (transformers.postcss) {
         const { alias, lang } = getLanguage(attributes);
         const postcssOptions = getTransformerOptions(
