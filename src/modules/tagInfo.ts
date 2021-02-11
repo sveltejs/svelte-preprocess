@@ -1,11 +1,11 @@
-import fs, { promises as fsPromises } from 'fs';
+import fs from 'fs';
 import { resolve, dirname } from 'path';
 
 import type { PreprocessorArgs } from '../types';
 import { getLanguage } from './language';
 import { isValidLocalPath } from './utils';
 
-const { access, readFile } = fsPromises;
+const { access, readFile } = fs.promises;
 
 const resolveSrc = (importerFile: string, srcPath: string) =>
   resolve(dirname(importerFile), srcPath);
