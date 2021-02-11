@@ -1,25 +1,19 @@
-import { readFile, access } from 'fs';
+import fs, { promises as fsPromises } from 'fs';
 import { resolve, dirname } from 'path';
 
 import type { PreprocessorArgs } from '../types';
 import { getLanguage } from './language';
 import { isValidLocalPath } from './utils';
 
+const { access, readFile } = fsPromises;
+
 const resolveSrc = (importerFile: string, srcPath: string) =>
   resolve(dirname(importerFile), srcPath);
 
-const getSrcContent = (file: string): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    readFile(file, (error: Error, data: unknown) => {
-      // istanbul ignore if
-      if (error) reject(error);
-      else resolve(data.toString());
-    });
-  });
-};
-
 async function doesFileExist(file: string) {
-  return new Promise((resolve) => access(file, 0, (err) => resolve(!err)));
+  return access(file, fs.constants.F_OK)
+    .then(() => true)
+    .catch(() => false);
 }
 
 export const getTagInfo = async ({
@@ -44,10 +38,10 @@ export const getTagInfo = async ({
     if (isValidLocalPath(path)) {
       path = resolveSrc(filename, path);
       if (await doesFileExist(path)) {
-        content = await getSrcContent(path);
+        content = (await readFile(path)).toString();
         dependencies.push(path);
       } else {
-        console.warn(`[svelte-preprocess] The file  "${path}" was not found.`);
+        console.warn(`[svelte-preprocess] The file "${path}" was not found.`);
       }
     }
   }
