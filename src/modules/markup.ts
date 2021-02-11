@@ -10,7 +10,7 @@ export async function transformMarkup(
   markupTagName = markupTagName.toLocaleLowerCase();
 
   const markupPattern = new RegExp(
-    `<${markupTagName}([\\s\\S]*?)(?:>([\\s\\S]*)<\\/${markupTagName}>|/>)`,
+    `/<!--[^]*?-->|<${markupTagName}(\\s[^]*?)?(?:>([^]*?)<\\/${markupTagName}>|\\/>)`,
   );
 
   const templateMatch = content.match(markupPattern);
@@ -20,7 +20,7 @@ export async function transformMarkup(
     return transformer({ content, attributes: {}, filename, options });
   }
 
-  const [fullMatch, attributesStr, templateCode] = templateMatch;
+  const [fullMatch, attributesStr = '', templateCode] = templateMatch;
 
   /** Transform an attribute string into a key-value object */
   const attributes = attributesStr

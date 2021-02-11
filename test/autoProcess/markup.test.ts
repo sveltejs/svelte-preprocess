@@ -39,6 +39,15 @@ test('should transform a custom language between <template lang="..."></template
   expect(preprocessed.toString()).toBe('<script></script><style></style>');
 });
 
+test('should ignore subsequent markup tags.', async () => {
+  const input = `<template><div>Hey</div></template><template>ignored</template>`;
+  const preprocessed = await preprocess(input, sveltePreprocess());
+
+  expect(preprocessed.toString()).toBe(
+    `<div>Hey</div><template>ignored</template>`,
+  );
+});
+
 MARKUP_LANGS.forEach(([lang, ext]) => {
   describe(`markup - preprocessor - ${lang}`, () => {
     const template = `<template lang="${lang}">${getFixtureContent(
