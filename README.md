@@ -55,7 +55,7 @@ export default {
 
 ### Template tag
 
-Add _vue-like_ support for defining your markup between a `<template>` tag. The tagname can be customized to something like `markup` for example. See [#options](#options).
+_Vue-like_ support for defining your markup between a specific tag. The default tag is `template` but it can be [customized](/docs/preprocessing.md#auto-preprocessing-options).
 
 ```html
 <template>
@@ -179,9 +179,7 @@ The current supported languages out-of-the-box are Sass, Stylus, Less, CoffeeScr
 
 ```html
 <template lang="pug">
-  div Posts
-  +each('posts as post')
-    a(href="{post.url}") {post.title}
+  div Posts +each('posts as post') a(href="{post.url}") {post.title}
 </template>
 
 <script lang="ts">
