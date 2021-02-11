@@ -1,3 +1,12 @@
+## [4.6.8](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.7...v4.6.8) (2021-02-11)
+
+
+### Bug Fixes
+
+* 🐛 make markup tag regexp less greedy ([64f3362](https://github.com/sveltejs/svelte-preprocess/commit/64f3362d27d0defdcc0fd684022ebacb49c1aaf4)), closes [#310](https://github.com/sveltejs/svelte-preprocess/issues/310)
+
+
+
 ## [4.6.7](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.5...v4.6.7) (2021-02-10)
 
 
