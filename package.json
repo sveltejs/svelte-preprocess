@@ -18,7 +18,7 @@
     "coffeescript"
   ],
   "engines": {
-    "node": ">= 10.x"
+    "node": ">= 9.11.2"
   },
   "files": [
     "dist/"
