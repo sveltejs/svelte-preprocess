@@ -1,3 +1,13 @@
+## [4.6.9](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.7...v4.6.9) (2021-02-13)
+
+
+### Bug Fixes
+
+* 🐛 make markup tag regexp less greedy ([384ba5c](https://github.com/sveltejs/svelte-preprocess/commit/384ba5cad0a2939a2717d9061dd928b4607e1431)), closes [#310](https://github.com/sveltejs/svelte-preprocess/issues/310)
+* revert "refactor: use fs/promises" ([3f9572c](https://github.com/sveltejs/svelte-preprocess/commit/3f9572ca30e9a05439a6deddc327fa340dd1ef34))
+
+
+
 ## [4.6.8](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.7...v4.6.8) (2021-02-11)
 
 
