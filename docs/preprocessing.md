@@ -155,12 +155,11 @@ export default {
   plugins: [
     svelte({
       preprocess: sveltePreprocess({
-        typescript({ content, filename }) {
-          const { js: code } = transformSync(content, {
+        typescript({ content }) {
+          const { code, map } = transformSync(content, {
             loader: 'ts',
           });
-
-          return { code };
+          return { code, map };
         },
       }),
     }),
