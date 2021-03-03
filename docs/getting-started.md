@@ -128,7 +128,7 @@ And we're done! Our components can now be written as:
 
 ```html
 <template lang="pug">
-  h1 {world}
+  h1 {name}
 </template>
 
 <script lang="ts">
@@ -189,7 +189,7 @@ Now our components are a bit leaner!
 
 ```html
 <template>
-  h1 {world}
+  h1 {name}
 </template>
 
 <script>
