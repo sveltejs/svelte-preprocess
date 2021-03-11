@@ -70,6 +70,7 @@ export function loadTsconfig(
   let tsconfigFile =
     tsOptions.tsconfigFile ||
     ts.findConfigFile(fileDirectory, ts.sys.fileExists);
+
   tsconfigFile = isAbsolute(tsconfigFile)
     ? tsconfigFile
     : join(basePath, tsconfigFile);
@@ -92,6 +93,7 @@ export function loadTsconfig(
     compilerOptionsJSON,
     tsconfigFile,
   );
+
   // Filter out "no files found error"
   errors = errors.filter((d) => d.code !== 18003);
 
@@ -109,7 +111,8 @@ const transformer: Transformer<Options.Typescript> = ({
     target: 'es6',
   };
 
-  let basePath = process.cwd();
+  const basePath = process.cwd();
+
   Object.assign(compilerOptionsJSON, options.compilerOptions);
 
   const { errors, options: convertedCompilerOptions } =
