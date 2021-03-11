@@ -3,8 +3,14 @@ import { resolve } from 'path';
 import type { Diagnostic } from 'typescript';
 
 import sveltePreprocess from '../../src';
+import { loadTsconfig } from '../../src/transformers/typescript';
 import type { Processed } from '../../src/types';
-import { preprocess, getFixtureContent, spyConsole } from '../utils';
+import {
+  preprocess,
+  getFixtureContent,
+  spyConsole,
+  getTestAppFilename,
+} from '../utils';
 
 spyConsole({ silent: true });
 
@@ -102,6 +108,18 @@ describe('transformer - typescript', () => {
       const { code } = await preprocess(template, opts);
 
       return expect(code).toContain(getFixtureContent('script.js'));
+    });
+
+    it('supports extends field', () => {
+      const { options } = loadTsconfig({}, getTestAppFilename(), {
+        tsconfigFile: './test/fixtures/tsconfig.extends1.json',
+      });
+
+      expect(options).toMatchObject({
+        module: 5,
+        skipLibCheck: false,
+        esModuleInterop: true,
+      });
     });
   });
 });
