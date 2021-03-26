@@ -1,4 +1,4 @@
-import { dirname } from 'path';
+import { dirname, isAbsolute, join } from 'path';
 
 import ts from 'typescript';
 
@@ -53,6 +53,53 @@ const importTransformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
   return (node) => ts.visitNode(node, visit);
 };
 
+export function loadTsconfig(
+  compilerOptionsJSON: any,
+  filename: string,
+  tsOptions: Options.Typescript,
+) {
+  if (typeof tsOptions.tsconfigFile === 'boolean') {
+    return { errors: [], options: compilerOptionsJSON };
+  }
+
+  let basePath = process.cwd();
+
+  const fileDirectory = (tsOptions.tsconfigDirectory ||
+    dirname(filename)) as string;
+
+  let tsconfigFile =
+    tsOptions.tsconfigFile ||
+    ts.findConfigFile(fileDirectory, ts.sys.fileExists);
+
+  tsconfigFile = isAbsolute(tsconfigFile)
+    ? tsconfigFile
+    : join(basePath, tsconfigFile);
+
+  basePath = dirname(tsconfigFile);
+
+  const { error, config } = ts.readConfigFile(tsconfigFile, ts.sys.readFile);
+
+  if (error) {
+    throw new Error(formatDiagnostics(error, basePath));
+  }
+
+  // Do this so TS will not search for initial files which might take a while
+  config.include = [];
+
+  let { errors, options } = ts.parseJsonConfigFileContent(
+    config,
+    ts.sys,
+    basePath,
+    compilerOptionsJSON,
+    tsconfigFile,
+  );
+
+  // Filter out "no files found error"
+  errors = errors.filter((d) => d.code !== 18003);
+
+  return { errors, options };
+}
+
 const transformer: Transformer<Options.Typescript> = ({
   content,
   filename,
@@ -64,38 +111,14 @@ const transformer: Transformer<Options.Typescript> = ({
     target: 'es6',
   };
 
-  let basePath = process.cwd();
-
-  if (options.tsconfigFile !== false || options.tsconfigDirectory) {
-    const fileDirectory = (options.tsconfigDirectory ||
-      dirname(filename)) as string;
-
-    const tsconfigFile =
-      options.tsconfigFile ||
-      ts.findConfigFile(fileDirectory, ts.sys.fileExists);
-
-    if (typeof tsconfigFile === 'string') {
-      basePath = dirname(tsconfigFile);
-
-      const { error, config } = ts.readConfigFile(
-        tsconfigFile,
-        ts.sys.readFile,
-      );
-
-      if (error) {
-        throw new Error(formatDiagnostics(error, basePath));
-      }
-
-      Object.assign(compilerOptionsJSON, config.compilerOptions);
-    }
-  }
+  const basePath = process.cwd();
 
   Object.assign(compilerOptionsJSON, options.compilerOptions);
 
-  const {
-    errors,
-    options: convertedCompilerOptions,
-  } = ts.convertCompilerOptionsFromJson(compilerOptionsJSON, basePath);
+  const { errors, options: convertedCompilerOptions } =
+    options.tsconfigFile !== false || options.tsconfigDirectory
+      ? loadTsconfig(compilerOptionsJSON, filename, options)
+      : ts.convertCompilerOptionsFromJson(compilerOptionsJSON, basePath);
 
   if (errors.length) {
     throw new Error(formatDiagnostics(errors, basePath));
