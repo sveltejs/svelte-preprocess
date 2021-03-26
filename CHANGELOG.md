@@ -1,3 +1,12 @@
+# [4.7.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.9...v4.7.0) (2021-03-26)
+
+
+### Features
+
+* support tsconfig extends ([#328](https://github.com/sveltejs/svelte-preprocess/issues/328)) ([d0b4766](https://github.com/sveltejs/svelte-preprocess/commit/d0b476615d72deaa4eff5f2f164b245c0dd294d7)), closes [#300](https://github.com/sveltejs/svelte-preprocess/issues/300)
+
+
+
 ## [4.6.9](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.7...v4.6.9) (2021-02-13)
 
 
