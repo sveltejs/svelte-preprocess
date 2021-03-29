@@ -1,4 +1,4 @@
-import { dirname, isAbsolute, join } from 'path';
+import { dirname, isAbsolute, join, resolve } from 'path';
 
 import ts from 'typescript';
 
@@ -148,7 +148,10 @@ const transformer: Transformer<Options.Typescript> = ({
     sourceMapText: map,
     diagnostics,
   } = ts.transpileModule(content, {
-    fileName: filename,
+    fileName:
+      filename.slice(0, 1) === '.'
+        ? resolve(join(process.cwd(), filename))
+        : filename,
     compilerOptions,
     reportDiagnostics: options.reportDiagnostics !== false,
     transformers: {
