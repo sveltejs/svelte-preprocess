@@ -27,6 +27,7 @@ export const getTagInfo = async ({
   attributes,
   filename,
   content,
+  markup,
 }: PreprocessorArgs) => {
   const dependencies = [];
   // catches empty content and self-closing tags
@@ -62,5 +63,6 @@ export const getTagInfo = async ({
     lang,
     alias,
     dependencies,
+    markup,
   };
 };

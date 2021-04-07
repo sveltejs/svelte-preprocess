@@ -17,7 +17,13 @@ export async function transformMarkup(
 
   /** If no <template> was found, run the transformer over the whole thing */
   if (!templateMatch) {
-    return transformer({ content, attributes: {}, filename, options });
+    return transformer({
+      content,
+      markup: content,
+      attributes: {},
+      filename,
+      options,
+    });
   }
 
   const [fullMatch, attributesStr = '', templateCode] = templateMatch;
@@ -38,6 +44,7 @@ export async function transformMarkup(
   /** Transform the found template code */
   let { code, map, dependencies } = await transformer({
     content: templateCode,
+    markup: templateCode,
     attributes,
     filename,
     options,

@@ -59,6 +59,7 @@ describe(`get tag information`, () => {
   it('should only include src files if content is empty', async () => {
     let parsedFile = await getTagInfo({
       content: '',
+      markup: '',
       attributes: { src: './fixtures/style.scss' },
       filename: getTestAppFilename(),
     });
