@@ -1,8 +1,10 @@
 import { dirname, isAbsolute, join } from 'path';
 
 import ts from 'typescript';
+import { compile } from 'svelte/compiler';
 
 import { throwTypescriptError } from '../modules/errors';
+import { createTagRegex, parseAttributes, stripTags } from '../modules/markup';
 import type { Transformer, Options } from '../types';
 
 type CompilerOptions = Options.Typescript['compilerOptions'];
@@ -52,6 +54,66 @@ const importTransformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
 
   return (node) => ts.visitNode(node, visit);
 };
+
+function getComponentScriptContent(markup: string): string {
+  const regex = createTagRegex('script', 'gi');
+  let match: RegExpMatchArray;
+
+  while ((match = regex.exec(markup)) !== null) {
+    const { context } = parseAttributes(match[1]);
+
+    if (context !== 'module') {
+      return match[2];
+    }
+  }
+
+  return '';
+}
+
+function injectVarsToCode({
+  content,
+  markup,
+  filename,
+  attributes,
+}: {
+  content: string;
+  markup?: string;
+  filename?: string;
+  attributes?: Record<string, any>;
+}): string {
+  if (!markup) return content;
+
+  const { vars } = compile(stripTags(markup), {
+    generate: false,
+    varsReport: 'full',
+    errorMode: 'warn',
+    filename,
+  });
+
+  const sep = '\nconst $$$$$$$$ = null;\n';
+  const varsValues = vars.map((v) => v.name).join(',');
+  const injectedVars = `const $$vars$$ = [${varsValues}];`;
+
+  if (attributes?.context === 'module') {
+    const componentScript = getComponentScriptContent(markup);
+
+    return `${content}${sep}${componentScript}\n${injectedVars}`;
+  }
+
+  return `${content}${sep}${injectedVars}`;
+}
+
+function stripInjectedCode({
+  compiledCode,
+  markup,
+}: {
+  compiledCode: string;
+  markup?: string;
+}): string {
+  return markup
+    ? compiledCode.slice(0, compiledCode.indexOf('const $$$$$$$$ = null;'))
+    : compiledCode;
+}
 
 export function loadTsconfig(
   compilerOptionsJSON: any,
@@ -103,7 +165,9 @@ export function loadTsconfig(
 const transformer: Transformer<Options.Typescript> = ({
   content,
   filename,
+  markup,
   options = {},
+  attributes,
 }) => {
   // default options
   const compilerOptionsJSON = {
@@ -140,17 +204,18 @@ const transformer: Transformer<Options.Typescript> = ({
   }
 
   const {
-    outputText: code,
+    outputText: compiledCode,
     sourceMapText: map,
     diagnostics,
-  } = ts.transpileModule(content, {
-    fileName: filename,
-    compilerOptions,
-    reportDiagnostics: options.reportDiagnostics !== false,
-    transformers: {
-      before: [importTransformer],
+  } = ts.transpileModule(
+    injectVarsToCode({ content, markup, filename, attributes }),
+    {
+      fileName: filename,
+      compilerOptions,
+      reportDiagnostics: options.reportDiagnostics !== false,
+      transformers: markup ? {} : { before: [importTransformer] },
     },
-  });
+  );
 
   if (diagnostics.length > 0) {
     // could this be handled elsewhere?
@@ -166,6 +231,8 @@ const transformer: Transformer<Options.Typescript> = ({
       throwTypescriptError();
     }
   }
+
+  const code = stripInjectedCode({ compiledCode, markup });
 
   return {
     code,

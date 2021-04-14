@@ -1,5 +1,35 @@
 import type { Transformer, Preprocessor } from '../types';
 
+/** Create a tag matching regexp. */
+export function createTagRegex(tagName: string, flags?: string): RegExp {
+  return new RegExp(
+    `<!--[^]*?-->|<${tagName}(\\s[^]*?)?(?:>([^]*?)<\\/${tagName}>|\\/>)`,
+    flags,
+  );
+}
+
+/** Strip script and style tags from markup. */
+export function stripTags(markup: string): string {
+  return markup
+    .replace(createTagRegex('style', 'gi'), '')
+    .replace(createTagRegex('script', 'gi'), '');
+}
+
+/** Transform an attribute string into a key-value object */
+export function parseAttributes(attributesStr: string): Record<string, any> {
+  return attributesStr
+    .split(/\s+/)
+    .filter(Boolean)
+    .reduce((acc: Record<string, string | boolean>, attr) => {
+      const [name, value] = attr.split('=');
+
+      // istanbul ignore next
+      acc[name] = value ? value.replace(/['"]/g, '') : true;
+
+      return acc;
+    }, {});
+}
+
 export async function transformMarkup(
   { content, filename }: { content: string; filename: string },
   transformer: Preprocessor | Transformer<unknown>,
@@ -9,9 +39,7 @@ export async function transformMarkup(
 
   markupTagName = markupTagName.toLocaleLowerCase();
 
-  const markupPattern = new RegExp(
-    `/<!--[^]*?-->|<${markupTagName}(\\s[^]*?)?(?:>([^]*?)<\\/${markupTagName}>|\\/>)`,
-  );
+  const markupPattern = createTagRegex(markupTagName);
 
   const templateMatch = content.match(markupPattern);
 
@@ -28,18 +56,7 @@ export async function transformMarkup(
 
   const [fullMatch, attributesStr = '', templateCode] = templateMatch;
 
-  /** Transform an attribute string into a key-value object */
-  const attributes = attributesStr
-    .split(/\s+/)
-    .filter(Boolean)
-    .reduce((acc: Record<string, string | boolean>, attr) => {
-      const [name, value] = attr.split('=');
-
-      // istanbul ignore next
-      acc[name] = value ? value.replace(/['"]/g, '') : true;
-
-      return acc;
-    }, {});
+  const attributes = parseAttributes(attributesStr);
 
   /** Transform the found template code */
   let { code, map, dependencies } = await transformer({
