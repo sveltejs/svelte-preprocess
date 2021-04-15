@@ -93,6 +93,8 @@
     "@types/pug": "^2.0.4",
     "@types/sass": "^1.16.0",
     "detect-indent": "^6.0.0",
+    "magic-string": "^0.25.7",
+    "sorcery": "^0.10.0",
     "strip-indent": "^3.0.0"
   },
   "peerDependencies": {

@@ -2,16 +2,24 @@ import { dirname, isAbsolute, join } from 'path';
 
 import ts from 'typescript';
 import { compile } from 'svelte/compiler';
+import MagicString from 'magic-string';
+import sorcery from 'sorcery';
 
 import { throwTypescriptError } from '../modules/errors';
 import { createTagRegex, parseAttributes, stripTags } from '../modules/markup';
 import type { Transformer, Options } from '../types';
 
-type CompilerOptions = Options.Typescript['compilerOptions'];
+type CompilerOptions = ts.CompilerOptions;
+
+type SourceMapChain = {
+  content: Record<string, string>;
+  sourcemaps: Record<string, object>;
+};
 
 function createFormatDiagnosticsHost(cwd: string): ts.FormatDiagnosticsHost {
   return {
-    getCanonicalFileName: (fileName: string) => fileName,
+    getCanonicalFileName: (fileName: string) =>
+      fileName.replace('.injected.ts', ''),
     getCurrentDirectory: () => cwd,
     getNewLine: () => ts.sys.newLine,
   };
@@ -70,16 +78,37 @@ function getComponentScriptContent(markup: string): string {
   return '';
 }
 
+function createSourceMapChain({
+  filename,
+  content,
+  compilerOptions,
+}: {
+  filename: string;
+  content: string;
+  compilerOptions: CompilerOptions;
+}): SourceMapChain | undefined {
+  if (compilerOptions.sourceMap) {
+    return {
+      content: {
+        [filename]: content,
+      },
+      sourcemaps: {},
+    };
+  }
+}
+
 function injectVarsToCode({
   content,
   markup,
   filename,
   attributes,
+  sourceMapChain,
 }: {
   content: string;
   markup?: string;
-  filename?: string;
+  filename: string;
   attributes?: Record<string, any>;
+  sourceMapChain?: SourceMapChain;
 }): string {
   if (!markup) return content;
 
@@ -93,26 +122,185 @@ function injectVarsToCode({
   const sep = '\nconst $$$$$$$$ = null;\n';
   const varsValues = vars.map((v) => v.name).join(',');
   const injectedVars = `const $$vars$$ = [${varsValues}];`;
+  const injectedCode =
+    attributes?.context === 'module'
+      ? `${sep}${getComponentScriptContent(markup)}\n${injectedVars}`
+      : `${sep}${injectedVars}`;
 
-  if (attributes?.context === 'module') {
-    const componentScript = getComponentScriptContent(markup);
+  if (sourceMapChain) {
+    const s = new MagicString(content);
 
-    return `${content}${sep}${componentScript}\n${injectedVars}`;
+    s.append(injectedCode);
+
+    const fname = `${filename}.injected.ts`;
+    const code = s.toString();
+    const map = s.generateMap({
+      source: filename,
+      file: fname,
+    });
+
+    sourceMapChain.content[fname] = code;
+    sourceMapChain.sourcemaps[fname] = map;
+
+    return code;
   }
 
-  return `${content}${sep}${injectedVars}`;
+  return `${content}${injectedCode}`;
 }
 
 function stripInjectedCode({
-  compiledCode,
+  transpiledCode,
   markup,
+  filename,
+  sourceMapChain,
 }: {
-  compiledCode: string;
+  transpiledCode: string;
   markup?: string;
+  filename: string;
+  sourceMapChain?: SourceMapChain;
 }): string {
-  return markup
-    ? compiledCode.slice(0, compiledCode.indexOf('const $$$$$$$$ = null;'))
-    : compiledCode;
+  if (!markup) return transpiledCode;
+
+  const injectedCodeStart = transpiledCode.indexOf('const $$$$$$$$ = null;');
+
+  if (sourceMapChain) {
+    const s = new MagicString(transpiledCode);
+    const st = s.snip(0, injectedCodeStart);
+
+    const source = `${filename}.transpiled.js`;
+    const file = `${filename}.js`;
+    const code = st.toString();
+    const map = st.generateMap({
+      source,
+      file,
+    });
+
+    sourceMapChain.content[file] = code;
+    sourceMapChain.sourcemaps[file] = map;
+
+    return code;
+  }
+
+  return transpiledCode.slice(0, injectedCodeStart);
+}
+
+async function concatSourceMaps({
+  filename,
+  markup,
+  sourceMapChain,
+}: {
+  filename: string;
+  markup?: string;
+  sourceMapChain?: SourceMapChain;
+}): Promise<string | object | undefined> {
+  if (!sourceMapChain) return;
+
+  if (!markup) {
+    return sourceMapChain.sourcemaps[`${filename}.js`];
+  }
+
+  const chain = await sorcery.load(`${filename}.js`, sourceMapChain);
+
+  return chain.apply();
+}
+
+function getCompilerOptions({
+  filename,
+  options,
+  basePath,
+}: {
+  filename: string;
+  options: Options.Typescript;
+  basePath: string;
+}): CompilerOptions {
+  // default options
+  const compilerOptionsJSON = {
+    moduleResolution: 'node',
+    target: 'es6',
+  };
+
+  Object.assign(compilerOptionsJSON, options.compilerOptions);
+
+  const { errors, options: convertedCompilerOptions } =
+    options.tsconfigFile !== false || options.tsconfigDirectory
+      ? loadTsconfig(compilerOptionsJSON, filename, options)
+      : ts.convertCompilerOptionsFromJson(compilerOptionsJSON, basePath);
+
+  if (errors.length) {
+    throw new Error(formatDiagnostics(errors, basePath));
+  }
+
+  const compilerOptions: CompilerOptions = {
+    ...(convertedCompilerOptions as CompilerOptions),
+    importsNotUsedAsValues: ts.ImportsNotUsedAsValues.Error,
+    allowNonTsExtensions: true,
+  };
+
+  if (
+    compilerOptions.target === ts.ScriptTarget.ES3 ||
+    compilerOptions.target === ts.ScriptTarget.ES5
+  ) {
+    throw new Error(
+      `Svelte only supports es6+ syntax. Set your 'compilerOptions.target' to 'es6' or higher.`,
+    );
+  }
+
+  return compilerOptions;
+}
+
+function transpileTs({
+  code,
+  markup,
+  filename,
+  basePath,
+  options,
+  compilerOptions,
+  sourceMapChain,
+}: {
+  code: string;
+  markup: string;
+  filename: string;
+  basePath: string;
+  options: Options.Typescript;
+  compilerOptions: CompilerOptions;
+  sourceMapChain: SourceMapChain;
+}): { transpiledCode: string; diagnostics: ts.Diagnostic[] } {
+  const fileName = markup ? `${filename}.injected.ts` : filename;
+
+  const {
+    outputText: transpiledCode,
+    sourceMapText,
+    diagnostics,
+  } = ts.transpileModule(code, {
+    fileName,
+    compilerOptions,
+    reportDiagnostics: options.reportDiagnostics !== false,
+    transformers: markup ? {} : { before: [importTransformer] },
+  });
+
+  if (diagnostics.length > 0) {
+    // could this be handled elsewhere?
+    const hasError = diagnostics.some(
+      (d) => d.category === ts.DiagnosticCategory.Error,
+    );
+
+    const formattedDiagnostics = formatDiagnostics(diagnostics, basePath);
+
+    console.log(formattedDiagnostics);
+
+    if (hasError) {
+      throwTypescriptError();
+    }
+  }
+
+  if (sourceMapChain) {
+    const fname = markup ? `${filename}.transpiled.js` : `${filename}.js`;
+
+    sourceMapChain.content[fname] = transpiledCode;
+    sourceMapChain.sourcemaps[fname] = JSON.parse(sourceMapText);
+  }
+
+  return { transpiledCode, diagnostics };
 }
 
 export function loadTsconfig(
@@ -162,77 +350,52 @@ export function loadTsconfig(
   return { errors, options };
 }
 
-const transformer: Transformer<Options.Typescript> = ({
+const transformer: Transformer<Options.Typescript> = async ({
   content,
-  filename,
+  filename = 'source.svelte',
   markup,
   options = {},
   attributes,
 }) => {
-  // default options
-  const compilerOptionsJSON = {
-    moduleResolution: 'node',
-    target: 'es6',
-  };
-
   const basePath = process.cwd();
+  const compilerOptions = getCompilerOptions({ filename, options, basePath });
 
-  Object.assign(compilerOptionsJSON, options.compilerOptions);
+  const sourceMapChain = createSourceMapChain({
+    filename,
+    content,
+    compilerOptions,
+  });
 
-  const { errors, options: convertedCompilerOptions } =
-    options.tsconfigFile !== false || options.tsconfigDirectory
-      ? loadTsconfig(compilerOptionsJSON, filename, options)
-      : ts.convertCompilerOptionsFromJson(compilerOptionsJSON, basePath);
+  const injectedCode = injectVarsToCode({
+    content,
+    markup,
+    filename,
+    attributes,
+    sourceMapChain,
+  });
 
-  if (errors.length) {
-    throw new Error(formatDiagnostics(errors, basePath));
-  }
+  const { transpiledCode, diagnostics } = transpileTs({
+    code: injectedCode,
+    markup,
+    filename,
+    basePath,
+    options,
+    compilerOptions,
+    sourceMapChain,
+  });
 
-  const compilerOptions: CompilerOptions = {
-    ...(convertedCompilerOptions as CompilerOptions),
-    importsNotUsedAsValues: ts.ImportsNotUsedAsValues.Error,
-    allowNonTsExtensions: true,
-  };
+  const code = stripInjectedCode({
+    transpiledCode,
+    markup,
+    filename,
+    sourceMapChain,
+  });
 
-  if (
-    compilerOptions.target === ts.ScriptTarget.ES3 ||
-    compilerOptions.target === ts.ScriptTarget.ES5
-  ) {
-    throw new Error(
-      `Svelte only supports es6+ syntax. Set your 'compilerOptions.target' to 'es6' or higher.`,
-    );
-  }
-
-  const {
-    outputText: compiledCode,
-    sourceMapText: map,
-    diagnostics,
-  } = ts.transpileModule(
-    injectVarsToCode({ content, markup, filename, attributes }),
-    {
-      fileName: filename,
-      compilerOptions,
-      reportDiagnostics: options.reportDiagnostics !== false,
-      transformers: markup ? {} : { before: [importTransformer] },
-    },
-  );
-
-  if (diagnostics.length > 0) {
-    // could this be handled elsewhere?
-    const hasError = diagnostics.some(
-      (d) => d.category === ts.DiagnosticCategory.Error,
-    );
-
-    const formattedDiagnostics = formatDiagnostics(diagnostics, basePath);
-
-    console.log(formattedDiagnostics);
-
-    if (hasError) {
-      throwTypescriptError();
-    }
-  }
-
-  const code = stripInjectedCode({ compiledCode, markup });
+  const map = await concatSourceMaps({
+    filename,
+    markup,
+    sourceMapChain,
+  });
 
   return {
     code,

@@ -129,6 +129,19 @@ describe('transformer - typescript', () => {
       return expect(code).toContain(`import { AValue } from "./types";`);
     });
 
+    it('should produce sourcemap', async () => {
+      const tpl = getFixtureContent('TypeScriptImportsModule.svelte');
+
+      const opts = sveltePreprocess({
+        typescript: { tsconfigFile: false },
+        sourceMap: true,
+      });
+
+      const { map } = await preprocess(tpl, opts);
+
+      return expect(map).toHaveProperty('sources', ['App.svelte']);
+    });
+
     it('supports extends field', () => {
       const { options } = loadTsconfig({}, getTestAppFilename(), {
         tsconfigFile: './test/fixtures/tsconfig.extends1.json',
