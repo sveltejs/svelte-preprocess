@@ -1,11 +1,12 @@
 import type {
+  AutoPreprocessGroup,
+  AutoPreprocessOptions,
   PreprocessorGroup,
   Preprocessor,
   Processed,
   TransformerArgs,
   TransformerOptions,
   Transformers,
-  Options,
 } from './types';
 import { hasDepInstalled, concat, setProp } from './modules/utils';
 import { getTagInfo } from './modules/tagInfo';
@@ -19,43 +20,6 @@ import {
 } from './modules/language';
 import { prepareContent } from './modules/prepareContent';
 import { transformMarkup } from './modules/markup';
-
-type AutoPreprocessGroup = PreprocessorGroup & {
-  defaultLanguages: Readonly<{
-    markup: string;
-    style: string;
-    script: string;
-  }>;
-};
-
-type AutoPreprocessOptions = {
-  markupTagName?: string;
-  aliases?: Array<[string, string]>;
-  preserve?: string[];
-  defaults?: {
-    markup?: string;
-    style?: string;
-    script?: string;
-  };
-  sourceMap?: boolean;
-
-  // transformers
-  babel?: TransformerOptions<Options.Babel>;
-  typescript?: TransformerOptions<Options.Typescript>;
-  scss?: TransformerOptions<Options.Sass>;
-  sass?: TransformerOptions<Options.Sass>;
-  less?: TransformerOptions<Options.Less>;
-  stylus?: TransformerOptions<Options.Stylus>;
-  postcss?: TransformerOptions<Options.Postcss>;
-  coffeescript?: TransformerOptions<Options.Coffeescript>;
-  pug?: TransformerOptions<Options.Pug>;
-  globalStyle?: Options.GlobalStyle | boolean;
-  replace?: Options.Replace;
-
-  // workaround while we don't have this
-  // https://github.com/microsoft/TypeScript/issues/17867
-  [languageName: string]: TransformerOptions;
-};
 
 export const transform = async (
   name: string,
