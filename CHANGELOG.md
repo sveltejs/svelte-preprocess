@@ -1,3 +1,12 @@
+## [4.7.1](https://github.com/sveltejs/svelte-preprocess/compare/v4.7.0...v4.7.1) (2021-04-18)
+
+
+### Features
+
+* export autopreprocess options type ([f5e1a63](https://github.com/sveltejs/svelte-preprocess/commit/f5e1a635f586a9780b0a71db979f6ffb30b31221))
+
+
+
 # [4.7.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.9...v4.7.0) (2021-03-26)
 
 
