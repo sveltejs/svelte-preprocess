@@ -71,6 +71,10 @@ export function loadTsconfig(
     tsOptions.tsconfigFile ||
     ts.findConfigFile(fileDirectory, ts.sys.fileExists);
 
+  if (!tsconfigFile) {
+    return { errors: [], options: {} };
+  }
+
   tsconfigFile = isAbsolute(tsconfigFile)
     ? tsconfigFile
     : join(basePath, tsconfigFile);
