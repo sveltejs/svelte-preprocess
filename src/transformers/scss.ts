@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { join } from 'path';
+import { join, isAbsolute } from 'path';
 
 import type { Importer, Result } from 'sass';
 
@@ -8,18 +8,23 @@ import type { Transformer, Processed, Options } from '../types';
 
 let sass: Options.Sass['implementation'];
 
-type ResolveResult = {
-  code: string;
-  map: string | undefined;
-  dependencies: string[];
-};
+function getProcessedResult(result: Result): Processed {
+  // For some reason, scss includes the main 'file' in the array, we don't want that
+  // Unfortunately I didn't manage to reproduce this in the test env
+  // More info: https://github.com/sveltejs/svelte-preprocess/issues/346
+  const absoluteEntryPath = isAbsolute(result.stats.entry)
+    ? result.stats.entry
+    : join(process.cwd(), result.stats.entry);
 
-function getResultForResolve(result: Result): ResolveResult {
-  return {
+  const processed = {
     code: result.css.toString(),
     map: result.map?.toString(),
-    dependencies: result.stats.includedFiles,
+    dependencies: Array.from(result.stats.includedFiles).filter(
+      (filepath) => filepath !== absoluteEntryPath,
+    ),
   };
+
+  return processed;
 }
 
 const tildeImporter: Importer = (url, prev) => {
@@ -90,14 +95,14 @@ const transformer: Transformer<Options.Sass> = async ({
   }
 
   if (renderSync) {
-    return getResultForResolve(implementation.renderSync(sassOptions));
+    return getProcessedResult(implementation.renderSync(sassOptions));
   }
 
   return new Promise<Processed>((resolve, reject) => {
     implementation.render(sassOptions, (err, result) => {
       if (err) return reject(err);
 
-      resolve(getResultForResolve(result));
+      resolve(getProcessedResult(result));
     });
   });
 };
