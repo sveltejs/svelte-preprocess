@@ -1,3 +1,13 @@
+## [4.7.2](https://github.com/sveltejs/svelte-preprocess/compare/v4.7.1...v4.7.2) (2021-04-19)
+
+
+### Bug Fixes
+
+* 🐛 prevent svelte file from being added to scss dep list ([519b0b6](https://github.com/sveltejs/svelte-preprocess/commit/519b0b6c49ba4a9e0f4adfcc47f03b19d2e28966)), closes [#346](https://github.com/sveltejs/svelte-preprocess/issues/346)
+* support ts build with no tsconfig.json ([cf0e44c](https://github.com/sveltejs/svelte-preprocess/commit/cf0e44c26212b496cda8686d2780e7e8f1ac8f7a))
+
+
+
 ## [4.7.1](https://github.com/sveltejs/svelte-preprocess/compare/v4.7.0...v4.7.1) (2021-04-18)
 
 
