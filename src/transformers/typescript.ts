@@ -149,8 +149,8 @@ const transformer: Transformer<Options.Typescript> = ({
     diagnostics,
   } = ts.transpileModule(content, {
     fileName:
-      filename.slice(0, 1) === '.'
-        ? resolve(join(process.cwd(), filename))
+      !isAbsolute(filename)
+        ? resolve(join(basePath, filename))
         : filename,
     compilerOptions,
     reportDiagnostics: options.reportDiagnostics !== false,
