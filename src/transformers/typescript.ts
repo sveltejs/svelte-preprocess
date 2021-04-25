@@ -143,15 +143,16 @@ const transformer: Transformer<Options.Typescript> = ({
     );
   }
 
+  const absoluteFilename = isAbsolute(filename)
+    ? filename
+    : resolve(basePath, filename);
+
   const {
     outputText: code,
     sourceMapText: map,
     diagnostics,
   } = ts.transpileModule(content, {
-    fileName:
-      !isAbsolute(filename)
-        ? resolve(join(basePath, filename))
-        : filename,
+    fileName: absoluteFilename,
     compilerOptions,
     reportDiagnostics: options.reportDiagnostics !== false,
     transformers: {
