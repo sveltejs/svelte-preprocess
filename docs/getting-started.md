@@ -7,8 +7,7 @@
 - [1. Installation](#1-installation)
 - [2. Adding `svelte-preprocess` to our build workflow](#2-adding-svelte-preprocess-to-our-build-workflow)
 - [3. Configuring preprocessors](#3-configuring-preprocessors)
-  - [3.1. Setting default languages](#31-setting-default-languages)
-  - [3.2 Prepending content](#32-prepending-content)
+  - [3.1 Prepending content](#31-prepending-content)
 
 <!-- /code_chunk_output -->
 
@@ -141,71 +140,7 @@ And we're done! Our components can now be written as:
   }
 </style>
 ```
-
-### 3.1. Setting default languages
-
-Ok, we now can write our entire app with Pug, TypeScript and SCSS, but typing `lang="..."` in every file can become an obnoxious process. In [auto-preprocessing mode](/docs/preprocessing.md#auto-preprocessing), `svelte-preprocess` [lets us define the default languages](/docs/preprocessing.md#auto-preprocessing-options) of our components. It defaults to HTML, JavaScript and CSS. Let's change that so we don't need those `lang` attributes.
-
-_**Disclaimer**: The Svelte VS Code extension cannot read the defaults from the rollup config and needs a separate `svelte.config.js` file with the defaults in it. See the [usage guide](/docs/usage.md#with-svelte-vs-code) for an example of setting up a `svelte.config.js` file.
-
-```diff
-import svelte from 'rollup-plugin-svelte'
-import sveltePreprocess from 'svelte-preprocess';
-
-export default {
-  input: 'src/main.js',
-  output: {
-    sourcemap: true,
-    format: 'iife',
-    name: 'app',
-    file: 'public/bundle.js',
-  },
-  plugins: [
-    svelte({
-      preprocess: sveltePreprocess({
-         sourceMap: !production,
-+        defaults: {
-+          markup: 'pug',
-+          script: 'typescript',
-+          style: 'scss'
-+        },
-         postcss: {
-           plugins: [require('autoprefixer')()]
-         }
-      }),
-      // enable run-time checks when not in production
-      dev: !production,
-      // we'll extract any component CSS out into
-      // a separate file — better for performance
-      css: css => {
-        css.write('public/bundle.css')
-      },
-    }),
-  ],
-}
-```
-
-Now our components are a bit leaner!
-
-```html
-<template>
-  h1 {name}
-</template>
-
-<script>
-  export let name: string = 'world';
-</script>
-
-<style>
-  h1 {
-    color: red;
-  }
-</style>
-```
-
-_**Note**: If the `<template>` tag is not found and the default language is not HTML, `svelte-preprocess` expects the whole markup to be written in that language. In example, for Pug, this means the `script` and `style` tags must be written following pug's syntax._
-
-### 3.2 Prepending content
+### 3.1 Prepending content
 
 Now we're in need of a SCSS file to hold some variables. Let's assume it's created at `src/styles/variables.scss`.
 
@@ -262,15 +197,15 @@ export default {
 Voila! We can now reference a variable from our file without having to explicitly import it.
 
 ```html
-<template>
+<template lang="pug">
   h1 {name}
 </template>
 
-<script>
+<script lang="ts">
   export let name: string = 'world';
 </script>
 
-<style>
+<style lang="scss">
   h1 {
     color: $primary-color;
   }
