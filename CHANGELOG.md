@@ -1,3 +1,12 @@
+## [4.7.3](https://github.com/sveltejs/svelte-preprocess/compare/v4.7.2...v4.7.3) (2021-05-03)
+
+
+### Bug Fixes
+
+* typescript: importing component from pnpm monorepo p… ([#337](https://github.com/sveltejs/svelte-preprocess/issues/337)) ([bf72637](https://github.com/sveltejs/svelte-preprocess/commit/bf726371e43dd3bc617511690be6cf6a2845e389))
+
+
+
 ## [4.7.2](https://github.com/sveltejs/svelte-preprocess/compare/v4.7.1...v4.7.2) (2021-04-19)
 
 
