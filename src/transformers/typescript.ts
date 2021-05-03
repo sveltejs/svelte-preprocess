@@ -1,4 +1,4 @@
-import { dirname, isAbsolute, join } from 'path';
+import { dirname, isAbsolute, join, resolve } from 'path';
 
 import ts from 'typescript';
 
@@ -143,12 +143,16 @@ const transformer: Transformer<Options.Typescript> = ({
     );
   }
 
+  const absoluteFilename = isAbsolute(filename)
+    ? filename
+    : resolve(basePath, filename);
+
   const {
     outputText: code,
     sourceMapText: map,
     diagnostics,
   } = ts.transpileModule(content, {
-    fileName: filename,
+    fileName: absoluteFilename,
     compilerOptions,
     reportDiagnostics: options.reportDiagnostics !== false,
     transformers: {
