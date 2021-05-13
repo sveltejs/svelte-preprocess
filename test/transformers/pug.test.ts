@@ -15,6 +15,7 @@ describe('transformer - pug', () => {
 
     expect(preprocessed.code).toBe('<main><header><h1></h1></header></main>');
   });
+
   it('should correctly prepend mixins with space TABS', async () => {
     const template = `<template lang="pug">
 main
@@ -46,6 +47,20 @@ main
 
     expect(preprocessed.dependencies).toContain(
       resolve(__dirname, '..', 'fixtures', 'template.pug'),
+    );
+  });
+
+  it('supports spread between quotes', async () => {
+    const template = `
+<template lang="pug">
+button.big(type="button" disabled "{...slide.props}") Send
+</template>`;
+
+    const opts = sveltePreprocess();
+    const preprocessed = await preprocess(template, opts);
+
+    expect(preprocessed.code).toMatch(
+      `<button class="big" type="button" disabled {...slide.props}>Send</button>`,
     );
   });
 });

@@ -12,7 +12,7 @@
   - [Babel](#babel)
   - [CoffeeScript](#coffeescript)
   - [Less](#less)
-  - [PostCSS / SugarSS](#postcss-sugarss)
+  - [PostCSS, SugarSS](#postcss-sugarss)
   - [Pug](#pug)
   - [scss, sass](#scss-sass)
   - [Stylus](#stylus)
@@ -67,13 +67,13 @@ export default {
 
 The following options can be passed to the preprocessor. None are required:
 
-| Option          | Default                                                  | Description                                                                                                                                                                                                                                                                                                           |
-| --------------- | -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `markupTagName` | `"template"`                                             | `string` that sets the name of the tag `svelte-preprocess` looks for markup in custom languages.<br><br>i.e `markup` makes it possible to write your markup between `<markup lang="..."></markup>` tag.                                                                                                               |
-| `aliases`       | `null`                                                   | A list of tuples `[alias: string, language: string]` that correlates an `alias` to a `language`<br><br>i.e `['cst', 'customLanguage']` means<br>`<... src="./file.cst">`<br>`<... lang="cst">`<br>`<... type="text/customLanguage">`<br>`<... type="application/customLanguage">`<br>are treated as `customLanguage`. |
-| preserve        | `[]`                                                     | A `string` list of languages/aliases that shouldn't pass through the preprocessor. (i.e `ld+json`)                                                                                                                                                                                                                    |
-| `defaults`      | `{ markup: 'html', script: 'javascript', style: 'css' }` | An `object` that defines the default languages of your components.<br><br>i.e: `{ script: 'typescript' }` makes TypeScript the default language, removing the need of adding `lang="ts"` to `script` tags.<br><br>**Note: It is generally not recommended to use this setting because not all tooling is able to deal with it, resulting in for example broken syntax highlighting for SCSS.**                                                                                                            |
-| `sourceMap`     | `false`                                                  | If `true`, `svelte-preprocess` generates sourcemap for every language that supports it.                                                                                                                                                                                                                               |
+| Option          | Default                                                  | Description                                                                                                                                                                                                                                                                                                                                                                                    |
+| --------------- | -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `markupTagName` | `"template"`                                             | `string` that sets the name of the tag `svelte-preprocess` looks for markup in custom languages.<br><br>i.e `markup` makes it possible to write your markup between `<markup lang="..."></markup>` tag.                                                                                                                                                                                        |
+| `aliases`       | `null`                                                   | A list of tuples `[alias: string, language: string]` that correlates an `alias` to a `language`<br><br>i.e `['cst', 'customLanguage']` means<br>`<... src="./file.cst">`<br>`<... lang="cst">`<br>`<... type="text/customLanguage">`<br>`<... type="application/customLanguage">`<br>are treated as `customLanguage`.                                                                          |
+| preserve        | `[]`                                                     | A `string` list of languages/aliases that shouldn't pass through the preprocessor. (i.e `ld+json`)                                                                                                                                                                                                                                                                                             |
+| `defaults`      | `{ markup: 'html', script: 'javascript', style: 'css' }` | An `object` that defines the default languages of your components.<br><br>i.e: `{ script: 'typescript' }` makes TypeScript the default language, removing the need of adding `lang="ts"` to `script` tags.<br><br>**Note: It is generally not recommended to use this setting because not all tooling is able to deal with it, resulting in for example broken syntax highlighting for SCSS.** |
+| `sourceMap`     | `false`                                                  | If `true`, `svelte-preprocess` generates sourcemap for every language that supports it.                                                                                                                                                                                                                                                                                                        |
 
 ##### Configuring preprocessors
 
@@ -317,6 +317,24 @@ This is also necessary to pass callbacks:
 button(on:click!="{(e) => doTheThing(e)}")
 ```
 
+**Spreading props:**
+
+To spread props into a pug element, wrap the `{...object}` expression with quotes `"`.
+
+This:
+
+```pug
+button.big(type="button" disabled "{...slide.props}") Send
+```
+
+Becomes:
+
+```svelte
+<button class="big" type="button" disabled {...slide.props}>
+  Send
+</button>
+```
+
 **Svelte Element directives:**
 
 Syntax to use Svelte Element directives with Pug
@@ -407,9 +425,9 @@ Works best with nesting-enabled CSS preprocessors, but regular CSS selectors lik
 
 **Usage notes**
 
-* If you're using it as a standalone processor, it works best if added to the end of the processors array._
-* Wrapping `@keyframes` inside `:global {}` blocks is not supported. Use the [`-global-` name prefix for global keyframes](https://svelte.dev/docs#style)._
-* If you need to have some styles be scoped inside a global style tag, use `:local` in the same way you'd use `:global`._
+- If you're using it as a standalone processor, it works best if added to the end of the processors array.\_
+- Wrapping `@keyframes` inside `:global {}` blocks is not supported. Use the [`-global-` name prefix for global keyframes](https://svelte.dev/docs#style).\_
+- If you need to have some styles be scoped inside a global style tag, use `:local` in the same way you'd use `:global`.\_
 
 ### `replace`
 

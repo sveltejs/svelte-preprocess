@@ -56,6 +56,8 @@ const transformer: Transformer<Options.Pug> = async ({
   options,
 }) => {
   const pugOptions = {
+    // needed so pug doesn't mirror boolean attributes
+    // and prop spreading expressions.
     doctype: 'html',
     compileDebug: false,
     filename,
