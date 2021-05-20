@@ -39,7 +39,7 @@ For now, let's just install the main library.
 
 ## 2. Adding `svelte-preprocess` to our build workflow
 
-Let's use `svelte-preprocess` in [auto-preprocessing mode](/docs/preprocessing##auto-preprocessing) and add it to our `rollup.config.js`:
+Let's use `svelte-preprocess` in [auto-preprocessing mode](/docs/preprocessing.md#auto-preprocessing) and add it to our `rollup.config.js`:
 
 ```diff
 import svelte from 'rollup-plugin-svelte'
