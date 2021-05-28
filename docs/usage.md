@@ -7,7 +7,8 @@
 - [With `rollup-plugin-svelte`](#with-rollup-plugin-svelte)
 - [With `svelte-loader`](#with-svelte-loader)
 - [With Sapper](#with-sapper)
-- [With Svelte VS Code](#with-svelte-vs-code)
+- [With Svelte VS Code](#with-svelte-config)
+- [With Svelte Kit](#with-svelte-config)
 
 <!-- /code_chunk_output -->
 
@@ -99,9 +100,11 @@ export default {
 };
 ```
 
-## With Svelte VS Code
+## With Svelte Config
 
-[svelte-vscode](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) needs to know how its (svelte) language server should preprocess your files. This can be achieved by creating a `svelte.config.js` file at the root of your project which exports a svelte options object (similar to `svelte-loader` and `rollup-plugin-svelte`).
+Useful for [svelte-vscode](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) which needs to know how its (svelte) language server should preprocess your files and [svelte-kit](https://github.com/sveltejs/kit) which can preprocess your svelte files prior to building.
+
+This can be achieved by creating a `svelte.config.js` file at the root of your project which exports a svelte options object (similar to `svelte-loader` and `rollup-plugin-svelte`).
 
 **Example**:
 
