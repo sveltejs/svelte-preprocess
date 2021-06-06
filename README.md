@@ -38,17 +38,16 @@ Writing your own preprocessor for, i.e SCSS is easy enough, but it can be cumber
 
 `svelte-preprocess` is a custom svelte preprocessor that acts as a facilitator to use other languages with Svelte, providing multiple features, sensible defaults and a less noisy development experience.
 
-```js
-import svelte from 'rollup-plugin-svelte'
-import sveltePreprocess from 'svelte-preprocess'
+It is recommended to use with `svelte.config.js` file, located at the project root. For other usage, please refer to [usage documentation](#usage-documentation).
 
-export default {
-  plugins: [
-    svelte({
-      preprocess: sveltePreprocess({ ... })
-    })
-  ]
+```js
+import preprocess from 'svelte-preprocess';
+
+const config = {
+  preprocess: preprocess({ ... })
 }
+
+export default config;
 ```
 
 ## Features
