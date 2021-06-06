@@ -20,14 +20,21 @@ Some tools of the Svelte ecosystem, such as [svelte-vscode](https://marketplace.
 
 ```js
 // svelte.config.js
-const sveltePreprocess = require('svelte-preprocess');
+import preprocess from 'svelte-preprocess';
 
-module.exports = {
-  preprocess: sveltePreprocess({
+/** 
+ * This will add autocompletion if you're working with SvelteKit
+ * 
+ * @type {import('@sveltejs/kit').Config} 
+ */
+const config = {
+  preprocess: preprocess({
     // ...svelte-preprocess options
   }),
   // ...other svelte options
 };
+
+export default config;
 ```
 
 _Tip: this file can be imported in your bundle config instead of having multiple svelte configurations lying around._
