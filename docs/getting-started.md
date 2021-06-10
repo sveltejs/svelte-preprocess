@@ -167,11 +167,6 @@ export default {
     svelte({
       preprocess: sveltePreprocess({
          sourceMap: !production,
-         defaults: {
-           markup: 'pug',
-           script: 'typescript',
-           style: 'scss'
-         },
 +        scss: {
 +          // We can use a path relative to the root because
 +          // svelte-preprocess automatically adds it to `includePaths`
