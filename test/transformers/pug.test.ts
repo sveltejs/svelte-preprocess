@@ -53,14 +53,19 @@ main
   it('supports spread between quotes', async () => {
     const template = `
 <template lang="pug">
-button.big(type="button" disabled "{...slide.props}") Send
+button.big(
+  type="button"
+  disabled
+  "{...slide.props}"
+  "{...$$restProps}"
+) Send
 </template>`;
 
     const opts = sveltePreprocess();
     const preprocessed = await preprocess(template, opts);
 
     expect(preprocessed.code).toMatch(
-      `<button class="big" type="button" disabled {...slide.props}>Send</button>`,
+      `<button class="big" type="button" disabled {...slide.props} {...$$restProps}>Send</button>`,
     );
   });
 });
