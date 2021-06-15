@@ -22,7 +22,7 @@
     "start:dev": "sirv public --dev"
   },
   "dependencies": {
-    "postcss": "^7.0.21",
+    "postcss": "^7.0.36",
     "postcss-import": "^12.0.1"
   }
 }
