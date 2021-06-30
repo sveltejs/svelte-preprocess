@@ -23,11 +23,11 @@ export default (options?: Options.Sass): PreprocessorGroup => ({
       };
     }
 
-    content = prepareContent({ options, content });
-
     if (lang !== 'scss') {
       return { code: content };
     }
+
+    content = prepareContent({ options, content });
 
     const transformed = await transformer({
       content,

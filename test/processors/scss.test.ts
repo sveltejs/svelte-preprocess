@@ -25,6 +25,14 @@ describe(`processor - sass`, () => {
 
     expect(preprocessed.toString()).toContain('/* potato');
   });
+
+  it('should not prepend data for other languages', async () => {
+    const template = `<style lang="potato">🥔</style>`;
+    const options = { prependData: '/* potato */' };
+    const preprocessed = await preprocess(template, [sass(options)]);
+
+    expect(preprocessed.toString()).toBe(template);
+  });
 });
 
 describe(`processor - scss`, () => {
