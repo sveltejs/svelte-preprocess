@@ -14,11 +14,11 @@ export default (options?: Options.Less): PreprocessorGroup => ({
       dependencies,
     } = await getTagInfo(svelteFile);
 
-    content = prepareContent({ options, content });
-
     if (lang !== 'less') {
       return { code: content };
     }
+
+    content = prepareContent({ options, content });
 
     const transformed = await transformer({
       content,

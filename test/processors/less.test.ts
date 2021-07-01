@@ -11,6 +11,15 @@ describe(`processor - less`, () => {
     expect(preprocessed.toString()).toBe(template);
   });
 
+  it('should leave other languages untouched', async () => {
+    const template = `<script lang="potato">🥔</script>`;
+    const options = { prependData: '/* potato */' };
+
+    const preprocessed = await preprocess(template, [less(options)]);
+
+    expect(preprocessed.toString()).toBe(template);
+  });
+
   it('should support external src files', async () => {
     const template = `<style src="./fixtures/style.less"></style><div></div>`;
     const preprocessed = await preprocess(template, [less()]);
