@@ -13,6 +13,15 @@ describe(`processor - typescript`, () => {
     expect(preprocessed.toString()).toBe(template);
   });
 
+  it('should leave other languages untouched', async () => {
+    const template = `<script lang="potato">🥔</script>`;
+    const options = { prependData: '/* potato */' };
+
+    const preprocessed = await preprocess(template, [typescript(options)]);
+
+    expect(preprocessed.toString()).toBe(template);
+  });
+
   it('should support external src files', async () => {
     const template = `<script src="./fixtures/script.ts"></script><div></div>`;
     const options = {
