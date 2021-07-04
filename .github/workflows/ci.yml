@@ -8,8 +8,10 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v2
+        with:
+          cache: npm
       - uses: bahmutov/npm-install@v1
-      - run: 'npm run lint'
+      - run: "npm run lint"
 
   Tests:
     runs-on: ${{ matrix.os }}
@@ -24,6 +26,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+          cache: npm
       - uses: bahmutov/npm-install@v1
       - run: npm run test
         env:
