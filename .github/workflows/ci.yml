@@ -11,7 +11,7 @@ jobs:
         with:
           cache: npm
       - uses: bahmutov/npm-install@v1
-      - run: "npm run lint"
+      - run: 'npm run lint'
 
   Tests:
     runs-on: ${{ matrix.os }}
