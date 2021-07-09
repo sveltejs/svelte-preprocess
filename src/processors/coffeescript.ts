@@ -15,6 +15,10 @@ export default (options?: Options.Coffeescript): PreprocessorGroup => ({
       dependencies,
     } = await getTagInfo(svelteFile);
 
+    if (lang !== 'coffeescript') {
+      return { code: content };
+    }
+
     content = prepareContent({
       options: {
         ...options,
@@ -22,10 +26,6 @@ export default (options?: Options.Coffeescript): PreprocessorGroup => ({
       },
       content,
     });
-
-    if (lang !== 'coffeescript') {
-      return { code: content };
-    }
 
     const transformed = await transformer({
       content,

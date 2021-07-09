@@ -25,6 +25,14 @@ describe(`processor - sass`, () => {
 
     expect(preprocessed.toString()).toContain('/* potato');
   });
+
+  it('should leave other languages untouched', async () => {
+    const template = `<style lang="potato">🥔</style>`;
+    const options = { prependData: '/* potato */' };
+    const preprocessed = await preprocess(template, [sass(options)]);
+
+    expect(preprocessed.toString()).toBe(template);
+  });
 });
 
 describe(`processor - scss`, () => {
@@ -50,5 +58,13 @@ describe(`processor - scss`, () => {
     const preprocessed = await preprocess(template, [scss(options)]);
 
     expect(preprocessed.toString()).toContain('/* potato */');
+  });
+
+  it('should leave other languages untouched', async () => {
+    const template = `<style lang="potato">🥔</style>`;
+    const options = { prependData: '/* potato */' };
+    const preprocessed = await preprocess(template, [scss(options)]);
+
+    expect(preprocessed.toString()).toBe(template);
   });
 });

@@ -14,11 +14,11 @@ export default (options?: Options.Typescript): PreprocessorGroup => ({
       dependencies,
     } = await getTagInfo(svelteFile);
 
-    content = prepareContent({ options, content });
-
     if (lang !== 'typescript') {
       return { code: content };
     }
+
+    content = prepareContent({ options, content });
 
     const transformed = await transformer({
       content,

@@ -14,6 +14,10 @@ export default (options?: Options.Stylus): PreprocessorGroup => ({
       dependencies,
     } = await getTagInfo(svelteFile);
 
+    if (lang !== 'stylus') {
+      return { code: content };
+    }
+
     content = prepareContent({
       options: {
         ...options,
@@ -21,10 +25,6 @@ export default (options?: Options.Stylus): PreprocessorGroup => ({
       },
       content,
     });
-
-    if (lang !== 'stylus') {
-      return { code: content };
-    }
 
     const transformed = await transformer({
       content,
