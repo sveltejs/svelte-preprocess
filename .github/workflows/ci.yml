@@ -10,7 +10,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           cache: npm
-      - uses: bahmutov/npm-install@v1
+      - run: npm ci
       - run: 'npm run lint'
 
   Tests:
@@ -27,7 +27,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
-      - uses: bahmutov/npm-install@v1
+      - run: npm ci
       - run: npm run test
         env:
           CI: true
