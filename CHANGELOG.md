@@ -1,3 +1,12 @@
+## [4.7.4](https://github.com/sveltejs/svelte-preprocess/compare/v4.7.3...v4.7.4) (2021-07-09)
+
+
+### Bug Fixes
+
+* standalone preprocessors prepending data in other languages ([#380](https://github.com/sveltejs/svelte-preprocess/issues/380)) ([e6679e4](https://github.com/sveltejs/svelte-preprocess/commit/e6679e4b81cd145202b293aca1035cd2dc05ef71))
+
+
+
 ## [4.7.3](https://github.com/sveltejs/svelte-preprocess/compare/v4.7.2...v4.7.3) (2021-05-03)
 
 
