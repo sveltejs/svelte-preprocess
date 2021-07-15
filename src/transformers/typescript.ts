@@ -120,7 +120,7 @@ const transformer: Transformer<Options.Typescript> = ({
   Object.assign(compilerOptionsJSON, options.compilerOptions);
 
   const { errors, options: convertedCompilerOptions } =
-    options.tsconfigFile !== false || options.tsconfigDirectory
+    options.tsconfigFile || options.tsconfigDirectory
       ? loadTsconfig(compilerOptionsJSON, filename, options)
       : ts.convertCompilerOptionsFromJson(compilerOptionsJSON, basePath);
 
