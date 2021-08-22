@@ -29,6 +29,7 @@ const autoProcessTS = (content: string, compilerOptions?: any) => {
 
   return opts.script({
     content,
+    markup: `<script lang="ts">${content}</script>`,
     attributes: { type: 'text/typescript' },
     filename: resolve(__dirname, '..', 'App.svelte'),
   }) as Processed & { diagnostics: Diagnostic[] };
@@ -108,6 +109,37 @@ describe('transformer - typescript', () => {
       const { code } = await preprocess(template, opts);
 
       return expect(code).toContain(getFixtureContent('script.js'));
+    });
+
+    it('should strip unused and type imports', async () => {
+      const tpl = getFixtureContent('TypeScriptImports.svelte');
+
+      const opts = sveltePreprocess({ typescript: { tsconfigFile: false } });
+      const { code } = await preprocess(tpl, opts);
+
+      return expect(code).toContain(`import { AValue } from "./types";`);
+    });
+
+    it('should strip unused and type imports in context="module" tags', async () => {
+      const tpl = getFixtureContent('TypeScriptImportsModule.svelte');
+
+      const opts = sveltePreprocess({ typescript: { tsconfigFile: false } });
+      const { code } = await preprocess(tpl, opts);
+
+      return expect(code).toContain(`import { AValue } from "./types";`);
+    });
+
+    it('should produce sourcemap', async () => {
+      const tpl = getFixtureContent('TypeScriptImportsModule.svelte');
+
+      const opts = sveltePreprocess({
+        typescript: { tsconfigFile: false },
+        sourceMap: true,
+      });
+
+      const { map } = await preprocess(tpl, opts);
+
+      return expect(map).toHaveProperty('sources', ['App.svelte']);
     });
 
     it('supports extends field', () => {
