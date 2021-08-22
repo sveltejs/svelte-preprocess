@@ -74,6 +74,7 @@ export type Typescript = {
   tsconfigFile?: string | boolean;
   tsconfigDirectory?: string | boolean;
   reportDiagnostics?: boolean;
+  useAdvancedImportTranspiler?: boolean;
 } & ContentModifier;
 
 export interface GlobalStyle {

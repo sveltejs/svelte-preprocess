@@ -114,7 +114,9 @@ describe('transformer - typescript', () => {
     it('should strip unused and type imports', async () => {
       const tpl = getFixtureContent('TypeScriptImports.svelte');
 
-      const opts = sveltePreprocess({ typescript: { tsconfigFile: false } });
+      const opts = sveltePreprocess({
+        typescript: { tsconfigFile: false, useAdvancedImportTranspiler: true },
+      });
       const { code } = await preprocess(tpl, opts);
 
       return expect(code).toContain(`import { AValue } from "./types";`);
@@ -124,7 +126,7 @@ describe('transformer - typescript', () => {
       const tpl = getFixtureContent('TypeScriptTypesOnly.svelte');
 
       const opts = sveltePreprocess({
-        typescript: { tsconfigFile: false },
+        typescript: { tsconfigFile: false, useAdvancedImportTranspiler: true },
         sourceMap: true,
       });
       const { code } = await preprocess(tpl, opts);
@@ -135,7 +137,9 @@ describe('transformer - typescript', () => {
     it('should strip unused and type imports in context="module" tags', async () => {
       const tpl = getFixtureContent('TypeScriptImportsModule.svelte');
 
-      const opts = sveltePreprocess({ typescript: { tsconfigFile: false } });
+      const opts = sveltePreprocess({
+        typescript: { tsconfigFile: false, useAdvancedImportTranspiler: true },
+      });
       const { code } = await preprocess(tpl, opts);
 
       return expect(code).toContain(`import { AValue } from "./types";`);
@@ -145,7 +149,7 @@ describe('transformer - typescript', () => {
       const tpl = getFixtureContent('TypeScriptImportsModule.svelte');
 
       const opts = sveltePreprocess({
-        typescript: { tsconfigFile: false },
+        typescript: { tsconfigFile: false, useAdvancedImportTranspiler: true },
         sourceMap: true,
       });
 

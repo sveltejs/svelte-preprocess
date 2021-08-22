@@ -2,18 +2,21 @@ import { dirname, isAbsolute, join, resolve } from 'path';
 
 import ts from 'typescript';
 import { compile } from 'svelte/compiler';
-import MagicString from 'magic-string';
-import sorcery from 'sorcery';
 
 import { throwTypescriptError } from '../modules/errors';
 import { createTagRegex, parseAttributes, stripTags } from '../modules/markup';
-import type { Transformer, Options } from '../types';
+import type { Transformer, Options, TransformerArgs } from '../types';
 
 type CompilerOptions = ts.CompilerOptions;
 
 type SourceMapChain = {
   content: Record<string, string>;
   sourcemaps: Record<string, object>;
+};
+
+type InternalTransformerOptions = TransformerArgs<Options.Typescript> & {
+  basePath: string;
+  compilerOptions: CompilerOptions;
 };
 
 function createFormatDiagnosticsHost(cwd: string): ts.FormatDiagnosticsHost {
@@ -97,7 +100,7 @@ function createSourceMapChain({
   }
 }
 
-function injectVarsToCode({
+async function injectVarsToCode({
   content,
   markup,
   filename,
@@ -109,7 +112,7 @@ function injectVarsToCode({
   filename: string;
   attributes?: Record<string, any>;
   sourceMapChain?: SourceMapChain;
-}): string {
+}): Promise<string> {
   if (!markup) return content;
 
   const { vars } = compile(stripTags(markup), {
@@ -128,6 +131,7 @@ function injectVarsToCode({
       : `${sep}${injectedVars}`;
 
   if (sourceMapChain) {
+    const MagicString = (await import('magic-string')).default;
     const s = new MagicString(content);
 
     s.append(injectedCode);
@@ -148,7 +152,7 @@ function injectVarsToCode({
   return `${content}${injectedCode}`;
 }
 
-function stripInjectedCode({
+async function stripInjectedCode({
   transpiledCode,
   markup,
   filename,
@@ -158,12 +162,13 @@ function stripInjectedCode({
   markup?: string;
   filename: string;
   sourceMapChain?: SourceMapChain;
-}): string {
+}): Promise<string> {
   if (!markup) return transpiledCode;
 
   const injectedCodeStart = transpiledCode.indexOf('const $$$$$$$$ = null;');
 
   if (sourceMapChain) {
+    const MagicString = (await import('magic-string')).default;
     const s = new MagicString(transpiledCode);
     const st = s.snip(0, injectedCodeStart);
 
@@ -198,6 +203,8 @@ async function concatSourceMaps({
   if (!markup) {
     return sourceMapChain.sourcemaps[`${filename}.js`];
   }
+
+  const sorcery = await import('sorcery');
 
   const chain = await sorcery.load(`${filename}.js`, sourceMapChain);
 
@@ -250,23 +257,23 @@ function getCompilerOptions({
 
 function transpileTs({
   code,
-  markup,
-  filename,
+  fileName,
   basePath,
   options,
   compilerOptions,
-  sourceMapChain,
+  transformers,
 }: {
   code: string;
-  markup: string;
-  filename: string;
+  fileName: string;
   basePath: string;
   options: Options.Typescript;
   compilerOptions: CompilerOptions;
-  sourceMapChain: SourceMapChain;
-}): { transpiledCode: string; diagnostics: ts.Diagnostic[] } {
-  const fileName = markup ? `${filename}.injected.ts` : filename;
-
+  transformers?: ts.CustomTransformers;
+}): {
+  transpiledCode: string;
+  diagnostics: ts.Diagnostic[];
+  sourceMapText: string;
+} {
   const {
     outputText: transpiledCode,
     sourceMapText,
@@ -275,7 +282,7 @@ function transpileTs({
     fileName,
     compilerOptions,
     reportDiagnostics: options.reportDiagnostics !== false,
-    transformers: markup ? {} : { before: [importTransformer] },
+    transformers,
   });
 
   if (diagnostics.length > 0) {
@@ -293,14 +300,7 @@ function transpileTs({
     }
   }
 
-  if (sourceMapChain) {
-    const fname = markup ? `${filename}.transpiled.js` : `${filename}.js`;
-
-    sourceMapChain.content[fname] = transpiledCode;
-    sourceMapChain.sourcemaps[fname] = JSON.parse(sourceMapText);
-  }
-
-  return { transpiledCode, diagnostics };
+  return { transpiledCode, sourceMapText, diagnostics };
 }
 
 export function loadTsconfig(
@@ -354,24 +354,22 @@ export function loadTsconfig(
   return { errors, options };
 }
 
-const transformer: Transformer<Options.Typescript> = async ({
+async function advancedImportTranspiler({
   content,
   filename = 'source.svelte',
   markup,
   options = {},
   attributes,
-}) => {
-  const basePath = process.cwd();
-  filename = isAbsolute(filename) ? filename : resolve(basePath, filename);
-  const compilerOptions = getCompilerOptions({ filename, options, basePath });
-
+  compilerOptions,
+  basePath,
+}: InternalTransformerOptions) {
   const sourceMapChain = createSourceMapChain({
     filename,
     content,
     compilerOptions,
   });
 
-  const injectedCode = injectVarsToCode({
+  const injectedCode = await injectVarsToCode({
     content,
     markup,
     filename,
@@ -379,17 +377,23 @@ const transformer: Transformer<Options.Typescript> = async ({
     sourceMapChain,
   });
 
-  const { transpiledCode, diagnostics } = transpileTs({
+  const { transpiledCode, sourceMapText, diagnostics } = transpileTs({
     code: injectedCode,
-    markup,
-    filename,
+    fileName: `${filename}.injected.ts`,
     basePath,
     options,
     compilerOptions,
-    sourceMapChain,
   });
 
-  const code = stripInjectedCode({
+  if (sourceMapChain) {
+    const fname = `${filename}.transpiled.js`;
+
+    sourceMapChain.content[fname] = transpiledCode;
+
+    sourceMapChain.sourcemaps[fname] = JSON.parse(sourceMapText);
+  }
+
+  const code = await stripInjectedCode({
     transpiledCode,
     markup,
     filename,
@@ -414,6 +418,65 @@ const transformer: Transformer<Options.Typescript> = async ({
     map,
     diagnostics,
   };
+}
+
+async function simpleTranspiler({
+  content,
+  filename = 'source.svelte',
+  options = {},
+  compilerOptions,
+  basePath,
+}: InternalTransformerOptions) {
+  const { transpiledCode, sourceMapText, diagnostics } = transpileTs({
+    code: content,
+    transformers: { before: [importTransformer] },
+    fileName: filename,
+    basePath,
+    options,
+    compilerOptions,
+  });
+
+  return {
+    code: transpiledCode,
+    map: sourceMapText,
+    diagnostics,
+  };
+}
+
+const transformer: Transformer<Options.Typescript> = async ({
+  content,
+  filename = 'source.svelte',
+  markup,
+  options = {},
+  attributes,
+}) => {
+  const basePath = process.cwd();
+
+  filename = isAbsolute(filename) ? filename : resolve(basePath, filename);
+
+  const compilerOptions = getCompilerOptions({ filename, options, basePath });
+
+  if (options.useAdvancedImportTranspiler) {
+    return advancedImportTranspiler({
+      content,
+      filename,
+      markup,
+      options,
+      attributes,
+      compilerOptions,
+      basePath,
+    });
+  } else {
+    return simpleTranspiler({
+      content,
+      filename,
+      markup,
+      options,
+      attributes,
+      compilerOptions,
+      basePath,
+    });
+  }
 };
 
 export { transformer };
