@@ -396,6 +396,13 @@ const transformer: Transformer<Options.Typescript> = async ({
     sourceMapChain,
   });
 
+  // Sorcery tries to load the code/map from disk if it's empty,
+  // prevent that because it would try to load inexistent files
+  // https://github.com/Rich-Harris/sorcery/issues/167
+  if (!code) {
+    return { code, diagnostics };
+  }
+
   const map = await concatSourceMaps({
     filename,
     markup,

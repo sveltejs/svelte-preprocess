@@ -120,6 +120,18 @@ describe('transformer - typescript', () => {
       return expect(code).toContain(`import { AValue } from "./types";`);
     });
 
+    it('should deal with empty transpilation result', async () => {
+      const tpl = getFixtureContent('TypeScriptTypesOnly.svelte');
+
+      const opts = sveltePreprocess({
+        typescript: { tsconfigFile: false },
+        sourceMap: true,
+      });
+      const { code } = await preprocess(tpl, opts);
+
+      return expect(code).toBe(`<script lang="ts" context="module"></script>`);
+    });
+
     it('should strip unused and type imports in context="module" tags', async () => {
       const tpl = getFixtureContent('TypeScriptImportsModule.svelte');
 
