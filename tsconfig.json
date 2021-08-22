@@ -8,6 +8,7 @@
     "target": "es2018",
     "lib": ["es2018"],
     "declaration": true,
+    "skipLibCheck": true,
     "types": ["jest", "node"],
     "outDir": "dist"
   },

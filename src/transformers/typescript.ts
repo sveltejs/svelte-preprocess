@@ -387,9 +387,7 @@ async function advancedImportTranspiler({
 
   if (sourceMapChain) {
     const fname = `${filename}.transpiled.js`;
-
     sourceMapChain.content[fname] = transpiledCode;
-
     sourceMapChain.sourcemaps[fname] = JSON.parse(sourceMapText);
   }
 
@@ -456,27 +454,25 @@ const transformer: Transformer<Options.Typescript> = async ({
 
   const compilerOptions = getCompilerOptions({ filename, options, basePath });
 
-  if (options.useAdvancedImportTranspiler) {
-    return advancedImportTranspiler({
-      content,
-      filename,
-      markup,
-      options,
-      attributes,
-      compilerOptions,
-      basePath,
-    });
-  } else {
-    return simpleTranspiler({
-      content,
-      filename,
-      markup,
-      options,
-      attributes,
-      compilerOptions,
-      basePath,
-    });
-  }
+  return options.useAdvancedImportTranspiler
+    ? advancedImportTranspiler({
+        content,
+        filename,
+        markup,
+        options,
+        attributes,
+        compilerOptions,
+        basePath,
+      })
+    : simpleTranspiler({
+        content,
+        filename,
+        markup,
+        options,
+        attributes,
+        compilerOptions,
+        basePath,
+      });
 };
 
 export { transformer };

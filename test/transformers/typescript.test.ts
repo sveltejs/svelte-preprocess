@@ -117,6 +117,7 @@ describe('transformer - typescript', () => {
       const opts = sveltePreprocess({
         typescript: { tsconfigFile: false, useAdvancedImportTranspiler: true },
       });
+
       const { code } = await preprocess(tpl, opts);
 
       return expect(code).toContain(`import { AValue } from "./types";`);
@@ -129,6 +130,7 @@ describe('transformer - typescript', () => {
         typescript: { tsconfigFile: false, useAdvancedImportTranspiler: true },
         sourceMap: true,
       });
+
       const { code } = await preprocess(tpl, opts);
 
       return expect(code).toBe(`<script lang="ts" context="module"></script>`);
@@ -140,6 +142,7 @@ describe('transformer - typescript', () => {
       const opts = sveltePreprocess({
         typescript: { tsconfigFile: false, useAdvancedImportTranspiler: true },
       });
+
       const { code } = await preprocess(tpl, opts);
 
       return expect(code).toContain(`import { AValue } from "./types";`);
