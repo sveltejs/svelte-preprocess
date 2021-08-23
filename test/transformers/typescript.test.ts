@@ -115,7 +115,7 @@ describe('transformer - typescript', () => {
       const tpl = getFixtureContent('TypeScriptImports.svelte');
 
       const opts = sveltePreprocess({
-        typescript: { tsconfigFile: false, useAdvancedImportTranspiler: true },
+        typescript: { tsconfigFile: false, handleMixedImports: true },
       });
 
       const { code } = await preprocess(tpl, opts);
@@ -127,7 +127,7 @@ describe('transformer - typescript', () => {
       const tpl = getFixtureContent('TypeScriptTypesOnly.svelte');
 
       const opts = sveltePreprocess({
-        typescript: { tsconfigFile: false, useAdvancedImportTranspiler: true },
+        typescript: { tsconfigFile: false, handleMixedImports: true },
         sourceMap: true,
       });
 
@@ -140,7 +140,7 @@ describe('transformer - typescript', () => {
       const tpl = getFixtureContent('TypeScriptImportsModule.svelte');
 
       const opts = sveltePreprocess({
-        typescript: { tsconfigFile: false, useAdvancedImportTranspiler: true },
+        typescript: { tsconfigFile: false, handleMixedImports: true },
       });
 
       const { code } = await preprocess(tpl, opts);
@@ -152,7 +152,7 @@ describe('transformer - typescript', () => {
       const tpl = getFixtureContent('TypeScriptImportsModule.svelte');
 
       const opts = sveltePreprocess({
-        typescript: { tsconfigFile: false, useAdvancedImportTranspiler: true },
+        typescript: { tsconfigFile: false, handleMixedImports: true },
         sourceMap: true,
       });
 
