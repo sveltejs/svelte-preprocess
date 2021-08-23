@@ -1,3 +1,12 @@
+# [4.8.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.7.4...v4.8.0) (2021-08-23)
+
+
+### Bug Fixes
+
+* add deprecation warning to defaults prop ([#393](https://github.com/sveltejs/svelte-preprocess/issues/393)) ([406d3a8](https://github.com/sveltejs/svelte-preprocess/commit/406d3a87c4779c16fca1264ce66fc491e5eec170))
+
+
+
 ## [4.7.4](https://github.com/sveltejs/svelte-preprocess/compare/v4.7.3...v4.7.4) (2021-07-09)
 
 
