@@ -2,6 +2,8 @@ import { dirname, isAbsolute, join, resolve } from 'path';
 
 import ts from 'typescript';
 import { compile } from 'svelte/compiler';
+import MagicString from 'magic-string';
+import sorcery from 'sorcery';
 
 import { throwTypescriptError } from '../modules/errors';
 import { createTagRegex, parseAttributes, stripTags } from '../modules/markup';
@@ -100,7 +102,7 @@ function createSourceMapChain({
   }
 }
 
-async function injectVarsToCode({
+function injectVarsToCode({
   content,
   markup,
   filename,
@@ -112,7 +114,7 @@ async function injectVarsToCode({
   filename: string;
   attributes?: Record<string, any>;
   sourceMapChain?: SourceMapChain;
-}): Promise<string> {
+}): string {
   if (!markup) return content;
 
   const { vars } = compile(stripTags(markup), {
@@ -131,9 +133,7 @@ async function injectVarsToCode({
       : `${sep}${injectedVars}`;
 
   if (sourceMapChain) {
-    const MagicString = (await import('magic-string')).default;
     const s = new MagicString(content);
-
     s.append(injectedCode);
 
     const fname = `${filename}.injected.ts`;
@@ -152,7 +152,7 @@ async function injectVarsToCode({
   return `${content}${injectedCode}`;
 }
 
-async function stripInjectedCode({
+function stripInjectedCode({
   transpiledCode,
   markup,
   filename,
@@ -162,13 +162,12 @@ async function stripInjectedCode({
   markup?: string;
   filename: string;
   sourceMapChain?: SourceMapChain;
-}): Promise<string> {
+}): string {
   if (!markup) return transpiledCode;
 
   const injectedCodeStart = transpiledCode.indexOf('const $$$$$$$$ = null;');
 
   if (sourceMapChain) {
-    const MagicString = (await import('magic-string')).default;
     const s = new MagicString(transpiledCode);
     const st = s.snip(0, injectedCodeStart);
 
@@ -203,8 +202,6 @@ async function concatSourceMaps({
   if (!markup) {
     return sourceMapChain.sourcemaps[`${filename}.js`];
   }
-
-  const sorcery = await import('sorcery');
 
   const chain = await sorcery.load(`${filename}.js`, sourceMapChain);
 
@@ -369,7 +366,7 @@ async function advancedImportTranspiler({
     compilerOptions,
   });
 
-  const injectedCode = await injectVarsToCode({
+  const injectedCode = injectVarsToCode({
     content,
     markup,
     filename,
@@ -391,7 +388,7 @@ async function advancedImportTranspiler({
     sourceMapChain.sourcemaps[fname] = JSON.parse(sourceMapText);
   }
 
-  const code = await stripInjectedCode({
+  const code = stripInjectedCode({
     transpiledCode,
     markup,
     filename,
