@@ -369,11 +369,12 @@ Note: `svelte-preprocess` automatically configures inclusion paths for your root
 
 ### TypeScript
 
-| Option              | Default     | Description                                                                                                 |
-| ------------------- | ----------- | ----------------------------------------------------------------------------------------------------------- |
-| `tsconfigDirectory` | `undefined` | optional `string` that specifies from where to load the tsconfig from.<br><br>i.e `'./configs'`             |
-| `tsconfigFile`      | `undefined` | optional `string` pointing torwards a `tsconfig` file.<br><br>i.e `'./tsconfig.app.json'`                   |
-| `compilerOptions`   | `undefined` | optional compiler options configuration. These will be merged with options from the tsconfig file if found. |
+| Option                        | Default     | Description                                                                                                                                                                                                                     |
+| ----------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tsconfigDirectory`           | `undefined` | optional `string` that specifies from where to load the tsconfig from.<br><br>i.e `'./configs'`                                                                                                                                 |
+| `tsconfigFile`                | `undefined` | optional `string` pointing torwards a `tsconfig` file.<br><br>i.e `'./tsconfig.app.json'`                                                                                                                                       |
+| `compilerOptions`             | `undefined` | optional compiler options configuration. These will be merged with options from the tsconfig file if found.                                                                                                                     |
+| `useAdvancedImportTranspiler` | `false`     | optional `boolean` that defines the transpilation strategy. If set to `true`, you don't need to strictly separate types and values in imports. If you use this, you need install the npm packages `sorcery` and `magic-string`. |
 
 You can check the [`compilerOptions` reference](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) for specific TypeScript options.
 
@@ -381,7 +382,7 @@ You can check the [`compilerOptions` reference](https://www.typescriptlang.org/d
 
 - Since `v4`, `svelte-preprocess` doesn't type-check your component, its only concern is to transpile it into valid JavaScript for the compiler. If you want to have your components type-checked, you can use [svelte-check](https://github.com/sveltejs/language-tools/blob/master/packages/svelte-check/README.md).
 
-- As we're only transpiling, it's not possible to import types or interfaces into your svelte component without using the new TS 3.8 `type` import modifier: `import type { SomeInterface } from './MyModule'` otherwise bundlers will complain that the name is not exported by `MyModule`.
+- In simple transpilation mode, as we're only transpiling, it's not possible to import types or interfaces into your svelte component without using the new TS 3.8 `type` import modifier: `import type { SomeInterface } from './MyModule'` otherwise bundlers will complain that the name is not exported by `MyModule`. You can switch to a more advanced transpiler by setting `useAdvancedImportTranspiler` to `true` which solves this limitation.
 
 - Using TypeScript inside a component's markup is currently **not** supported. See [#318](https://github.com/sveltejs/svelte-preprocess/issues/318) for development updates to this.
 
