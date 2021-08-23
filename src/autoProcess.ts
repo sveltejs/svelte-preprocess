@@ -63,6 +63,13 @@ export function sveltePreprocess(
     ...defaults,
   });
 
+  // todo: remove this on v5
+  if (defaults != null) {
+    console.warn(
+      '[svelte-preprocess] Deprecation notice: using the "defaults" option is no longer recommended and will be removed in the next major version. Instead, define the language being used explicitly via the lang attribute.\n\nSee https://github.com/sveltejs/svelte-preprocess/issues/362',
+    );
+  }
+
   const transformers = rest as Transformers;
 
   if (aliases?.length) {

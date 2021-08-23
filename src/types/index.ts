@@ -64,6 +64,7 @@ export type AutoPreprocessOptions = {
   markupTagName?: string;
   aliases?: Array<[string, string]>;
   preserve?: string[];
+  /** @deprecated Don't use "defaults" anymore, define the language being used explicitly instead */
   defaults?: {
     markup?: string;
     style?: string;
