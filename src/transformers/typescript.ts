@@ -2,6 +2,7 @@ import { dirname, isAbsolute, join, resolve } from 'path';
 
 import ts from 'typescript';
 import { compile } from 'svelte/compiler';
+import pkg from 'svelte/package.json';
 import MagicString from 'magic-string';
 import sorcery from 'sorcery';
 
@@ -351,7 +352,7 @@ export function loadTsconfig(
   return { errors, options };
 }
 
-async function advancedImportTranspiler({
+async function mixedImportsTranspiler({
   content,
   filename = 'source.svelte',
   markup,
@@ -446,13 +447,23 @@ const transformer: Transformer<Options.Typescript> = async ({
   attributes,
 }) => {
   const basePath = process.cwd();
-
   filename = isAbsolute(filename) ? filename : resolve(basePath, filename);
-
   const compilerOptions = getCompilerOptions({ filename, options, basePath });
 
-  return options.handleMixedImports
-    ? advancedImportTranspiler({
+  const canUseMixedImportsTranspiler = +pkg.version.split('.')[1] >= 39;
+  if (!canUseMixedImportsTranspiler && options.handleMixedImports) {
+    throw new Error(
+      'You need at least Svelte 3.39 to use the handleMixedImports option',
+    );
+  }
+
+  const handleMixedImports =
+    options.handleMixedImports === false
+      ? false
+      : options.handleMixedImports || canUseMixedImportsTranspiler;
+
+  return handleMixedImports
+    ? mixedImportsTranspiler({
         content,
         filename,
         markup,
