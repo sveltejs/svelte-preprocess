@@ -127,8 +127,7 @@ function injectVarsToCode({
 
   const sep = '\nconst $$$$$$$$ = null;\n';
   const varsValues = vars.map((v) => v.name).join(',');
-  const injectedVars = `// @ts-ignore
-const $$vars$$ = [${varsValues}];`;
+  const injectedVars = `const $$vars$$ = [${varsValues}];`;
   const injectedCode =
     attributes?.context === 'module'
       ? `${sep}${getComponentScriptContent(markup)}\n${injectedVars}`
