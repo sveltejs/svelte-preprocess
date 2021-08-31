@@ -126,8 +126,15 @@ function injectVarsToCode({
   });
 
   const sep = '\nconst $$$$$$$$ = null;\n';
-  const varsValues = vars.map((v) => v.name).join(',');
-  const injectedVars = `const $$vars$$ = [${varsValues}];`;
+  const varnames = vars.map((v) => v.name);
+  const varsString = [
+    ...varnames,
+    ...varnames
+      .filter((v) => v.startsWith('$') && !v.startsWith('$$'))
+      .map((v) => v.slice(1)),
+  ].join(',');
+
+  const injectedVars = `const $$vars$$ = [${varsString}];`;
   const injectedCode =
     attributes?.context === 'module'
       ? `${sep}${getComponentScriptContent(markup)}\n${injectedVars}`

@@ -93,7 +93,7 @@ describe('transformer - typescript', () => {
         },
       });
 
-      return expect(preprocess(template, opts)).rejects.toThrow('TS6046');
+      expect(preprocess(template, opts)).rejects.toThrow('TS6046');
     });
 
     it('should transpile ts to js', async () => {
@@ -108,7 +108,7 @@ describe('transformer - typescript', () => {
 
       const { code } = await preprocess(template, opts);
 
-      return expect(code).toContain(getFixtureContent('script.js'));
+      expect(code).toContain(getFixtureContent('script.js'));
     });
 
     it('should strip unused and type imports', async () => {
@@ -120,7 +120,12 @@ describe('transformer - typescript', () => {
 
       const { code } = await preprocess(tpl, opts);
 
-      return expect(code).toContain(`import { AValue } from "./types";`);
+      expect(code).toContain(`import { fly } from "svelte/transition"`);
+      expect(code).toContain(`import { flip } from "svelte/animate"`);
+      expect(code).toContain(`import Nested from "./Nested.svelte"`);
+      expect(code).toContain(`import { hello } from "./script"`);
+      expect(code).toContain(`import { AValue } from "./types"`);
+      expect(code).toContain(`import { storeTemplateOnly } from "./store"`);
     });
 
     it('should deal with empty transpilation result', async () => {
@@ -133,7 +138,7 @@ describe('transformer - typescript', () => {
 
       const { code } = await preprocess(tpl, opts);
 
-      return expect(code).toBe(`<script lang="ts" context="module"></script>`);
+      expect(code).toBe(`<script lang="ts" context="module"></script>`);
     });
 
     it('should strip unused and type imports in context="module" tags', async () => {
@@ -145,7 +150,7 @@ describe('transformer - typescript', () => {
 
       const { code } = await preprocess(tpl, opts);
 
-      return expect(code).toContain(`import { AValue } from "./types";`);
+      expect(code).toContain(`import { AValue } from "./types";`);
     });
 
     it('should produce sourcemap', async () => {
@@ -158,7 +163,7 @@ describe('transformer - typescript', () => {
 
       const { map } = await preprocess(tpl, opts);
 
-      return expect(map).toHaveProperty('sources', ['App.svelte']);
+      expect(map).toHaveProperty('sources', ['App.svelte']);
     });
 
     it('supports extends field', () => {

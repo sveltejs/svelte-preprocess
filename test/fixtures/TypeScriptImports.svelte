@@ -4,6 +4,7 @@
     import Nested from "./Nested.svelte";
     import { hello } from "./script";
     import { AValue, AType } from "./types";
+    import { storeTemplateOnly } from "./store";
     const ui = { MyNested: Nested };
     const val: AType = "test1";
     const prom: Promise<AType> = Promise.resolve("test2");
@@ -37,6 +38,8 @@
 <svelte:head>
     <title>Title: {val}</title>
 </svelte:head>
+
+{$storeTemplateOnly}
 
 <div>
     <Nested let:var1 let:var2={var3}>
