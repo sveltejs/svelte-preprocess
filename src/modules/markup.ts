@@ -3,7 +3,7 @@ import type { Transformer, Preprocessor } from '../types';
 /** Create a tag matching regexp. */
 export function createTagRegex(tagName: string, flags?: string): RegExp {
   return new RegExp(
-    `<!--[^]*?-->|<${tagName}(\\s[^]*?)?(?:>([^]*?)<\\/${tagName}>|\\/>)`,
+    `/<!--[^]*?-->|<${tagName}(\\s[^]*?)?(?:>([^]*?)<\\/${tagName}>|\\/>)`,
     flags,
   );
 }

@@ -117,3 +117,5 @@
     {@html val}
     {@debug val, inputVal}
 </div>
+
+<!-- Some comment -->

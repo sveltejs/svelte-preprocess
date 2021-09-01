@@ -120,6 +120,7 @@ describe('transformer - typescript', () => {
 
       const { code } = await preprocess(tpl, opts);
 
+      // Test that imports are properly preserved
       expect(code).toContain(`import { fly } from "svelte/transition"`);
       expect(code).toContain(`import { flip } from "svelte/animate"`);
       expect(code).toContain(`import Nested from "./Nested.svelte"`);
@@ -131,6 +132,8 @@ describe('transformer - typescript', () => {
       expect(code).toContain(
         `import { onlyUsedInModuleScript } from "./modulescript";`,
       );
+      // Test that comments are properly preserved
+      expect(code).toContain('<!-- Some comment -->');
     });
 
     it('should deal with empty transpilation result', async () => {
