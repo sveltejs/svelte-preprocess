@@ -136,11 +136,6 @@ describe('transformer - globalStyle', () => {
   describe('global selector', () => {
     it('adds sourceMap with { sourceMap: true }', async () => {
       const template = `<style>:global div{color:red}:global .test{}</style>`;
-      const opts = autoProcess({
-        globalStyle: {
-          sourceMap: true,
-        },
-      });
 
       const preprocessedWithMap: any = await preprocess(
         template,
