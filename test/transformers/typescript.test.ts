@@ -93,7 +93,7 @@ describe('transformer - typescript', () => {
         },
       });
 
-      expect(preprocess(template, opts)).rejects.toThrow('TS6046');
+      return expect(preprocess(template, opts)).rejects.toThrow('TS6046');
     });
 
     it('should transpile ts to js', async () => {
@@ -125,7 +125,9 @@ describe('transformer - typescript', () => {
       expect(code).toContain(`import Nested from "./Nested.svelte"`);
       expect(code).toContain(`import { hello } from "./script"`);
       expect(code).toContain(`import { AValue } from "./types"`);
-      expect(code).toContain(`import { storeTemplateOnly } from "./store"`);
+      expect(code).toContain(
+        `import { storeTemplateOnly, storeScriptOnly } from "./store"`,
+      );
     });
 
     it('should deal with empty transpilation result', async () => {

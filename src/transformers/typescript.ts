@@ -126,14 +126,20 @@ function injectVarsToCode({
   });
 
   const sep = '\nconst $$$$$$$$ = null;\n';
-  const varnames = vars.map((v) => v.name);
-  const varsString = [
-    ...varnames,
-    ...varnames
-      .filter((v) => v.startsWith('$') && !v.startsWith('$$'))
-      .map((v) => v.slice(1)),
-  ].join(',');
+  const varnames = vars.map((v) =>
+    v.name.startsWith('$') && !v.name.startsWith('$$')
+      ? `${v.name},${v.name.slice(1)}`
+      : v.name,
+  );
 
+  // TODO investigate if it's possible to achieve this with a
+  // TS transformer (previous attemps have failed)
+  const codestores = Array.from(
+    content.match(/\$[^\s();:,[\]{}.?!+-=*/~|&%<>^]+/g) || [],
+    (name) => name.slice(1),
+  );
+
+  const varsString = [...codestores, ...varnames].join(',');
   const injectedVars = `const $$vars$$ = [${varsString}];`;
   const injectedCode =
     attributes?.context === 'module'

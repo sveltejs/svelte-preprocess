@@ -4,7 +4,7 @@
     import Nested from "./Nested.svelte";
     import { hello } from "./script";
     import { AValue, AType } from "./types";
-    import { storeTemplateOnly } from "./store";
+    import { storeTemplateOnly, storeScriptOnly } from "./store";
     const ui = { MyNested: Nested };
     const val: AType = "test1";
     const prom: Promise<AType> = Promise.resolve("test2");
@@ -26,6 +26,7 @@
     function onKeyDown(e: KeyboardEvent): void {
         e.preventDefault();
     }
+    $storeScriptOnly;
 </script>
 
 <style>
