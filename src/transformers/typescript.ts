@@ -148,6 +148,7 @@ function injectVarsToCode({
 
   if (sourceMapChain) {
     const s = new MagicString(content);
+
     s.append(injectedCode);
 
     const fname = `${filename}.injected.ts`;
@@ -398,6 +399,7 @@ async function mixedImportsTranspiler({
 
   if (sourceMapChain) {
     const fname = `${filename}.transpiled.js`;
+
     sourceMapChain.content[fname] = transpiledCode;
     sourceMapChain.sourcemaps[fname] = JSON.parse(sourceMapText);
   }
@@ -460,10 +462,12 @@ const transformer: Transformer<Options.Typescript> = async ({
   attributes,
 }) => {
   const basePath = process.cwd();
-  filename = isAbsolute(filename) ? filename : resolve(basePath, filename);
-  const compilerOptions = getCompilerOptions({ filename, options, basePath });
 
+  filename = isAbsolute(filename) ? filename : resolve(basePath, filename);
+
+  const compilerOptions = getCompilerOptions({ filename, options, basePath });
   const canUseMixedImportsTranspiler = +pkg.version.split('.')[1] >= 39;
+
   if (!canUseMixedImportsTranspiler && options.handleMixedImports) {
     throw new Error(
       'You need at least Svelte 3.39 to use the handleMixedImports option',
