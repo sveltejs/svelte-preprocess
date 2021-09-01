@@ -1,10 +1,16 @@
+<script lang="ts" context="module">
+    onlyUsedInModuleScript;
+</script>
+
 <script lang="ts">
+    // Some of these imports don't exist on disk, but they don't need to for this test.
     import { fly } from "svelte/transition";
     import { flip } from "svelte/animate";
     import Nested from "./Nested.svelte";
     import { hello } from "./script";
     import { AValue, AType } from "./types";
     import { storeTemplateOnly, storeScriptOnly } from "./store";
+    import { onlyUsedInModuleScript } from "./modulescript";
     const ui = { MyNested: Nested };
     const val: AType = "test1";
     const prom: Promise<AType> = Promise.resolve("test2");

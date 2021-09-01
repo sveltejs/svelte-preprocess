@@ -128,6 +128,9 @@ describe('transformer - typescript', () => {
       expect(code).toContain(
         `import { storeTemplateOnly, storeScriptOnly } from "./store"`,
       );
+      expect(code).toContain(
+        `import { onlyUsedInModuleScript } from "./modulescript";`,
+      );
     });
 
     it('should deal with empty transpilation result', async () => {

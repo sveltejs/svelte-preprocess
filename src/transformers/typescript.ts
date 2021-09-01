@@ -69,14 +69,14 @@ const importTransformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
   return (node) => ts.visitNode(node, visit);
 };
 
-function getComponentScriptContent(markup: string): string {
+function getScriptContent(markup: string, module: boolean): string {
   const regex = createTagRegex('script', 'gi');
   let match: RegExpMatchArray;
 
   while ((match = regex.exec(markup)) !== null) {
     const { context } = parseAttributes(match[1]);
 
-    if (context !== 'module') {
+    if ((context !== 'module' && !module) || (context === 'module' && module)) {
       return match[2];
     }
   }
@@ -143,8 +143,8 @@ function injectVarsToCode({
   const injectedVars = `const $$vars$$ = [${varsString}];`;
   const injectedCode =
     attributes?.context === 'module'
-      ? `${sep}${getComponentScriptContent(markup)}\n${injectedVars}`
-      : `${sep}${injectedVars}`;
+      ? `${sep}${getScriptContent(markup, false)}\n${injectedVars}`
+      : `${sep}${getScriptContent(markup, true)}\n${injectedVars}`;
 
   if (sourceMapChain) {
     const s = new MagicString(content);
