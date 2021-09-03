@@ -23,6 +23,8 @@ type InternalTransformerOptions = TransformerArgs<Options.Typescript> & {
   compilerOptions: CompilerOptions;
 };
 
+const injectedCodeSeparator = 'const $$$$$$$$ = null;';
+
 function createFormatDiagnosticsHost(cwd: string): ts.FormatDiagnosticsHost {
   return {
     getCanonicalFileName: (fileName: string) =>
@@ -126,7 +128,7 @@ function injectVarsToCode({
     filename,
   });
 
-  const sep = '\nconst $$$$$$$$ = null;\n';
+  const sep = `\n${injectedCodeSeparator}\n`;
   const varnames = vars.map((v) =>
     v.name.startsWith('$') && !v.name.startsWith('$$')
       ? `${v.name},${v.name.slice(1)}`
@@ -181,7 +183,7 @@ function stripInjectedCode({
 }): string {
   if (!markup) return transpiledCode;
 
-  const injectedCodeStart = transpiledCode.indexOf('const $$$$$$$$ = null;');
+  const injectedCodeStart = transpiledCode.indexOf(injectedCodeSeparator);
 
   if (sourceMapChain) {
     const s = new MagicString(transpiledCode);
@@ -457,7 +459,7 @@ async function simpleTranspiler({
 
 const transformer: Transformer<Options.Typescript> = async ({
   content,
-  filename = 'source.svelte',
+  filename,
   markup,
   options = {},
   attributes,
@@ -467,7 +469,9 @@ const transformer: Transformer<Options.Typescript> = async ({
   filename = isAbsolute(filename) ? filename : resolve(basePath, filename);
 
   const compilerOptions = getCompilerOptions({ filename, options, basePath });
-  const canUseMixedImportsTranspiler = +pkg.version.split('.')[1] >= 39;
+  const versionParts = pkg.version.split('.');
+  const canUseMixedImportsTranspiler =
+    +versionParts[0] > 3 || (+versionParts[0] === 3 && +versionParts[1] >= 39);
 
   if (!canUseMixedImportsTranspiler && options.handleMixedImports) {
     throw new Error(
