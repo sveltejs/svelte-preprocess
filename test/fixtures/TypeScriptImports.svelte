@@ -18,7 +18,8 @@
     const isTest1 = (v: AType) => v === "test1";
     const obj = {
         fn: () => "test",
-        val: "test1" as const
+        val: "test1" as const,
+        $in: ""
     };
     let inputVal: string;
     const action = (node: Element, options: { id: string; }) => { node.id = options.id; };

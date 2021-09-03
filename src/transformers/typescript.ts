@@ -9,6 +9,7 @@ import sorcery from 'sorcery';
 import { throwTypescriptError } from '../modules/errors';
 import { createTagRegex, parseAttributes, stripTags } from '../modules/markup';
 import type { Transformer, Options, TransformerArgs } from '../types';
+import { javascriptReservedKeywords } from '../modules/utils';
 
 type CompilerOptions = ts.CompilerOptions;
 
@@ -137,7 +138,7 @@ function injectVarsToCode({
   const codestores = Array.from(
     content.match(/\$[^\s();:,[\]{}.?!+-=*/~|&%<>^]+/g) || [],
     (name) => name.slice(1),
-  );
+  ).filter((name) => !javascriptReservedKeywords.has(name));
 
   const varsString = [...codestores, ...varnames].join(',');
   const injectedVars = `const $$vars$$ = [${varsString}];`;
