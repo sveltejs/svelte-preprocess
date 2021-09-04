@@ -5,7 +5,7 @@ export async function importAny(...modules: string[]) {
   try {
     const mod = await modules.reduce(
       (acc, moduleName) => acc.catch(() => import(moduleName)),
-      Promise.reject(),
+      Promise.reject<any>(),
     );
 
     return mod;
@@ -25,7 +25,9 @@ export function concat(...arrs: any[]): any[] {
 }
 
 /** Paths used by preprocessors to resolve @imports */
-export function getIncludePaths(fromFilename: string, base: string[] = []) {
+export function getIncludePaths(fromFilename?: string, base: string[] = []) {
+  if (fromFilename == null) return [];
+
   return [
     ...new Set([...base, 'node_modules', process.cwd(), dirname(fromFilename)]),
   ];
@@ -70,7 +72,7 @@ export function isValidLocalPath(path: string) {
 }
 
 // finds a existing path up the tree
-export function findUp({ what, from }) {
+export function findUp({ what, from }: { what: string; from: string }) {
   const { root, dir } = parse(from);
   let cur = dir;
 
@@ -92,7 +94,7 @@ export function findUp({ what, from }) {
 }
 
 // set deep property in object
-export function setProp(obj, keyList, val) {
+export function setProp(obj: any, keyList: string[], value: any) {
   let i = 0;
 
   for (; i < keyList.length - 1; i++) {
@@ -105,7 +107,7 @@ export function setProp(obj, keyList, val) {
     obj = obj[key];
   }
 
-  obj[keyList[i]] = val;
+  obj[keyList[i]] = value;
 }
 
 export const JAVASCRIPT_RESERVED_KEYWORD_SET = new Set([

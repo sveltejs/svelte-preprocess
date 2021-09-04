@@ -27,7 +27,7 @@ const autoProcessTS = (content: string, compilerOptions?: any) => {
     },
   });
 
-  return opts.script({
+  return opts.script?.({
     content,
     markup: `<script lang="ts">${content}</script>`,
     attributes: { type: 'text/typescript' },
@@ -58,7 +58,7 @@ describe('transformer - typescript', () => {
       const opts = sveltePreprocess({ typescript: { tsconfigFile: false } });
       const preprocessed = await preprocess(template, opts);
 
-      expect(preprocessed.toString()).toContain('export var hello');
+      expect(preprocessed.toString?.()).toContain('export var hello');
     });
 
     it('should work with tsconfigDirectory', async () => {
@@ -71,7 +71,7 @@ describe('transformer - typescript', () => {
 
       const preprocessed = await preprocess(template, opts);
 
-      expect(preprocessed.toString()).toContain(EXPECTED_SCRIPT);
+      expect(preprocessed.toString?.()).toContain(EXPECTED_SCRIPT);
     });
 
     it('should work with tsconfigFile', async () => {
@@ -83,7 +83,7 @@ describe('transformer - typescript', () => {
 
       const preprocessed = await preprocess(template, opts);
 
-      expect(preprocessed.toString()).toContain(EXPECTED_SCRIPT);
+      expect(preprocessed.toString?.()).toContain(EXPECTED_SCRIPT);
     });
 
     it('should report config semantic errors in tsconfig file', () => {

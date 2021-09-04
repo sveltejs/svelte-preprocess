@@ -8,7 +8,7 @@ test('should transform HTML between <template></template>', async () => {
   const input = `<script></script><template><div>Hey</div></template><style></style>`;
   const preprocessed = await preprocess(input, sveltePreprocess());
 
-  expect(preprocessed.toString()).toBe(
+  expect(preprocessed.toString?.()).toBe(
     `<script></script>${EXPECTED_MARKUP}<style></style>`,
   );
 });
@@ -20,7 +20,7 @@ test('should transform HTML between custom tag <markup></markup>', async () => {
     sveltePreprocess({ markupTagName: 'markup' }),
   );
 
-  expect(preprocessed.toString()).toBe(
+  expect(preprocessed.toString?.()).toBe(
     `<script></script>${EXPECTED_MARKUP}<style></style>`,
   );
 });
@@ -36,14 +36,14 @@ test('should transform a custom language between <template lang="..."></template
     }),
   );
 
-  expect(preprocessed.toString()).toBe('<script></script><style></style>');
+  expect(preprocessed.toString?.()).toBe('<script></script><style></style>');
 });
 
 test('should ignore subsequent markup tags.', async () => {
   const input = `<template><div>Hey</div></template><template>ignored</template>`;
   const preprocessed = await preprocess(input, sveltePreprocess());
 
-  expect(preprocessed.toString()).toBe(
+  expect(preprocessed.toString?.()).toBe(
     `<div>Hey</div><template>ignored</template>`,
   );
 });
@@ -62,10 +62,10 @@ MARKUP_LANGS.forEach(([lang, ext]) => {
 
     it(`should parse ${lang}`, async () => {
       const preprocessed = (await preprocess(template, sveltePreprocess()))
-        .toString()
+        .toString?.()
         .trim();
 
-      expect(preprocessed.toString()).toBe(EXPECTED_MARKUP);
+      expect(preprocessed).toBe(EXPECTED_MARKUP);
     });
   });
 });

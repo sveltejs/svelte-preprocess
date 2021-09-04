@@ -62,7 +62,7 @@ const transformer: Transformer<Options.Sass> = async ({
   let implementation = options?.implementation ?? sass;
 
   if (implementation == null) {
-    const mod = await importAny('sass', 'node-sass');
+    const mod = (await importAny('sass', 'node-sass')) as { default: any };
 
     // eslint-disable-next-line no-multi-assign
     implementation = sass = mod.default;
@@ -95,11 +95,11 @@ const transformer: Transformer<Options.Sass> = async ({
   }
 
   if (renderSync) {
-    return getProcessedResult(implementation.renderSync(sassOptions));
+    return getProcessedResult(implementation!.renderSync(sassOptions));
   }
 
   return new Promise<Processed>((resolve, reject) => {
-    implementation.render(sassOptions, (err, result) => {
+    implementation!.render(sassOptions, (err, result) => {
       if (err) return reject(err);
 
       resolve(getProcessedResult(result));

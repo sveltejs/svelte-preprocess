@@ -22,11 +22,11 @@ import { prepareContent } from './modules/prepareContent';
 import { transformMarkup } from './modules/markup';
 
 export const transform = async (
-  name: string,
+  name: string | null | undefined,
   options: TransformerOptions,
   { content, markup, map, filename, attributes }: TransformerArgs<any>,
 ): Promise<Processed> => {
-  if (options === false) {
+  if (name == null || options === false) {
     return { code: content };
   }
 
@@ -77,22 +77,24 @@ export function sveltePreprocess(
     addLanguageAlias(aliases);
   }
 
-  function resolveLanguageArgs(name: string, alias?: string) {
-    const { [name]: nameOpts, [alias]: aliasOpts } = transformers;
+  function resolveLanguageArgs(lang: string, alias?: string | null) {
+    const langOpts = transformers[lang];
+    const aliasOpts = alias ? transformers[alias] : undefined;
+
     const opts: Record<string, any> = {};
 
-    if (typeof nameOpts === 'object') {
-      Object.assign(opts, nameOpts);
+    if (typeof langOpts === 'object') {
+      Object.assign(opts, langOpts);
     }
 
-    Object.assign(opts, getLanguageDefaults(name), getLanguageDefaults(alias));
+    Object.assign(opts, getLanguageDefaults(lang), getLanguageDefaults(alias));
 
-    if (name !== alias && typeof aliasOpts === 'object') {
+    if (lang !== alias && typeof aliasOpts === 'object') {
       Object.assign(opts, aliasOpts);
     }
 
-    if (sourceMap && name in SOURCE_MAP_PROP_MAP) {
-      const [path, value] = SOURCE_MAP_PROP_MAP[name];
+    if (sourceMap && lang in SOURCE_MAP_PROP_MAP) {
+      const [path, value] = SOURCE_MAP_PROP_MAP[lang];
 
       setProp(opts, path, value);
     }
@@ -101,11 +103,14 @@ export function sveltePreprocess(
   }
 
   function getTransformerOptions(
-    lang: string,
-    alias?: string,
+    lang?: string | null,
+    alias?: string | null,
     { ignoreAliasOverride }: { ignoreAliasOverride?: boolean } = {},
   ): TransformerOptions<unknown> {
-    const { [lang]: langOpts, [alias]: aliasOpts } = transformers;
+    if (lang == null) return null;
+
+    const langOpts = transformers[lang];
+    const aliasOpts = alias ? transformers[alias] : undefined;
 
     if (!ignoreAliasOverride && typeof aliasOpts === 'function') {
       return aliasOpts;
@@ -136,7 +141,7 @@ export function sveltePreprocess(
       lang = getLanguageFromAlias(alias);
     }
 
-    if (preserve.includes(lang) || preserve.includes(alias)) {
+    if ((lang && preserve.includes(lang)) || preserve.includes(alias)) {
       return { code: content };
     }
 

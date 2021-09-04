@@ -74,7 +74,7 @@ const importTransformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
 
 function getScriptContent(markup: string, module: boolean): string {
   const regex = createTagRegex('script', 'gi');
-  let match: RegExpMatchArray;
+  let match: RegExpMatchArray | null;
 
   while ((match = regex.exec(markup)) !== null) {
     const { context } = parseAttributes(match[1]);
@@ -286,8 +286,8 @@ function transpileTs({
   transformers?: ts.CustomTransformers;
 }): {
   transpiledCode: string;
-  diagnostics: ts.Diagnostic[];
-  sourceMapText: string;
+  diagnostics: ts.Diagnostic[] | undefined;
+  sourceMapText: string | undefined;
 } {
   const {
     outputText: transpiledCode,
@@ -300,7 +300,7 @@ function transpileTs({
     transformers,
   });
 
-  if (diagnostics.length > 0) {
+  if (diagnostics && diagnostics.length > 0) {
     // could this be handled elsewhere?
     const hasError = diagnostics.some(
       (d) => d.category === ts.DiagnosticCategory.Error,
@@ -400,7 +400,7 @@ async function mixedImportsTranspiler({
     compilerOptions,
   });
 
-  if (sourceMapChain) {
+  if (sourceMapChain && sourceMapText) {
     const fname = `${filename}.transpiled.js`;
 
     sourceMapChain.content[fname] = transpiledCode;
@@ -465,6 +465,8 @@ const transformer: Transformer<Options.Typescript> = async ({
   attributes,
 }) => {
   const basePath = process.cwd();
+
+  if (filename == null) return { code: content };
 
   filename = isAbsolute(filename) ? filename : resolve(basePath, filename);
 

@@ -26,9 +26,9 @@ describe('detect - mimetype', () => {
 
   MIMETYPES.forEach(({ type, lang, src, targetLanguage }) => {
     it(`should detect '${
-      src || type || lang
+      src ?? type ?? lang
     }' as '${targetLanguage}'`, async () => {
-      const language = getLanguage({ type, lang, src });
+      const language = getLanguage({ type, lang, src } as any);
 
       expect(language).toMatchObject({ lang: targetLanguage });
     });
@@ -42,7 +42,7 @@ describe('options', () => {
     )}</template>`;
 
     const opts = sveltePreprocess({
-      customTransformer({ content }) {
+      customTransformer({ content }: any) {
         content = content.replace('foo', 'bar').toString().trim();
 
         return { code: content, map: null };
@@ -51,7 +51,7 @@ describe('options', () => {
 
     const preprocessed = await preprocess(input, opts);
 
-    expect(preprocessed.toString()).toBe('bar');
+    expect(preprocessed.toString?.()).toBe('bar');
   });
 
   it('should accept an options object as transformer value', async () => {
@@ -66,7 +66,7 @@ describe('options', () => {
       }),
     );
 
-    expect(preprocessed.toString()).toMatch(CSS_PATTERN);
+    expect(preprocessed.toString?.()).toMatch(CSS_PATTERN);
   });
 
   it('should append aliases to the language alias dictionary', async () => {
@@ -91,7 +91,7 @@ describe('options', () => {
 
     const preprocessed = await preprocess(input, opts);
 
-    expect(preprocessed.toString()).toContain('div{}');
+    expect(preprocessed.toString?.()).toContain('div{}');
   });
 
   it('should allow to pass a method as an language transformer', async () => {
@@ -107,7 +107,7 @@ describe('options', () => {
 
     const preprocessed = await preprocess(input, opts);
 
-    expect(preprocessed.toString()).toContain('div{}');
+    expect(preprocessed.toString?.()).toContain('div{}');
   });
 
   it('should NOT preprocess preserved languages', async () => {
@@ -122,7 +122,7 @@ describe('options', () => {
 
     const preprocessed = await preprocess(input, opts);
 
-    expect(preprocessed.toString()).toContain(
+    expect(preprocessed.toString?.()).toContain(
       `<script type="application/ld+json">{"json":true}</script>`,
     );
   });
@@ -151,20 +151,20 @@ describe('options', () => {
         style: 'customStyle',
       },
       globalStyle: false,
-      customMarkup({ content }) {
+      customMarkup({ content }: any) {
         return { code: content.replace('markup', 'potato') };
       },
-      customScript({ content }) {
+      customScript({ content }: any) {
         return { code: content.replace('script', 'potato') };
       },
-      customStyle({ content }) {
+      customStyle({ content }: any) {
         return { code: content.replace('style', 'potato') };
       },
     });
 
     const preprocessed = await preprocess(input, opts);
 
-    expect(preprocessed.toString()).toContain(
+    expect(preprocessed.toString?.()).toContain(
       'potato<style>potato</style><script>potato</script>',
     );
   });
@@ -176,17 +176,17 @@ describe('options', () => {
       defaults: {
         script: 'potatoScript',
       },
-      potatoScript({ content }) {
+      potatoScript({ content }: any) {
         return { code: content.replace('script', 'potato') };
       },
-      tomatoScript({ content }) {
+      tomatoScript({ content }: any) {
         return { code: content.replace('script', 'tomato') };
       },
     });
 
     const preprocessed = await preprocess(input, opts);
 
-    expect(preprocessed.toString()).toContain(
+    expect(preprocessed.toString?.()).toContain(
       '<script lang="tomatoScript">tomato</script>',
     );
   });
@@ -198,13 +198,13 @@ describe('options', () => {
       defaults: {
         markup: 'potatoScript',
       },
-      potatoScript({ content }) {
+      potatoScript({ content }: any) {
         return { code: content.replace('potato', 'french-fries') };
       },
     });
 
     const preprocessed = await preprocess(input, opts);
 
-    expect(preprocessed.toString()).toContain('french-fries');
+    expect(preprocessed.toString?.()).toContain('french-fries');
   });
 });

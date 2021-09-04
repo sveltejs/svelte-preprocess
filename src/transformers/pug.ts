@@ -65,7 +65,7 @@ const transformer: Transformer<Options.Pug> = async ({
   };
 
   const { type: identationType } = detectIndent(content);
-  const code = `${GET_MIXINS(identationType)}\n${content}`;
+  const code = `${GET_MIXINS(identationType ?? 'space')}\n${content}`;
   const compiled = pug.compile(
     code,
     pugOptions,
@@ -74,7 +74,7 @@ const transformer: Transformer<Options.Pug> = async ({
 
   return {
     code: compiled(),
-    dependencies: compiled.dependencies ?? null,
+    dependencies: compiled.dependencies ?? [],
   };
 };
 

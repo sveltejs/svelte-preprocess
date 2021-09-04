@@ -8,14 +8,14 @@ describe(`processor - sass`, () => {
 
     const preprocessed = await preprocess(template, [sass(options)]);
 
-    expect(preprocessed.toString()).toBe(template);
+    expect(preprocessed.toString?.()).toBe(template);
   });
 
   it('should support external src files', async () => {
     const template = `<style src="./fixtures/style.sass"></style><div></div>`;
     const preprocessed = await preprocess(template, [sass()]);
 
-    expect(preprocessed.toString()).toMatch(CSS_PATTERN);
+    expect(preprocessed.toString?.()).toMatch(CSS_PATTERN);
   });
 
   it('should support prepended data', async () => {
@@ -23,7 +23,7 @@ describe(`processor - sass`, () => {
     const options = { prependData: '/* potato */' };
     const preprocessed = await preprocess(template, [sass(options)]);
 
-    expect(preprocessed.toString()).toContain('/* potato');
+    expect(preprocessed.toString?.()).toContain('/* potato');
   });
 
   it('should leave other languages untouched', async () => {
@@ -31,7 +31,7 @@ describe(`processor - sass`, () => {
     const options = { prependData: '/* potato */' };
     const preprocessed = await preprocess(template, [sass(options)]);
 
-    expect(preprocessed.toString()).toBe(template);
+    expect(preprocessed.toString?.()).toBe(template);
   });
 });
 
@@ -42,14 +42,14 @@ describe(`processor - scss`, () => {
 
     const preprocessed = await preprocess(template, [scss(options)]);
 
-    expect(preprocessed.toString()).toBe(template);
+    expect(preprocessed.toString?.()).toBe(template);
   });
 
   it('should support external src files', async () => {
     const template = `<style src="./fixtures/style.scss"></style><div></div>`;
     const preprocessed = await preprocess(template, [scss()]);
 
-    expect(preprocessed.toString()).toMatch(CSS_PATTERN);
+    expect(preprocessed.toString?.()).toMatch(CSS_PATTERN);
   });
 
   it('should support prepended data', async () => {
@@ -57,7 +57,7 @@ describe(`processor - scss`, () => {
     const options = { prependData: '/* potato */' };
     const preprocessed = await preprocess(template, [scss(options)]);
 
-    expect(preprocessed.toString()).toContain('/* potato */');
+    expect(preprocessed.toString?.()).toContain('/* potato */');
   });
 
   it('should leave other languages untouched', async () => {
@@ -65,6 +65,6 @@ describe(`processor - scss`, () => {
     const options = { prependData: '/* potato */' };
     const preprocessed = await preprocess(template, [scss(options)]);
 
-    expect(preprocessed.toString()).toBe(template);
+    expect(preprocessed.toString?.()).toBe(template);
   });
 });

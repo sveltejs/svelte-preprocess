@@ -8,7 +8,7 @@ describe(`processor - less`, () => {
 
     const preprocessed = await preprocess(template, [less(options)]);
 
-    expect(preprocessed.toString()).toBe(template);
+    expect(preprocessed.toString?.()).toBe(template);
   });
 
   it('should leave other languages untouched', async () => {
@@ -17,14 +17,14 @@ describe(`processor - less`, () => {
 
     const preprocessed = await preprocess(template, [less(options)]);
 
-    expect(preprocessed.toString()).toBe(template);
+    expect(preprocessed.toString?.()).toBe(template);
   });
 
   it('should support external src files', async () => {
     const template = `<style src="./fixtures/style.less"></style><div></div>`;
     const preprocessed = await preprocess(template, [less()]);
 
-    expect(preprocessed.toString()).toMatch(CSS_PATTERN);
+    expect(preprocessed.toString?.()).toMatch(CSS_PATTERN);
   });
 
   it('should support prepended data', async () => {
@@ -32,6 +32,6 @@ describe(`processor - less`, () => {
     const options = { prependData: '/* potato */' };
     const preprocessed = await preprocess(template, [less(options)]);
 
-    expect(preprocessed.toString()).toContain('/* potato */');
+    expect(preprocessed.toString?.()).toContain('/* potato */');
   });
 });
