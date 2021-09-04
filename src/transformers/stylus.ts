@@ -30,8 +30,8 @@ const transformer: Transformer<Options.Stylus> = ({
         map: (style as any).sourcemap,
         // .map() necessary for windows compatibility
         dependencies: style
-          .deps(filename)
-          .map((filePath: string) => path.resolve(filePath)),
+          .deps(filename as string)
+          .map((filePath) => path.resolve(filePath)),
       });
     });
   });

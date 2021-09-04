@@ -21,7 +21,7 @@ describe(`processor - babel`, () => {
       }),
     ]);
 
-    expect(preprocessed.toString()).toMatchInlineSnapshot(`
+    expect(preprocessed.toString?.()).toMatchInlineSnapshot(`
       "<script src=\\"./fixtures/script.babel.js\\">export var hello = {};
       export var world = hello == null ? void 0 : hello.value;</script><div></div>"
     `);

@@ -15,18 +15,24 @@ const transformer: Transformer<Options.Babel> = async ({
       typeof map === 'string' ? JSON.parse(map) : map ?? undefined,
     sourceType: 'module',
     // istanbul ignore next
-    sourceMaps: !!options.sourceMaps,
+    sourceMaps: !!options?.sourceMaps,
     filename,
     minified: false,
     ast: false,
     code: true,
   } as TransformOptions;
 
-  const { code, map: sourcemap } = await transformAsync(content, babelOptions);
+  const result = await transformAsync(content, babelOptions);
+
+  if (result == null) {
+    return { code: content };
+  }
+
+  const { code, map: sourcemap } = result;
 
   return {
-    code,
-    map: sourcemap,
+    code: code as string,
+    map: sourcemap ?? undefined,
   };
 };
 

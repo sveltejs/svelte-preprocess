@@ -14,7 +14,7 @@ const transformer: Transformer<Options.Coffeescript> = ({
      */
     bare: true,
     ...options,
-  };
+  } as Omit<Options.Coffeescript, 'bare'>;
 
   if (coffeeOptions.sourceMap) {
     const { js: code, sourceMap: map } = coffeescript.compile(

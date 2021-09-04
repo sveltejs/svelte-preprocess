@@ -10,7 +10,7 @@ describe(`processor - typescript`, () => {
 
     const preprocessed = await preprocess(template, [typescript(options)]);
 
-    expect(preprocessed.toString()).toBe(template);
+    expect(preprocessed.toString?.()).toBe(template);
   });
 
   it('should leave other languages untouched', async () => {
@@ -19,7 +19,7 @@ describe(`processor - typescript`, () => {
 
     const preprocessed = await preprocess(template, [typescript(options)]);
 
-    expect(preprocessed.toString()).toBe(template);
+    expect(preprocessed.toString?.()).toBe(template);
   });
 
   it('should support external src files', async () => {
@@ -32,7 +32,7 @@ describe(`processor - typescript`, () => {
 
     const preprocessed = await preprocess(template, [typescript(options)]);
 
-    expect(preprocessed.toString()).toContain(EXPECTED_SCRIPT);
+    expect(preprocessed.toString?.()).toContain(EXPECTED_SCRIPT);
   });
 
   it('should support prepended data', async () => {
@@ -45,6 +45,6 @@ describe(`processor - typescript`, () => {
 
     const preprocessed = await preprocess(template, [typescript(options)]);
 
-    expect(preprocessed.toString()).toContain('// potato');
+    expect(preprocessed.toString?.()).toContain('// potato');
   });
 });

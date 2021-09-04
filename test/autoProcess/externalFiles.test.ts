@@ -1,6 +1,7 @@
 import { resolve } from 'path';
 
 import sveltePreprocess from '../../src';
+import type { AutoPreprocessGroup } from '../../src/types';
 import {
   preprocess,
   getFixtureContent,
@@ -14,7 +15,7 @@ const {
   markup: markupProcessor,
   script: scriptProcessor,
   style: styleProcessor,
-} = sveltePreprocess();
+} = sveltePreprocess() as Required<AutoPreprocessGroup>;
 
 const REMOTE_JS = [
   'https://www.example.com/some/externally/delivered/content.js',
@@ -72,7 +73,7 @@ describe('external files', () => {
 
       const preprocessed = await preprocess(input, sveltePreprocess());
 
-      expect(preprocessed.toString()).toContain(input);
+      expect(preprocessed.toString?.()).toContain(input);
       expect(preprocessed.dependencies).toHaveLength(0);
     });
   });

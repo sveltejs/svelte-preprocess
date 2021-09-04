@@ -47,10 +47,15 @@ export const SOURCE_MAP_PROP_MAP: Record<string, [string[], any]> = {
   globalStyle: [['sourceMap'], true],
 };
 
-export function getLanguageDefaults(lang: string): null | Record<string, any> {
+export function getLanguageDefaults(
+  lang?: string | null,
+): null | Record<string, any> {
+  if (lang == null) return null;
+
   const defaults = LANGUAGE_DEFAULTS[lang];
 
   if (!defaults) return null;
+
   if (typeof defaults === 'function') {
     return defaults();
   }
@@ -62,16 +67,16 @@ export function addLanguageAlias(entries: Array<[string, string]>) {
   return entries.forEach((entry) => ALIAS_MAP.set(...entry));
 }
 
-export function getLanguageFromAlias(alias: string | null) {
-  return ALIAS_MAP.get(alias) || alias;
+export function getLanguageFromAlias(alias?: string | null) {
+  return alias == null ? alias : ALIAS_MAP.get(alias) ?? alias;
 }
 
-export function isAliasOf(alias: string, lang: string) {
+export function isAliasOf(alias?: string | null, lang?: string | null) {
   return lang !== alias && getLanguageFromAlias(alias) === lang;
 }
 
 export const getLanguage = (attributes: PreprocessorArgs['attributes']) => {
-  let alias = null;
+  let alias: string | null = null;
 
   if (attributes.lang) {
     // istanbul ignore if
@@ -94,7 +99,7 @@ export const getLanguage = (attributes: PreprocessorArgs['attributes']) => {
     const parts = basename(attributes.src).split('.');
 
     if (parts.length > 1) {
-      alias = parts.pop();
+      alias = parts.pop() as string;
     }
   }
 

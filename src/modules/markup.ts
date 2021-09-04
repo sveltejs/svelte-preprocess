@@ -44,7 +44,7 @@ export async function transformMarkup(
   const templateMatch = content.match(markupPattern);
 
   /** If no <template> was found, run the transformer over the whole thing */
-  if (!templateMatch) {
+  if (!templateMatch || templateMatch.index == null) {
     return transformer({
       content,
       markup: content,

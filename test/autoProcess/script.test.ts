@@ -25,7 +25,7 @@ SCRIPT_LANGS.forEach(([lang, ext, langOptions]) => {
 
       const preprocessed = await preprocess(template, opts);
 
-      expect(preprocessed.toString()).toContain(EXPECTED_SCRIPT);
+      expect(preprocessed.toString?.()).toContain(EXPECTED_SCRIPT);
     });
   });
 });

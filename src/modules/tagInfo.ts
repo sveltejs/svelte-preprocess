@@ -11,7 +11,7 @@ const resolveSrc = (importerFile: string, srcPath: string) =>
 
 const getSrcContent = (file: string): Promise<string> => {
   return new Promise((resolve, reject) => {
-    readFile(file, (error: Error, data: unknown) => {
+    readFile(file, (error, data) => {
       // istanbul ignore if
       if (error) reject(error);
       else resolve(data.toString());
@@ -43,7 +43,7 @@ export const getTagInfo = async ({
     let path = attributes.src;
 
     /** Only try to get local files (path starts with ./ or ../) */
-    if (isValidLocalPath(path)) {
+    if (isValidLocalPath(path) && filename) {
       path = resolveSrc(filename, path);
       if (await doesFileExist(path)) {
         content = await getSrcContent(path);

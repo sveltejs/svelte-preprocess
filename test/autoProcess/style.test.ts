@@ -18,7 +18,7 @@ STYLE_LANGS.forEach(([lang, ext]) => {
       const opts = sveltePreprocess();
       const preprocessed = await preprocess(template, opts);
 
-      expect(preprocessed.toString()).toMatch(CSS_PATTERN);
+      expect(preprocessed.toString?.()).toMatch(CSS_PATTERN);
     });
 
     it(`should parse external ${lang}`, async () => {
@@ -26,7 +26,7 @@ STYLE_LANGS.forEach(([lang, ext]) => {
       const opts = sveltePreprocess();
       const preprocessed = await preprocess(templateExternal, opts);
 
-      expect(preprocessed.toString()).toMatch(CSS_PATTERN);
+      expect(preprocessed.toString?.()).toMatch(CSS_PATTERN);
     });
 
     it(`should parse external ${lang}`, async () => {
@@ -34,7 +34,7 @@ STYLE_LANGS.forEach(([lang, ext]) => {
       const opts = sveltePreprocess();
       const preprocessed = await preprocess(templateExternal, opts);
 
-      expect(preprocessed.toString()).toMatch(CSS_PATTERN);
+      expect(preprocessed.toString?.()).toMatch(CSS_PATTERN);
     });
 
     it(`should return empty if content is empty`, async () => {
@@ -49,7 +49,7 @@ STYLE_LANGS.forEach(([lang, ext]) => {
 
       const preprocessed = await preprocess(templateExternal, opts);
 
-      expect(preprocessed.toString()).toMatch(templateExternal);
+      expect(preprocessed.toString?.()).toMatch(templateExternal);
     });
   });
 });

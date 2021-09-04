@@ -20,7 +20,7 @@ export type PreprocessorArgs = Preprocessor extends (options: infer T) => any
 
 export type TransformerArgs<T> = {
   content: string;
-  filename: string;
+  filename?: string;
   attributes?: Record<string, any>;
   map?: string | object;
   markup?: string;

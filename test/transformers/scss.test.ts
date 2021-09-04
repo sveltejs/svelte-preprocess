@@ -10,7 +10,7 @@ import { transformer } from '../../src/transformers/scss';
 
 const implementation: Options.Sass['implementation'] = {
   render(options, callback) {
-    callback(null, {
+    callback(null as any, {
       css: Buffer.from('div#red{color:red}'),
       stats: {
         entry: 'data',
@@ -79,7 +79,7 @@ describe('transformer - scss', () => {
 
     const preprocessed = await preprocess(template, opts);
 
-    expect(preprocessed.toString()).toContain('div#red{color:red}');
+    expect(preprocessed.toString?.()).toContain('div#red{color:red}');
   });
 
   it('should prepend scss content via `data` option property - via renderSync', async () => {
@@ -93,7 +93,7 @@ describe('transformer - scss', () => {
 
     const preprocessed = await preprocess(template, opts);
 
-    expect(preprocessed.toString()).toContain('blue');
+    expect(preprocessed.toString?.()).toContain('blue');
   });
 
   it('should use the specified implementation via the `implementation` option property - via renderSync', async () => {
@@ -107,7 +107,7 @@ describe('transformer - scss', () => {
 
     const preprocessed = await preprocess(template, opts);
 
-    expect(preprocessed.toString()).toContain('div#green{color:green}');
+    expect(preprocessed.toString?.()).toContain('div#green{color:green}');
   });
 
   it('supports ~ tilde imports (removes the character)', async () => {
@@ -116,7 +116,7 @@ describe('transformer - scss', () => {
 
     const preprocessed = await preprocess(template, opts);
 
-    expect(preprocessed.toString()).toMatchInlineSnapshot(`
+    expect(preprocessed.toString?.()).toMatchInlineSnapshot(`
       "<style lang=\\"scss\\">div {
         color: pink;
       }</style>"

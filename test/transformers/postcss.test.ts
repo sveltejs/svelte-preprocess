@@ -29,7 +29,7 @@ test('should not transform plain css with postcss if { postcss: falsy }', async 
   const template = `<div></div><style>div{appearance:none;}</style>`;
   const preprocessed = await preprocess(template, sveltePreprocess());
 
-  expect(preprocessed.toString()).not.toMatch(/-webkit-/);
+  expect(preprocessed.toString?.()).not.toMatch(/-webkit-/);
 });
 
 test('should not transform plain css with postcss if { postcss: true } and no configuration file at cwd', async () => {
@@ -41,7 +41,7 @@ test('should not transform plain css with postcss if { postcss: true } and no co
     }),
   );
 
-  expect(preprocessed.toString()).not.toMatch(/-webkit-/);
+  expect(preprocessed.toString?.()).not.toMatch(/-webkit-/);
 });
 
 test('should transform plain css with postcss if { postcss: { plugins... } }', async () => {
@@ -58,7 +58,7 @@ test('should transform plain css with postcss if { postcss: { plugins... } }', a
 
   const preprocessed = await preprocess(template, optsWithoutConfigFile);
 
-  expect(preprocessed.toString()).toMatch(/-webkit-/);
+  expect(preprocessed.toString?.()).toMatch(/-webkit-/);
 });
 
 test('should transform async preprocessed css with postcss if { postcss: { plugins... } }', async () => {
@@ -75,7 +75,7 @@ test('should transform async preprocessed css with postcss if { postcss: { plugi
 
   const preprocessed = await preprocess(templateSass, optsWithoutConfigFile);
 
-  expect(preprocessed.toString()).toMatch(/-webkit-/);
+  expect(preprocessed.toString?.()).toMatch(/-webkit-/);
 });
 
 test('should transform plain css with postcss if { postcss: { configFilePath: ... } }', async () => {
@@ -89,7 +89,7 @@ test('should transform plain css with postcss if { postcss: { configFilePath: ..
     }),
   );
 
-  expect(preprocessed.toString()).toMatch(/-webkit-/);
+  expect(preprocessed.toString?.()).toMatch(/-webkit-/);
 });
 
 test('should return @imported files as dependencies', async () => {
@@ -122,7 +122,7 @@ div
 
   const preprocessed = await preprocess(template, opts);
 
-  expect(preprocessed.toString()).toMatchInlineSnapshot(`
+  expect(preprocessed.toString?.()).toMatchInlineSnapshot(`
       "<style>
       div {
         color: red
@@ -142,7 +142,7 @@ test('automatically removes indentation for lang=sugarss', async () => {
 
   const preprocessed = await preprocess(template, opts);
 
-  expect(preprocessed.toString()).toMatchInlineSnapshot(`
+  expect(preprocessed.toString?.()).toMatchInlineSnapshot(`
       "<style lang=\\"sugarss\\">
       div {
         color: red

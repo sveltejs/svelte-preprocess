@@ -8,7 +8,7 @@ describe(`processor - postcss`, () => {
     const template = `<style src="./fixtures/style.css"></style><div></div>`;
     const preprocessed = await preprocess(template, [postcss()]);
 
-    expect(preprocessed.toString()).toMatch(CSS_PATTERN);
+    expect(preprocessed.toString?.()).toMatch(CSS_PATTERN);
   });
 
   it('should support prepended data', async () => {
@@ -16,6 +16,6 @@ describe(`processor - postcss`, () => {
     const options = { prependData: '/* potato */' };
     const preprocessed = await preprocess(template, [postcss(options as any)]);
 
-    expect(preprocessed.toString()).toContain('/* potato */');
+    expect(preprocessed.toString?.()).toContain('/* potato */');
   });
 });
