@@ -108,7 +108,7 @@ export function setProp(obj, keyList, val) {
   obj[keyList[i]] = val;
 }
 
-export const javascriptReservedKeywords = new Set([
+export const JAVASCRIPT_RESERVED_KEYWORD_SET = new Set([
   'arguments',
   'await',
   'break',
