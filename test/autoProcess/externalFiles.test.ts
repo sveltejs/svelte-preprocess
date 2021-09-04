@@ -26,20 +26,24 @@ describe('external files', () => {
   afterEach(warnSpy.mockClear);
 
   it('should insert external file content and add as deps', async () => {
+    const code = `<template src="./fixtures/template.html"></template>
+    <style src="./fixtures/style.css"></style>
+    <script src="./fixtures/script.js"></script>`;
+
     const [markup, script, style] = [
       await markupProcessor({
-        content: `<template src="./fixtures/template.html"></template>
-        <style src="./fixtures/style.css"></style>
-        <script src="./fixtures/script.js"></script>`,
+        content: code,
         filename: resolve(__dirname, '..', 'App.svelte'),
       }),
       await scriptProcessor({
         content: ``,
+        markup: code,
         filename: resolve(__dirname, '..', 'App.svelte'),
         attributes: { src: `./fixtures/script.js` },
       }),
       await styleProcessor({
         content: ``,
+        markup: code,
         filename: resolve(__dirname, '..', 'App.svelte'),
         attributes: { src: `./fixtures/style.css` },
       }),

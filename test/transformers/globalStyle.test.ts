@@ -6,15 +6,24 @@ describe('transformer - globalStyle', () => {
     // todo: why it isn't generating a sourcemap?
     it('adds sourceMap with { sourceMap: true }', async () => {
       const template = `<style global>div,span{color:red}.test{}</style>`;
-      const opts = autoProcess({
-        globalStyle: {
-          sourceMap: true,
-        },
-      });
 
-      const preprocessed = await preprocess(template, opts);
+      const preprocessedWithMap: any = await preprocess(
+        template,
+        autoProcess({
+          globalStyle: {
+            sourceMap: true,
+          },
+        }),
+      );
 
-      expect(preprocessed.toString()).toContain(`sourceMappingURL`);
+      const preprocessedWithoutMap: any = await preprocess(
+        template,
+        autoProcess(),
+      );
+
+      expect(preprocessedWithMap.map.mappings).not.toEqual(
+        preprocessedWithoutMap.map?.mappings,
+      );
     });
 
     it('wraps selector in :global(...) modifier', async () => {
@@ -127,15 +136,24 @@ describe('transformer - globalStyle', () => {
   describe('global selector', () => {
     it('adds sourceMap with { sourceMap: true }', async () => {
       const template = `<style>:global div{color:red}:global .test{}</style>`;
-      const opts = autoProcess({
-        globalStyle: {
-          sourceMap: true,
-        },
-      });
 
-      const preprocessed = await preprocess(template, opts);
+      const preprocessedWithMap: any = await preprocess(
+        template,
+        autoProcess({
+          globalStyle: {
+            sourceMap: true,
+          },
+        }),
+      );
 
-      expect(preprocessed.toString()).toContain(`sourceMappingURL`);
+      const preprocessedWithoutMap: any = await preprocess(
+        template,
+        autoProcess(),
+      );
+
+      expect(preprocessedWithMap.map.mappings).not.toEqual(
+        preprocessedWithoutMap.map?.mappings,
+      );
     });
 
     it('wraps selector in :global(...) modifier', async () => {

@@ -29,6 +29,7 @@ const autoProcessTS = (content: string, compilerOptions?: any) => {
 
   return opts.script({
     content,
+    markup: `<script lang="ts">${content}</script>`,
     attributes: { type: 'text/typescript' },
     filename: resolve(__dirname, '..', 'App.svelte'),
   }) as Processed & { diagnostics: Diagnostic[] };
@@ -107,7 +108,70 @@ describe('transformer - typescript', () => {
 
       const { code } = await preprocess(template, opts);
 
-      return expect(code).toContain(getFixtureContent('script.js'));
+      expect(code).toContain(getFixtureContent('script.js'));
+    });
+
+    it('should strip unused and type imports', async () => {
+      const tpl = getFixtureContent('TypeScriptImports.svelte');
+
+      const opts = sveltePreprocess({
+        typescript: { tsconfigFile: false },
+      });
+
+      const { code } = await preprocess(tpl, opts);
+
+      // Test that imports are properly preserved
+      expect(code).toContain(`import { fly } from "svelte/transition"`);
+      expect(code).toContain(`import { flip } from "svelte/animate"`);
+      expect(code).toContain(`import Nested from "./Nested.svelte"`);
+      expect(code).toContain(`import { hello } from "./script"`);
+      expect(code).toContain(`import { AValue } from "./types"`);
+      expect(code).toContain(
+        `import { storeTemplateOnly, storeScriptOnly } from "./store"`,
+      );
+      expect(code).toContain(
+        `import { onlyUsedInModuleScript } from "./modulescript";`,
+      );
+      // Test that comments are properly preserved
+      expect(code).toContain('<!-- Some comment -->');
+    });
+
+    it('should deal with empty transpilation result', async () => {
+      const tpl = getFixtureContent('TypeScriptTypesOnly.svelte');
+
+      const opts = sveltePreprocess({
+        typescript: { tsconfigFile: false },
+        sourceMap: true,
+      });
+
+      const { code } = await preprocess(tpl, opts);
+
+      expect(code).toBe(`<script lang="ts" context="module"></script>`);
+    });
+
+    it('should strip unused and type imports in context="module" tags', async () => {
+      const tpl = getFixtureContent('TypeScriptImportsModule.svelte');
+
+      const opts = sveltePreprocess({
+        typescript: { tsconfigFile: false },
+      });
+
+      const { code } = await preprocess(tpl, opts);
+
+      expect(code).toContain(`import { AValue } from "./types";`);
+    });
+
+    it('should produce sourcemap', async () => {
+      const tpl = getFixtureContent('TypeScriptImportsModule.svelte');
+
+      const opts = sveltePreprocess({
+        typescript: { tsconfigFile: false },
+        sourceMap: true,
+      });
+
+      const { map } = await preprocess(tpl, opts);
+
+      expect(map).toHaveProperty('sources', ['App.svelte']);
     });
 
     it('supports extends field', () => {
