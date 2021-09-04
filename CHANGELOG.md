@@ -1,3 +1,12 @@
+# [4.9.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.8.0...v4.9.0) (2021-09-04)
+
+
+### Features
+
+* better Typescript transpilation ([#392](https://github.com/sveltejs/svelte-preprocess/issues/392)) ([a1c54fc](https://github.com/sveltejs/svelte-preprocess/commit/a1c54fc7b0d0d21fd9adbee8aeeb8f3667b375c9))
+
+
+
 # [4.8.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.7.4...v4.8.0) (2021-08-23)
 
 
