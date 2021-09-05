@@ -1,3 +1,12 @@
+## [4.9.1](https://github.com/sveltejs/svelte-preprocess/compare/v4.9.0...v4.9.1) (2021-09-05)
+
+
+### Bug Fixes
+
+* fallback to empty string if there are no attributes ([#397](https://github.com/sveltejs/svelte-preprocess/issues/397)) ([b25838f](https://github.com/sveltejs/svelte-preprocess/commit/b25838f5b11afa8143aa59cfefa9b0881b4879cb)), closes [#396](https://github.com/sveltejs/svelte-preprocess/issues/396)
+
+
+
 # [4.9.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.8.0...v4.9.0) (2021-09-04)
 
 
