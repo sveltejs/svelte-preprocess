@@ -77,7 +77,7 @@ function getScriptContent(markup: string, module: boolean): string {
   let match: RegExpMatchArray | null;
 
   while ((match = regex.exec(markup)) !== null) {
-    const { context } = parseAttributes(match[1]);
+    const { context } = parseAttributes(match[1] || '');
 
     if ((context !== 'module' && !module) || (context === 'module' && module)) {
       return match[2];
