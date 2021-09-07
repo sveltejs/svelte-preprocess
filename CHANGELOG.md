@@ -1,3 +1,12 @@
+## [4.9.2](https://github.com/sveltejs/svelte-preprocess/compare/v4.9.1...v4.9.2) (2021-09-07)
+
+
+### Bug Fixes
+
+* relax TS peer dep requirement ([#400](https://github.com/sveltejs/svelte-preprocess/issues/400)) ([f8a0f49](https://github.com/sveltejs/svelte-preprocess/commit/f8a0f49fd02aea1fdb5c463496a5939186948cd2)), closes [#395](https://github.com/sveltejs/svelte-preprocess/issues/395)
+
+
+
 ## [4.9.1](https://github.com/sveltejs/svelte-preprocess/compare/v4.9.0...v4.9.1) (2021-09-05)
 
 
