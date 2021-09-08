@@ -1,3 +1,12 @@
+## [4.9.3](https://github.com/sveltejs/svelte-preprocess/compare/v4.9.2...v4.9.3) (2021-09-08)
+
+
+### Bug Fixes
+
+* add quotes to ts store regex ([#403](https://github.com/sveltejs/svelte-preprocess/issues/403)) ([9f2d7a0](https://github.com/sveltejs/svelte-preprocess/commit/9f2d7a07053b8f010067bf7e55d99bccb2958567)), closes [#402](https://github.com/sveltejs/svelte-preprocess/issues/402)
+
+
+
 ## [4.9.2](https://github.com/sveltejs/svelte-preprocess/compare/v4.9.1...v4.9.2) (2021-09-07)
 
 
