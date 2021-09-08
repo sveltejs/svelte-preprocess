@@ -19,7 +19,10 @@
     const obj = {
         fn: () => "test",
         val: "test1" as const,
-        $in: ""
+        $in: "",
+        a: "$",
+        b: '$',
+        c: `$`
     };
     let inputVal: string;
     const action = (node: Element, options: { id: string; }) => { node.id = options.id; };

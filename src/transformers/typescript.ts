@@ -138,7 +138,7 @@ function injectVarsToCode({
   // TODO investigate if it's possible to achieve this with a
   // TS transformer (previous attemps have failed)
   const codestores = Array.from(
-    content.match(/\$[^\s();:,[\]{}.?!+-=*/~|&%<>^]+/g) || [],
+    content.match(/\$[^\s();:,[\]{}.?!+-=*/~|&%<>^`"']+/g) || [],
     (name) => name.slice(1),
   ).filter((name) => !JAVASCRIPT_RESERVED_KEYWORD_SET.has(name));
 
