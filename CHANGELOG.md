@@ -1,3 +1,17 @@
+## [4.9.4](https://github.com/sveltejs/svelte-preprocess/compare/v4.9.3...v4.9.4) (2021-09-09)
+
+
+### Bug Fixes
+
+* handle $store imported in module script ([#404](https://github.com/sveltejs/svelte-preprocess/issues/404)) ([162faa4](https://github.com/sveltejs/svelte-preprocess/commit/162faa40949468eb07a73116740d3415775ddc9a)), closes [#401](https://github.com/sveltejs/svelte-preprocess/issues/401)
+
+
+### Performance Improvements
+
+* cache tsconfig ([#398](https://github.com/sveltejs/svelte-preprocess/issues/398)) ([5aa60cb](https://github.com/sveltejs/svelte-preprocess/commit/5aa60cb86c89c0649a548507f6d142937f76df7a)), closes [#383](https://github.com/sveltejs/svelte-preprocess/issues/383)
+
+
+
 ## [4.9.3](https://github.com/sveltejs/svelte-preprocess/compare/v4.9.2...v4.9.3) (2021-09-08)
 
 
