@@ -1,4 +1,5 @@
 <script lang="ts" context="module">
+    import { storeModuleTemplateOnly, storeModuleScriptOnly } from "./store";
     onlyUsedInModuleScript;
 </script>
 
@@ -37,6 +38,7 @@
         e.preventDefault();
     }
     $storeScriptOnly;
+    $storeModuleScriptOnly;
 </script>
 
 <style>
@@ -51,6 +53,7 @@
 </svelte:head>
 
 {$storeTemplateOnly}
+{$storeModuleTemplateOnly}
 
 <div>
     <Nested let:var1 let:var2={var3}>
