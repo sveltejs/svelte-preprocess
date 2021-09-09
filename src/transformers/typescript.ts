@@ -140,6 +140,7 @@ function injectVarsToCode({
     // Append instance script content because it's valid
     // to import a store in module script and autosubscribe to it in instance script
     (attributes?.context === 'module' ? getScriptContent(markup, false) : '');
+
   // This regex extracts all possible store variables
   // TODO investigate if it's possible to achieve this with a
   // TS transformer (previous attemps have failed)
