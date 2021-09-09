@@ -25,6 +25,11 @@ type InternalTransformerOptions = TransformerArgs<Options.Typescript> & {
 
 const injectedCodeSeparator = 'const $$$$$$$$ = null;';
 
+/**
+ * Map of valid tsconfigs (no errors). Key is the path.
+ */
+const tsconfigMap = new Map<string, any>();
+
 function createFormatDiagnosticsHost(cwd: string): ts.FormatDiagnosticsHost {
   return {
     getCanonicalFileName: (fileName: string) =>
@@ -355,6 +360,13 @@ export function loadTsconfig(
 
   basePath = dirname(tsconfigFile);
 
+  if (tsconfigMap.has(tsconfigFile)) {
+    return {
+      errors: [],
+      options: tsconfigMap.get(tsconfigFile),
+    };
+  }
+
   const { error, config } = ts.readConfigFile(tsconfigFile, ts.sys.readFile);
 
   if (error) {
@@ -374,6 +386,10 @@ export function loadTsconfig(
 
   // Filter out "no files found error"
   errors = errors.filter((d) => d.code !== 18003);
+
+  if (errors.length === 0) {
+    tsconfigMap.set(tsconfigFile, options);
+  }
 
   return { errors, options };
 }
