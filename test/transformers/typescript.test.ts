@@ -132,6 +132,9 @@ describe('transformer - typescript', () => {
       expect(code).toContain(
         `import { onlyUsedInModuleScript } from "./modulescript";`,
       );
+      expect(code).toContain(
+        `import { storeModuleTemplateOnly, storeModuleScriptOnly } from "./store";`,
+      );
       // Test that comments are properly preserved
       expect(code).toContain('<!-- Some comment -->');
     });

@@ -135,15 +135,23 @@ function injectVarsToCode({
       : v.name,
   );
 
+  const contentForCodestores =
+    content +
+    // Append instance script content because it's valid
+    // to import a store in module script and autosubscribe to it in instance script
+    (attributes?.context === 'module' ? getScriptContent(markup, false) : '');
+  // This regex extracts all possible store variables
   // TODO investigate if it's possible to achieve this with a
   // TS transformer (previous attemps have failed)
   const codestores = Array.from(
-    content.match(/\$[^\s();:,[\]{}.?!+-=*/~|&%<>^`"']+/g) || [],
+    contentForCodestores.match(/\$[^\s();:,[\]{}.?!+-=*/~|&%<>^`"']+/g) || [],
     (name) => name.slice(1),
   ).filter((name) => !JAVASCRIPT_RESERVED_KEYWORD_SET.has(name));
 
   const varsString = [...codestores, ...varnames].join(',');
   const injectedVars = `const $$vars$$ = [${varsString}];`;
+  // Append instance/markup script content because it's valid
+  // to import things in one and reference it in the other.
   const injectedCode =
     attributes?.context === 'module'
       ? `${sep}${getScriptContent(markup, false)}\n${injectedVars}`
