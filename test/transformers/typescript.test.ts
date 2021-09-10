@@ -177,6 +177,20 @@ describe('transformer - typescript', () => {
       expect(map).toHaveProperty('sources', ['App.svelte']);
     });
 
+    it('should work when tsconfig contains outDir', async () => {
+      const opts = sveltePreprocess({
+        typescript: {
+          tsconfigFile: './test/fixtures/tsconfig.outdir.json',
+          handleMixedImports: true,
+        },
+        sourceMap: true,
+      });
+
+      const preprocessed = await preprocess(template, opts);
+
+      expect(preprocessed.toString?.()).toContain(EXPECTED_SCRIPT);
+    });
+
     it('supports extends field', () => {
       const { options } = loadTsconfig({}, getTestAppFilename(), {
         tsconfigFile: './test/fixtures/tsconfig.extends1.json',
