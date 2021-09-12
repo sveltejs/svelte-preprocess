@@ -351,7 +351,7 @@ export function loadTsconfig(
     ts.findConfigFile(fileDirectory, ts.sys.fileExists);
 
   if (!tsconfigFile) {
-    return { errors: [], options: {} };
+    return { errors: [], options: compilerOptionsJSON };
   }
 
   tsconfigFile = isAbsolute(tsconfigFile)
