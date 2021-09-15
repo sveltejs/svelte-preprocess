@@ -249,24 +249,20 @@ function getCompilerOptions({
   options: Options.Typescript;
   basePath: string;
 }): CompilerOptions {
-  // default options
-  const compilerOptionsJSON = {
-    moduleResolution: 'node',
-    target: 'es6',
-  };
-
-  Object.assign(compilerOptionsJSON, options.compilerOptions);
+  const inputOptions = options.compilerOptions ?? {};
 
   const { errors, options: convertedCompilerOptions } =
     options.tsconfigFile !== false || options.tsconfigDirectory
-      ? loadTsconfig(compilerOptionsJSON, filename, options)
-      : ts.convertCompilerOptionsFromJson(compilerOptionsJSON, basePath);
+      ? loadTsconfig(inputOptions, filename, options)
+      : ts.convertCompilerOptionsFromJson(inputOptions, basePath);
 
   if (errors.length) {
     throw new Error(formatDiagnostics(errors, basePath));
   }
 
   const compilerOptions: CompilerOptions = {
+    target: ts.ScriptTarget.ES2015,
+    moduleResolution: ts.ModuleResolutionKind.NodeJs,
     ...(convertedCompilerOptions as CompilerOptions),
     importsNotUsedAsValues: ts.ImportsNotUsedAsValues.Error,
     allowNonTsExtensions: true,
