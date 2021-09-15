@@ -253,8 +253,6 @@ function getCompilerOptions({
   const compilerOptionsJSON = {
     moduleResolution: 'node',
     target: 'es6',
-    // Clear outDir since it causes source map issues when the files aren't actually written to disk.
-    outDir: undefined,
   };
 
   Object.assign(compilerOptionsJSON, options.compilerOptions);
@@ -272,6 +270,8 @@ function getCompilerOptions({
     ...(convertedCompilerOptions as CompilerOptions),
     importsNotUsedAsValues: ts.ImportsNotUsedAsValues.Error,
     allowNonTsExtensions: true,
+    // Clear outDir since it causes source map issues when the files aren't actually written to disk.
+    outDir: undefined,
   };
 
   if (
