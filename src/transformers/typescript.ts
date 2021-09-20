@@ -270,6 +270,8 @@ function getCompilerOptions({
     ...(convertedCompilerOptions as CompilerOptions),
     importsNotUsedAsValues: ts.ImportsNotUsedAsValues.Error,
     allowNonTsExtensions: true,
+    // Clear outDir since it causes source map issues when the files aren't actually written to disk.
+    outDir: undefined,
   };
 
   if (
