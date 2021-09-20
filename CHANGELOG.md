@@ -1,3 +1,13 @@
+## [4.9.5](https://github.com/sveltejs/svelte-preprocess/compare/v4.9.4...v4.9.5) (2021-09-20)
+
+
+### Bug Fixes
+
+* Clear outDir if set in tsconfig ([#406](https://github.com/sveltejs/svelte-preprocess/issues/406)) ([67f96ad](https://github.com/sveltejs/svelte-preprocess/commit/67f96ad9fcc4e0efb337d469533ff68d6189c024)), closes [#405](https://github.com/sveltejs/svelte-preprocess/issues/405)
+* return default settings when no tsconfig found ([#407](https://github.com/sveltejs/svelte-preprocess/issues/407)) ([473408b](https://github.com/sveltejs/svelte-preprocess/commit/473408b8dcec6cd1540d3fb8e05ca0b4a82ec2f5))
+
+
+
 ## [4.9.4](https://github.com/sveltejs/svelte-preprocess/compare/v4.9.3...v4.9.4) (2021-09-09)
 
 
