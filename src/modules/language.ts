@@ -85,6 +85,12 @@ export const getLanguage = (attributes: PreprocessorArgs['attributes']) => {
     }
 
     alias = attributes.lang;
+
+    if (alias === 'typescript') {
+      console.warn(
+        `[svelte-preprocess] Deprecation notice: using 'lang="typescript"' is no longer recommended and will be removed in the next major version. Please use 'lang="ts"' instead.`,
+      );
+    }
   } else if (attributes.type) {
     // istanbul ignore if
     if (typeof attributes.type !== 'string') {
