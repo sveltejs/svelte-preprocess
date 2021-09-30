@@ -1,3 +1,12 @@
+## [4.9.6](https://github.com/sveltejs/svelte-preprocess/compare/v4.9.5...v4.9.6) (2021-09-30)
+
+
+### Bug Fixes
+
+* coffeescript sourcemap ([#416](https://github.com/sveltejs/svelte-preprocess/issues/416)) ([6cc54b6](https://github.com/sveltejs/svelte-preprocess/commit/6cc54b63fd8eb42a5e2460b30bba4d7a85846958))
+
+
+
 ## [4.9.5](https://github.com/sveltejs/svelte-preprocess/compare/v4.9.4...v4.9.5) (2021-09-20)
 
 
