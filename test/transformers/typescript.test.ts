@@ -1,5 +1,6 @@
 import { resolve } from 'path';
 
+import { compile } from 'svelte/compiler';
 import type { Diagnostic } from 'typescript';
 
 import sveltePreprocess from '../../src';
@@ -201,6 +202,43 @@ describe('transformer - typescript', () => {
         skipLibCheck: false,
         esModuleInterop: true,
       });
+    });
+
+    it('should not override the target setting if one is present', async () => {
+      const tpl = getFixtureContent('TypeScriptES2021.svelte');
+
+      const opts = sveltePreprocess({
+        typescript: {
+          tsconfigFile: './test/fixtures/tsconfig.es2021target.json',
+        },
+      });
+
+      const { code } = await preprocess(tpl, opts);
+
+      expect(code).toContain('await ');
+      expect(code).toContain('async function doIt');
+      expect(code).toContain('&&=');
+      expect(code).toContain('||=');
+
+      // Svelte should be able to compile ES2021.
+      const { warnings } = compile(code, { name: 'Test' });
+
+      expect(warnings).toHaveLength(0);
+    });
+
+    it('should target ES6 if the configuration has no target setting', async () => {
+      const tpl = getFixtureContent('TypeScriptES2021.svelte');
+
+      const opts = sveltePreprocess({
+        typescript: { tsconfigFile: false },
+      });
+
+      const { code } = await preprocess(tpl, opts);
+
+      expect(code).not.toContain('await ');
+      expect(code).not.toContain('async function doIt');
+      expect(code).not.toContain('&&=');
+      expect(code).not.toContain('||=');
     });
   });
 });
