@@ -1,3 +1,12 @@
+## [4.9.7](https://github.com/sveltejs/svelte-preprocess/compare/v4.9.6...v4.9.7) (2021-09-30)
+
+
+### Bug Fixes
+
+* don't overwrite target from tsconfig.json ([#408](https://github.com/sveltejs/svelte-preprocess/issues/408)) ([11cb508](https://github.com/sveltejs/svelte-preprocess/commit/11cb5083b1c9a946ea8c0f499ccbca753908e411))
+
+
+
 ## [4.9.6](https://github.com/sveltejs/svelte-preprocess/compare/v4.9.5...v4.9.6) (2021-09-30)
 
 
