@@ -8,7 +8,7 @@
   }
 </script>
 
-<script type="text/typescript">
+<script lang="ts">
   interface Post {
     title: string
     slug: string

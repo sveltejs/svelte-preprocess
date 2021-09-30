@@ -92,6 +92,12 @@ export const getLanguage = (attributes: PreprocessorArgs['attributes']) => {
     }
 
     alias = attributes.type.replace(/^(text|application)\/(.*)$/, '$2');
+
+    if (attributes.type.includes('text/')) {
+      console.warn(
+        `[svelte-preprocess] Deprecation notice: using the "type" attribute is no longer recommended and will be removed in the next major version. Please use the "lang" attribute instead.`,
+      );
+    }
   } else if (
     typeof attributes.src === 'string' &&
     isValidLocalPath(attributes.src)

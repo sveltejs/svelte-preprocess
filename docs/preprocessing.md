@@ -70,8 +70,8 @@ The following options can be passed to the preprocessor. None are required:
 | Option          | Default                                                  | Description                                                                                                                                                                                                                                                                                                                                                                                    |
 | --------------- | -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `markupTagName` | `"template"`                                             | `string` that sets the name of the tag `svelte-preprocess` looks for markup in custom languages.<br><br>i.e `markup` makes it possible to write your markup between `<markup lang="..."></markup>` tag.                                                                                                                                                                                        |
-| `aliases`       | `null`                                                   | A list of tuples `[alias: string, language: string]` that correlates an `alias` to a `language`<br><br>i.e `['cst', 'customLanguage']` means<br>`<... src="./file.cst">`<br>`<... lang="cst">`<br>`<... type="text/customLanguage">`<br>`<... type="application/customLanguage">`<br>are treated as `customLanguage`.                                                                          |
-| preserve        | `[]`                                                     | A `string` list of languages/aliases that shouldn't pass through the preprocessor. (i.e `ld+json`)                                                                                                                                                                                                                                                                                             |
+| `aliases`       | `null`                                                   | A list of tuples `[alias: string, language: string]` that correlates an `alias` to a `language`<br><br>i.e `['cst', 'customLanguage']` means<br>`<... src="./file.cst">`<br>`<... lang="cst">`<br>are treated as `customLanguage`.                                                                          |
+| `preserve`        | `[]`                                                     | A `string` list of languages/aliases that shouldn't pass through the preprocessor. (i.e `ld+json`)                                                                                                                                                                                                                                                                                             |
 | `sourceMap`     | `false`                                                  | If `true`, `svelte-preprocess` generates sourcemap for every language that supports it.                                                                                                                                                                                                                                                                                                        |
 
 ##### Configuring preprocessors
@@ -133,7 +133,7 @@ export default {
 };
 ```
 
-Now `svelte-preprocess` will use the `potatoLanguage` preprocessor whenever it finds a tag with `lang="potato"`, `type="text/potatoLanguage"` or `src="./index.pot"`.
+Now `svelte-preprocess` will use the `potatoLanguage` preprocessor whenever it finds a tag with `lang="potato"` or `src="./index.pot"`.
 
 These methods receive the same arguments and act exactly like a [common svelte preprocessor](https://svelte.dev/docs#svelte_preprocess), but the concept of `markup`/`style`/`script` is abstracted as they are executed whenever `svelte-preprocess` find the aforementioned attributes.
 
@@ -273,7 +273,7 @@ The PostCSS preprocessor accepts four options:
 
 In auto-preprocessing mode, you can set `postcss: true` if `postcss-load-config` is installed and `svelte-preprocess` will look for a PostCSS config file in your project.
 
-When a `lang="sugarss"`/`type="text/sugarss"` is found, `sugarss` is automatically loaded and extra indentation is removed.
+When a `lang="sugarss"` is found, `sugarss` is automatically loaded and extra indentation is removed.
 
 You can check the [PostCSS API reference](https://api.postcss.org/) for PostCSS specific options.
 
@@ -356,7 +356,7 @@ You can check the [Sass API reference](https://sass-lang.com/documentation/js-ap
 
 Note: `svelte-preprocess` automatically configures inclusion paths for your root directory, `node_modules` and for the current file's directory.
 
-Note: when a `lang="sass"`/`type="text/sass"` is found, `indentedSyntax` is automatically set to `true`.
+Note: when a `lang="sass"` is found, `indentedSyntax` is automatically set to `true`.
 
 Note: `sass`, with indented syntax, and `scss` are not interchangeable so make sure to configure the correct one that fits your needs.
 
