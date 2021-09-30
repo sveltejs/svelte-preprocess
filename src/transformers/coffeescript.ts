@@ -17,10 +17,12 @@ const transformer: Transformer<Options.Coffeescript> = ({
   } as Omit<Options.Coffeescript, 'bare'>;
 
   if (coffeeOptions.sourceMap) {
-    const { js: code, sourceMap: map } = coffeescript.compile(
+    const { js: code, v3SourceMap } = coffeescript.compile(
       content,
       coffeeOptions,
     );
+
+    const map = JSON.parse(v3SourceMap);
 
     return { code, map };
   }
