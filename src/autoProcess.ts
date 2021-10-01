@@ -38,11 +38,6 @@ export const transform = async (
   const { transformer } = await import(`./transformers/${name}`);
 
   return transformer({
-    content,
-    markup,
-    filename,
-    map,
-    attributes,
     options: typeof options === 'boolean' ? null : options,
   });
 };
@@ -127,13 +122,6 @@ export function sveltePreprocess(
     targetLanguage: string,
   ): Preprocessor => async (svelteFile) => {
     let {
-      content,
-      markup,
-      filename,
-      lang,
-      alias,
-      dependencies,
-      attributes,
     } = await getTagInfo(svelteFile);
 
     if (lang == null || alias == null) {
@@ -164,10 +152,6 @@ export function sveltePreprocess(
     }
 
     const transformed = await transform(lang, transformerOptions, {
-      content,
-      markup,
-      filename,
-      attributes,
     });
 
     return {
