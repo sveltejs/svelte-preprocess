@@ -1,4 +1,4 @@
-<template type="text/pug">
+<template lang="pug">
   h1 Hello!
   br
   input(bind:value="{label}")
@@ -6,14 +6,14 @@
   Nested("{label}")
 </template>
 
-<script type="text/typescript">
+<script lang="ts">
   import Nested from './Nested.svelte'
   export let label: string = ''
 
   $: console.log(label)
 </script>
 
-<style type="text/stylus">
+<style lang="stylus">
 	h1
 		color blue
 </style>

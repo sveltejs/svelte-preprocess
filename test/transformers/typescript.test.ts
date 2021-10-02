@@ -31,7 +31,7 @@ const autoProcessTS = (content: string, compilerOptions?: any) => {
   return opts.script?.({
     content,
     markup: `<script lang="ts">${content}</script>`,
-    attributes: { type: 'text/typescript' },
+    attributes: { lang: 'ts' },
     filename: resolve(__dirname, '..', 'App.svelte'),
   }) as Processed & { diagnostics: Diagnostic[] };
 };

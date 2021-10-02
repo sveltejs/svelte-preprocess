@@ -3,6 +3,10 @@ import { basename } from 'path';
 import type { PreprocessorArgs } from '../types';
 import { isValidLocalPath } from './utils';
 
+// todo: remove on v5
+let hasLoggedDeprecatedLangTypescriptWarning = false;
+let hasLoggedDeprecatedTypeWarning = false;
+
 const LANGUAGE_DEFAULTS: Record<string, any> = {
   sass: {
     indentedSyntax: true,
@@ -85,6 +89,13 @@ export const getLanguage = (attributes: PreprocessorArgs['attributes']) => {
     }
 
     alias = attributes.lang;
+
+    if (alias === 'typescript' && !hasLoggedDeprecatedLangTypescriptWarning) {
+      hasLoggedDeprecatedLangTypescriptWarning = true;
+      console.warn(
+        `[svelte-preprocess] Deprecation notice: using 'lang="typescript"' is no longer recommended and will be removed in the next major version. Please use 'lang="ts"' instead.`,
+      );
+    }
   } else if (attributes.type) {
     // istanbul ignore if
     if (typeof attributes.type !== 'string') {
@@ -92,6 +103,13 @@ export const getLanguage = (attributes: PreprocessorArgs['attributes']) => {
     }
 
     alias = attributes.type.replace(/^(text|application)\/(.*)$/, '$2');
+
+    if (attributes.type.includes('text/') && !hasLoggedDeprecatedTypeWarning) {
+      hasLoggedDeprecatedTypeWarning = true;
+      console.warn(
+        `[svelte-preprocess] Deprecation notice: using the "type" attribute is no longer recommended and will be removed in the next major version. Please use the "lang" attribute instead.`,
+      );
+    }
   } else if (
     typeof attributes.src === 'string' &&
     isValidLocalPath(attributes.src)
