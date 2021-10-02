@@ -33,7 +33,7 @@ export function getIncludePaths(fromFilename?: string, base: string[] = []) {
   ];
 }
 
-const cachedResult: Record<string, boolean> = {};
+const depCheckCache: Record<string, boolean> = {};
 
 /**
  * Checks if a package is installed.
@@ -43,8 +43,8 @@ const cachedResult: Record<string, boolean> = {};
  * @returns boolean
  */
 export async function hasDepInstalled(dep: string) {
-  if (cachedResult[dep] != null) {
-    return cachedResult[dep];
+  if (depCheckCache[dep] != null) {
+    return depCheckCache[dep];
   }
 
   let result = false;
@@ -57,7 +57,7 @@ export async function hasDepInstalled(dep: string) {
     result = false;
   }
 
-  return (cachedResult[dep] = result);
+  return (depCheckCache[dep] = result);
 }
 
 const REMOTE_SRC_PATTERN = /^(https?:)?\/\//;
