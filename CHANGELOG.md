@@ -1,3 +1,12 @@
+## [4.9.8](https://github.com/sveltejs/svelte-preprocess/compare/v4.9.7...v4.9.8) (2021-10-02)
+
+
+### Bug Fixes
+
+* deprecate type attribute ([#417](https://github.com/sveltejs/svelte-preprocess/issues/417)) ([2632a88](https://github.com/sveltejs/svelte-preprocess/commit/2632a88d380a14843393d5246f471a8c6446a3b5))
+
+
+
 ## [4.9.7](https://github.com/sveltejs/svelte-preprocess/compare/v4.9.6...v4.9.7) (2021-09-30)
 
 
