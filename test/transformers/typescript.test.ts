@@ -140,6 +140,23 @@ describe('transformer - typescript', () => {
       expect(code).toContain('<!-- Some comment -->');
     });
 
+    it('should keep all value imports with preserveValueImports', async () => {
+      const tpl = getFixtureContent('PreserveValueImports.svelte');
+
+      const opts = sveltePreprocess({
+        typescript: {
+          tsconfigFile: false,
+          compilerOptions: { preserveValueImports: true },
+        },
+      });
+
+      const { code } = await preprocess(tpl, opts);
+      expect(code).toContain("import { Bar } from './somewhere'");
+      expect(code).toContain("import Component from './component.svelte'");
+      expect(code).toContain("import { Value } from './value'");
+      expect(code).not.toContain("'./type'");
+    });
+
     it('should deal with empty transpilation result', async () => {
       const tpl = getFixtureContent('TypeScriptTypesOnly.svelte');
 
