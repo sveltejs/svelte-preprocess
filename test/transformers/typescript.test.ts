@@ -151,6 +151,7 @@ describe('transformer - typescript', () => {
       });
 
       const { code } = await preprocess(tpl, opts);
+
       expect(code).toContain("import { Bar } from './somewhere'");
       expect(code).toContain("import Component from './component.svelte'");
       expect(code).toContain("import { Value } from './value'");
