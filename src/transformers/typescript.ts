@@ -466,7 +466,11 @@ async function simpleTranspiler({
 }: InternalTransformerOptions) {
   const { transpiledCode, sourceMapText, diagnostics } = transpileTs({
     code: content,
-    transformers: { before: [importTransformer] },
+    // `preserveValueImports` essentially does the same as our import transformer,
+    // keeping all imports that are not type imports
+    transformers: compilerOptions.preserveValueImports
+      ? undefined
+      : { before: [importTransformer] },
     fileName: filename,
     basePath,
     options,
@@ -505,9 +509,10 @@ const transformer: Transformer<Options.Typescript> = async ({
   }
 
   const handleMixedImports =
-    options.handleMixedImports === false
+    !compilerOptions.preserveValueImports &&
+    (options.handleMixedImports === false
       ? false
-      : options.handleMixedImports || canUseMixedImportsTranspiler;
+      : options.handleMixedImports || canUseMixedImportsTranspiler);
 
   return handleMixedImports
     ? mixedImportsTranspiler({
