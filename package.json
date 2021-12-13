@@ -20,6 +20,9 @@
   "engines": {
     "node": ">= 9.11.2"
   },
+  "volta": {
+    "node": "14.18.2"
+  },
   "files": [
     "dist/"
   ],
