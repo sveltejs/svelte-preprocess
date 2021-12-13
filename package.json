@@ -32,6 +32,9 @@
     "format": "prettier --write \"**/*.{ts,js,json}\"",
     "postinstall": "echo \"[svelte-preprocess] Don't forget to install the preprocessors packages that will be used: node-sass/sass, stylus, less, postcss & postcss-load-config, coffeescript, pug, etc...\"",
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 1 && git add CHANGELOG.md",
+    "patch": "npm version patch -m 'chore(release): %s'",
+    "minor": "npm version minor -m 'chore(release): %s'",
+    "major": "npm version major -m 'chore(release): %s'",
     "prepublishOnly": "npm run test && npm run build"
   },
   "jest": {
