@@ -2,9 +2,10 @@
 import { readFile, access } from 'fs';
 import { resolve, dirname } from 'path';
 
-import type { PreprocessorArgs } from '../types';
 import { getLanguage } from './language';
 import { isValidLocalPath } from './utils';
+
+import type { PreprocessorArgs } from '../types';
 
 const resolveSrc = (importerFile: string, srcPath: string) =>
   resolve(dirname(importerFile), srcPath);

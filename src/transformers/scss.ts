@@ -1,9 +1,9 @@
 import { readFileSync } from 'fs';
 import { join, isAbsolute } from 'path';
 
-import type { Importer, Result } from 'sass';
-
 import { getIncludePaths, importAny, findUp } from '../modules/utils';
+
+import type { Importer, Result } from 'sass';
 import type { Transformer, Processed, Options } from '../types';
 
 let sass: Options.Sass['implementation'];

@@ -1,6 +1,7 @@
-import type { Options, PreprocessorGroup } from '../types/index';
 import { prepareContent } from '../modules/prepareContent';
 import { transformMarkup } from '../modules/markup';
+
+import type { Options, PreprocessorGroup } from '../types/index';
 
 export default (options?: Options.Pug): PreprocessorGroup => ({
   async markup({ content, filename }) {

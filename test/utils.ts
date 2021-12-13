@@ -6,7 +6,8 @@ import {
   preprocess as sveltePreprocess,
 } from 'svelte/compiler';
 
-export const CSS_PATTERN = /div(\.svelte-\w{4,7})?\s*\{\s*color:\s*(red|#f00);?\s*\}/;
+export const CSS_PATTERN =
+  /div(\.svelte-\w{4,7})?\s*\{\s*color:\s*(red|#f00);?\s*\}/;
 
 export const getTestAppFilename = () => resolve(__dirname, 'App.svelte');
 

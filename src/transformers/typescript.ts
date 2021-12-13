@@ -2,14 +2,16 @@ import { dirname, isAbsolute, join, resolve } from 'path';
 
 import ts from 'typescript';
 import { compile } from 'svelte/compiler';
-import pkg from 'svelte/package.json';
 import MagicString from 'magic-string';
 import sorcery from 'sorcery';
 
 import { throwTypescriptError } from '../modules/errors';
 import { createTagRegex, parseAttributes, stripTags } from '../modules/markup';
-import type { Transformer, Options, TransformerArgs } from '../types';
 import { JAVASCRIPT_RESERVED_KEYWORD_SET } from '../modules/utils';
+
+import pkg from 'svelte/package.json';
+
+import type { Transformer, Options, TransformerArgs } from '../types';
 
 type CompilerOptions = ts.CompilerOptions;
 

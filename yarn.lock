@@ -1423,12 +1423,12 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
-"@kiwi/eslint-config@^1.16.6":
-  version "1.18.0"
-  resolved "https://registry.yarnpkg.com/@kiwi/eslint-config/-/eslint-config-1.18.0.tgz#4e31455fca03ae5b041f123888c30e5ec4eb8b5b"
-  integrity sha512-tAUHS5Kal0RoJnCvgD/zBbHAT9YdYWPrre29yoCo5OysXjn+lDjq2B/1tcK2YehVpvQk07vnrKot2IAgKOpjsg==
+"@kiwi/eslint-config@^1.18.1":
+  version "1.18.1"
+  resolved "https://registry.yarnpkg.com/@kiwi/eslint-config/-/eslint-config-1.18.1.tgz#b63accfb8c6e4f18c4518e9db5d0efff59a8e16d"
+  integrity sha512-IavbxUs4XNg9Ov3QgzfCZfDBM3SfdM0BVp9FgCHo7H1TQ8uN+hLDSCw5588T7uUCFWlAmv18/q4F59lOd+iILg==
   dependencies:
-    "@kiwi/eslint-plugin" "^1.18.0"
+    "@kiwi/eslint-plugin" "^1.18.1"
     "@typescript-eslint/eslint-plugin" "^4.31.2"
     "@typescript-eslint/parser" "^4.31.2"
     confusing-browser-globals "^1.0.10"
@@ -1443,15 +1443,15 @@
     eslint-plugin-react-hooks "^4.2.0"
     eslint-plugin-svelte3 "^3.2.1"
 
-"@kiwi/eslint-plugin@^1.18.0":
-  version "1.18.0"
-  resolved "https://registry.yarnpkg.com/@kiwi/eslint-plugin/-/eslint-plugin-1.18.0.tgz#bb58bc7ee930d804497151608d640ce9f26f339c"
-  integrity sha512-zKonD6p3mGAqolOCe7yXqG5OhsWNqVEBfftqM0JkXbhxqBhpZixZTCsoOHgbmaLiXJmmvCJWOS5pJepMmXIyyA==
+"@kiwi/eslint-plugin@^1.18.1":
+  version "1.18.1"
+  resolved "https://registry.yarnpkg.com/@kiwi/eslint-plugin/-/eslint-plugin-1.18.1.tgz#4322b978bd7566cb1851202477cfaa7f8ca1ad30"
+  integrity sha512-/x+E04ZhaexW54RKC1eh1m6FWhw4i1Yn98H0dDguFndvaECyTgBKG/IaXRj72OwhpgOFGFVU6mjHMkVPd7BMjQ==
 
-"@kiwi/prettier-config@^1.16.6":
-  version "1.18.0"
-  resolved "https://registry.yarnpkg.com/@kiwi/prettier-config/-/prettier-config-1.18.0.tgz#06e8982f2cee99283d66b3169abf53b6b579cd9d"
-  integrity sha512-zqV40BEh+8fn6Y7ywWXSkApo149R6JQiDHE4Wzo69hXHM0a5bVt8fNojdMO7cetAHz9KuBZH1PkxJ49kxAxN4A==
+"@kiwi/prettier-config@^1.18.1":
+  version "1.18.1"
+  resolved "https://registry.yarnpkg.com/@kiwi/prettier-config/-/prettier-config-1.18.1.tgz#21fcf1ab1b81a11c07763f094c91061704a4b476"
+  integrity sha512-aiLIYUxsTfXkKxXi+3XllrIW+PTpgIKqWFmmd/1CwfqeFbNCFaBFZeNj3NOqSKgcVmkAeqYoFOD+fgJbI5mqEA==
 
 "@nodelib/fs.scandir@2.1.3":
   version "2.1.3"

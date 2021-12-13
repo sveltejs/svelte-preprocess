@@ -1,17 +1,18 @@
 import { resolve } from 'path';
 
 import { compile } from 'svelte/compiler';
-import type { Diagnostic } from 'typescript';
 
 import sveltePreprocess from '../../src';
 import { loadTsconfig } from '../../src/transformers/typescript';
-import type { Processed } from '../../src/types';
 import {
   preprocess,
   getFixtureContent,
   spyConsole,
   getTestAppFilename,
 } from '../utils';
+
+import type { Processed } from '../../src/types';
+import type { Diagnostic } from 'typescript';
 
 spyConsole({ silent: true });
 

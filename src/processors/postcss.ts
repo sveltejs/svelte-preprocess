@@ -1,7 +1,8 @@
-import type { PreprocessorGroup, Options } from '../types';
 import { getTagInfo } from '../modules/tagInfo';
 import { concat } from '../modules/utils';
 import { prepareContent } from '../modules/prepareContent';
+
+import type { PreprocessorGroup, Options } from '../types';
 
 /** Adapted from https://github.com/TehShrike/svelte-preprocess-postcss */
 export default (options?: Options.Postcss): PreprocessorGroup => ({

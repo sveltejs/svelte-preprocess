@@ -1,13 +1,14 @@
 import { resolve } from 'path';
 
 import sveltePreprocess from '../../src';
-import type { AutoPreprocessGroup } from '../../src/types';
 import {
   preprocess,
   getFixtureContent,
   getFixturePath,
   spyConsole,
 } from '../utils';
+
+import type { AutoPreprocessGroup } from '../../src/types';
 
 const { warnSpy } = spyConsole({ silent: true });
 

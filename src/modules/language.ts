@@ -1,7 +1,8 @@
 import { basename } from 'path';
 
-import type { PreprocessorArgs } from '../types';
 import { isValidLocalPath } from './utils';
+
+import type { PreprocessorArgs } from '../types';
 
 // todo: remove on v5
 let hasLoggedDeprecatedLangTypescriptWarning = false;
