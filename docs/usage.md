@@ -5,7 +5,7 @@
 <!-- code_chunk_output -->
 
 - [With Svelte VS Code](#with-svelte-config)
-- [With Svelte Kit](#with-svelte-config)
+- [With SvelteKit](#with-svelte-config)
 - [With `rollup-plugin-svelte`](#with-rollup-plugin-svelte)
 - [With `svelte-loader`](#with-svelte-loader)
 - [With Sapper](#with-sapper)
