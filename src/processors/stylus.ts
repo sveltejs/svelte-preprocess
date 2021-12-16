@@ -6,13 +6,8 @@ import { prepareContent } from '../modules/prepareContent';
 export default (options?: Options.Stylus): PreprocessorGroup => ({
   async style(svelteFile) {
     const { transformer } = await import('../transformers/stylus');
-    let {
-      content,
-      filename,
-      attributes,
-      lang,
-      dependencies,
-    } = await getTagInfo(svelteFile);
+    let { content, filename, attributes, lang, dependencies } =
+      await getTagInfo(svelteFile);
 
     if (lang !== 'stylus') {
       return { code: content };

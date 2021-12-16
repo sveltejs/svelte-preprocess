@@ -39,6 +39,11 @@
     }
     $storeScriptOnly;
     $storeModuleScriptOnly;
+
+    // These shouldn't count as store values:
+    // $\\; $$; $§; $%; $°; $(; $); $[; $]; $<; $>; $ ; $^; $`; $"; $';
+    // These don't need to be tested explicitly, the test will throw and error
+    // at the TypeScript parsing stage if they are part of the false positives
 </script>
 
 <style>

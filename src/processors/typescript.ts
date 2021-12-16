@@ -6,14 +6,8 @@ import { prepareContent } from '../modules/prepareContent';
 export default (options?: Options.Typescript): PreprocessorGroup => ({
   async script(svelteFile) {
     const { transformer } = await import('../transformers/typescript');
-    let {
-      content,
-      markup,
-      filename,
-      attributes,
-      lang,
-      dependencies,
-    } = await getTagInfo(svelteFile);
+    let { content, markup, filename, attributes, lang, dependencies } =
+      await getTagInfo(svelteFile);
 
     if (lang !== 'typescript') {
       return { code: content };

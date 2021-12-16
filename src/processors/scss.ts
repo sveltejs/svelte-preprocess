@@ -6,14 +6,8 @@ import { prepareContent } from '../modules/prepareContent';
 export default (options?: Options.Sass): PreprocessorGroup => ({
   async style(svelteFile) {
     const { transformer } = await import('../transformers/scss');
-    let {
-      content,
-      filename,
-      attributes,
-      lang,
-      alias,
-      dependencies,
-    } = await getTagInfo(svelteFile);
+    let { content, filename, attributes, lang, alias, dependencies } =
+      await getTagInfo(svelteFile);
 
     if (alias === 'sass') {
       options = {

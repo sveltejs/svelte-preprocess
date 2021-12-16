@@ -122,59 +122,54 @@ export function sveltePreprocess(
     return resolveLanguageArgs(lang, alias);
   }
 
-  const getTransformerTo = (
-    type: 'markup' | 'script' | 'style',
-    targetLanguage: string,
-  ): Preprocessor => async (svelteFile) => {
-    let {
-      content,
-      markup,
-      filename,
-      lang,
-      alias,
-      dependencies,
-      attributes,
-    } = await getTagInfo(svelteFile);
+  const getTransformerTo =
+    (
+      type: 'markup' | 'script' | 'style',
+      targetLanguage: string,
+    ): Preprocessor =>
+    async (svelteFile) => {
+      let { content, markup, filename, lang, alias, dependencies, attributes } =
+        await getTagInfo(svelteFile);
 
-    if (lang == null || alias == null) {
-      alias = defaultLanguages[type];
-      lang = getLanguageFromAlias(alias);
-    }
-
-    if ((lang && preserve.includes(lang)) || preserve.includes(alias)) {
-      return { code: content };
-    }
-
-    const transformerOptions = getTransformerOptions(lang, alias);
-
-    content = prepareContent({
-      options: transformerOptions,
-      content,
-    });
-
-    if (lang === targetLanguage) {
-      // has override method for alias
-      // example: sugarss override should work apart from postcss
-      if (typeof transformerOptions === 'function' && alias !== lang) {
-        return transformerOptions({ content, filename, attributes });
+      if (lang == null || alias == null) {
+        alias = defaultLanguages[type];
+        lang = getLanguageFromAlias(alias);
       }
 
-      // otherwise, we're done here
-      return { code: content, dependencies };
-    }
+      if ((lang && preserve.includes(lang)) || preserve.includes(alias)) {
+        return { code: content };
+      }
 
-    const transformed = await transform(lang, transformerOptions, {
-      content,
-      markup,
-      filename,
-      attributes,
-    });
+      const transformerOptions = getTransformerOptions(lang, alias);
 
-    return {
-      ...transformed,
-      dependencies: concat(dependencies, transformed.dependencies),
+      content = prepareContent({
+        options: transformerOptions,
+        content,
+      });
+
+      if (lang === targetLanguage) {
+        // has override method for alias
+        // example: sugarss override should work apart from postcss
+        if (typeof transformerOptions === 'function' && alias !== lang) {
+          return transformerOptions({ content, filename, attributes });
+        }
+
+        // otherwise, we're done here
+        return { code: content, dependencies };
+      }
+
+      const transformed = await transform(lang, transformerOptions, {
+        content,
+        markup,
+        filename,
+        attributes,
+      });
+
+      return {
+        ...transformed,
+        dependencies: concat(dependencies, transformed.dependencies),
+      };
     };
-  };
 
   const scriptTransformer = getTransformerTo('script', 'javascript');
   const cssTransformer = getTransformerTo('style', 'css');
