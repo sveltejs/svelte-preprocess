@@ -2,14 +2,16 @@ import { dirname, isAbsolute, join, resolve } from 'path';
 
 import ts from 'typescript';
 import { compile } from 'svelte/compiler';
-import pkg from 'svelte/package.json';
 import MagicString from 'magic-string';
 import sorcery from 'sorcery';
 
 import { throwTypescriptError } from '../modules/errors';
 import { createTagRegex, parseAttributes, stripTags } from '../modules/markup';
-import type { Transformer, Options, TransformerArgs } from '../types';
 import { JAVASCRIPT_RESERVED_KEYWORD_SET } from '../modules/utils';
+
+import pkg from 'svelte/package.json';
+
+import type { Transformer, Options, TransformerArgs } from '../types';
 
 type CompilerOptions = ts.CompilerOptions;
 
@@ -467,7 +469,11 @@ async function simpleTranspiler({
 }: InternalTransformerOptions) {
   const { transpiledCode, sourceMapText, diagnostics } = transpileTs({
     code: content,
-    transformers: { before: [importTransformer] },
+    // `preserveValueImports` essentially does the same as our import transformer,
+    // keeping all imports that are not type imports
+    transformers: compilerOptions.preserveValueImports
+      ? undefined
+      : { before: [importTransformer] },
     fileName: filename,
     basePath,
     options,
@@ -506,9 +512,10 @@ const transformer: Transformer<Options.Typescript> = async ({
   }
 
   const handleMixedImports =
-    options.handleMixedImports === false
+    !compilerOptions.preserveValueImports &&
+    (options.handleMixedImports === false
       ? false
-      : options.handleMixedImports || canUseMixedImportsTranspiler;
+      : options.handleMixedImports || canUseMixedImportsTranspiler);
 
   return handleMixedImports
     ? mixedImportsTranspiler({

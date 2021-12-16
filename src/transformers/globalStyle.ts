@@ -1,8 +1,9 @@
 import postcss from 'postcss';
-import type * as pcss from 'postcss';
 
-import type { Transformer, Options } from '../types';
 import { globalifySelector } from '../modules/globalifySelector';
+
+import type * as pcss from 'postcss';
+import type { Transformer, Options } from '../types';
 
 const selectorPattern = /:global(?!\()/;
 

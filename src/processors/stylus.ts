@@ -1,7 +1,8 @@
-import type { Options, PreprocessorGroup } from '../types';
 import { getTagInfo } from '../modules/tagInfo';
 import { concat } from '../modules/utils';
 import { prepareContent } from '../modules/prepareContent';
+
+import type { Options, PreprocessorGroup } from '../types';
 
 export default (options?: Options.Stylus): PreprocessorGroup => ({
   async style(svelteFile) {

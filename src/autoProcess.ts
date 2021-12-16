@@ -1,13 +1,3 @@
-import type {
-  AutoPreprocessGroup,
-  AutoPreprocessOptions,
-  PreprocessorGroup,
-  Preprocessor,
-  Processed,
-  TransformerArgs,
-  TransformerOptions,
-  Transformers,
-} from './types';
 import { hasDepInstalled, concat, setProp } from './modules/utils';
 import { getTagInfo } from './modules/tagInfo';
 import {
@@ -20,6 +10,17 @@ import {
 } from './modules/language';
 import { prepareContent } from './modules/prepareContent';
 import { transformMarkup } from './modules/markup';
+
+import type {
+  AutoPreprocessGroup,
+  AutoPreprocessOptions,
+  PreprocessorGroup,
+  Preprocessor,
+  Processed,
+  TransformerArgs,
+  TransformerOptions,
+  Transformers,
+} from './types';
 
 export const transform = async (
   name: string | null | undefined,

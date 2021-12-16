@@ -1,7 +1,8 @@
-import type { PreprocessorGroup, Options } from '../types';
 import { concat } from '../modules/utils';
 import { getTagInfo } from '../modules/tagInfo';
 import { prepareContent } from '../modules/prepareContent';
+
+import type { PreprocessorGroup, Options } from '../types';
 
 export default (options?: Options.Babel): PreprocessorGroup => ({
   async script(svelteFile) {

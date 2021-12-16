@@ -1,3 +1,12 @@
+# [4.10.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.9.8...v4.10.0) (2021-12-13)
+
+
+### Features
+
+* support preserveValueImports introduced in TS 4.5 ([#434](https://github.com/sveltejs/svelte-preprocess/issues/434)) ([4ea9982](https://github.com/sveltejs/svelte-preprocess/commit/4ea9982249df9858439bb3588224e804107f0986))
+
+
+
 ## [4.9.8](https://github.com/sveltejs/svelte-preprocess/compare/v4.9.7...v4.9.8) (2021-10-02)
 
 

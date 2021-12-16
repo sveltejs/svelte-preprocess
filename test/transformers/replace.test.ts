@@ -1,5 +1,6 @@
 import autoProcess from '../../src';
 import { preprocess } from '../utils';
+
 import type { Options } from '../../src/types';
 
 const options: Options.Replace = [
