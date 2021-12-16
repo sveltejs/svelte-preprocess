@@ -167,15 +167,13 @@ function injectVarsToCode({
       : `${sep}${getScriptContent(markup, true)}\n${injectedVars}`;
 
   if (sourceMapChain) {
-    const s = new MagicString(content);
-
-    s.append(injectedCode);
-
+    const ms = new MagicString(content).append(injectedCode);
     const fname = `${filename}.injected.ts`;
-    const code = s.toString();
-    const map = s.generateMap({
+    const code = ms.toString();
+    const map = ms.generateMap({
       source: filename,
       file: fname,
+      hires: true,
     });
 
     sourceMapChain.content[fname] = code;
@@ -203,15 +201,14 @@ function stripInjectedCode({
   const injectedCodeStart = transpiledCode.indexOf(injectedCodeSeparator);
 
   if (sourceMapChain) {
-    const s = new MagicString(transpiledCode);
-    const st = s.snip(0, injectedCodeStart);
-
+    const ms = new MagicString(transpiledCode).snip(0, injectedCodeStart);
     const source = `${filename}.transpiled.js`;
     const file = `${filename}.js`;
-    const code = st.toString();
-    const map = st.generateMap({
+    const code = ms.toString();
+    const map = ms.generateMap({
       source,
       file,
+      hires: true,
     });
 
     sourceMapChain.content[file] = code;
