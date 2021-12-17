@@ -1,3 +1,13 @@
+## [4.10.1](https://github.com/sveltejs/svelte-preprocess/compare/v4.10.0...v4.10.1) (2021-12-17)
+
+
+### Bug Fixes
+
+* adjust store regex ([#441](https://github.com/sveltejs/svelte-preprocess/issues/441)) ([85a86c8](https://github.com/sveltejs/svelte-preprocess/commit/85a86c86513f98c2b02f2d314a18b0e68378c8f6)), closes [#433](https://github.com/sveltejs/svelte-preprocess/issues/433)
+* generate high resolution source map ([#443](https://github.com/sveltejs/svelte-preprocess/issues/443)) ([57012ba](https://github.com/sveltejs/svelte-preprocess/commit/57012ba9f87abfec99f061196fb955da4ccfa384))
+
+
+
 # [4.10.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.9.8...v4.10.0) (2021-12-13)
 
 
