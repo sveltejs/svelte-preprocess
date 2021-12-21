@@ -316,6 +316,8 @@ This is also necessary to pass callbacks:
 button(on:click!="{(e) => doTheThing(e)}")
 ```
 
+It is not possible to use template literals for attribute values. You can't write `` attr=`Hello ${value ? 'Foo' : 'Bar'} ``, instead write `attr="Hello {value ? 'Foo' : 'Bar'}"`.
+
 **Spreading props:**
 
 To spread props into a pug element, wrap the `{...object}` expression with quotes `"`.
