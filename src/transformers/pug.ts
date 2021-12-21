@@ -65,15 +65,28 @@ const transformer: Transformer<Options.Pug> = async ({
   };
 
   const { type: identationType } = detectIndent(content);
-  const code = `${GET_MIXINS(identationType ?? 'space')}\n${content}`;
+  const input = `${GET_MIXINS(identationType ?? 'space')}\n${content}`;
   const compiled = pug.compile(
-    code,
+    input,
     pugOptions,
     // @types/pug compile() returned value doesn't have `dependencies` prop
   ) as pug.compileTemplate & { dependencies?: string[] };
 
+  let code: string;
+
+  try {
+    code = compiled();
+  } catch (e) {
+    // The error message does not have much context, add more of it
+    if (e instanceof Error) {
+      e.message = `[svelte-preprocess] Pug error while preprocessing ${filename}\n\n${e.message}`;
+    }
+
+    throw e;
+  }
+
   return {
-    code: compiled(),
+    code,
     dependencies: compiled.dependencies ?? [],
   };
 };
