@@ -40,4 +40,37 @@ $: bar = foo?.b ?? 120
       $: bar = (_foo$b = foo == null ? void 0 : foo.b) != null ? _foo$b : 120;</script>"
     `);
   });
+
+  it('should not transpile modules with preset-env', async () => {
+    const template = `<script>
+import foo from './foo'
+$: bar = foo?.b ?? 120
+</script>`;
+
+    const opts = sveltePreprocess({
+      babel: {
+        presets: [
+          [
+            '@babel/preset-env',
+            {
+              loose: true,
+              targets: {
+                esmodules: true,
+              },
+            },
+          ],
+        ],
+      },
+    });
+
+    const preprocessed = await preprocess(template, opts);
+
+    expect(preprocessed.code).toMatchInlineSnapshot(`
+      "<script>var _foo$b;
+
+      import foo from './foo';
+
+      $: bar = (_foo$b = foo == null ? void 0 : foo.b) != null ? _foo$b : 120;</script>"
+    `);
+  });
 });

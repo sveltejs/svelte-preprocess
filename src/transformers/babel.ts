@@ -20,6 +20,14 @@ const transformer: Transformer<Options.Babel> = async ({
     minified: false,
     ast: false,
     code: true,
+    caller: {
+      name: 'svelte-preprocess',
+      supportsStaticESM: true,
+      supportsDynamicImport: true,
+      supportsTopLevelAwait: true,
+      supportsExportNamespaceFrom: true,
+      ...options?.caller,
+    },
   } as TransformOptions;
 
   const result = await transformAsync(content, babelOptions);
