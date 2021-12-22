@@ -25,7 +25,9 @@ const transformer: Transformer<Options.Babel> = async ({
       supportsStaticESM: true,
       supportsDynamicImport: true,
       supportsTopLevelAwait: true,
-      supportsExportNamespaceFrom: true,
+      // this can be enabled once all "peer deps" understand this
+      // this syntax is supported since rollup@1.26.0 and webpack@5.0.0-beta.21
+      // supportsExportNamespaceFrom: true,
       ...options?.caller,
     },
   } as TransformOptions;
