@@ -41,7 +41,7 @@ $: bar = foo?.b ?? 120
     `);
   });
 
-  it('should not transpile modules with preset-env', async () => {
+  it('should not transpile import/export syntax with preset-env', async () => {
     const template = `<script>
 import foo from './foo'
 $: bar = foo?.b ?? 120
