@@ -129,7 +129,7 @@ describe('transformer - typescript', () => {
       expect(code).toContain(`import { hello } from "./script"`);
       expect(code).toContain(`import { AValue } from "./types"`);
       expect(code).toContain(
-        `import { storeTemplateOnly, storeScriptOnly } from "./store"`,
+        `import { storeTemplateOnly, storeScriptOnly, store0 } from "./store"`,
       );
       expect(code).toContain(
         `import { onlyUsedInModuleScript } from "./modulescript";`,

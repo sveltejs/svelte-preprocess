@@ -10,7 +10,7 @@
     import Nested from "./Nested.svelte";
     import { hello } from "./script";
     import { AValue, AType } from "./types";
-    import { storeTemplateOnly, storeScriptOnly } from "./store";
+    import { storeTemplateOnly, storeScriptOnly, store0 } from "./store";
     import { onlyUsedInModuleScript } from "./modulescript";
     const ui = { MyNested: Nested };
     const val: AType = "test1";
@@ -39,6 +39,7 @@
     }
     $storeScriptOnly;
     $storeModuleScriptOnly;
+    $store0;
 
     // These shouldn't count as store values:
     // $\\; $$; $§; $%; $°; $(; $); $[; $]; $<; $>; $ ; $^; $`; $"; $';
