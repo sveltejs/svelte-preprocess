@@ -1,3 +1,15 @@
+## [4.10.2](https://github.com/sveltejs/svelte-preprocess/compare/v4.10.1...v4.10.2) (2022-01-17)
+
+
+### Bug Fixes
+
+* accept less v4 as peer dep ([#455](https://github.com/sveltejs/svelte-preprocess/issues/455)) ([fbc484a](https://github.com/sveltejs/svelte-preprocess/commit/fbc484a6d0394928c1318b70dfe007fed1d9fdac))
+* better pug error message ([#448](https://github.com/sveltejs/svelte-preprocess/issues/448)) ([a239e82](https://github.com/sveltejs/svelte-preprocess/commit/a239e829295bde5f62383697266cefe7767dd0e2)), closes [#447](https://github.com/sveltejs/svelte-preprocess/issues/447)
+* provide caller information to Babel ([#449](https://github.com/sveltejs/svelte-preprocess/issues/449)) ([51007ab](https://github.com/sveltejs/svelte-preprocess/commit/51007abf946ffdd1d407c6bcf86439d38e113626))
+* ts preprocessor - consider store suffixed with number ([#461](https://github.com/sveltejs/svelte-preprocess/issues/461)) ([a7a94cf](https://github.com/sveltejs/svelte-preprocess/commit/a7a94cfb29f6ea85cfafd1afa2c61363f72cb4b3)), closes [sveltejs/svelte#7120](https://github.com/sveltejs/svelte/issues/7120)
+
+
+
 ## [4.10.1](https://github.com/sveltejs/svelte-preprocess/compare/v4.10.0...v4.10.1) (2021-12-17)
 
 
