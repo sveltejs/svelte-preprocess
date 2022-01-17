@@ -26,7 +26,7 @@ const transformer: Transformer<Options.Babel> = async ({
       supportsDynamicImport: true,
       // this isn't supported by Svelte but let it error with a good error on this syntax untouched
       supportsTopLevelAwait: true,
-      // this can be enabled once all "peer deps" understand this
+      // todo: this can be enabled once all "peer deps" understand this
       // this syntax is supported since rollup@1.26.0 and webpack@5.0.0-beta.21
       // supportsExportNamespaceFrom: true,
       ...options?.caller,
