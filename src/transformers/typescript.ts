@@ -153,7 +153,7 @@ function injectVarsToCode({
   // TS transformer (previous attemps have failed)
   const codestores = Array.from(
     contentForCodestores.match(
-      /\$[^\s();:,[\]{}.?!+\-=*/\\~|&%<>^`"'°§#1-9][^\s();:,[\]{}.?!+\-=*/\\~|&%<>^`"'°§#]*/g,
+      /\$[^\s();:,[\]{}.?!+\-=*/\\~|&%<>^`"'°§#0-9][^\s();:,[\]{}.?!+\-=*/\\~|&%<>^`"'°§#]*/g,
     ) || [],
     (name) => name.slice(1),
   ).filter((name) => !JAVASCRIPT_RESERVED_KEYWORD_SET.has(name));
