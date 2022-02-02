@@ -23,7 +23,13 @@
         $in: "",
         a: "$",
         b: '$',
-        c: `$`
+        c: `$`,
+        d: "$#",
+        e: '$#',
+        f: `$#`,
+        g: "$1a",
+        h: '$2b',
+        i: `$3c`
     };
     let inputVal: string;
     const action = (node: Element, options: { id: string; }) => { node.id = options.id; };
