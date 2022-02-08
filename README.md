@@ -152,7 +152,7 @@ In example, to replace inject the value of `process.env.NODE_ENV`:
 
 ```js
 autoPreprocess({
-  replace: [['process.env.NODE_ENV', JSON.stringify(process.env.NODE_ENV)]],
+  replace: [[/process\.env\.NODE_ENV/g, JSON.stringify(process.env.NODE_ENV)]],
 });
 ```
 

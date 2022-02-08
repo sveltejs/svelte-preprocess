@@ -484,3 +484,5 @@ And the result, with a `NODE_ENV = 'production'` would be:
   <h1>Production environment!</h1>
 {/if}
 ```
+
+> Note: a string can be used instead of a `RegExp`, but only a single occurence of it will change, as per the default behavior of `String.prototype.replace`.
