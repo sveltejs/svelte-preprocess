@@ -1,3 +1,13 @@
+## [4.10.3](https://github.com/sveltejs/svelte-preprocess/compare/v4.10.2...v4.10.3) (2022-02-09)
+
+
+### Bug Fixes
+
+* add # and numbers to ts store regex ([#473](https://github.com/sveltejs/svelte-preprocess/issues/473)) ([881f3c9](https://github.com/sveltejs/svelte-preprocess/commit/881f3c9ad6118fb66b560494a67042944567e0ec)), closes [#466](https://github.com/sveltejs/svelte-preprocess/issues/466)
+* adjust typescript peer dep ([#479](https://github.com/sveltejs/svelte-preprocess/issues/479)) ([68fae2c](https://github.com/sveltejs/svelte-preprocess/commit/68fae2c56fb3e22ff21f12c9aab74b42ad4f7bb8))
+
+
+
 ## [4.10.2](https://github.com/sveltejs/svelte-preprocess/compare/v4.10.1...v4.10.2) (2022-01-17)
 
 
