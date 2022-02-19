@@ -23,7 +23,11 @@ const globalifyRulePlugin = (root: pcss.Root) => {
       });
 
     if (modifiedSelectors.length === 0) {
-      rule.remove();
+      if (rule.parent?.type === 'atrule' && rule.selector === ':global') {
+        rule.replaceWith(...rule.nodes);
+      } else {
+        rule.remove();
+      }
 
       return;
     }

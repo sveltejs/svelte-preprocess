@@ -251,5 +251,14 @@ describe('transformer - globalStyle', () => {
         '<style>div{/*comment*/}</style>',
       );
     });
+    it('unwraps :global in @font-face', async () => {
+      const template = `<style>@font-face{:global{font-family:Helvetica}}</style>`;
+      const opts = autoProcess();
+      const preprocessed = await preprocess(template, opts);
+
+      expect(preprocessed.toString?.()).toContain(
+        '<style>@font-face{font-family:Helvetica}</style>',
+      );
+    });
   });
 });
