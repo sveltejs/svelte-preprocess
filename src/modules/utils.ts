@@ -61,7 +61,7 @@ export async function hasDepInstalled(dep: string) {
 }
 
 export function isValidLocalPath(path: string) {
-  return path.startsWith('.') && !path.startsWith('{') && !path.endsWith('}');
+  return path.startsWith('.');
 }
 
 // finds a existing path up the tree
