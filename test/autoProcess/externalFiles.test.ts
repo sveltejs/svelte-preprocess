@@ -68,23 +68,40 @@ describe('external files', () => {
     expect(markup.code).toContain(getFixtureContent('template.html'));
   });
 
+  it("warns if local file don't exist", async () => {
+    const input = `<style src="./missing-potato"></style>`;
+
+    await preprocess(input, sveltePreprocess());
+
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('was not found'),
+    );
+  });
+
   REMOTE_JS.forEach((url) => {
-    it(`should not attempt to locally resolve ${url}`, async () => {
+    it(`ignores remote path "${url}"`, async () => {
       const input = `<div></div><script src="${url}"></script>`;
 
       const preprocessed = await preprocess(input, sveltePreprocess());
 
       expect(preprocessed.toString?.()).toContain(input);
       expect(preprocessed.dependencies).toHaveLength(0);
+      expect(warnSpy).not.toHaveBeenCalledWith(
+        expect.stringContaining('was not found'),
+      );
     });
   });
 
-  it("should warn if local file don't exist", async () => {
-    const input = `<style src="./missing-potato"></style>`;
+  it('ignores external source if path is not relative', async () => {
+    const input = `<style src="/root-potato"></style>`;
 
     await preprocess(input, sveltePreprocess());
 
-    expect(warnSpy).toHaveBeenCalledWith(
+    const preprocessed = await preprocess(input, sveltePreprocess());
+
+    expect(preprocessed.toString?.()).toContain(input);
+    expect(preprocessed.dependencies).toHaveLength(0);
+    expect(warnSpy).not.toHaveBeenCalledWith(
       expect.stringContaining('was not found'),
     );
   });

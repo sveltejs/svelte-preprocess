@@ -60,15 +60,8 @@ export async function hasDepInstalled(dep: string) {
   return (depCheckCache[dep] = result);
 }
 
-const REMOTE_SRC_PATTERN = /^(https?:)?\/\//;
-
 export function isValidLocalPath(path: string) {
-  return (
-    path.match(REMOTE_SRC_PATTERN) == null &&
-    // only literal strings allowed
-    !path.startsWith('{') &&
-    !path.endsWith('}')
-  );
+  return path.startsWith('.');
 }
 
 // finds a existing path up the tree

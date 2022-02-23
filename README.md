@@ -74,6 +74,8 @@ _Vue-like_ support for defining your markup between a specific tag. The default 
 <style src="./style.css"></style>
 ```
 
+> Note: using a relative path starting with `.` is important. Otherwise `svelte-preprocess` will ignore the `src` attribute.
+
 ### Global style
 
 #### `global` attribute
