@@ -1,3 +1,12 @@
+## [4.10.4](https://github.com/sveltejs/svelte-preprocess/compare/v4.10.3...v4.10.4) (2022-02-23)
+
+
+### Bug Fixes
+
+* only try to load external files with relative paths ([#487](https://github.com/sveltejs/svelte-preprocess/issues/487)) ([80d87ed](https://github.com/sveltejs/svelte-preprocess/commit/80d87edac4723401db47d06ed03bb6cd388c21d9))
+
+
+
 ## [4.10.3](https://github.com/sveltejs/svelte-preprocess/compare/v4.10.2...v4.10.3) (2022-02-09)
 
 
