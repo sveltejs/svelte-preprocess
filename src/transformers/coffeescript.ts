@@ -1,5 +1,8 @@
 import coffeescript from 'coffeescript';
 
+import patch from '@rmw/coffee-label-patch';
+patch(coffeescript);
+
 import type { Transformer, Options } from '../types';
 
 const transformer: Transformer<Options.Coffeescript> = ({
