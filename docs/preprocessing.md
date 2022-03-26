@@ -252,7 +252,9 @@ _Note: If you want to transpile your app to be supported in older browsers, you 
 
 ### CoffeeScript
 
-The CoffeeScript processor accepts no extra options and only transpiles CoffeeScript code down to esm compliant JavaScript code.
+You can set sourceMap:true to enable sourceMap.
+
+If the parameter label:true is set, the [@rmw/coffee-label-patch](https://github.com/rmw-lib/coffee-label-patch) syntax patch will be enabled, allowing CoffeeScript to support label syntax.
 
 ### Less
 
