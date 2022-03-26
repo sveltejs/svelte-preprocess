@@ -1488,10 +1488,10 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@rmw/coffee-label-patch@^0.0.10":
-  version "0.0.10"
-  resolved "https://registry.npmmirror.com/@rmw/coffee-label-patch/-/coffee-label-patch-0.0.10.tgz#401b90564b27c821bc7b004779f55d4fc16e421c"
-  integrity sha512-ulRFkggvELzgZdP9HyavleOxqGg4dSjTKoCe/8+GQGV55A68tYD750wA1bNM/HBN1DnPP/36fgO1KF0EXkgayA==
+"@rmw/coffee-label-patch@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.npmmirror.com/@rmw/coffee-label-patch/-/coffee-label-patch-0.0.12.tgz#aca764740605d2845d0ac7a5401e1438154d6808"
+  integrity sha512-LOkfmW2Oc2Q0edNzfP2qAWViq/4p5qMhqh/0kLUy/y2X0xdoewoVafIz3NGmWcXAkwdgi9XgZ0cplYWQwTKOxg==
 
 "@sinonjs/commons@^1.7.0":
   version "1.8.1"
