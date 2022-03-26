@@ -1,7 +1,7 @@
 import coffeescript from 'coffeescript';
 
 import {coffee_label_patch} from '@rmw/coffee-label-patch';
-coffee_label_compile = coffee_label_patch(coffeescript);
+const coffee_label_compile = coffee_label_patch(coffeescript);
 
 import type { Transformer, Options } from '../types';
 
@@ -10,7 +10,7 @@ const transformer: Transformer<Options.Coffeescript> = ({
   filename,
   options,
 }) => {
-  const compile = options.label ? coffee_label_compile : coffeescript.compile.bind(coffeescript);
+  const compile = options?.label ? coffee_label_compile : coffeescript.compile.bind(coffeescript);
 
   const coffeeOptions = {
     filename,

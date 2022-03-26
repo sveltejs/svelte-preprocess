@@ -14,6 +14,7 @@ type MarkupOptions = {
 
 export type Coffeescript = {
   sourceMap?: boolean;
+  label?: boolean;
   filename?: never;
   bare?: never;
 } & ContentModifier;
