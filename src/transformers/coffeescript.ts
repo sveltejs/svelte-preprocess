@@ -1,7 +1,7 @@
 import coffeescript from 'coffeescript';
 
-import patch from '@rmw/coffee-label-patch';
-patch(coffeescript);
+import {coffee_label_patch} from '@rmw/coffee-label-patch';
+coffee_label_compile = coffee_label_patch(coffeescript);
 
 import type { Transformer, Options } from '../types';
 
@@ -10,6 +10,8 @@ const transformer: Transformer<Options.Coffeescript> = ({
   filename,
   options,
 }) => {
+  const compile = options.label ? coffee_label_compile : coffeescript.compile.bind(coffeescript);
+
   const coffeeOptions = {
     filename,
     /*
@@ -19,8 +21,10 @@ const transformer: Transformer<Options.Coffeescript> = ({
     ...options,
   } as Omit<Options.Coffeescript, 'bare'>;
 
+  delete coffeeOptions.label
+
   if (coffeeOptions.sourceMap) {
-    const { js: code, v3SourceMap } = coffeescript.compile(
+    const { js: code, v3SourceMap } = compile(
       content,
       coffeeOptions,
     );
@@ -30,7 +34,7 @@ const transformer: Transformer<Options.Coffeescript> = ({
     return { code, map };
   }
 
-  return { code: coffeescript.compile(content, coffeeOptions) };
+  return { code: compile(content, coffeeOptions) };
 };
 
 export { transformer };
