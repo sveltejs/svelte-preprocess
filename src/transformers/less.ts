@@ -1,3 +1,5 @@
+import { isAbsolute, join } from 'path';
+
 import less from 'less';
 
 import { getIncludePaths } from '../modules/utils';
@@ -20,10 +22,14 @@ const transformer: Transformer<Options.Less> = async ({
     ...options,
   });
 
+  const dependencies = imports.map((path: string) =>
+    isAbsolute(path) ? path : join(process.cwd(), path),
+  );
+
   return {
     code: css,
     map,
-    dependencies: imports,
+    dependencies,
   };
 };
 
