@@ -1,3 +1,12 @@
+## [4.10.5](https://github.com/sveltejs/svelte-preprocess/compare/v4.10.4...v4.10.5) (2022-04-04)
+
+
+### Bug Fixes
+
+* always use absolute paths for less imports ([#495](https://github.com/sveltejs/svelte-preprocess/issues/495)) ([#496](https://github.com/sveltejs/svelte-preprocess/issues/496)) ([be0fda4](https://github.com/sveltejs/svelte-preprocess/commit/be0fda4ddbe95040221ff248ccbb492fb5555334))
+
+
+
 ## [4.10.4](https://github.com/sveltejs/svelte-preprocess/compare/v4.10.3...v4.10.4) (2022-02-23)
 
 
