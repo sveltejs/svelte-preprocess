@@ -75,6 +75,7 @@ const transformer: Transformer<Options.GlobalStyle> = async ({
 
   const { css, map: newMap } = await postcss(plugins).process(content, {
     from: filename,
+    to: filename,
     map: options?.sourceMap ? { prev: map } : false,
   });
 
