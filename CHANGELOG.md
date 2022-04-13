@@ -1,3 +1,13 @@
+## [4.10.6](https://github.com/sveltejs/svelte-preprocess/compare/v4.10.5...v4.10.6) (2022-04-13)
+
+
+### Bug Fixes
+
+* paths in postcss sourcemap sources array ([#500](https://github.com/sveltejs/svelte-preprocess/issues/500)) ([2027375](https://github.com/sveltejs/svelte-preprocess/commit/2027375969255d11708340ee40eb2e3ded7ddb35))
+* preserve `[@font-face](https://github.com/font-face)` inside `:global` block ([#486](https://github.com/sveltejs/svelte-preprocess/issues/486)) ([8064473](https://github.com/sveltejs/svelte-preprocess/commit/8064473ae107f6e2d34eb9590e4befa70ce4618c)), closes [#236](https://github.com/sveltejs/svelte-preprocess/issues/236)
+
+
+
 ## [4.10.5](https://github.com/sveltejs/svelte-preprocess/compare/v4.10.4...v4.10.5) (2022-04-04)
 
 
