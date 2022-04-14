@@ -27,7 +27,7 @@
     "dist/"
   ],
   "scripts": {
-    "prebuild": "rm -rf dist/",
+    "prebuild": "node scripts.js rmrf ./dist",
     "build": "tsc --build tsconfig.build.json",
     "dev": "npm run build -- -w",
     "test": "jest",
