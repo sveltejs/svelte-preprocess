@@ -4,7 +4,12 @@ import stylus from 'stylus';
 
 import { getIncludePaths } from '../modules/utils';
 
+import type { SourceMap } from 'magic-string';
 import type { Transformer, Options } from '../types';
+
+type StylusRendererWithSourceMap = ReturnType<typeof stylus> & {
+  sourcemap: SourceMap;
+};
 
 const transformer: Transformer<Options.Stylus> = ({
   content,
@@ -20,15 +25,16 @@ const transformer: Transformer<Options.Stylus> = ({
     const style = stylus(content, {
       filename,
       ...options,
-    }).set('sourcemap', options.sourcemap);
+    }).set('sourcemap', options.sourcemap) as StylusRendererWithSourceMap;
 
     style.render((err, css) => {
       // istanbul ignore next
       if (err) reject(err);
+      const map = style.sourcemap.sources.map((source) => path.resolve(source));
 
       resolve({
         code: css,
-        map: (style as any).sourcemap,
+        map,
         // .map() necessary for windows compatibility
         dependencies: style
           .deps(filename as string)
