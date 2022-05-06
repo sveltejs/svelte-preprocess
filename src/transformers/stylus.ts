@@ -30,11 +30,15 @@ const transformer: Transformer<Options.Stylus> = ({
     style.render((err, css) => {
       // istanbul ignore next
       if (err) reject(err);
-      const map = style.sourcemap.sources.map((source) => path.resolve(source));
+      if (style.sourcemap?.sources) {
+        style.sourcemap.sources = style.sourcemap.sources.map((source) =>
+          path.resolve(source),
+        );
+      }
 
       resolve({
         code: css,
-        map,
+        map: style.sourcemap,
         // .map() necessary for windows compatibility
         dependencies: style
           .deps(filename as string)
