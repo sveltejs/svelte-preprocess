@@ -44,6 +44,9 @@ mixin catch(error)
 mixin html(expression)
 %_| {@html !{expression}}
 
+mixin const(expression)
+%_| {@const !{expression}}
+
 mixin debug(variables)
 %_| {@debug !{variables}}`.replace(
     /%_/g,
