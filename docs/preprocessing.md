@@ -248,6 +248,8 @@ The Babel preprocessor accepts an options object which is passed onto the babel 
 
 `Svelte` expects your JavaScript to be in at least ES6 format, so make sure to set your Babel configuration accordingly.
 
+If you are using TypeScript through `@babel/plugin-transform-typescript`, set [onlyremovetypeimports](https://babeljs.io/docs/en/babel-preset-typescript#onlyremovetypeimports) to `true` so that all value imports are preserved.
+
 _Note: If you want to transpile your app to be supported in older browsers, you must run babel from the context of your bundler._
 
 ### CoffeeScript
