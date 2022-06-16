@@ -178,3 +178,23 @@ module.exports = {
   },
 }
 ```
+
+## VSCode IDE
+
+To help out Visual Studio Code we can also create a **jsconfig.json** file to help resolve the alias's
+
+`jsconfig.json`
+```json
+// jsconfig.json
+{
+	"compilerOptions": {
+		"baseUrl": ".",
+		"paths": {
+			"/@": ["./"],
+			"~": ["./node_modules"],
+			"@styles": ["./src/styles"]
+		}
+	},
+	"include": ["./src/**/*.d.ts", "./src/**/*.js", "./src/**/*.svelte"]
+}
+```
