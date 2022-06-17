@@ -28,7 +28,21 @@ In this case @styles will not necessarily resolve to a path setup within the ali
 One example of where svelte:head can be useful is where you want global styles to be
 [unloaded when switching between components](https://github.com/sveltejs/svelte/issues/5530).
 Typically, this can be useful when writing storybookjs pages.
-To work around this we can have svelte-preprocess do the work for us using its importer callback function.
+
+To work around this there are a couple of approaches.
+The first is to use the experimental useVitePreprocess option for the vite-svelte plugin.
+
+```json
+  plugins: [
+    svelte({
+      experimental: {
+        useVitePreprocess: true
+      }
+    })
+  ],
+```
+
+This option doesn't always work with systems such as storybook however, in those situations we can use the svelte-preprocess to handle the alias's as a workaround.
 
 
 ## Creating a list of alias's
