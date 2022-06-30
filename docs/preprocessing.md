@@ -288,7 +288,7 @@ Apart from those, the Pug preprocessor accepts:
 | Option           | Default     | Description                                                                                                         |
 | ---------------- | ----------- | ------------------------------------------------------------------------------------------------------------------- |
 | `markupTagName`  | `template`  | the tag name used to look for the optional markup wrapper. If none is found, `pug` is executed over the whole file. |
-| `configFilePath` | `undefined` | the path of the directory containing the PostCSS configuration.                                                     |
+| `configFilePath` | `undefined` | the path of the directory containing the Pug configuration.                                                     |
 
 **Template blocks:**
 
