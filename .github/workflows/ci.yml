@@ -6,12 +6,16 @@ jobs:
   Lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
       - uses: actions/setup-node@v2
         with:
           node-version: 14
-      - uses: bahmutov/npm-install@v1
-      - run: 'npm run lint'
+          cache: 'pnpm'
+      - run: pnpm install
+      - run: pnpm lint
 
   Tests:
     runs-on: ${{ matrix.os }}
@@ -22,11 +26,15 @@ jobs:
 
     steps:
       - run: git config --global core.autocrlf false
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
       - uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      - uses: bahmutov/npm-install@v1
-      - run: npm run test
+          cache: 'pnpm'
+      - run: pnpm install
+      - run: pnpm test
         env:
           CI: true
