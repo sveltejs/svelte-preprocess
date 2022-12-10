@@ -16,11 +16,9 @@ describe('importAny', () => {
   });
 
   it('should not throw error when any exist', async () => {
-    const nodeSass = await import('node-sass');
+    const sass = await import('sass');
 
-    expect((await importAny('_1', 'node-sass', '_2')).default).toBe(
-      nodeSass.default,
-    );
+    expect((await importAny('_1', 'sass', '_2')).default).toBe(sass.default);
   });
 });
 

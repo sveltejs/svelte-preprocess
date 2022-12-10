@@ -31,7 +31,7 @@ $ npm install -D svelte-preprocess
 - PostCSS: `npm install -D postcss postcss-load-config`
 - SugarSS: `npm install -D postcss sugarss`
 - Less: `npm install -D less`
-- Sass: `npm install -D node-sass` or `npm install -D sass`
+- Sass: `npm install -D sass`
 - Pug: `npm install -D pug`
 - Stylus: `npm install -D stylus`
 

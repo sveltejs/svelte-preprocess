@@ -354,7 +354,6 @@ The `scss/sass` preprocessor accepts the default sass options alongside two othe
 | Option           | Default     | Description                                                                                                                    |
 | ---------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | `renderSync`     | `false`     | if `true`, use the sync render method which is faster for dart sass.                                                           |
-| `implementation` | `undefined` | pass the module to use to compile sass, if unspecified, `svelte-preprocess` will first look for `node-sass` and then for Sass. |
 
 You can check the [Sass API reference](https://sass-lang.com/documentation/js-api/modules#LegacyOptions) for specific Sass options. The `file` and `data` properties are not supported. Instead, use the `prependData` property if you want to prepend some content to your `scss` content.
 

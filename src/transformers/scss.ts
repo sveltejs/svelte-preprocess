@@ -1,12 +1,10 @@
 import { readFileSync } from 'fs';
 import { join, isAbsolute } from 'path';
 
-import { getIncludePaths, importAny, findUp } from '../modules/utils';
+import { getIncludePaths, findUp } from '../modules/utils';
 
 import type { Importer, Result } from 'sass';
 import type { Transformer, Processed, Options } from '../types';
-
-let sass: Options.Sass['implementation'];
 
 function getProcessedResult(result: Result): Processed {
   // For some reason, scss includes the main 'file' in the array, we don't want that
@@ -59,16 +57,15 @@ const transformer: Transformer<Options.Sass> = async ({
   filename,
   options = {},
 }) => {
-  let implementation = options?.implementation ?? sass;
+  const { render, renderSync } = await import('sass');
 
-  if (implementation == null) {
-    const mod = (await importAny('sass', 'node-sass')) as { default: any };
+  // eslint-disable-next-line no-multi-assign
 
-    // eslint-disable-next-line no-multi-assign
-    implementation = sass = mod.default;
-  }
-
-  const { renderSync, prependData, ...restOptions } = {
+  const {
+    renderSync: shouldRenderSync,
+    prependData,
+    ...restOptions
+  } = {
     ...options,
     includePaths: getIncludePaths(filename, options.includePaths),
     outFile: `${filename}.css`,
@@ -94,12 +91,12 @@ const transformer: Transformer<Options.Sass> = async ({
     return { code: '' };
   }
 
-  if (renderSync) {
-    return getProcessedResult(implementation!.renderSync(sassOptions));
+  if (shouldRenderSync) {
+    return getProcessedResult(renderSync(sassOptions));
   }
 
   return new Promise<Processed>((resolve, reject) => {
-    implementation!.render(sassOptions, (err, result) => {
+    render(sassOptions, (err, result) => {
       if (err) return reject(err);
 
       resolve(getProcessedResult(result));
