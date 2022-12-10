@@ -9,10 +9,8 @@ import { transformer } from '../../src/transformers/scss';
 
 describe('transformer - scss', () => {
   it('should return @imported files as dependencies - via default async render', async () => {
-    const template = `<style lang="scss">@import "fixtures/style.scss";</style>`;
-    const opts = sveltePreprocess({
-      scss: {},
-    });
+    const template = `<style lang="scss">@import "./fixtures/style.scss";</style>`;
+    const opts = sveltePreprocess();
 
     const preprocessed = await preprocess(template, opts);
 
@@ -23,11 +21,7 @@ describe('transformer - scss', () => {
 
   it('should return @imported files as dependencies - via renderSync', async () => {
     const template = `<style lang="scss">@import "fixtures/style.scss";</style>`;
-    const opts = sveltePreprocess({
-      scss: {
-        renderSync: true,
-      },
-    });
+    const opts = sveltePreprocess({});
 
     const preprocessed = await preprocess(template, opts);
 
@@ -41,7 +35,6 @@ describe('transformer - scss', () => {
     const opts = sveltePreprocess({
       scss: {
         prependData: '$color:blue;div{color:$color}',
-        renderSync: true,
       },
     });
 
@@ -64,7 +57,14 @@ describe('transformer - scss', () => {
   });
 
   it('returns the source map and removes sourceMappingURL from code', async () => {
-    const content = 'div{color:red}';
+    const content = `
+$color:red;
+
+div{
+  color:$color
+}
+`;
+
     const filename = '/file';
     const options = {
       sourceMap: true,
@@ -73,6 +73,6 @@ describe('transformer - scss', () => {
     const { map, code } = await transformer({ content, filename, options });
 
     expect(code).not.toContain('sourceMappingURL');
-    expect(map).toBeTruthy();
+    expect(map).toBeDefined();
   });
 });
