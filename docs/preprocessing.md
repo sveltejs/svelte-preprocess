@@ -248,6 +248,8 @@ The Babel preprocessor accepts an options object which is passed onto the babel 
 
 `Svelte` expects your JavaScript to be in at least ES6 format, so make sure to set your Babel configuration accordingly.
 
+If you are using TypeScript through `@babel/plugin-transform-typescript`, set [onlyRemoveTypeImports](https://babeljs.io/docs/en/babel-preset-typescript#onlyremovetypeimports) to `true` so that all value imports are preserved.
+
 _Note: If you want to transpile your app to be supported in older browsers, you must run babel from the context of your bundler._
 
 ### CoffeeScript
@@ -286,11 +288,11 @@ Apart from those, the Pug preprocessor accepts:
 | Option           | Default     | Description                                                                                                         |
 | ---------------- | ----------- | ------------------------------------------------------------------------------------------------------------------- |
 | `markupTagName`  | `template`  | the tag name used to look for the optional markup wrapper. If none is found, `pug` is executed over the whole file. |
-| `configFilePath` | `undefined` | the path of the directory containing the PostCSS configuration.                                                     |
+| `configFilePath` | `undefined` | the path of the directory containing the Pug configuration.                                                     |
 
 **Template blocks:**
 
-Some of Svelte's template syntax is invalid in Pug. `svelte-preprocess` provides some pug mixins to represent svelte's `{#...}{/...}` blocks: `+if()`, `+else()`, `+elseif()`, `+each()`, `+key()`, `+await()`, `+then()`, `+catch()`, `+html()`, `+debug()`.
+Some of Svelte's template syntax is invalid in Pug. `svelte-preprocess` provides some pug mixins to represent svelte's `{#...}{/...}` blocks: `+if()`, `+else()`, `+elseif()`, `+each()`, `+key()`, `+await()`, `+then()`, `+catch()`, `+html()`, `+const()`, `+debug()`.
 
 ```pug
 ul
@@ -352,8 +354,6 @@ The `scss/sass` preprocessor accepts the default sass options alongside two othe
 | Option           | Default     | Description                                                                                                                    |
 | ---------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | `renderSync`     | `false`     | if `true`, use the sync render method which is faster for dart sass.                                                           |
-| `implementation` | `undefined` | pass the module to use to compile sass, if unspecified, `svelte-preprocess` will first look for `node-sass` and then for Sass. |
-
 You can check the [Sass Legacy API reference](https://sass-lang.com/documentation/js-api#legacy-api) for specific Sass options. The `file` and `data` properties are not supported. Instead, use the `prependData` property if you want to prepend some content to your `scss` content.
 
 Note: `svelte-preprocess` automatically configures inclusion paths for your root directory, `node_modules` and for the current file's directory.
@@ -484,3 +484,5 @@ And the result, with a `NODE_ENV = 'production'` would be:
   <h1>Production environment!</h1>
 {/if}
 ```
+
+> Note: a string can be used instead of a `RegExp`, but only a single occurence of it will change, as per the default behavior of `String.prototype.replace`.

@@ -23,7 +23,11 @@ const globalifyRulePlugin = (root: pcss.Root) => {
       });
 
     if (modifiedSelectors.length === 0) {
-      rule.remove();
+      if (rule.parent?.type === 'atrule' && rule.selector === ':global') {
+        rule.replaceWith(...rule.nodes);
+      } else {
+        rule.remove();
+      }
 
       return;
     }
@@ -75,6 +79,7 @@ const transformer: Transformer<Options.GlobalStyle> = async ({
 
   const { css, map: newMap } = await postcss(plugins).process(content, {
     from: filename,
+    to: filename,
     map: options?.sourceMap ? { prev: map } : false,
   });
 

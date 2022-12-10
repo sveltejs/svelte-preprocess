@@ -200,7 +200,7 @@ export function sveltePreprocess(
     markup: fullMarkup,
     filename,
   }) => {
-    const transformResult: Processed = await scriptTransformer({
+    const transformResult = await scriptTransformer({
       content,
       attributes,
       markup: fullMarkup,

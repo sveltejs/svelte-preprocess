@@ -2,17 +2,13 @@ import * as Options from './options';
 
 import type {
   Processed as SvelteProcessed,
-  Preprocessor,
+  Preprocessor as SveltePreprocessor,
   PreprocessorGroup,
 } from 'svelte/types/compiler/preprocess';
 
 export { Options };
 
-export {
-  Processed as SvelteProcessed,
-  PreprocessorGroup,
-  Preprocessor,
-} from 'svelte/types/compiler/preprocess';
+export { PreprocessorGroup } from 'svelte/types/compiler/preprocess';
 
 export type PreprocessorArgs = Preprocessor extends (options: infer T) => any
   ? T
@@ -28,9 +24,23 @@ export type TransformerArgs<T> = {
   options?: T;
 };
 
+/**
+ * Small extension to the official SvelteProcessed type
+ * to include possible diagnostics.
+ * Used for the typescript transformer.
+ */
 export type Processed = SvelteProcessed & {
   diagnostics?: any[];
 };
+
+/**
+ * Svelte preprocessor type with guaranteed Processed results
+ *
+ * The official type also considers `void`
+ * */
+export type Preprocessor = (
+  options: Parameters<SveltePreprocessor>[0],
+) => Processed | Promise<Processed>;
 
 export type Transformer<T> = (
   args: TransformerArgs<T>,

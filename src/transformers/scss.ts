@@ -1,33 +1,12 @@
 import { readFileSync } from 'fs';
-import { join, isAbsolute } from 'path';
+import { isAbsolute, join } from 'path';
 
-import { getIncludePaths, importAny, findUp } from '../modules/utils';
+import { getIncludePaths, findUp } from '../modules/utils';
 
-import type { Importer, Result } from 'sass';
-import type { Transformer, Processed, Options } from '../types';
+import type { LegacySyncImporter, LegacyStringOptions } from 'sass';
+import type { Transformer, Options } from '../types';
 
-let sass: Options.Sass['implementation'];
-
-function getProcessedResult(result: Result): Processed {
-  // For some reason, scss includes the main 'file' in the array, we don't want that
-  // Unfortunately I didn't manage to reproduce this in the test env
-  // More info: https://github.com/sveltejs/svelte-preprocess/issues/346
-  const absoluteEntryPath = isAbsolute(result.stats.entry)
-    ? result.stats.entry
-    : join(process.cwd(), result.stats.entry);
-
-  const processed = {
-    code: result.css.toString(),
-    map: result.map?.toString(),
-    dependencies: Array.from(result.stats.includedFiles).filter(
-      (filepath) => filepath !== absoluteEntryPath,
-    ),
-  };
-
-  return processed;
-}
-
-const tildeImporter: Importer = (url, prev) => {
+const tildeImporter: LegacySyncImporter = (url, prev) => {
   if (!url.startsWith('~')) {
     return null;
   }
@@ -59,24 +38,17 @@ const transformer: Transformer<Options.Sass> = async ({
   filename,
   options = {},
 }) => {
-  let implementation = options?.implementation ?? sass;
+  const { renderSync } = await import('sass');
 
-  if (implementation == null) {
-    const mod = (await importAny('sass', 'node-sass')) as { default: any };
-
-    // eslint-disable-next-line no-multi-assign
-    implementation = sass = mod.default;
-  }
-
-  const { renderSync, prependData, ...restOptions } = {
-    ...options,
-    includePaths: getIncludePaths(filename, options.includePaths),
-    outFile: `${filename}.css`,
-    omitSourceMapUrl: true, // return sourcemap only in result.map
-  };
-
-  const sassOptions = {
+  const { prependData, ...restOptions } = options;
+  const sassOptions: LegacyStringOptions<'sync'> = {
     ...restOptions,
+    includePaths: getIncludePaths(filename, options.includePaths),
+    sourceMap: true,
+    sourceMapEmbed: false,
+    omitSourceMapUrl: true,
+    outFile: `${filename}.css`,
+    outputStyle: 'expanded',
     file: filename,
     data: content,
   };
@@ -90,21 +62,28 @@ const transformer: Transformer<Options.Sass> = async ({
   }
 
   // scss errors if passed an empty string
-  if (sassOptions.data.length === 0) {
+  if (content.length === 0) {
     return { code: '' };
   }
 
-  if (renderSync) {
-    return getProcessedResult(implementation!.renderSync(sassOptions));
-  }
+  const compiled = renderSync(sassOptions);
 
-  return new Promise<Processed>((resolve, reject) => {
-    implementation!.render(sassOptions, (err, result) => {
-      if (err) return reject(err);
+  // For some reason, scss includes the main 'file' in the array, we don't want that
+  // Unfortunately I didn't manage to reproduce this in the test env
+  // More info: https://github.com/sveltejs/svelte-preprocess/issues/346
+  const absoluteEntryPath = isAbsolute(compiled.stats.entry)
+    ? compiled.stats.entry
+    : join(process.cwd(), compiled.stats.entry);
 
-      resolve(getProcessedResult(result));
-    });
-  });
+  const processed = {
+    code: compiled.css.toString(),
+    map: compiled.map?.toString(),
+    dependencies: Array.from(compiled.stats.includedFiles).filter(
+      (filepath) => filepath !== absoluteEntryPath,
+    ),
+  };
+
+  return processed;
 };
 
 export { transformer };

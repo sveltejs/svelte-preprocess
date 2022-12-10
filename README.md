@@ -32,7 +32,7 @@
 
 ## What is it?
 
-`Svelte`'s own parser understands only JavaScript, CSS and its HTML-like syntax. To make it possible to write components in other languages, such as TypeScript or SCSS, `Svelte` provides the [preprocess API](https://svelte.dev/docs#svelte_preprocess), which allows to easily transform the content of your `markup` and your `style`/`script` tags.
+`Svelte`'s own parser understands only JavaScript, CSS and its HTML-like syntax. To make it possible to write components in other languages, such as TypeScript or SCSS, `Svelte` provides the [preprocess API](https://svelte.dev/docs#compile-time-svelte-preprocess), which allows to easily transform the content of your `markup` and your `style`/`script` tags.
 
 Writing your own preprocessor for, i.e SCSS is easy enough, but it can be cumbersome to have to always configure multiple preprocessors for the languages you'll be using.
 
@@ -73,6 +73,8 @@ _Vue-like_ support for defining your markup between a specific tag. The default 
 <script src="./script.js"></script>
 <style src="./style.css"></style>
 ```
+
+> Note: using a relative path starting with `.` is important. Otherwise `svelte-preprocess` will ignore the `src` attribute.
 
 ### Global style
 
@@ -152,7 +154,7 @@ In example, to replace inject the value of `process.env.NODE_ENV`:
 
 ```js
 autoPreprocess({
-  replace: [['process.env.NODE_ENV', JSON.stringify(process.env.NODE_ENV)]],
+  replace: [[/process\.env\.NODE_ENV/g, JSON.stringify(process.env.NODE_ENV)]],
 });
 ```
 

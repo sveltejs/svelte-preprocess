@@ -31,7 +31,7 @@ export function parseAttributes(attributesStr: string): Record<string, any> {
 }
 
 export async function transformMarkup(
-  { content, filename }: { content: string; filename: string },
+  { content, filename }: { content: string; filename?: string },
   transformer: Preprocessor | Transformer<unknown>,
   options: Record<string, any> = {},
 ) {

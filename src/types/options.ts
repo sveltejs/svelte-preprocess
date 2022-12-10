@@ -1,5 +1,5 @@
+import type { LegacyStringOptions } from 'sass';
 import type * as postcss from 'postcss';
-import type { LegacyOptions as SassOptions, render, renderSync } from 'sass';
 import type { Options as PugOptions } from 'pug';
 import type { TransformOptions as BabelOptions } from '@babel/core';
 
@@ -36,14 +36,8 @@ export type Pug = Omit<PugOptions, 'filename' | 'doctype' | 'compileDebug'> &
   ContentModifier &
   MarkupOptions;
 
-export type Sass = Omit<SassOptions, 'file' | 'data'> & {
-  // custom
-  implementation?: {
-    render: typeof render;
-    renderSync: typeof renderSync;
-  };
-  renderSync?: boolean;
-} & ContentModifier;
+export type Sass = Omit<LegacyStringOptions<'sync'>, 'file' | 'data'> &
+  ContentModifier;
 
 // from https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/less/index.d.ts#L80
 export type Less = {

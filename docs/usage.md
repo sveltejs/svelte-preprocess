@@ -18,6 +18,8 @@ Some tools of the Svelte ecosystem, such as [svelte-vscode](https://marketplace.
 
 **Example**:
 
+Write the config in ESM style when you have `"type": "module"` in your `package.json`. This is the case for Vite starters and SvelteKit projects.
+
 ```js
 // svelte.config.js
 import preprocess from 'svelte-preprocess';
@@ -36,6 +38,20 @@ const config = {
 
 export default config;
 ```
+
+Write the config in CommonJS style when you don't have `"type": "module"` in your `package.json`. This is the case for the Svelte starter template.
+
+```js
+// svelte.config.js
+const sveltePreprocess = require('svelte-preprocess');
+module.exports = {
+  preprocess: sveltePreprocess({
+    // ...svelte-preprocess options
+  }),
+  // ...other svelte options
+};
+```
+
 
 _Tip: this file can be imported in your bundle config instead of having multiple svelte configurations lying around._
 
