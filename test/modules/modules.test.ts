@@ -2,25 +2,7 @@ import { resolve } from 'path';
 
 import { getTestAppFilename, getFixtureContent } from '../utils';
 import { getTagInfo } from '../../src/modules/tagInfo';
-import {
-  importAny,
-  getIncludePaths,
-  hasDepInstalled,
-} from '../../src/modules/utils';
-
-describe('importAny', () => {
-  it('should throw error when none exist', () => {
-    return expect(importAny('_1', '_2')).rejects.toThrowError(
-      'Cannot find any of modules: _1,_2',
-    );
-  });
-
-  it('should not throw error when any exist', async () => {
-    const sass = await import('sass');
-
-    expect((await importAny('_1', 'sass', '_2')).default).toBe(sass.default);
-  });
-});
+import { getIncludePaths, hasDepInstalled } from '../../src/modules/utils';
 
 describe('getIncludePaths', () => {
   const dummyDir = resolve(process.cwd(), 'src');
