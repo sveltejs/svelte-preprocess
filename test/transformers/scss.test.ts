@@ -15,7 +15,7 @@ describe('transformer - scss', () => {
     const preprocessed = await preprocess(template, opts);
 
     expect(preprocessed.dependencies).toContain(
-      resolve(__dirname, '..', 'fixtures', 'style.scss').replace(/[\\/]/g, '/'),
+      resolve(__dirname, '..', 'fixtures', 'style.scss'),
     );
   });
 
@@ -26,7 +26,7 @@ describe('transformer - scss', () => {
     const preprocessed = await preprocess(template, opts);
 
     expect(preprocessed.dependencies).toContain(
-      resolve(__dirname, '..', 'fixtures', 'style.scss').replace(/[\\/]/g, '/'),
+      resolve(__dirname, '..', 'fixtures', 'style.scss'),
     );
   });
 
