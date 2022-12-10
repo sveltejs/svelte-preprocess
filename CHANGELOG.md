@@ -1,422 +1,266 @@
 # [5.0.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.10.5...v5.0.0) (2022-12-10)
 
-
 ### Bug Fixes
 
-* 🐛 add sugarss v3 and v4 as supported ([3f2687b](https://github.com/sveltejs/svelte-preprocess/commit/3f2687bc2c3036c96a95a0d491a9491f18e5c28f))
-* 🐛 remove support for 'type' attribute ([07bc8aa](https://github.com/sveltejs/svelte-preprocess/commit/07bc8aae571300413c52af05554b08451d338443))
-* 🐛 remove support for custom default languages ([3d60856](https://github.com/sveltejs/svelte-preprocess/commit/3d6085611120895b5527f4e17868105d6ec81c4d))
-* add pug const mixin ([#518](https://github.com/sveltejs/svelte-preprocess/issues/518)) ([0551a9b](https://github.com/sveltejs/svelte-preprocess/commit/0551a9b557ee18bb05a3e9021a8c9aa1f7b8c665)), closes [#467](https://github.com/sveltejs/svelte-preprocess/issues/467)
-* map .sss as .css to support sugarss extension ([2c0bd45](https://github.com/sveltejs/svelte-preprocess/commit/2c0bd4561fc3dd53ff525509925bcc9c5f7b436b))
-* paths in postcss sourcemap sources array ([#500](https://github.com/sveltejs/svelte-preprocess/issues/500)) ([2027375](https://github.com/sveltejs/svelte-preprocess/commit/2027375969255d11708340ee40eb2e3ded7ddb35))
-* preserve `[@font-face](https://github.com/font-face)` inside `:global` block ([#486](https://github.com/sveltejs/svelte-preprocess/issues/486)) ([8064473](https://github.com/sveltejs/svelte-preprocess/commit/8064473ae107f6e2d34eb9590e4befa70ce4618c)), closes [#236](https://github.com/sveltejs/svelte-preprocess/issues/236)
-* stylus - handle relative sourcemap sources([#513](https://github.com/sveltejs/svelte-preprocess/issues/513)) ([77bd3bf](https://github.com/sveltejs/svelte-preprocess/commit/77bd3bf69554afbc45d6f1e34a4eb5abf398a933))
-
-
-### Features
-
-* 🎸 bump minimum node version to 14 ([2806ada](https://github.com/sveltejs/svelte-preprocess/commit/2806ada4659b11a1f37c987e2b52d47864cca305))
-* drop Node 10 and 12. Add 16 and 18 ([#561](https://github.com/sveltejs/svelte-preprocess/issues/561)) ([ba4299d](https://github.com/sveltejs/svelte-preprocess/commit/ba4299de98a2f7daba5b2a58ce4c39b2a66f2c41))
-
+- 🐛 add sugarss v3 and v4 as supported ([3f2687b](https://github.com/sveltejs/svelte-preprocess/commit/3f2687bc2c3036c96a95a0d491a9491f18e5c28f))
+- 🐛 remove support for 'type' attribute ([07bc8aa](https://github.com/sveltejs/svelte-preprocess/commit/07bc8aae571300413c52af05554b08451d338443))
+- 🐛 remove support for custom default languages ([3d60856](https://github.com/sveltejs/svelte-preprocess/commit/3d6085611120895b5527f4e17868105d6ec81c4d))
+- 🐛 map .sss as .css to support sugarss extension ([2c0bd45](https://github.com/sveltejs/svelte-preprocess/commit/2c0bd4561fc3dd53ff525509925bcc9c5f7b436b))
 
 ### Performance Improvements
 
-* ⚡️ remove support for deprecated node-sass ([a617fe1](https://github.com/sveltejs/svelte-preprocess/commit/a617fe13b0922188346775475325ab8af83c56f7))
-
-
-### BREAKING CHANGES
-
-* 🧨 Languages must be explicitly defined via the lang attribute.
-* 🧨 Minimum node version was bumped from 9 to 14
-* 🧨 Cannot use "type" attribute to identify the language of a style or
-script tag anymore. Use `lang` instead
-* 🧨 node-sass is not supported anymore. Use `sass` instead
-* minimum node version changed to v14
-
-
-
-# [5.0.0-alpha.1](https://github.com/sveltejs/svelte-preprocess/compare/v5.0.0-alpha.0...v5.0.0-alpha.1) (2022-12-10)
-
-
-### Bug Fixes
-
-* 🐛 add sugarss v3 and v4 as supported ([b380999](https://github.com/sveltejs/svelte-preprocess/commit/b380999d988252a3abefef9b242fd93fa6842073))
-* map .sss as .css to support sugarss extension ([7c177c9](https://github.com/sveltejs/svelte-preprocess/commit/7c177c9e5cb5105877f2073ffc276b5dc322723d))
-
-
-
-# [5.0.0-alpha.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.10.5...v5.0.0-alpha.0) (2022-12-10)
-
-
-### Bug Fixes
-
-* 🐛 remove support for 'type' attribute ([2f2782d](https://github.com/sveltejs/svelte-preprocess/commit/2f2782d49f46a3e1dbfcd0463821d23baa04b271))
-* 🐛 remove support for custom default languages ([ea19ca4](https://github.com/sveltejs/svelte-preprocess/commit/ea19ca4a9523fe1c82166ba57abbe147119d52f9))
-* 🐛 bump minimum node version to 14 ([30a9287](https://github.com/sveltejs/svelte-preprocess/commit/30a9287c474241ef0bf03bade04404e120cb1ec7))
+- ⚡️ remove support for deprecated node-sass ([a617fe1](https://github.com/sveltejs/svelte-preprocess/commit/a617fe13b0922188346775475325ab8af83c56f7))
 
 ### BREAKING CHANGES
 
-* 🧨 Languages must be explicitly defined via the lang attribute.
-* 🧨 Minimum node version was bumped from 9 to 14
-* 🧨 Cannot use "type" attribute to identify the language of a style or
-script tag anymore. Use `lang` instead
-* 🧨 node-sass is not supported anymore. Use `sass` instead
-* minimum node version changed to v14
-
-
+- 🧨 Languages must be explicitly defined via the lang attribute.
+- 🧨 Minimum node version was bumped from 9 to 14
+- 🧨 Cannot use "type" attribute to identify the language of a style or
+  script tag anymore. Use `lang` instead
+- 🧨 node-sass is not supported anymore. Use `sass` instead
+- minimum node version changed to v14
 
 ## [4.10.7](https://github.com/sveltejs/svelte-preprocess/compare/v4.10.5...v4.10.7) (2022-06-04)
 
-
 ### Bug Fixes
 
-* add pug const mixin ([#518](https://github.com/sveltejs/svelte-preprocess/issues/518)) ([0551a9b](https://github.com/sveltejs/svelte-preprocess/commit/0551a9b557ee18bb05a3e9021a8c9aa1f7b8c665)), closes [#467](https://github.com/sveltejs/svelte-preprocess/issues/467)
-* paths in postcss sourcemap sources array ([#500](https://github.com/sveltejs/svelte-preprocess/issues/500)) ([2027375](https://github.com/sveltejs/svelte-preprocess/commit/2027375969255d11708340ee40eb2e3ded7ddb35))
-* preserve `[@font-face](https://github.com/font-face)` inside `:global` block ([#486](https://github.com/sveltejs/svelte-preprocess/issues/486)) ([8064473](https://github.com/sveltejs/svelte-preprocess/commit/8064473ae107f6e2d34eb9590e4befa70ce4618c)), closes [#236](https://github.com/sveltejs/svelte-preprocess/issues/236)
-* stylus - handle relative sourcemap sources([#513](https://github.com/sveltejs/svelte-preprocess/issues/513)) ([77bd3bf](https://github.com/sveltejs/svelte-preprocess/commit/77bd3bf69554afbc45d6f1e34a4eb5abf398a933))
-
-
+- add pug const mixin ([#518](https://github.com/sveltejs/svelte-preprocess/issues/518)) ([0551a9b](https://github.com/sveltejs/svelte-preprocess/commit/0551a9b557ee18bb05a3e9021a8c9aa1f7b8c665)), closes [#467](https://github.com/sveltejs/svelte-preprocess/issues/467)
+- paths in postcss sourcemap sources array ([#500](https://github.com/sveltejs/svelte-preprocess/issues/500)) ([2027375](https://github.com/sveltejs/svelte-preprocess/commit/2027375969255d11708340ee40eb2e3ded7ddb35))
+- preserve `[@font-face](https://github.com/font-face)` inside `:global` block ([#486](https://github.com/sveltejs/svelte-preprocess/issues/486)) ([8064473](https://github.com/sveltejs/svelte-preprocess/commit/8064473ae107f6e2d34eb9590e4befa70ce4618c)), closes [#236](https://github.com/sveltejs/svelte-preprocess/issues/236)
+- stylus - handle relative sourcemap sources([#513](https://github.com/sveltejs/svelte-preprocess/issues/513)) ([77bd3bf](https://github.com/sveltejs/svelte-preprocess/commit/77bd3bf69554afbc45d6f1e34a4eb5abf398a933))
 
 ## [4.10.6](https://github.com/sveltejs/svelte-preprocess/compare/v4.10.5...v4.10.6) (2022-04-13)
 
-
 ### Bug Fixes
 
-* paths in postcss sourcemap sources array ([#500](https://github.com/sveltejs/svelte-preprocess/issues/500)) ([2027375](https://github.com/sveltejs/svelte-preprocess/commit/2027375969255d11708340ee40eb2e3ded7ddb35))
-* preserve `[@font-face](https://github.com/font-face)` inside `:global` block ([#486](https://github.com/sveltejs/svelte-preprocess/issues/486)) ([8064473](https://github.com/sveltejs/svelte-preprocess/commit/8064473ae107f6e2d34eb9590e4befa70ce4618c)), closes [#236](https://github.com/sveltejs/svelte-preprocess/issues/236)
-
-
+- paths in postcss sourcemap sources array ([#500](https://github.com/sveltejs/svelte-preprocess/issues/500)) ([2027375](https://github.com/sveltejs/svelte-preprocess/commit/2027375969255d11708340ee40eb2e3ded7ddb35))
+- preserve `[@font-face](https://github.com/font-face)` inside `:global` block ([#486](https://github.com/sveltejs/svelte-preprocess/issues/486)) ([8064473](https://github.com/sveltejs/svelte-preprocess/commit/8064473ae107f6e2d34eb9590e4befa70ce4618c)), closes [#236](https://github.com/sveltejs/svelte-preprocess/issues/236)
 
 ## [4.10.5](https://github.com/sveltejs/svelte-preprocess/compare/v4.10.4...v4.10.5) (2022-04-04)
 
-
 ### Bug Fixes
 
-* always use absolute paths for less imports ([#495](https://github.com/sveltejs/svelte-preprocess/issues/495)) ([#496](https://github.com/sveltejs/svelte-preprocess/issues/496)) ([be0fda4](https://github.com/sveltejs/svelte-preprocess/commit/be0fda4ddbe95040221ff248ccbb492fb5555334))
-
-
+- always use absolute paths for less imports ([#495](https://github.com/sveltejs/svelte-preprocess/issues/495)) ([#496](https://github.com/sveltejs/svelte-preprocess/issues/496)) ([be0fda4](https://github.com/sveltejs/svelte-preprocess/commit/be0fda4ddbe95040221ff248ccbb492fb5555334))
 
 ## [4.10.4](https://github.com/sveltejs/svelte-preprocess/compare/v4.10.3...v4.10.4) (2022-02-23)
 
-
 ### Bug Fixes
 
-* only try to load external files with relative paths ([#487](https://github.com/sveltejs/svelte-preprocess/issues/487)) ([80d87ed](https://github.com/sveltejs/svelte-preprocess/commit/80d87edac4723401db47d06ed03bb6cd388c21d9))
-
-
+- only try to load external files with relative paths ([#487](https://github.com/sveltejs/svelte-preprocess/issues/487)) ([80d87ed](https://github.com/sveltejs/svelte-preprocess/commit/80d87edac4723401db47d06ed03bb6cd388c21d9))
 
 ## [4.10.3](https://github.com/sveltejs/svelte-preprocess/compare/v4.10.2...v4.10.3) (2022-02-09)
 
-
 ### Bug Fixes
 
-* add # and numbers to ts store regex ([#473](https://github.com/sveltejs/svelte-preprocess/issues/473)) ([881f3c9](https://github.com/sveltejs/svelte-preprocess/commit/881f3c9ad6118fb66b560494a67042944567e0ec)), closes [#466](https://github.com/sveltejs/svelte-preprocess/issues/466)
-* adjust typescript peer dep ([#479](https://github.com/sveltejs/svelte-preprocess/issues/479)) ([68fae2c](https://github.com/sveltejs/svelte-preprocess/commit/68fae2c56fb3e22ff21f12c9aab74b42ad4f7bb8))
-
-
+- add # and numbers to ts store regex ([#473](https://github.com/sveltejs/svelte-preprocess/issues/473)) ([881f3c9](https://github.com/sveltejs/svelte-preprocess/commit/881f3c9ad6118fb66b560494a67042944567e0ec)), closes [#466](https://github.com/sveltejs/svelte-preprocess/issues/466)
+- adjust typescript peer dep ([#479](https://github.com/sveltejs/svelte-preprocess/issues/479)) ([68fae2c](https://github.com/sveltejs/svelte-preprocess/commit/68fae2c56fb3e22ff21f12c9aab74b42ad4f7bb8))
 
 ## [4.10.2](https://github.com/sveltejs/svelte-preprocess/compare/v4.10.1...v4.10.2) (2022-01-17)
 
-
 ### Bug Fixes
 
-* accept less v4 as peer dep ([#455](https://github.com/sveltejs/svelte-preprocess/issues/455)) ([fbc484a](https://github.com/sveltejs/svelte-preprocess/commit/fbc484a6d0394928c1318b70dfe007fed1d9fdac))
-* better pug error message ([#448](https://github.com/sveltejs/svelte-preprocess/issues/448)) ([a239e82](https://github.com/sveltejs/svelte-preprocess/commit/a239e829295bde5f62383697266cefe7767dd0e2)), closes [#447](https://github.com/sveltejs/svelte-preprocess/issues/447)
-* provide caller information to Babel ([#449](https://github.com/sveltejs/svelte-preprocess/issues/449)) ([51007ab](https://github.com/sveltejs/svelte-preprocess/commit/51007abf946ffdd1d407c6bcf86439d38e113626))
-* ts preprocessor - consider store suffixed with number ([#461](https://github.com/sveltejs/svelte-preprocess/issues/461)) ([a7a94cf](https://github.com/sveltejs/svelte-preprocess/commit/a7a94cfb29f6ea85cfafd1afa2c61363f72cb4b3)), closes [sveltejs/svelte#7120](https://github.com/sveltejs/svelte/issues/7120)
-
-
+- accept less v4 as peer dep ([#455](https://github.com/sveltejs/svelte-preprocess/issues/455)) ([fbc484a](https://github.com/sveltejs/svelte-preprocess/commit/fbc484a6d0394928c1318b70dfe007fed1d9fdac))
+- better pug error message ([#448](https://github.com/sveltejs/svelte-preprocess/issues/448)) ([a239e82](https://github.com/sveltejs/svelte-preprocess/commit/a239e829295bde5f62383697266cefe7767dd0e2)), closes [#447](https://github.com/sveltejs/svelte-preprocess/issues/447)
+- provide caller information to Babel ([#449](https://github.com/sveltejs/svelte-preprocess/issues/449)) ([51007ab](https://github.com/sveltejs/svelte-preprocess/commit/51007abf946ffdd1d407c6bcf86439d38e113626))
+- ts preprocessor - consider store suffixed with number ([#461](https://github.com/sveltejs/svelte-preprocess/issues/461)) ([a7a94cf](https://github.com/sveltejs/svelte-preprocess/commit/a7a94cfb29f6ea85cfafd1afa2c61363f72cb4b3)), closes [sveltejs/svelte#7120](https://github.com/sveltejs/svelte/issues/7120)
 
 ## [4.10.1](https://github.com/sveltejs/svelte-preprocess/compare/v4.10.0...v4.10.1) (2021-12-17)
 
-
 ### Bug Fixes
 
-* adjust store regex ([#441](https://github.com/sveltejs/svelte-preprocess/issues/441)) ([85a86c8](https://github.com/sveltejs/svelte-preprocess/commit/85a86c86513f98c2b02f2d314a18b0e68378c8f6)), closes [#433](https://github.com/sveltejs/svelte-preprocess/issues/433)
-* generate high resolution source map ([#443](https://github.com/sveltejs/svelte-preprocess/issues/443)) ([57012ba](https://github.com/sveltejs/svelte-preprocess/commit/57012ba9f87abfec99f061196fb955da4ccfa384))
-
-
+- adjust store regex ([#441](https://github.com/sveltejs/svelte-preprocess/issues/441)) ([85a86c8](https://github.com/sveltejs/svelte-preprocess/commit/85a86c86513f98c2b02f2d314a18b0e68378c8f6)), closes [#433](https://github.com/sveltejs/svelte-preprocess/issues/433)
+- generate high resolution source map ([#443](https://github.com/sveltejs/svelte-preprocess/issues/443)) ([57012ba](https://github.com/sveltejs/svelte-preprocess/commit/57012ba9f87abfec99f061196fb955da4ccfa384))
 
 # [4.10.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.9.8...v4.10.0) (2021-12-13)
 
-
 ### Features
 
-* support preserveValueImports introduced in TS 4.5 ([#434](https://github.com/sveltejs/svelte-preprocess/issues/434)) ([4ea9982](https://github.com/sveltejs/svelte-preprocess/commit/4ea9982249df9858439bb3588224e804107f0986))
-
-
+- support preserveValueImports introduced in TS 4.5 ([#434](https://github.com/sveltejs/svelte-preprocess/issues/434)) ([4ea9982](https://github.com/sveltejs/svelte-preprocess/commit/4ea9982249df9858439bb3588224e804107f0986))
 
 ## [4.9.8](https://github.com/sveltejs/svelte-preprocess/compare/v4.9.7...v4.9.8) (2021-10-02)
 
-
 ### Bug Fixes
 
-* deprecate type attribute ([#417](https://github.com/sveltejs/svelte-preprocess/issues/417)) ([2632a88](https://github.com/sveltejs/svelte-preprocess/commit/2632a88d380a14843393d5246f471a8c6446a3b5))
-
-
+- deprecate type attribute ([#417](https://github.com/sveltejs/svelte-preprocess/issues/417)) ([2632a88](https://github.com/sveltejs/svelte-preprocess/commit/2632a88d380a14843393d5246f471a8c6446a3b5))
 
 ## [4.9.7](https://github.com/sveltejs/svelte-preprocess/compare/v4.9.6...v4.9.7) (2021-09-30)
 
-
 ### Bug Fixes
 
-* don't overwrite target from tsconfig.json ([#408](https://github.com/sveltejs/svelte-preprocess/issues/408)) ([11cb508](https://github.com/sveltejs/svelte-preprocess/commit/11cb5083b1c9a946ea8c0f499ccbca753908e411))
-
-
+- don't overwrite target from tsconfig.json ([#408](https://github.com/sveltejs/svelte-preprocess/issues/408)) ([11cb508](https://github.com/sveltejs/svelte-preprocess/commit/11cb5083b1c9a946ea8c0f499ccbca753908e411))
 
 ## [4.9.6](https://github.com/sveltejs/svelte-preprocess/compare/v4.9.5...v4.9.6) (2021-09-30)
 
-
 ### Bug Fixes
 
-* coffeescript sourcemap ([#416](https://github.com/sveltejs/svelte-preprocess/issues/416)) ([6cc54b6](https://github.com/sveltejs/svelte-preprocess/commit/6cc54b63fd8eb42a5e2460b30bba4d7a85846958))
-
-
+- coffeescript sourcemap ([#416](https://github.com/sveltejs/svelte-preprocess/issues/416)) ([6cc54b6](https://github.com/sveltejs/svelte-preprocess/commit/6cc54b63fd8eb42a5e2460b30bba4d7a85846958))
 
 ## [4.9.5](https://github.com/sveltejs/svelte-preprocess/compare/v4.9.4...v4.9.5) (2021-09-20)
 
-
 ### Bug Fixes
 
-* Clear outDir if set in tsconfig ([#406](https://github.com/sveltejs/svelte-preprocess/issues/406)) ([67f96ad](https://github.com/sveltejs/svelte-preprocess/commit/67f96ad9fcc4e0efb337d469533ff68d6189c024)), closes [#405](https://github.com/sveltejs/svelte-preprocess/issues/405)
-* return default settings when no tsconfig found ([#407](https://github.com/sveltejs/svelte-preprocess/issues/407)) ([473408b](https://github.com/sveltejs/svelte-preprocess/commit/473408b8dcec6cd1540d3fb8e05ca0b4a82ec2f5))
-
-
+- Clear outDir if set in tsconfig ([#406](https://github.com/sveltejs/svelte-preprocess/issues/406)) ([67f96ad](https://github.com/sveltejs/svelte-preprocess/commit/67f96ad9fcc4e0efb337d469533ff68d6189c024)), closes [#405](https://github.com/sveltejs/svelte-preprocess/issues/405)
+- return default settings when no tsconfig found ([#407](https://github.com/sveltejs/svelte-preprocess/issues/407)) ([473408b](https://github.com/sveltejs/svelte-preprocess/commit/473408b8dcec6cd1540d3fb8e05ca0b4a82ec2f5))
 
 ## [4.9.4](https://github.com/sveltejs/svelte-preprocess/compare/v4.9.3...v4.9.4) (2021-09-09)
 
-
 ### Bug Fixes
 
-* handle $store imported in module script ([#404](https://github.com/sveltejs/svelte-preprocess/issues/404)) ([162faa4](https://github.com/sveltejs/svelte-preprocess/commit/162faa40949468eb07a73116740d3415775ddc9a)), closes [#401](https://github.com/sveltejs/svelte-preprocess/issues/401)
-
+- handle $store imported in module script ([#404](https://github.com/sveltejs/svelte-preprocess/issues/404)) ([162faa4](https://github.com/sveltejs/svelte-preprocess/commit/162faa40949468eb07a73116740d3415775ddc9a)), closes [#401](https://github.com/sveltejs/svelte-preprocess/issues/401)
 
 ### Performance Improvements
 
-* cache tsconfig ([#398](https://github.com/sveltejs/svelte-preprocess/issues/398)) ([5aa60cb](https://github.com/sveltejs/svelte-preprocess/commit/5aa60cb86c89c0649a548507f6d142937f76df7a)), closes [#383](https://github.com/sveltejs/svelte-preprocess/issues/383)
-
-
+- cache tsconfig ([#398](https://github.com/sveltejs/svelte-preprocess/issues/398)) ([5aa60cb](https://github.com/sveltejs/svelte-preprocess/commit/5aa60cb86c89c0649a548507f6d142937f76df7a)), closes [#383](https://github.com/sveltejs/svelte-preprocess/issues/383)
 
 ## [4.9.3](https://github.com/sveltejs/svelte-preprocess/compare/v4.9.2...v4.9.3) (2021-09-08)
 
-
 ### Bug Fixes
 
-* add quotes to ts store regex ([#403](https://github.com/sveltejs/svelte-preprocess/issues/403)) ([9f2d7a0](https://github.com/sveltejs/svelte-preprocess/commit/9f2d7a07053b8f010067bf7e55d99bccb2958567)), closes [#402](https://github.com/sveltejs/svelte-preprocess/issues/402)
-
-
+- add quotes to ts store regex ([#403](https://github.com/sveltejs/svelte-preprocess/issues/403)) ([9f2d7a0](https://github.com/sveltejs/svelte-preprocess/commit/9f2d7a07053b8f010067bf7e55d99bccb2958567)), closes [#402](https://github.com/sveltejs/svelte-preprocess/issues/402)
 
 ## [4.9.2](https://github.com/sveltejs/svelte-preprocess/compare/v4.9.1...v4.9.2) (2021-09-07)
 
-
 ### Bug Fixes
 
-* relax TS peer dep requirement ([#400](https://github.com/sveltejs/svelte-preprocess/issues/400)) ([f8a0f49](https://github.com/sveltejs/svelte-preprocess/commit/f8a0f49fd02aea1fdb5c463496a5939186948cd2)), closes [#395](https://github.com/sveltejs/svelte-preprocess/issues/395)
-
-
+- relax TS peer dep requirement ([#400](https://github.com/sveltejs/svelte-preprocess/issues/400)) ([f8a0f49](https://github.com/sveltejs/svelte-preprocess/commit/f8a0f49fd02aea1fdb5c463496a5939186948cd2)), closes [#395](https://github.com/sveltejs/svelte-preprocess/issues/395)
 
 ## [4.9.1](https://github.com/sveltejs/svelte-preprocess/compare/v4.9.0...v4.9.1) (2021-09-05)
 
-
 ### Bug Fixes
 
-* fallback to empty string if there are no attributes ([#397](https://github.com/sveltejs/svelte-preprocess/issues/397)) ([b25838f](https://github.com/sveltejs/svelte-preprocess/commit/b25838f5b11afa8143aa59cfefa9b0881b4879cb)), closes [#396](https://github.com/sveltejs/svelte-preprocess/issues/396)
-
-
+- fallback to empty string if there are no attributes ([#397](https://github.com/sveltejs/svelte-preprocess/issues/397)) ([b25838f](https://github.com/sveltejs/svelte-preprocess/commit/b25838f5b11afa8143aa59cfefa9b0881b4879cb)), closes [#396](https://github.com/sveltejs/svelte-preprocess/issues/396)
 
 # [4.9.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.8.0...v4.9.0) (2021-09-04)
 
-
 ### Features
 
-* better Typescript transpilation ([#392](https://github.com/sveltejs/svelte-preprocess/issues/392)) ([a1c54fc](https://github.com/sveltejs/svelte-preprocess/commit/a1c54fc7b0d0d21fd9adbee8aeeb8f3667b375c9))
-
-
+- better Typescript transpilation ([#392](https://github.com/sveltejs/svelte-preprocess/issues/392)) ([a1c54fc](https://github.com/sveltejs/svelte-preprocess/commit/a1c54fc7b0d0d21fd9adbee8aeeb8f3667b375c9))
 
 # [4.8.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.7.4...v4.8.0) (2021-08-23)
 
-
 ### Bug Fixes
 
-* add deprecation warning to defaults prop ([#393](https://github.com/sveltejs/svelte-preprocess/issues/393)) ([406d3a8](https://github.com/sveltejs/svelte-preprocess/commit/406d3a87c4779c16fca1264ce66fc491e5eec170))
-
-
+- add deprecation warning to defaults prop ([#393](https://github.com/sveltejs/svelte-preprocess/issues/393)) ([406d3a8](https://github.com/sveltejs/svelte-preprocess/commit/406d3a87c4779c16fca1264ce66fc491e5eec170))
 
 ## [4.7.4](https://github.com/sveltejs/svelte-preprocess/compare/v4.7.3...v4.7.4) (2021-07-09)
 
-
 ### Bug Fixes
 
-* standalone preprocessors prepending data in other languages ([#380](https://github.com/sveltejs/svelte-preprocess/issues/380)) ([e6679e4](https://github.com/sveltejs/svelte-preprocess/commit/e6679e4b81cd145202b293aca1035cd2dc05ef71))
-
-
+- standalone preprocessors prepending data in other languages ([#380](https://github.com/sveltejs/svelte-preprocess/issues/380)) ([e6679e4](https://github.com/sveltejs/svelte-preprocess/commit/e6679e4b81cd145202b293aca1035cd2dc05ef71))
 
 ## [4.7.3](https://github.com/sveltejs/svelte-preprocess/compare/v4.7.2...v4.7.3) (2021-05-03)
 
-
 ### Bug Fixes
 
-* typescript: importing component from pnpm monorepo p… ([#337](https://github.com/sveltejs/svelte-preprocess/issues/337)) ([bf72637](https://github.com/sveltejs/svelte-preprocess/commit/bf726371e43dd3bc617511690be6cf6a2845e389))
-
-
+- typescript: importing component from pnpm monorepo p… ([#337](https://github.com/sveltejs/svelte-preprocess/issues/337)) ([bf72637](https://github.com/sveltejs/svelte-preprocess/commit/bf726371e43dd3bc617511690be6cf6a2845e389))
 
 ## [4.7.2](https://github.com/sveltejs/svelte-preprocess/compare/v4.7.1...v4.7.2) (2021-04-19)
 
-
 ### Bug Fixes
 
-* 🐛 prevent svelte file from being added to scss dep list ([519b0b6](https://github.com/sveltejs/svelte-preprocess/commit/519b0b6c49ba4a9e0f4adfcc47f03b19d2e28966)), closes [#346](https://github.com/sveltejs/svelte-preprocess/issues/346)
-* support ts build with no tsconfig.json ([cf0e44c](https://github.com/sveltejs/svelte-preprocess/commit/cf0e44c26212b496cda8686d2780e7e8f1ac8f7a))
-
-
+- 🐛 prevent svelte file from being added to scss dep list ([519b0b6](https://github.com/sveltejs/svelte-preprocess/commit/519b0b6c49ba4a9e0f4adfcc47f03b19d2e28966)), closes [#346](https://github.com/sveltejs/svelte-preprocess/issues/346)
+- support ts build with no tsconfig.json ([cf0e44c](https://github.com/sveltejs/svelte-preprocess/commit/cf0e44c26212b496cda8686d2780e7e8f1ac8f7a))
 
 ## [4.7.1](https://github.com/sveltejs/svelte-preprocess/compare/v4.7.0...v4.7.1) (2021-04-18)
 
-
 ### Features
 
-* export autopreprocess options type ([f5e1a63](https://github.com/sveltejs/svelte-preprocess/commit/f5e1a635f586a9780b0a71db979f6ffb30b31221))
-
-
+- export autopreprocess options type ([f5e1a63](https://github.com/sveltejs/svelte-preprocess/commit/f5e1a635f586a9780b0a71db979f6ffb30b31221))
 
 # [4.7.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.9...v4.7.0) (2021-03-26)
 
-
 ### Features
 
-* support tsconfig extends ([#328](https://github.com/sveltejs/svelte-preprocess/issues/328)) ([d0b4766](https://github.com/sveltejs/svelte-preprocess/commit/d0b476615d72deaa4eff5f2f164b245c0dd294d7)), closes [#300](https://github.com/sveltejs/svelte-preprocess/issues/300)
-
-
+- support tsconfig extends ([#328](https://github.com/sveltejs/svelte-preprocess/issues/328)) ([d0b4766](https://github.com/sveltejs/svelte-preprocess/commit/d0b476615d72deaa4eff5f2f164b245c0dd294d7)), closes [#300](https://github.com/sveltejs/svelte-preprocess/issues/300)
 
 ## [4.6.9](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.7...v4.6.9) (2021-02-13)
 
-
 ### Bug Fixes
 
-* 🐛 make markup tag regexp less greedy ([384ba5c](https://github.com/sveltejs/svelte-preprocess/commit/384ba5cad0a2939a2717d9061dd928b4607e1431)), closes [#310](https://github.com/sveltejs/svelte-preprocess/issues/310)
-* revert "refactor: use fs/promises" ([3f9572c](https://github.com/sveltejs/svelte-preprocess/commit/3f9572ca30e9a05439a6deddc327fa340dd1ef34))
-
-
+- 🐛 make markup tag regexp less greedy ([384ba5c](https://github.com/sveltejs/svelte-preprocess/commit/384ba5cad0a2939a2717d9061dd928b4607e1431)), closes [#310](https://github.com/sveltejs/svelte-preprocess/issues/310)
+- revert "refactor: use fs/promises" ([3f9572c](https://github.com/sveltejs/svelte-preprocess/commit/3f9572ca30e9a05439a6deddc327fa340dd1ef34))
 
 ## [4.6.8](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.7...v4.6.8) (2021-02-11)
 
-
 ### Bug Fixes
 
-* 🐛 make markup tag regexp less greedy ([64f3362](https://github.com/sveltejs/svelte-preprocess/commit/64f3362d27d0defdcc0fd684022ebacb49c1aaf4)), closes [#310](https://github.com/sveltejs/svelte-preprocess/issues/310)
-
-
+- 🐛 make markup tag regexp less greedy ([64f3362](https://github.com/sveltejs/svelte-preprocess/commit/64f3362d27d0defdcc0fd684022ebacb49c1aaf4)), closes [#310](https://github.com/sveltejs/svelte-preprocess/issues/310)
 
 ## [4.6.7](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.5...v4.6.7) (2021-02-10)
 
-
 ### Bug Fixes
 
-* 🐛 language custom transformer overriding postcss ([2a188bc](https://github.com/sveltejs/svelte-preprocess/commit/2a188bc0886f9950ab3a23c9b24ac30a29dd81bb)), closes [#309](https://github.com/sveltejs/svelte-preprocess/issues/309)
-
-
+- 🐛 language custom transformer overriding postcss ([2a188bc](https://github.com/sveltejs/svelte-preprocess/commit/2a188bc0886f9950ab3a23c9b24ac30a29dd81bb)), closes [#309](https://github.com/sveltejs/svelte-preprocess/issues/309)
 
 ## [4.6.6](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.5...v4.6.6) (2021-02-03)
 
-
 ### Bug Fixes
 
-* accept postcss-load-config v2 or v3 ([#307](https://github.com/sveltejs/svelte-preprocess/issues/307)) ([a31e794](https://github.com/sveltejs/svelte-preprocess/commit/a31e79403f94cfd7db252a6152f120772acd4d6d))
-
-
+- accept postcss-load-config v2 or v3 ([#307](https://github.com/sveltejs/svelte-preprocess/issues/307)) ([a31e794](https://github.com/sveltejs/svelte-preprocess/commit/a31e79403f94cfd7db252a6152f120772acd4d6d))
 
 ## [4.6.5](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.4...v4.6.5) (2021-01-29)
 
-
 ### Bug Fixes
 
-* [scss] remove sourceMappingURL from result.code ([#297](https://github.com/sveltejs/svelte-preprocess/issues/297)) ([2ff48f8](https://github.com/sveltejs/svelte-preprocess/commit/2ff48f8c4fa94ae5782f24b39889f8a6a893eed1))
-
-
+- [scss] remove sourceMappingURL from result.code ([#297](https://github.com/sveltejs/svelte-preprocess/issues/297)) ([2ff48f8](https://github.com/sveltejs/svelte-preprocess/commit/2ff48f8c4fa94ae5782f24b39889f8a6a893eed1))
 
 ## [4.6.4](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.3...v4.6.4) (2021-01-29)
 
-
 ### Bug Fixes
 
-* 🐛 better missing postcss message ([cafb6c6](https://github.com/sveltejs/svelte-preprocess/commit/cafb6c6d7e369c11a7feda212a182f08c0f3a156)), closes [#301](https://github.com/sveltejs/svelte-preprocess/issues/301)
-
-
+- 🐛 better missing postcss message ([cafb6c6](https://github.com/sveltejs/svelte-preprocess/commit/cafb6c6d7e369c11a7feda212a182f08c0f3a156)), closes [#301](https://github.com/sveltejs/svelte-preprocess/issues/301)
 
 ## [4.6.3](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.2...v4.6.3) (2021-01-21)
 
-
 ### Bug Fixes
 
-* 🐛 make postcss config error explicit ([21e3086](https://github.com/sveltejs/svelte-preprocess/commit/21e30861ccc6d6c6b80cd9aad4a81b9e29a96c5e)), closes [#298](https://github.com/sveltejs/svelte-preprocess/issues/298)
-
-
+- 🐛 make postcss config error explicit ([21e3086](https://github.com/sveltejs/svelte-preprocess/commit/21e30861ccc6d6c6b80cd9aad4a81b9e29a96c5e)), closes [#298](https://github.com/sveltejs/svelte-preprocess/issues/298)
 
 ## [4.6.2](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.1...v4.6.2) (2021-01-21)
 
-
 ### Bug Fixes
 
-* translate options.sourceMap to options.compilerOptions.sourceMap for ts ([#286](https://github.com/sveltejs/svelte-preprocess/issues/286)) ([#299](https://github.com/sveltejs/svelte-preprocess/issues/299)) ([c8a3cd6](https://github.com/sveltejs/svelte-preprocess/commit/c8a3cd6736054510bc0eeccc242b8f5c4f0b7c5a))
-
-
+- translate options.sourceMap to options.compilerOptions.sourceMap for ts ([#286](https://github.com/sveltejs/svelte-preprocess/issues/286)) ([#299](https://github.com/sveltejs/svelte-preprocess/issues/299)) ([c8a3cd6](https://github.com/sveltejs/svelte-preprocess/commit/c8a3cd6736054510bc0eeccc242b8f5c4f0b7c5a))
 
 ## [4.6.1](https://github.com/sveltejs/svelte-preprocess/compare/v4.6.0...v4.6.1) (2020-11-20)
 
-
 ### Bug Fixes
 
-* 🐛 postcss sourcemap ([8fe6543](https://github.com/sveltejs/svelte-preprocess/commit/8fe6543a376be15a7a761a9bacdb66903b0388da)), closes [#251](https://github.com/sveltejs/svelte-preprocess/issues/251)
-
-
+- 🐛 postcss sourcemap ([8fe6543](https://github.com/sveltejs/svelte-preprocess/commit/8fe6543a376be15a7a761a9bacdb66903b0388da)), closes [#251](https://github.com/sveltejs/svelte-preprocess/issues/251)
 
 # [4.6.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.5.6...v4.6.0) (2020-11-17)
 
-
 ### Bug Fixes
 
-* 🐛 replace separator for windows support ([b60a0a8](https://github.com/sveltejs/svelte-preprocess/commit/b60a0a830119eebd606245e71fdb6aadcee19135))
-* 🐛 sass tilde importer ([934fc04](https://github.com/sveltejs/svelte-preprocess/commit/934fc04f197ada737b3b15780538bae3ab60bede))
-
+- 🐛 replace separator for windows support ([b60a0a8](https://github.com/sveltejs/svelte-preprocess/commit/b60a0a830119eebd606245e71fdb6aadcee19135))
+- 🐛 sass tilde importer ([934fc04](https://github.com/sveltejs/svelte-preprocess/commit/934fc04f197ada737b3b15780538bae3ab60bede))
 
 ### Features
 
-* 🎸 add scss support for tilde (~) imports ([5b5c692](https://github.com/sveltejs/svelte-preprocess/commit/5b5c6924829910d363fe27ba4658cab7a0f06de0)), closes [#277](https://github.com/sveltejs/svelte-preprocess/issues/277)
-
-
+- 🎸 add scss support for tilde (~) imports ([5b5c692](https://github.com/sveltejs/svelte-preprocess/commit/5b5c6924829910d363fe27ba4658cab7a0f06de0)), closes [#277](https://github.com/sveltejs/svelte-preprocess/issues/277)
 
 ## 4.5.2 (2020-10-23)
 
-
 ### Bug Fixes
 
-* 🐛 inline :local without a scope not working ([2683fda](https://github.com/sveltejs/svelte-preprocess/commit/2683fda481d4d84bd37206f25c79a47787f6dc3f)), closes [#238](https://github.com/sveltejs/svelte-preprocess/issues/238)
-* 🐛 warn when global attr is used without potcss ([1be483b](https://github.com/sveltejs/svelte-preprocess/commit/1be483b34f2731b7fcc189d4453c5103a241aa9f))
-
-
+- 🐛 inline :local without a scope not working ([2683fda](https://github.com/sveltejs/svelte-preprocess/commit/2683fda481d4d84bd37206f25c79a47787f6dc3f)), closes [#238](https://github.com/sveltejs/svelte-preprocess/issues/238)
+- 🐛 warn when global attr is used without potcss ([1be483b](https://github.com/sveltejs/svelte-preprocess/commit/1be483b34f2731b7fcc189d4453c5103a241aa9f))
 
 ## [4.5.1](https://github.com/sveltejs/svelte-preprocess/compare/v4.5.0...v4.5.1) (2020-10-07)
 
-
 ### Bug Fixes
 
-* 🐛 add sugarss as optional dependency ([9ed25ee](https://github.com/sveltejs/svelte-preprocess/commit/9ed25ee88c72ae28c5621e7228cddf53b4e7d791))
-
-
+- 🐛 add sugarss as optional dependency ([9ed25ee](https://github.com/sveltejs/svelte-preprocess/commit/9ed25ee88c72ae28c5621e7228cddf53b4e7d791))
 
 # [4.5.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.4.3...v4.5.0) (2020-10-07)
 
-
 ### Bug Fixes
 
-* 🐛 postcss config file support for sugarss ([4876426](https://github.com/sveltejs/svelte-preprocess/commit/48764269205c6617f790adad50b61f8614bff3d0))
-
+- 🐛 postcss config file support for sugarss ([4876426](https://github.com/sveltejs/svelte-preprocess/commit/48764269205c6617f790adad50b61f8614bff3d0))
 
 ### Features
 
-* 🎸 add support for lang=sugarss & type=text/sugarss ([683715d](https://github.com/sveltejs/svelte-preprocess/commit/683715d214022e53f0653ee3e6872adf6bdf72be)), closes [#250](https://github.com/sveltejs/svelte-preprocess/issues/250)
-
-
+- 🎸 add support for lang=sugarss & type=text/sugarss ([683715d](https://github.com/sveltejs/svelte-preprocess/commit/683715d214022e53f0653ee3e6872adf6bdf72be)), closes [#250](https://github.com/sveltejs/svelte-preprocess/issues/250)
 
 ## [4.4.3](https://github.com/sveltejs/svelte-preprocess/compare/v4.4.0...v4.4.3) (2020-10-07)
 
