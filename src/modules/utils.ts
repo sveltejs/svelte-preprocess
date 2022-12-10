@@ -1,24 +1,9 @@
 import { existsSync } from 'fs';
 import { dirname, join, parse } from 'path';
 
-export async function importAny(...modules: string[]) {
-  try {
-    const mod = await modules.reduce(
-      (acc, moduleName) => acc.catch(() => import(moduleName)),
-      Promise.reject<any>(),
-    );
-
-    return mod;
-  } catch (e) {
-    throw new Error(`Cannot find any of modules: ${modules}\n\n${e}`);
-  }
-}
-
 export function concat(...arrs: any[]): any[] {
   return arrs.reduce((acc: [], a) => {
-    if (a) {
-      return acc.concat(a);
-    }
+    if (a) return acc.concat(a);
 
     return acc;
   }, []);
