@@ -22,7 +22,7 @@ const TRANSFORMERS: Record<string, any> = {
   },
   coffeescript: {
     transformer: coffeeTransformer,
-    template: `<script lang="coffeescript">console.log('potato')</script>`,
+    template: `<script lang="coffee">console.log('potato')</script>`,
   },
   scss: {
     transformer: scssTransformer,
