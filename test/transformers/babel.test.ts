@@ -32,13 +32,9 @@ $: bar = foo?.b ?? 120
 
     const preprocessed = await preprocess(template, opts);
 
-    expect(preprocessed.code).toMatchInlineSnapshot(`
-      "<script>var _foo$b;
-
-      var foo = {};
-
-      $: bar = (_foo$b = foo == null ? void 0 : foo.b) != null ? _foo$b : 120;</script>"
-    `);
+    expect(preprocessed.code).toBe(`<script>var _foo$b;
+var foo = {};
+$: bar = (_foo$b = foo == null ? void 0 : foo.b) != null ? _foo$b : 120;</script>`);
   });
 
   it('should not transpile import/export syntax with preset-env', async () => {
@@ -65,12 +61,10 @@ $: bar = foo?.b ?? 120
 
     const preprocessed = await preprocess(template, opts);
 
-    expect(preprocessed.code).toMatchInlineSnapshot(`
-      "<script>var _foo$b;
-
-      import foo from './foo';
-
-      $: bar = (_foo$b = foo == null ? void 0 : foo.b) != null ? _foo$b : 120;</script>"
-    `);
+    expect(preprocessed.code).toBe(
+      `<script>var _foo$b;
+import foo from './foo';
+$: bar = (_foo$b = foo == null ? void 0 : foo.b) != null ? _foo$b : 120;</script>`,
+    );
   });
 });
