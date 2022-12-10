@@ -51,12 +51,12 @@ describe('external files', () => {
       }),
     ];
 
-    expect(markup.code).toContain(getFixtureContent('template.html'));
-    expect(script.code).toContain(getFixtureContent('script.js'));
-    expect(style.code).toContain(getFixtureContent('style.css'));
-    expect(markup.dependencies).toContain(getFixturePath('template.html'));
-    expect(script.dependencies).toContain(getFixturePath('script.js'));
-    expect(style.dependencies).toContain(getFixturePath('style.css'));
+    expect(markup?.code).toContain(getFixtureContent('template.html'));
+    expect(script?.code).toContain(getFixtureContent('script.js'));
+    expect(style?.code).toContain(getFixtureContent('style.css'));
+    expect(markup?.dependencies).toContain(getFixturePath('template.html'));
+    expect(script?.dependencies).toContain(getFixturePath('script.js'));
+    expect(style?.dependencies).toContain(getFixturePath('style.css'));
   });
 
   it('should support self-closing tags', async () => {
@@ -65,7 +65,7 @@ describe('external files', () => {
       filename: resolve(__dirname, '..', 'App.svelte'),
     });
 
-    expect(markup.code).toContain(getFixtureContent('template.html'));
+    expect(markup?.code).toContain(getFixtureContent('template.html'));
   });
 
   it("warns if local file don't exist", async () => {
@@ -85,7 +85,7 @@ describe('external files', () => {
       const preprocessed = await preprocess(input, sveltePreprocess());
 
       expect(preprocessed.toString?.()).toContain(input);
-      expect(preprocessed.dependencies).toHaveLength(0);
+      expect(preprocessed?.dependencies).toHaveLength(0);
       expect(warnSpy).not.toHaveBeenCalledWith(
         expect.stringContaining('was not found'),
       );
@@ -100,7 +100,7 @@ describe('external files', () => {
     const preprocessed = await preprocess(input, sveltePreprocess());
 
     expect(preprocessed.toString?.()).toContain(input);
-    expect(preprocessed.dependencies).toHaveLength(0);
+    expect(preprocessed?.dependencies).toHaveLength(0);
     expect(warnSpy).not.toHaveBeenCalledWith(
       expect.stringContaining('was not found'),
     );
