@@ -30,6 +30,7 @@ export const ALIAS_MAP = new Map([
   ['pcss', 'css'],
   ['postcss', 'css'],
   ['sugarss', 'css'],
+  ['sss', 'css'],
   ['sass', 'scss'],
   ['styl', 'stylus'],
   ['js', 'javascript'],
