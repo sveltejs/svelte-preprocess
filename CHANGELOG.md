@@ -1,3 +1,13 @@
+# [5.0.0-alpha.1](https://github.com/sveltejs/svelte-preprocess/compare/v5.0.0-alpha.0...v5.0.0-alpha.1) (2022-12-10)
+
+
+### Bug Fixes
+
+* 🐛 add sugarss v3 and v4 as supported ([b380999](https://github.com/sveltejs/svelte-preprocess/commit/b380999d988252a3abefef9b242fd93fa6842073))
+* map .sss as .css to support sugarss extension ([7c177c9](https://github.com/sveltejs/svelte-preprocess/commit/7c177c9e5cb5105877f2073ffc276b5dc322723d))
+
+
+
 # [5.0.0-alpha.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.10.5...v5.0.0-alpha.0) (2022-12-10)
 
 
