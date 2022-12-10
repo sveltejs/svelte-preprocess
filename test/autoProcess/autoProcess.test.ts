@@ -9,8 +9,6 @@ import { getLanguage } from '../../src/modules/language';
 
 describe('detect - mimetype', () => {
   const MIMETYPES = [
-    { type: 'application/ld+json', targetLanguage: 'ld+json' },
-    { type: 'text/some-other', targetLanguage: 'some-other' },
     { lang: 'stylus', targetLanguage: 'stylus' },
     { src: '../foo.js', targetLanguage: 'javascript' },
     {
@@ -24,11 +22,9 @@ describe('detect - mimetype', () => {
     },
   ];
 
-  MIMETYPES.forEach(({ type, lang, src, targetLanguage }) => {
-    it(`should detect '${
-      src ?? type ?? lang
-    }' as '${targetLanguage}'`, async () => {
-      const language = getLanguage({ type, lang, src } as any);
+  MIMETYPES.forEach(({ lang, src, targetLanguage }) => {
+    it(`should detect '${src ?? lang}' as '${targetLanguage}'`, async () => {
+      const language = getLanguage({ lang, src } as any);
 
       expect(language).toMatchObject({ lang: targetLanguage });
     });
@@ -111,7 +107,7 @@ describe('options', () => {
   });
 
   it('should NOT preprocess preserved languages', async () => {
-    const input = `<div></div><script type="application/ld+json">{"json":true}</script>`;
+    const input = `<div></div><script lang="ld+json">{"json":true}</script>`;
     const opts = sveltePreprocess({
       preserve: ['ld+json'],
       aliases: [['ld+json', 'structuredData']],
@@ -123,7 +119,7 @@ describe('options', () => {
     const preprocessed = await preprocess(input, opts);
 
     expect(preprocessed.toString?.()).toContain(
-      `<script type="application/ld+json">{"json":true}</script>`,
+      `<script lang="ld+json">{"json":true}</script>`,
     );
   });
 
