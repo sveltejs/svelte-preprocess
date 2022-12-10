@@ -41,16 +41,6 @@
     "prepublishOnly": "pnpm test && pnpm build",
     "prepare": "husky install"
   },
-  "jest": {
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "<rootDir>/src/**/*.ts",
-      "!<rootDir>/src/types/**/*.ts"
-    ],
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    }
-  },
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
