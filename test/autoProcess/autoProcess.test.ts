@@ -137,34 +137,6 @@ describe('options', () => {
     expect(await doesCompileThrow(input, opts)).toBe(true);
   });
 
-  it('should accept other languages as default', async () => {
-    const input = `<template>markup</template><style>style</style><script>script</script>`;
-
-    const opts = sveltePreprocess({
-      defaults: {
-        markup: 'customMarkup',
-        script: 'customScript',
-        style: 'customStyle',
-      },
-      globalStyle: false,
-      customMarkup({ content }: any) {
-        return { code: content.replace('markup', 'potato') };
-      },
-      customScript({ content }: any) {
-        return { code: content.replace('script', 'potato') };
-      },
-      customStyle({ content }: any) {
-        return { code: content.replace('style', 'potato') };
-      },
-    });
-
-    const preprocessed = await preprocess(input, opts);
-
-    expect(preprocessed.toString?.()).toContain(
-      'potato<style>potato</style><script>potato</script>',
-    );
-  });
-
   it('should respect lang/type attributes even if another default language is set', async () => {
     const input = `<script lang="tomatoScript">script</script>`;
 
@@ -185,22 +157,5 @@ describe('options', () => {
     expect(preprocessed.toString?.()).toContain(
       '<script lang="tomatoScript">tomato</script>',
     );
-  });
-
-  it('should be able to use default markup language with template tags', async () => {
-    const input = `potato`;
-
-    const opts = sveltePreprocess({
-      defaults: {
-        markup: 'potatoScript',
-      },
-      potatoScript({ content }: any) {
-        return { code: content.replace('potato', 'french-fries') };
-      },
-    });
-
-    const preprocessed = await preprocess(input, opts);
-
-    expect(preprocessed.toString?.()).toContain('french-fries');
   });
 });

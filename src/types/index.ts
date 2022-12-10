@@ -63,24 +63,12 @@ export interface Transformers {
   [language: string]: TransformerOptions;
 }
 
-export type AutoPreprocessGroup = PreprocessorGroup & {
-  defaultLanguages: Readonly<{
-    markup: string;
-    style: string;
-    script: string;
-  }>;
-};
+export type AutoPreprocessGroup = PreprocessorGroup;
 
 export type AutoPreprocessOptions = {
   markupTagName?: string;
   aliases?: Array<[string, string]>;
   preserve?: string[];
-  /** @deprecated Don't use "defaults" anymore, define the language being used explicitly instead */
-  defaults?: {
-    markup?: string;
-    style?: string;
-    script?: string;
-  };
   sourceMap?: boolean;
 
   // transformers
