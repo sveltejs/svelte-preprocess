@@ -349,12 +349,9 @@ input(on:input="{bar}")
 
 ### scss, sass
 
-The `scss/sass` preprocessor accepts the default sass options alongside two other props:
+The `scss/sass` preprocessor accepts the options listed in the [Sass `LegacyStringOptions` API reference](https://sass-lang.com/documentation/js-api/interfaces/LegacyStringOptions) with some exceptions: the `file` and `data` properties are not supported. Instead, use the `prependData` property if you want to prepend some content to your `scss` content.
 
-| Option           | Default     | Description                                                                                                                    |
-| ---------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `renderSync`     | `false`     | if `true`, use the sync render method which is faster for dart sass.                                                           |
-You can check the [Sass Legacy API reference](https://sass-lang.com/documentation/js-api#legacy-api) for specific Sass options. The `file` and `data` properties are not supported. Instead, use the `prependData` property if you want to prepend some content to your `scss` content.
+Note: `svelte-preprocess` (version 5.0.0 and later) always uses [Sass's legacy `renderSync` API](https://sass-lang.com/documentation/js-api/#legacy-api).
 
 Note: `svelte-preprocess` automatically configures inclusion paths for your root directory, `node_modules` and for the current file's directory.
 
