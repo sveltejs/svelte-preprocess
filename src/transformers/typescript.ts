@@ -3,7 +3,7 @@ import { dirname, isAbsolute, join, resolve } from 'path';
 import ts from 'typescript';
 import { compile } from 'svelte/compiler';
 import MagicString from 'magic-string';
-import sorcery from 'sorcery';
+import { load } from 'sorcery';
 
 import { throwTypescriptError } from '../modules/errors';
 import { createTagRegex, parseAttributes, stripTags } from '../modules/markup';
@@ -236,7 +236,7 @@ async function concatSourceMaps({
     return sourceMapChain.sourcemaps[`${filename}.js`];
   }
 
-  const chain = await sorcery.load(`${filename}.js`, sourceMapChain);
+  const chain = await load(`${filename}.js`, sourceMapChain);
 
   return chain.apply();
 }

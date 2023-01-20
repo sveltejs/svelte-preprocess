@@ -92,7 +92,7 @@
     "@types/sass": "^1.43.1",
     "detect-indent": "^6.1.0",
     "magic-string": "^0.27.0",
-    "sorcery": "^0.10.0",
+    "sorcery": "^0.11.0",
     "strip-indent": "^3.0.0"
   },
   "peerDependencies": {
