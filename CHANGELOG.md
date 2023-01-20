@@ -1,3 +1,9 @@
+## [5.0.1](https://github.com/sveltejs/svelte-preprocess/compare/v5.0.0...v5.0.1) (2023-01-20)
+
+### Bug Fixes
+
+- 🐛 bump sorcery ([278de4f](https://github.com/sveltejs/svelte-preprocess/commit/278de4ff2fb0d94dcee21f08fdb65207c2fcc9d1))
+
 # [5.0.0](https://github.com/sveltejs/svelte-preprocess/compare/v4.10.5...v5.0.0) (2022-12-10)
 
 ### Bug Fixes
