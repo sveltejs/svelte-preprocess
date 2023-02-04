@@ -67,8 +67,21 @@ const transformer: Transformer<Options.Pug> = async ({
     ...options,
   };
 
+  // separate content that needs to come before the svelte mixins
+  let preContent = '';
+
+  if (content.startsWith('extends')) {
+    const split = content.indexOf('\n') + 1;
+
+    preContent = content.substring(0, split);
+    content = content.substring(split);
+  }
+
   const { type: identationType } = detectIndent(content);
-  const input = `${GET_MIXINS(identationType ?? 'space')}\n${content}`;
+  const input = `${preContent}${GET_MIXINS(
+    identationType ?? 'space',
+  )}\n${content}`;
+
   const compiled = pug.compile(
     input,
     pugOptions,
