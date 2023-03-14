@@ -1,3 +1,13 @@
+## [5.0.2](https://github.com/sveltejs/svelte-preprocess/compare/v5.0.1...v5.0.2) (2023-03-14)
+
+
+### Bug Fixes
+
+* add support for TypeScript 5 ([#585](https://github.com/sveltejs/svelte-preprocess/issues/585)) ([adb87b9](https://github.com/sveltejs/svelte-preprocess/commit/adb87b9c59fce4892a7c287efbb76a354b351ed6))
+* remove deprecated package @types/sass ([#583](https://github.com/sveltejs/svelte-preprocess/issues/583)) ([731516d](https://github.com/sveltejs/svelte-preprocess/commit/731516d51343f4503b5a9a1653cd88558c800bd3))
+
+
+
 ## [5.0.1](https://github.com/sveltejs/svelte-preprocess/compare/v5.0.0...v5.0.1) (2023-01-20)
 
 ### Bug Fixes
