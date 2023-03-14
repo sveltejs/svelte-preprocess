@@ -11,7 +11,6 @@ specifiers:
   '@types/jest': ^27.5.2
   '@types/node': ^14.18.34
   '@types/pug': ^2.0.6
-  '@types/sass': ^1.43.1
   '@types/stylus': ^0.48.38
   autoprefixer: ^9.8.8
   babel-minify: ^0.5.2
@@ -40,7 +39,6 @@ specifiers:
 
 dependencies:
   '@types/pug': 2.0.6
-  '@types/sass': 1.43.1
   detect-indent: 6.1.0
   magic-string: 0.27.0
   sorcery: 0.11.0
@@ -1857,6 +1855,7 @@ packages:
 
   /@types/node/14.18.34:
     resolution: {integrity: sha512-hcU9AIQVHmPnmjRK+XUUYlILlr9pQrsqSrwov/JK1pnf3GTQowVBhx54FbvM0AU/VXGH4i3+vgXS5EguR7fysA==}
+    dev: true
 
   /@types/normalize-package-data/2.4.1:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
@@ -1872,12 +1871,6 @@ packages:
 
   /@types/pug/2.0.6:
     resolution: {integrity: sha512-SnHmG9wN1UVmagJOnyo/qkk0Z7gejYxOYYmaAwr5u2yFYfsupN3sg10kyzN8Hep/2zbHxCnsumxOoRIRMBwKCg==}
-    dev: false
-
-  /@types/sass/1.43.1:
-    resolution: {integrity: sha512-BPdoIt1lfJ6B7rw35ncdwBZrAssjcwzI5LByIrYs+tpXlj/CAkuVdRsgZDdP4lq5EjyWzwxZCqAoFyHKFwp32g==}
-    dependencies:
-      '@types/node': 14.18.34
     dev: false
 
   /@types/semver/7.3.13:
