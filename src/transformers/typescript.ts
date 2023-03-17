@@ -292,7 +292,11 @@ function getCompilerOptions({
     outDir: undefined,
   };
 
-  if (!importsNotUsedAsValuesDeprecated) {
+  if (
+    !importsNotUsedAsValuesDeprecated ||
+    (compilerOptions.ignoreDeprecations === '5.0' &&
+      !compilerOptions.verbatimModuleSyntax)
+  ) {
     compilerOptions.importsNotUsedAsValues = ts.ImportsNotUsedAsValues.Error;
   }
 
