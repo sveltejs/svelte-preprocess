@@ -263,6 +263,8 @@ async function concatSourceMaps({
   return chain.apply();
 }
 
+let warned = false;
+
 function getCompilerOptions({
   filename,
   options,
@@ -298,6 +300,24 @@ function getCompilerOptions({
       !compilerOptions.verbatimModuleSyntax)
   ) {
     compilerOptions.importsNotUsedAsValues = ts.ImportsNotUsedAsValues.Error;
+  }
+
+  // Ease TS 5 migration pains a little and add the deprecation flag automatically if needed
+  if (
+    importsNotUsedAsValuesDeprecated &&
+    !compilerOptions.ignoreDeprecations &&
+    (compilerOptions.importsNotUsedAsValues ||
+      compilerOptions.preserveValueImports)
+  ) {
+    if (!warned) {
+      warned = true;
+      console.warn(
+        'tsconfig options "importsNotUsedAsValues" and "preserveValueImports" are deprecated. ' +
+          'Either set "ignoreDeprecations" to "5.0" in your tsconfig.json to silence this warning, ' +
+          'or replace them in favor of the new "verbatimModuleSyntax" flag.',
+      );
+    }
+    compilerOptions.ignoreDeprecations = '5.0';
   }
 
   if (
@@ -542,6 +562,7 @@ const transformer: Transformer<Options.Typescript> = async ({
 
   const handleMixedImports =
     !compilerOptions.preserveValueImports &&
+    !compilerOptions.verbatimModuleSyntax &&
     (options.handleMixedImports === false
       ? false
       : options.handleMixedImports || canUseMixedImportsTranspiler);
