@@ -32,6 +32,9 @@ const injectedCodeSeparator = 'const $$$$$$$$ = null;';
  */
 const tsconfigMap = new Map<string, any>();
 
+const importsNotUsedAsValuesDeprecated =
+  parseInt(ts.version.split('.')[0], 10) >= 5;
+
 function createFormatDiagnosticsHost(cwd: string): ts.FormatDiagnosticsHost {
   return {
     getCanonicalFileName: (fileName: string) =>
@@ -62,11 +65,26 @@ const importTransformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
   const visit: ts.Visitor = (node) => {
     if (ts.isImportDeclaration(node)) {
       if (node.importClause?.isTypeOnly) {
-        return ts.createEmptyStatement();
+        if (!ts.factory?.createEmptyStatement) {
+          // @ts-expect-error removed in TS 5.0
+          return ts.createEmptyStatement();
+        }
+
+        return ts.factory.createEmptyStatement();
       }
 
-      return ts.createImportDeclaration(
-        node.decorators,
+      if (!ts.factory?.createImportDeclaration) {
+        // @ts-expect-error removed in TS 5.0
+        return ts.createImportDeclaration(
+          // @ts-expect-error removed in TS 5.0
+          node.decorators,
+          node.modifiers,
+          node.importClause,
+          node.moduleSpecifier,
+        );
+      }
+
+      return ts.factory.createImportDeclaration(
         node.modifiers,
         node.importClause,
         node.moduleSpecifier,
@@ -76,7 +94,11 @@ const importTransformer: ts.TransformerFactory<ts.SourceFile> = (context) => {
     return ts.visitEachChild(node, (child) => visit(child), context);
   };
 
-  return (node) => ts.visitNode(node, visit);
+  return (node) => {
+    ts.visitNode(node, visit);
+
+    return node;
+  };
 };
 
 function getScriptContent(markup: string, module: boolean): string {
@@ -265,11 +287,14 @@ function getCompilerOptions({
     target: ts.ScriptTarget.ES2015,
     moduleResolution: ts.ModuleResolutionKind.NodeJs,
     ...(convertedCompilerOptions as CompilerOptions),
-    importsNotUsedAsValues: ts.ImportsNotUsedAsValues.Error,
     allowNonTsExtensions: true,
     // Clear outDir since it causes source map issues when the files aren't actually written to disk.
     outDir: undefined,
   };
+
+  if (!importsNotUsedAsValuesDeprecated) {
+    compilerOptions.importsNotUsedAsValues = ts.ImportsNotUsedAsValues.Error;
+  }
 
   if (
     compilerOptions.target === ts.ScriptTarget.ES3 ||
@@ -469,9 +494,11 @@ async function simpleTranspiler({
     code: content,
     // `preserveValueImports` essentially does the same as our import transformer,
     // keeping all imports that are not type imports
-    transformers: compilerOptions.preserveValueImports
-      ? undefined
-      : { before: [importTransformer] },
+    transformers:
+      compilerOptions.preserveValueImports ||
+      compilerOptions.verbatimModuleSyntax
+        ? undefined
+        : { before: [importTransformer] },
     fileName: filename,
     basePath,
     options,

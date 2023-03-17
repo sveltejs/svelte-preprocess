@@ -72,7 +72,7 @@
     "conventional-changelog-cli": "^2.2.2",
     "eslint": "^8.29.0",
     "husky": "^8.0.2",
-    "jest": "^27.5.1",
+    "jest": "^29.5.0",
     "less": "^3.13.1",
     "lint-staged": "^10.5.4",
     "postcss": "^8.4.19",
@@ -84,8 +84,8 @@
     "stylus": "^0.55.0",
     "sugarss": "^4.0.0",
     "svelte": "^3.54.0",
-    "ts-jest": "^27.1.5",
-    "typescript": "^4.9.4"
+    "ts-jest": "^29.0.5",
+    "typescript": "^5.0.2"
   },
   "dependencies": {
     "@types/pug": "^2.0.6",

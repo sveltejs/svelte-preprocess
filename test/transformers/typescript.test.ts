@@ -141,13 +141,13 @@ describe('transformer - typescript', () => {
       expect(code).toContain('<!-- Some comment -->');
     });
 
-    it('should keep all value imports with preserveValueImports', async () => {
+    it('should keep all value imports with verbatimModuleSyntax', async () => {
       const tpl = getFixtureContent('PreserveValueImports.svelte');
 
       const opts = sveltePreprocess({
         typescript: {
           tsconfigFile: false,
-          compilerOptions: { preserveValueImports: true },
+          compilerOptions: { verbatimModuleSyntax: true },
         },
       });
 
