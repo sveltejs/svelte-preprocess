@@ -1,3 +1,12 @@
+## [5.0.3](https://github.com/sveltejs/svelte-preprocess/compare/v5.0.2...v5.0.3) (2023-03-17)
+
+
+### Bug Fixes
+
+* address breaking changes in TypeScript 5 ([#587](https://github.com/sveltejs/svelte-preprocess/issues/587)) ([a80dd35](https://github.com/sveltejs/svelte-preprocess/commit/a80dd351629b74c01a58d6814759f550f17800b7)), closes [#586](https://github.com/sveltejs/svelte-preprocess/issues/586)
+
+
+
 ## [5.0.2](https://github.com/sveltejs/svelte-preprocess/compare/v5.0.1...v5.0.2) (2023-03-14)
 
 
