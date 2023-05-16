@@ -41,6 +41,7 @@ export const ALIAS_MAP = new Map([
 export const SOURCE_MAP_PROP_MAP: Record<string, [string[], any]> = {
   babel: [['sourceMaps'], true],
   typescript: [['compilerOptions', 'sourceMap'], true],
+  civet: [['compilerOptions', 'sourceMap'], true],
   scss: [['sourceMap'], true],
   less: [['sourceMap'], {}],
   stylus: [['sourcemap'], true],
