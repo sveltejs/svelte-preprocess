@@ -520,7 +520,7 @@
 
 ### Bug Fixes
 
-- remove extra identation for sass content ([7d0f437](https://github.com/kaisermann/svelte-preprocess/commit/7d0f4376037d1ff6b426e2d6882adb6b08d95464))
+- remove extra indentation for sass content ([7d0f437](https://github.com/kaisermann/svelte-preprocess/commit/7d0f4376037d1ff6b426e2d6882adb6b08d95464))
 
 ## [3.9.9](https://github.com/kaisermann/svelte-preprocess/compare/v3.9.7...v3.9.9) (2020-06-19)
 

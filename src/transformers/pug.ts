@@ -4,7 +4,7 @@ import pug from 'pug';
 import type { Transformer, Options } from '../types';
 
 // Mixins to use svelte template features
-const GET_MIXINS = (identationType: 'tab' | 'space') =>
+const GET_MIXINS = (indentationType: 'tab' | 'space') =>
   `mixin if(condition)
 %_| {#if !{condition}}
 %_block
@@ -50,7 +50,7 @@ mixin const(expression)
 mixin debug(variables)
 %_| {@debug !{variables}}`.replace(
     /%_/g,
-    identationType === 'tab' ? '\t' : '  ',
+    indentationType === 'tab' ? '\t' : '  ',
   );
 
 const transformer: Transformer<Options.Pug> = async ({
@@ -67,8 +67,8 @@ const transformer: Transformer<Options.Pug> = async ({
     ...options,
   };
 
-  const { type: identationType } = detectIndent(content);
-  const input = `${GET_MIXINS(identationType ?? 'space')}\n${content}`;
+  const { type: indentationType } = detectIndent(content);
+  const input = `${GET_MIXINS(indentationType ?? 'space')}\n${content}`;
   const compiled = pug.compile(
     input,
     pugOptions,
