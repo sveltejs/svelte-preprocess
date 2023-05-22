@@ -57,7 +57,7 @@ describe(`get tag information`, () => {
 
 describe('has dependency installed', () => {
   it('should return true if dependency is installed', async () => {
-    expect(await hasDepInstalled('svelte')).toBe(true);
+    expect(await hasDepInstalled('typescript')).toBe(true);
   });
 
   it('should return false if dependency is installed', async () => {
