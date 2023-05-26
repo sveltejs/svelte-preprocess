@@ -1,21 +1,22 @@
-## [5.0.3](https://github.com/sveltejs/svelte-preprocess/compare/v5.0.2...v5.0.3) (2023-03-17)
-
+## [5.0.4](https://github.com/sveltejs/svelte-preprocess/compare/v5.0.3...v5.0.4) (2023-05-26)
 
 ### Bug Fixes
 
-* address breaking changes in TypeScript 5 ([#587](https://github.com/sveltejs/svelte-preprocess/issues/587)) ([a80dd35](https://github.com/sveltejs/svelte-preprocess/commit/a80dd351629b74c01a58d6814759f550f17800b7)), closes [#586](https://github.com/sveltejs/svelte-preprocess/issues/586)
+- spell. "identation" → "indentation " ([#598](https://github.com/sveltejs/svelte-preprocess/issues/598)) ([aa86f0b](https://github.com/sveltejs/svelte-preprocess/commit/aa86f0b366ca063788119ebc40c5e4ba5a385661))
+- mark as ready for Svelte 4
 
+## [5.0.3](https://github.com/sveltejs/svelte-preprocess/compare/v5.0.2...v5.0.3) (2023-03-17)
 
+### Bug Fixes
+
+- address breaking changes in TypeScript 5 ([#587](https://github.com/sveltejs/svelte-preprocess/issues/587)) ([a80dd35](https://github.com/sveltejs/svelte-preprocess/commit/a80dd351629b74c01a58d6814759f550f17800b7)), closes [#586](https://github.com/sveltejs/svelte-preprocess/issues/586)
 
 ## [5.0.2](https://github.com/sveltejs/svelte-preprocess/compare/v5.0.1...v5.0.2) (2023-03-14)
 
-
 ### Bug Fixes
 
-* add support for TypeScript 5 ([#585](https://github.com/sveltejs/svelte-preprocess/issues/585)) ([adb87b9](https://github.com/sveltejs/svelte-preprocess/commit/adb87b9c59fce4892a7c287efbb76a354b351ed6))
-* remove deprecated package @types/sass ([#583](https://github.com/sveltejs/svelte-preprocess/issues/583)) ([731516d](https://github.com/sveltejs/svelte-preprocess/commit/731516d51343f4503b5a9a1653cd88558c800bd3))
-
-
+- add support for TypeScript 5 ([#585](https://github.com/sveltejs/svelte-preprocess/issues/585)) ([adb87b9](https://github.com/sveltejs/svelte-preprocess/commit/adb87b9c59fce4892a7c287efbb76a354b351ed6))
+- remove deprecated package @types/sass ([#583](https://github.com/sveltejs/svelte-preprocess/issues/583)) ([731516d](https://github.com/sveltejs/svelte-preprocess/commit/731516d51343f4503b5a9a1653cd88558c800bd3))
 
 ## [5.0.1](https://github.com/sveltejs/svelte-preprocess/compare/v5.0.0...v5.0.1) (2023-01-20)
 
