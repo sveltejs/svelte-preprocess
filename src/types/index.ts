@@ -20,7 +20,7 @@ export type TransformerArgs<T> = {
   attributes?: Record<string, any>;
   map?: string | object;
   markup?: string;
-  dianostics?: unknown[];
+  diagnostics?: unknown[];
   options?: T;
 };
 
