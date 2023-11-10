@@ -1,3 +1,13 @@
+# [5.1.0](https://github.com/sveltejs/svelte-preprocess/compare/v5.0.3...v5.1.0) (2023-11-10)
+
+### Bug Fixes
+
+- spelling "dianostics" - "diagnostics" ([#606](https://github.com/sveltejs/svelte-preprocess/issues/606)) ([a48cc4e](https://github.com/sveltejs/svelte-preprocess/commit/a48cc4e122f749a4edcd4c1873d9e340eb84a550))
+
+### Features
+
+- add experimental support for Svelte 5 ([923f437](https://github.com/sveltejs/svelte-preprocess/commit/923f437d4d603f9c8fdcc6dd38eaca9f4c6a0313))
+
 ## [5.0.4](https://github.com/sveltejs/svelte-preprocess/compare/v5.0.3...v5.0.4) (2023-05-26)
 
 ### Bug Fixes
