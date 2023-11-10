@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 
-import { compile } from 'svelte/compiler';
+import { compile, VERSION } from 'svelte/compiler';
 
 import sveltePreprocess from '../../src';
 import { loadTsconfig } from '../../src/transformers/typescript';
@@ -15,6 +15,8 @@ import type { Processed } from '../../src/types';
 import type { Diagnostic } from 'typescript';
 
 spyConsole({ silent: true });
+
+const IS_SVELTE_5_PLUS = Number(VERSION.split('.')[0]) >= 5;
 
 const EXPECTED_SCRIPT = getFixtureContent('script.js');
 
@@ -113,34 +115,6 @@ describe('transformer - typescript', () => {
       expect(code).toContain(getFixtureContent('script.js'));
     });
 
-    it('should strip unused and type imports', async () => {
-      const tpl = getFixtureContent('TypeScriptImports.svelte');
-
-      const opts = sveltePreprocess({
-        typescript: { tsconfigFile: false },
-      });
-
-      const { code } = await preprocess(tpl, opts);
-
-      // Test that imports are properly preserved
-      expect(code).toContain(`import { fly } from "svelte/transition"`);
-      expect(code).toContain(`import { flip } from "svelte/animate"`);
-      expect(code).toContain(`import Nested from "./Nested.svelte"`);
-      expect(code).toContain(`import { hello } from "./script"`);
-      expect(code).toContain(`import { AValue } from "./types"`);
-      expect(code).toContain(
-        `import { storeTemplateOnly, storeScriptOnly, store0 } from "./store"`,
-      );
-      expect(code).toContain(
-        `import { onlyUsedInModuleScript } from "./modulescript";`,
-      );
-      expect(code).toContain(
-        `import { storeModuleTemplateOnly, storeModuleScriptOnly } from "./store";`,
-      );
-      // Test that comments are properly preserved
-      expect(code).toContain('<!-- Some comment -->');
-    });
-
     it('should keep all value imports with verbatimModuleSyntax', async () => {
       const tpl = getFixtureContent('PreserveValueImports.svelte');
 
@@ -192,18 +166,6 @@ describe('transformer - typescript', () => {
       expect(code).toBe(`<script lang="ts" context="module"></script>`);
     });
 
-    it('should strip unused and type imports in context="module" tags', async () => {
-      const tpl = getFixtureContent('TypeScriptImportsModule.svelte');
-
-      const opts = sveltePreprocess({
-        typescript: { tsconfigFile: false },
-      });
-
-      const { code } = await preprocess(tpl, opts);
-
-      expect(code).toContain(`import { AValue } from "./types";`);
-    });
-
     it('should produce sourcemap', async () => {
       const tpl = getFixtureContent('TypeScriptImportsModule.svelte');
 
@@ -215,20 +177,6 @@ describe('transformer - typescript', () => {
       const { map } = await preprocess(tpl, opts);
 
       expect(map).toHaveProperty('sources', ['App.svelte']);
-    });
-
-    it('should work when tsconfig contains outDir', async () => {
-      const opts = sveltePreprocess({
-        typescript: {
-          tsconfigFile: './test/fixtures/tsconfig.outdir.json',
-          handleMixedImports: true,
-        },
-        sourceMap: true,
-      });
-
-      const preprocessed = await preprocess(template, opts);
-
-      expect(preprocessed.toString?.()).toContain(EXPECTED_SCRIPT);
     });
 
     it('supports extends field', () => {
@@ -278,6 +226,62 @@ describe('transformer - typescript', () => {
       expect(code).not.toContain('async function doIt');
       expect(code).not.toContain('&&=');
       expect(code).not.toContain('||=');
+    });
+  });
+
+  (IS_SVELTE_5_PLUS ? describe.skip : describe)('mixed imports', () => {
+    it('should strip unused and type imports', async () => {
+      const tpl = getFixtureContent('TypeScriptImports.svelte');
+
+      const opts = sveltePreprocess({
+        typescript: { tsconfigFile: false },
+      });
+
+      const { code } = await preprocess(tpl, opts);
+
+      // Test that imports are properly preserved
+      expect(code).toContain(`import { fly } from "svelte/transition"`);
+      expect(code).toContain(`import { flip } from "svelte/animate"`);
+      expect(code).toContain(`import Nested from "./Nested.svelte"`);
+      expect(code).toContain(`import { hello } from "./script"`);
+      expect(code).toContain(`import { AValue } from "./types"`);
+      expect(code).toContain(
+        `import { storeTemplateOnly, storeScriptOnly, store0 } from "./store"`,
+      );
+      expect(code).toContain(
+        `import { onlyUsedInModuleScript } from "./modulescript";`,
+      );
+      expect(code).toContain(
+        `import { storeModuleTemplateOnly, storeModuleScriptOnly } from "./store";`,
+      );
+      // Test that comments are properly preserved
+      expect(code).toContain('<!-- Some comment -->');
+    });
+
+    it('should strip unused and type imports in context="module" tags', async () => {
+      const tpl = getFixtureContent('TypeScriptImportsModule.svelte');
+
+      const opts = sveltePreprocess({
+        typescript: { tsconfigFile: false },
+      });
+
+      const { code } = await preprocess(tpl, opts);
+
+      expect(code).toContain(`import { AValue } from "./types";`);
+    });
+
+    it('should work when tsconfig contains outDir', async () => {
+      const opts = sveltePreprocess({
+        typescript: {
+          tsconfigFile: './test/fixtures/tsconfig.outdir.json',
+          handleMixedImports: true,
+        },
+        sourceMap: true,
+      });
+
+      const preprocessed = await preprocess(template, opts);
+
+      expect(preprocessed.toString?.()).toContain(EXPECTED_SCRIPT);
     });
   });
 });

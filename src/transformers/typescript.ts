@@ -150,12 +150,13 @@ function injectVarsToCode({
 }): string {
   if (!markup) return content;
 
+  // @ts-ignore different in Svelte 5
   const { vars } = compile(stripTags(markup), {
     generate: false,
     varsReport: 'full',
     errorMode: 'warn',
     filename,
-  });
+  }) as { vars: any[] };
 
   const sep = `\n${injectedCodeSeparator}\n`;
   const varnames = vars.map((v) =>
@@ -552,11 +553,13 @@ const transformer: Transformer<Options.Typescript> = async ({
   const compilerOptions = getCompilerOptions({ filename, options, basePath });
   const versionParts = pkg.version.split('.');
   const canUseMixedImportsTranspiler =
-    +versionParts[0] > 3 || (+versionParts[0] === 3 && +versionParts[1] >= 39);
+    +versionParts[0] === 4 ||
+    (+versionParts[0] === 3 && +versionParts[1] >= 39);
 
   if (!canUseMixedImportsTranspiler && options.handleMixedImports) {
     throw new Error(
-      'You need at least Svelte 3.39 to use the handleMixedImports option',
+      'You need at least Svelte 3.39 and at most Svelte 4.x to use the handleMixedImports option. ' +
+        'The option is no longer available for Svelte 5 and beyond. Use the verbatimModuleSyntax TypeScript option instead.',
     );
   }
 

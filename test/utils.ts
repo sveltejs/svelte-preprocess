@@ -17,7 +17,7 @@ export const preprocess = async (input: string, opts: any) =>
 const compile = async (input: string, opts: any) => {
   const preprocessed = await exports.preprocess(input, opts);
   const { js, css } = svelteCompile(preprocessed.toString?.(), {
-    css: true,
+    css: 'injected',
   });
 
   return { js, css };
