@@ -288,8 +288,13 @@ function getCompilerOptions({
 
   const compilerOptions: CompilerOptions = {
     target: ts.ScriptTarget.ES2015,
-    moduleResolution: ts.ModuleResolutionKind.NodeJs,
     ...(convertedCompilerOptions as CompilerOptions),
+    // force module(resolution) to esnext and a compatible moduleResolution. Reason:
+    // transpileModule treats NodeNext as CommonJS because it doesn't read the package.json.
+    // Also see https://github.com/microsoft/TypeScript/issues/53022 (the filename workaround doesn't work).
+    module: ts.ModuleKind.ESNext,
+    moduleResolution:
+      ts.ModuleResolutionKind.NodeJs ?? ts.ModuleResolutionKind.Node10, // in case the first option every goes away
     allowNonTsExtensions: true,
     // Clear outDir since it causes source map issues when the files aren't actually written to disk.
     outDir: undefined,
