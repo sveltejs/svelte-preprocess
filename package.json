@@ -60,6 +60,7 @@
     "@babel/preset-env": "^7.20.2",
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
+    "@danielx/civet": "^0.6.2",
     "@kiwi/eslint-config": "^2.0.2",
     "@kiwi/prettier-config": "^2.0.2",
     "@types/babel__core": "^7.1.20",
@@ -96,6 +97,7 @@
   },
   "peerDependencies": {
     "@babel/core": "^7.10.2",
+    "@danielx/civet": "^0.6.2",
     "coffeescript": "^2.5.1",
     "less": "^3.11.3 || ^4.0.0",
     "postcss": "^7 || ^8",

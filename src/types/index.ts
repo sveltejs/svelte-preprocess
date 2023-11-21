@@ -1,9 +1,9 @@
 import * as Options from './options';
 
 import type {
-  Processed as SvelteProcessed,
-  Preprocessor as SveltePreprocessor,
   PreprocessorGroup,
+  Preprocessor as SveltePreprocessor,
+  Processed as SvelteProcessed,
 } from 'svelte/types/compiler/preprocess';
 
 export { Options };
@@ -74,6 +74,7 @@ export type AutoPreprocessOptions = {
   // transformers
   babel?: TransformerOptions<Options.Babel>;
   typescript?: TransformerOptions<Options.Typescript>;
+  civet?: TransformerOptions<Options.Typescript>;
   scss?: TransformerOptions<Options.Sass>;
   sass?: TransformerOptions<Options.Sass>;
   less?: TransformerOptions<Options.Less>;
