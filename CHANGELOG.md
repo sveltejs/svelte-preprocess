@@ -1,3 +1,12 @@
+## [5.1.1](https://github.com/sveltejs/svelte-preprocess/compare/v5.1.0...v5.1.1) (2023-11-21)
+
+
+### Bug Fixes
+
+* force module(resolution) ([66d3cf9](https://github.com/sveltejs/svelte-preprocess/commit/66d3cf9a0cbc0eda84b98090bb8d9644b70eea00))
+
+
+
 # [5.1.0](https://github.com/sveltejs/svelte-preprocess/compare/v5.0.3...v5.1.0) (2023-11-10)
 
 ### Bug Fixes
