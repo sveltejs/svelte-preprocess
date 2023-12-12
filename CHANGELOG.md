@@ -1,11 +1,12 @@
-## [5.1.1](https://github.com/sveltejs/svelte-preprocess/compare/v5.1.0...v5.1.1) (2023-11-21)
+## [5.1.2](https://github.com/sveltejs/svelte-preprocess/compare/v5.1.1...v5.1.2) (2023-12-12)
 
+- chore: mark postcss-load-config 5 as supported ([3b5b1f0](https://github.com/sveltejs/svelte-preprocess/commit/4ba875d1ab0e076e27509f33ba11c9b2f3b5b1f0))
+
+## [5.1.1](https://github.com/sveltejs/svelte-preprocess/compare/v5.1.0...v5.1.1) (2023-11-21)
 
 ### Bug Fixes
 
-* force module(resolution) ([66d3cf9](https://github.com/sveltejs/svelte-preprocess/commit/66d3cf9a0cbc0eda84b98090bb8d9644b70eea00))
-
-
+- force module(resolution) ([66d3cf9](https://github.com/sveltejs/svelte-preprocess/commit/66d3cf9a0cbc0eda84b98090bb8d9644b70eea00))
 
 # [5.1.0](https://github.com/sveltejs/svelte-preprocess/compare/v5.0.3...v5.1.0) (2023-11-10)
 

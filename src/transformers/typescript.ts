@@ -150,6 +150,7 @@ function injectVarsToCode({
 }): string {
   if (!markup) return content;
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore different in Svelte 5
   const { vars } = compile(stripTags(markup), {
     generate: false,
@@ -323,6 +324,7 @@ function getCompilerOptions({
           'or replace them in favor of the new "verbatimModuleSyntax" flag.',
       );
     }
+
     compilerOptions.ignoreDeprecations = '5.0';
   }
 
