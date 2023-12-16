@@ -76,7 +76,7 @@
     "less": "^3.13.1",
     "lint-staged": "^10.5.4",
     "postcss": "^8.4.32",
-    "postcss-easy-import": "^3.0.0",
+    "postcss-easy-import": "^4.0.0",
     "postcss-load-config": "^3.1.4",
     "prettier": "^2.8.1",
     "pug": "^3.0.2",
