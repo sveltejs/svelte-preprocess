@@ -106,7 +106,7 @@ describe('options', () => {
     expect(preprocessed.toString?.()).toContain('div{}');
   });
 
-  it('should NOT preprocess preserved languages', async () => {
+  it('should NOT preprocess unrecognized languages', async () => {
     const input = `<div></div><script type="ld+json">{"json":true}</script>`;
     const opts = sveltePreprocess();
 
