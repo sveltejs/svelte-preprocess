@@ -71,7 +71,6 @@ The following options can be passed to the preprocessor. None are required:
 | --------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `markupTagName` | `"template"` | `string` that sets the name of the tag `svelte-preprocess` looks for markup in custom languages.<br><br>i.e `markup` makes it possible to write your markup between `<markup lang="..."></markup>` tag.                            |
 | `aliases`       | `null`       | A list of tuples `[alias: string, language: string]` that correlates an `alias` to a `language`<br><br>i.e `['cst', 'customLanguage']` means<br>`<... src="./file.cst">`<br>`<... lang="cst">`<br>are treated as `customLanguage`. |
-| `preserve`      | `[]`         | A `string` list of languages/aliases that shouldn't pass through the preprocessor. (i.e `ld+json`)                                                                                                                                 |
 | `sourceMap`     | `false`      | If `true`, `svelte-preprocess` generates sourcemap for every language that supports it.                                                                                                                                            |
 
 ##### Configuring preprocessors
