@@ -18,8 +18,10 @@
     "coffeescript"
   ],
   "engines": {
-    "node": ">= 14.10.0"
+    "node": ">= 16.0.0",
+    "pnpm": "^8.0.0"
   },
+  "packageManager": "pnpm@8.12.1",
   "volta": {
     "node": "14.19.2"
   },
@@ -56,17 +58,17 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "^7.20.5",
-    "@babel/preset-env": "^7.20.2",
+    "@babel/core": "^7.23.6",
+    "@babel/preset-env": "^7.23.6",
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
     "@kiwi/eslint-config": "^2.0.2",
     "@kiwi/prettier-config": "^2.0.2",
-    "@types/babel__core": "^7.1.20",
+    "@types/babel__core": "^7.20.5",
     "@types/jest": "^27.5.2",
     "@types/node": "^14.18.34",
     "@types/stylus": "^0.48.38",
-    "autoprefixer": "^9.8.8",
+    "autoprefixer": "^10.4.16",
     "babel-minify": "^0.5.2",
     "coffeescript": "^2.7.0",
     "conventional-changelog-cli": "^2.2.2",
@@ -75,8 +77,8 @@
     "jest": "^29.5.0",
     "less": "^3.13.1",
     "lint-staged": "^10.5.4",
-    "postcss": "^8.4.19",
-    "postcss-easy-import": "^3.0.0",
+    "postcss": "^8.4.32",
+    "postcss-easy-import": "^4.0.0",
     "postcss-load-config": "^3.1.4",
     "prettier": "^2.8.1",
     "pug": "^3.0.2",
@@ -84,13 +86,13 @@
     "stylus": "^0.55.0",
     "sugarss": "^4.0.0",
     "svelte": "^3.54.0",
-    "ts-jest": "^29.0.5",
+    "ts-jest": "^29.1.1",
     "typescript": "^5.0.2"
   },
   "dependencies": {
     "@types/pug": "^2.0.6",
     "detect-indent": "^6.1.0",
-    "magic-string": "^0.27.0",
+    "magic-string": "^0.30.5",
     "sorcery": "^0.11.0",
     "strip-indent": "^3.0.0"
   },
