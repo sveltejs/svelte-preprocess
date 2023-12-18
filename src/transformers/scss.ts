@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { isAbsolute, join } from 'path';
+import path from 'path';
 
 import { getIncludePaths, findUp } from '../modules/utils';
 
@@ -19,7 +19,7 @@ const tildeImporter: LegacySyncImporter = (url, prev) => {
     prev = decodeURIComponent(prev);
   }
 
-  const modulePath = join('node_modules', ...url.slice(1).split(/[\\/]/g));
+  const modulePath = path.join('node_modules', ...url.slice(1).split(/[\\/]/g));
 
   const foundPath = findUp({ what: modulePath, from: prev });
 
@@ -68,12 +68,20 @@ const transformer: Transformer<Options.Sass> = async ({
 
   const compiled = renderSync(sassOptions);
 
+  // We need to normalize the path for windows, because the sass compiler
+  // returns a windows path in posix format __just for the entry__ (the dependency list below is fine 🤷)
+  // More info: https://github.com/sveltejs/svelte-preprocess/issues/619
+  const normalizedEntryPath =
+    process.platform === 'win32'
+      ? compiled.stats.entry.split('/').join(path.win32.sep)
+      : compiled.stats.entry;
+
   // For some reason, scss includes the main 'file' in the array, we don't want that
   // Unfortunately I didn't manage to reproduce this in the test env
   // More info: https://github.com/sveltejs/svelte-preprocess/issues/346
-  const absoluteEntryPath = isAbsolute(compiled.stats.entry)
-    ? compiled.stats.entry
-    : join(process.cwd(), compiled.stats.entry);
+  const absoluteEntryPath = path.isAbsolute(normalizedEntryPath)
+    ? normalizedEntryPath
+    : path.join(process.cwd(), normalizedEntryPath);
 
   const processed = {
     code: compiled.css.toString(),
