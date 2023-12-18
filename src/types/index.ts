@@ -68,7 +68,6 @@ export type AutoPreprocessGroup = PreprocessorGroup;
 export type AutoPreprocessOptions = {
   markupTagName?: string;
   aliases?: Array<[string, string]>;
-  preserve?: string[];
   sourceMap?: boolean;
 
   // transformers

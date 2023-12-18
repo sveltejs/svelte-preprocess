@@ -58,7 +58,6 @@ export function sveltePreprocess(
   {
     aliases,
     markupTagName = 'template',
-    preserve = [],
     sourceMap = process?.env?.NODE_ENV === 'development' ?? false,
     ...rest
   } = {} as AutoPreprocessOptions,
@@ -126,10 +125,6 @@ export function sveltePreprocess(
       if (lang == null || alias == null) {
         alias = TARGET_LANGUAGES[type];
         lang = getLanguageFromAlias(alias);
-      }
-
-      if ((lang && preserve.includes(lang)) || preserve.includes(alias)) {
-        return { code: content };
       }
 
       const transformerOptions = getTransformerOptions(lang, alias);
