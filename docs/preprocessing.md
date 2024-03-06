@@ -17,6 +17,7 @@
   - [scss, sass](#scss-sass)
   - [Stylus](#stylus)
   - [TypeScript](#typescript)
+  - [Civet](#civet)
   - [`globalStyle`](#globalstyle)
   - [`replace`](#replace)
 
@@ -203,6 +204,7 @@ import {
   pug,
   coffeescript,
   typescript,
+  civet,
   less,
   scss,
   sass,
@@ -221,6 +223,7 @@ export default {
         pug({ ... }),
         coffeescript({ ... }),
         typescript({ ... }),
+        civet({ ... }),
         less({ ... }),
         scss({ ... }),
         sass({ ... }),

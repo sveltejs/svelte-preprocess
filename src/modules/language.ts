@@ -15,6 +15,9 @@ const LANGUAGE_DEFAULTS: Record<string, any> = {
   coffeescript: {
     stripIndent: true,
   },
+  civet: {
+    stripIndent: true,
+  },
   stylus: {
     stripIndent: true,
   },
@@ -36,6 +39,7 @@ export const ALIAS_MAP = new Map([
   ['js', 'javascript'],
   ['coffee', 'coffeescript'],
   ['ts', 'typescript'],
+  ['civet', 'civet'],
 ]);
 
 export const SOURCE_MAP_PROP_MAP: Record<string, [string[], any]> = {
