@@ -1,6 +1,6 @@
 # Svelte Preprocess
 
-> A [Svelte](https://svelte.dev) preprocessor with sensible defaults and support for: PostCSS, SCSS, Less, Stylus, CoffeeScript, TypeScript, Pug and much more.
+> A [Svelte](https://svelte.dev) preprocessor with sensible defaults and support for: PostCSS, SCSS, Less, Stylus, CoffeeScript, TypeScript, Civet, Pug and much more.
 
 <p>
   <a href="https://www.npmjs.com/package/svelte-preprocess">
@@ -176,7 +176,7 @@ into
 
 ### Built-in support for commonly used languages
 
-The current supported languages out-of-the-box are Sass, Stylus, Less, CoffeeScript, TypeScript, Pug, PostCSS, Babel.
+The current supported languages out-of-the-box are Sass, Stylus, Less, CoffeeScript, TypeScript, Civet, Pug, PostCSS, Babel.
 
 ```html
 <template lang="pug">

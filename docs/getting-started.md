@@ -28,6 +28,7 @@ $ npm install -D svelte-preprocess
 - Babel: `npm install -D @babel/core @babel/preset-...`
 - CoffeeScript: `npm install -D coffeescript`
 - TypeScript: `npm install -D typescript`
+- Civet: `npm install -D @danielx/civet`
 - PostCSS: `npm install -D postcss postcss-load-config`
 - SugarSS: `npm install -D postcss sugarss`
 - Less: `npm install -D less`
@@ -70,7 +71,7 @@ export default {
 }
 ```
 
-Now our app's code can be written in any of the syntaxes supported by `svelte-preprocess`: Sass, Stylus, Less, CoffeeScript, TypeScript, Pug, PostCSS, Babel.
+Now our app's code can be written in any of the syntaxes supported by `svelte-preprocess`: Sass, Stylus, Less, CoffeeScript, TypeScript, Civet, Pug, PostCSS, Babel.
 
 _**Note:** If you use VS Code, check [its usage guide](/docs/usage.md#with-svelte-vs-code) to make the Svelte VS Code extension understand the content of your components._
 

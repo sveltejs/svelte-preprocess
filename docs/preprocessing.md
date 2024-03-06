@@ -11,6 +11,7 @@
 - [Preprocessors](#preprocessors)
   - [Babel](#babel)
   - [CoffeeScript](#coffeescript)
+  - [Civet](#civet)
   - [Less](#less)
   - [PostCSS, SugarSS](#postcss-sugarss)
   - [Pug](#pug)
@@ -96,6 +97,7 @@ export default {
         babel: { ... },
         postcss: { ... },
         coffeescript: { ... },
+        civet: { ... },
         pug: { ... },
       }),
     }),
@@ -203,6 +205,7 @@ import {
   pug,
   coffeescript,
   typescript,
+  civet,
   less,
   scss,
   sass,
@@ -221,6 +224,7 @@ export default {
         pug({ ... }),
         coffeescript({ ... }),
         typescript({ ... }),
+        civet({ ... }),
         less({ ... }),
         scss({ ... }),
         sass({ ... }),
@@ -255,6 +259,10 @@ _Note: If you want to transpile your app to be supported in older browsers, you 
 ### CoffeeScript
 
 The CoffeeScript processor accepts no extra options and only transpiles CoffeeScript code down to esm compliant JavaScript code.
+
+### Civet
+
+The Civet processor accepts no extra options and only transpiles Civet code down to esm compliant JavaScript code.
 
 ### Less
 

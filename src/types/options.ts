@@ -2,6 +2,7 @@ import type { LegacyStringOptions } from 'sass';
 import type * as postcss from 'postcss';
 import type { Options as PugOptions } from 'pug';
 import type { TransformOptions as BabelOptions } from '@babel/core';
+import type { ParseOptions } from '@danielx/civet';
 
 type ContentModifier = {
   prependData?: string;
@@ -16,6 +17,13 @@ export type Coffeescript = {
   sourceMap?: boolean;
   filename?: never;
   bare?: never;
+} & ContentModifier;
+
+export type Civet = {
+  filename?: string;
+  js?: boolean;
+  sourceMap?: boolean;
+  parseOptions?: ParseOptions;
 } & ContentModifier;
 
 export type Postcss = postcss.ProcessOptions & {
