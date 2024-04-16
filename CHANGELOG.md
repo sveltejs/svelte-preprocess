@@ -1,3 +1,12 @@
+## [5.1.4](https://github.com/sveltejs/svelte-preprocess/compare/v5.1.3...v5.1.4) (2024-04-16)
+
+
+### Bug Fixes
+
+* remove pnpm version restriction ([#629](https://github.com/sveltejs/svelte-preprocess/issues/629)) ([2713b82](https://github.com/sveltejs/svelte-preprocess/commit/2713b82d80cd6d40c1c12cebe31c4d25882bec13))
+
+
+
 ## [5.1.3](https://github.com/sveltejs/svelte-preprocess/compare/v5.1.2...v5.1.3) (2023-12-18)
 
 
