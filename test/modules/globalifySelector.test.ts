@@ -57,4 +57,10 @@ describe('globalifySelector', () => {
       `:global(p:nth-child(n+8):nth-child(-n+15))`,
     );
   });
+
+  it('works with selector with whitespace in parenthesis: :is()', async () => {
+    expect(globalifySelector('article :is(h1, h2)')).toBe(
+      `:global(article) :global(:is(h1, h2))`,
+    );
+  });
 });
