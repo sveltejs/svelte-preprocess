@@ -203,12 +203,10 @@ let warned_mixed = false;
 
 const transformer: Transformer<Options.Typescript> = async ({
   content,
-  filename,
+  filename = 'input.svelte',
   options = {},
 }) => {
   const basePath = process.cwd();
-
-  if (filename == null) return { code: content };
 
   filename = isAbsolute(filename) ? filename : resolve(basePath, filename);
 
