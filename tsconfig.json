@@ -9,7 +9,7 @@
     "lib": ["es2018"],
     "declaration": true,
     "skipLibCheck": true,
-    "types": ["jest", "node"],
+    "types": ["node"],
     "outDir": "dist"
   },
   "include": ["**/*.ts"],
