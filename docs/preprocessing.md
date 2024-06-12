@@ -287,7 +287,7 @@ Apart from those, the Pug preprocessor accepts:
 | Option           | Default     | Description                                                                                                         |
 | ---------------- | ----------- | ------------------------------------------------------------------------------------------------------------------- |
 | `markupTagName`  | `template`  | the tag name used to look for the optional markup wrapper. If none is found, `pug` is executed over the whole file. |
-| `configFilePath` | `undefined` | the path of the directory containing the Pug configuration.                                                     |
+| `configFilePath` | `undefined` | the path of the directory containing the Pug configuration.                                                         |
 
 **Template blocks:**
 
@@ -366,12 +366,13 @@ Note: `svelte-preprocess` automatically configures inclusion paths for your root
 
 ### TypeScript
 
-| Option               | Default     | Description                                                                                                                                                                                                                                                                                                                                                                                 |
-| -------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `tsconfigDirectory`  | `undefined` | optional `string` that specifies from where to load the tsconfig from.<br><br>i.e `'./configs'`                                                                                                                                                                                                                                                                                             |
-| `tsconfigFile`       | `undefined` | optional `string` pointing torwards a `tsconfig` file.<br><br>i.e `'./tsconfig.app.json'`                                                                                                                                                                                                                                                                                                   |
-| `compilerOptions`    | `undefined` | optional compiler options configuration. These will be merged with options from the tsconfig file if found.                                                                                                                                                                                                                                                                                 |
-| `handleMixedImports` | inferred    | optional `boolean` that defines the transpilation strategy. If set to `true`, you don't need to strictly separate types and values in imports. You need at least Svelte version 3.39 if you want to use this. `true` by default if you meet the minimum version requirement, else `false`. This option will be ignored if you set `preserveValueImports` to `true` in your `tsconfig.json`. |
+Since version 5, Svelte supports TypeScript natively with a few exceptions: You can only use type-only syntax, i.e. syntax that is just removed from the resulting JS output, and doesn't require code. Non-type-only features are decorators for example. If you need those features, you need to still use a TypeScript preprocessor like this one, else you can omit it.
+
+| Option              | Default     | Description                                                                                                 |
+| ------------------- | ----------- | ----------------------------------------------------------------------------------------------------------- |
+| `tsconfigDirectory` | `undefined` | optional `string` that specifies from where to load the tsconfig from.<br><br>i.e `'./configs'`             |
+| `tsconfigFile`      | `undefined` | optional `string` pointing torwards a `tsconfig` file.<br><br>i.e `'./tsconfig.app.json'`                   |
+| `compilerOptions`   | `undefined` | optional compiler options configuration. These will be merged with options from the tsconfig file if found. |
 
 You can check the [`compilerOptions` reference](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) for specific TypeScript options.
 
@@ -379,7 +380,7 @@ You can check the [`compilerOptions` reference](https://www.typescriptlang.org/d
 
 - Since `v4`, `svelte-preprocess` doesn't type-check your component, its only concern is to transpile it into valid JavaScript for the compiler. If you want to have your components type-checked, you can use [svelte-check](https://github.com/sveltejs/language-tools/blob/master/packages/svelte-check/README.md).
 
-- Using TypeScript inside a component's markup is currently **not** supported. See [#525](https://github.com/sveltejs/svelte-preprocess/issues/525) for development updates to this.
+- Using TypeScript features that are not type-only (i.e. are transpiled to different JS code) inside a component's markup is currently **not** supported. See [#525](https://github.com/sveltejs/svelte-preprocess/issues/525) for development updates to this.
 
 ### `globalStyle`
 

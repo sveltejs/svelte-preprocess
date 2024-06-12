@@ -1,3 +1,4 @@
+import { describe, it, expect, test } from 'vitest';
 import sveltePreprocess from '../../src';
 import { preprocess, getFixtureContent, doesCompileThrow } from '../utils';
 

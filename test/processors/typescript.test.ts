@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { typescript } from '../../src';
 import { getFixtureContent, preprocess } from '../utils';
 

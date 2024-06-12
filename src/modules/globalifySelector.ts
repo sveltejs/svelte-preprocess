@@ -6,7 +6,7 @@
  * escaped combinators like `\~`.
  */
 // TODO: maybe replace this ugly pattern with an actual selector parser? (https://github.com/leaverou/parsel, 2kb)
-const combinatorPattern = /(?<!\\)(?:\\\\)*([ >+~,]\s*)(?![^[]+\]|\d)/g;
+const combinatorPattern = /(?<!\\)(?:\\\\)*([ >+~,]\s*)(?![^(]*\))(?![^[]+\]|\d)/g;
 
 export function globalifySelector(selector: string) {
   const parts = selector.trim().split(combinatorPattern);

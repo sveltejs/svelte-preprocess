@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { less } from '../../src';
 import { CSS_PATTERN, preprocess } from '../utils';
 

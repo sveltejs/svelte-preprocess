@@ -1,3 +1,21 @@
+## [5.1.4](https://github.com/sveltejs/svelte-preprocess/compare/v5.1.3...v5.1.4) (2024-04-16)
+
+
+### Bug Fixes
+
+* remove pnpm version restriction ([#629](https://github.com/sveltejs/svelte-preprocess/issues/629)) ([2713b82](https://github.com/sveltejs/svelte-preprocess/commit/2713b82d80cd6d40c1c12cebe31c4d25882bec13))
+
+
+
+## [5.1.3](https://github.com/sveltejs/svelte-preprocess/compare/v5.1.2...v5.1.3) (2023-12-18)
+
+
+### Bug Fixes
+
+* sass dependency list referencing source file in win32 ([#621](https://github.com/sveltejs/svelte-preprocess/issues/621)) ([209312f](https://github.com/sveltejs/svelte-preprocess/commit/209312fe258fc1dc5eb6f0d81937c6962ca8bafc))
+
+
+
 ## [5.1.2](https://github.com/sveltejs/svelte-preprocess/compare/v5.1.1...v5.1.2) (2023-12-12)
 
 - chore: mark postcss-load-config 5 as supported ([3b5b1f0](https://github.com/sveltejs/svelte-preprocess/commit/4ba875d1ab0e076e27509f33ba11c9b2f3b5b1f0))
