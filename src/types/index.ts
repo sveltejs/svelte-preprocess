@@ -8,7 +8,7 @@ import type {
 
 export { Options };
 
-export { PreprocessorGroup }  
+export { PreprocessorGroup };
 
 export type PreprocessorArgs = Preprocessor extends (options: infer T) => any
   ? T

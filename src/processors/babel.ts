@@ -8,9 +8,8 @@ export default (options?: Options.Babel): PreprocessorGroup => ({
   async script(svelteFile) {
     const { transformer } = await import('../transformers/babel');
 
-    let { content, filename, dependencies, attributes } = await getTagInfo(
-      svelteFile,
-    );
+    let { content, filename, dependencies, attributes } =
+      await getTagInfo(svelteFile);
 
     content = prepareContent({ options, content });
 

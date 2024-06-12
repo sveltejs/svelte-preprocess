@@ -12,5 +12,6 @@
     "no-console": "off",
     "line-comment-position": "off",
     "import/order": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
   },
 }
