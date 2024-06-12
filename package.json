@@ -4,6 +4,13 @@
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "description": "A Svelte preprocessor wrapper with baked-in support for commonly used preprocessors",
   "author": "Christian Kaisermann <christian@kaisermann.me>",
   "repository": "https://github.com/sveltejs/svelte-preprocess",
