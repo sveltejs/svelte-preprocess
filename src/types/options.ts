@@ -68,7 +68,6 @@ export type Typescript = {
   tsconfigFile?: string | boolean;
   tsconfigDirectory?: string | boolean;
   reportDiagnostics?: boolean;
-  handleMixedImports?: boolean;
 } & ContentModifier;
 
 export interface GlobalStyle {
