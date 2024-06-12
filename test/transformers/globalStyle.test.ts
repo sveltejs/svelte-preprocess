@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import autoProcess from '../../src';
 import { preprocess } from '../utils';
 

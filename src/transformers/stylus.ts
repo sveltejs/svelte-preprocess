@@ -1,14 +1,10 @@
 import path from 'path';
-
 import stylus from 'stylus';
-
 import { getIncludePaths } from '../modules/utils';
-
-import type { SourceMap } from 'magic-string';
 import type { Transformer, Options } from '../types';
 
 type StylusRendererWithSourceMap = ReturnType<typeof stylus> & {
-  sourcemap: SourceMap;
+  sourcemap: any;
 };
 
 const transformer: Transformer<Options.Stylus> = ({

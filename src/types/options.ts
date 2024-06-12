@@ -1,6 +1,10 @@
+// @ts-ignore possibly not installed in user-land
 import type { LegacyStringOptions } from 'sass';
+// @ts-ignore possibly not installed in user-land
 import type * as postcss from 'postcss';
+// @ts-ignore possibly not installed in user-land
 import type { Options as PugOptions } from 'pug';
+// @ts-ignore possibly not installed in user-land
 import type { TransformOptions as BabelOptions } from '@babel/core';
 
 type ContentModifier = {
@@ -68,7 +72,6 @@ export type Typescript = {
   tsconfigFile?: string | boolean;
   tsconfigDirectory?: string | boolean;
   reportDiagnostics?: boolean;
-  handleMixedImports?: boolean;
 } & ContentModifier;
 
 export interface GlobalStyle {

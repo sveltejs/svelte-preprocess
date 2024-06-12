@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable @typescript-eslint/no-require-imports */
 import { resolve } from 'path';
-
+import { test, expect, vi } from 'vitest';
 import sveltePreprocess from '../../src';
 import { preprocess, spyConsole } from '../utils';
 import { transformer } from '../../src/transformers/postcss';
@@ -143,7 +143,7 @@ test('automatically removes indentation for lang=sugarss', async () => {
   const preprocessed = await preprocess(template, opts);
 
   expect(preprocessed.toString?.()).toMatchInlineSnapshot(`
-      "<style lang=\\"sugarss\\">
+      "<style lang="sugarss">
       div {
         color: red
       }</style>"
@@ -151,8 +151,8 @@ test('automatically removes indentation for lang=sugarss', async () => {
 });
 
 test('should not override postcss with custom style language', async () => {
-  const custom = jest.fn(({ content }) => ({ code: content }));
-  const postcss = jest.fn(({ content }) => ({ code: content }));
+  const custom = vi.fn(({ content }) => ({ code: content }));
+  const postcss = vi.fn(({ content }) => ({ code: content }));
   const opts = sveltePreprocess({ custom, postcss });
 
   await preprocess(
@@ -165,8 +165,8 @@ test('should not override postcss with custom style language', async () => {
 });
 
 test('should execute postcss alias override before postcss', async () => {
-  const sugarss = jest.fn(({ content }) => ({ code: content }));
-  const postcss = jest.fn(({ content }) => ({ code: content }));
+  const sugarss = vi.fn(({ content }) => ({ code: content }));
+  const postcss = vi.fn(({ content }) => ({ code: content }));
   const opts = sveltePreprocess({ sugarss, postcss });
 
   await preprocess(

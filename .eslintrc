@@ -2,7 +2,7 @@
   "extends": ["@kiwi"],
   "env": {
     "node": true,
-    "jest": true
+    "jest": true,
   },
   "rules": {
     "@typescript-eslint/no-explicit-any": "off",
@@ -10,6 +10,8 @@
     "@typescript-eslint/prefer-nullish-coalescing": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
     "no-console": "off",
-    "line-comment-position": "off"
-  }
+    "line-comment-position": "off",
+    "import/order": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+  },
 }

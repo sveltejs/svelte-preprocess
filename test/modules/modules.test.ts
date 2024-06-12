@@ -1,5 +1,5 @@
 import { resolve } from 'path';
-
+import { describe, it, expect } from 'vitest';
 import { getTestAppFilename, getFixtureContent } from '../utils';
 import { getTagInfo } from '../../src/modules/tagInfo';
 import { getIncludePaths, hasDepInstalled } from '../../src/modules/utils';

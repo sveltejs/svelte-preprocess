@@ -8,13 +8,6 @@ export function createTagRegex(tagName: string, flags?: string): RegExp {
   );
 }
 
-/** Strip script and style tags from markup. */
-export function stripTags(markup: string): string {
-  return markup
-    .replace(createTagRegex('style', 'gi'), '')
-    .replace(createTagRegex('script', 'gi'), '');
-}
-
 /** Transform an attribute string into a key-value object */
 export function parseAttributes(attributesStr: string): Record<string, any> {
   return attributesStr

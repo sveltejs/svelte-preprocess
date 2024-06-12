@@ -90,3 +90,9 @@ sveltePreprocess({
 In `v3`, `svelte-preprocess` was able to type-check Svelte components. However, giving the specifics of the structure of a Svelte component and how the `script` and `markup` contents are related, type-checking was sub-optimal.
 
 In `v4`, your TypeScript code will only be transpiled into JavaScript, with no type-checking whatsoever. We're moving the responsibility of type-checking to tools better fit to handle it, such as [`svelte-check`](https://www.npmjs.com/package/svelte-check), for CLI and CI usage, and the [VS Code](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) extension, for type-checking while developing.
+
+## From `v5` to `v6`
+
+- Svelte 4 or higher is required now
+- Node 18 or higher is required now
+- When using TypeScript, the minimum required version is now 5.0, `"verbatimModuleSyntax": true` is now required in your `tsconfig.json`, and the mixed imports transpiler was removed

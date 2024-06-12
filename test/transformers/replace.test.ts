@@ -1,6 +1,6 @@
 import autoProcess from '../../src';
 import { preprocess } from '../utils';
-
+import { describe, it, expect } from 'vitest';
 import type { Options } from '../../src/types';
 
 const options: Options.Replace = [
@@ -132,7 +132,7 @@ describe('transformer - regex', () => {
 
     expect(preprocessed.toString?.()).toMatchInlineSnapshot(`
       "<script>
-            let isDEV = \\"test\\" === 'development';
+            let isDEV = "test" === 'development';
           </script>"
     `);
   });

@@ -9,8 +9,8 @@
     "lib": ["es2018"],
     "declaration": true,
     "skipLibCheck": true,
-    "types": ["jest", "node"],
-    "outDir": "dist",
+    "types": ["node"],
+    "outDir": "dist"
   },
   "include": ["**/*.ts"],
   "exclude": ["node_modules/**/*", "dist", "examples"]

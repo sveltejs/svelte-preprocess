@@ -8,9 +8,8 @@ import type { PreprocessorGroup, Options } from '../types';
 export default (options?: Options.Postcss): PreprocessorGroup => ({
   async style(svelteFile) {
     const { transformer } = await import('../transformers/postcss');
-    let { content, filename, attributes, dependencies } = await getTagInfo(
-      svelteFile,
-    );
+    let { content, filename, attributes, dependencies } =
+      await getTagInfo(svelteFile);
 
     content = prepareContent({ options, content });
 
