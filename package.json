@@ -63,6 +63,7 @@
     "@kiwi/prettier-config": "^2.0.2",
     "@types/babel__core": "^7.20.5",
     "@types/node": "^14.18.34",
+    "@types/pug": "^2.0.6",
     "@types/stylus": "^0.48.38",
     "autoprefixer": "^10.4.16",
     "babel-minify": "^0.5.2",
@@ -83,7 +84,6 @@
     "vitest": "^1.6.0"
   },
   "dependencies": {
-    "@types/pug": "^2.0.6",
     "detect-indent": "^6.1.0",
     "magic-string": "^0.30.5",
     "strip-indent": "^3.0.0"

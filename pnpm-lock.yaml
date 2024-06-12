@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@types/pug':
-        specifier: ^2.0.6
-        version: 2.0.10
       detect-indent:
         specifier: ^6.1.0
         version: 6.1.0
@@ -45,6 +42,9 @@ importers:
       '@types/node':
         specifier: ^14.18.34
         version: 14.18.63
+      '@types/pug':
+        specifier: ^2.0.6
+        version: 2.0.10
       '@types/stylus':
         specifier: ^0.48.38
         version: 0.48.42
