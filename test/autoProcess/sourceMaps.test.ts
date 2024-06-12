@@ -1,3 +1,4 @@
+import { describe, it, expect, vi, afterAll } from 'vitest';
 import sveltePreprocess from '../../src';
 import { preprocess } from '../utils';
 import { transformer as babelTransformer } from '../../src/transformers/babel';
@@ -47,33 +48,33 @@ const TRANSFORMERS: Record<string, any> = {
 };
 
 // todo: is there a better way to do this?
-jest.mock(`../../src/transformers/babel`, () => ({
-  transformer: jest.fn(() => ({ code: '' })),
+vi.mock(`../../src/transformers/babel`, () => ({
+  transformer: vi.fn(() => ({ code: '' })),
 }));
-jest.mock(`../../src/transformers/typescript`, () => ({
-  transformer: jest.fn(() => ({ code: '' })),
+vi.mock(`../../src/transformers/typescript`, () => ({
+  transformer: vi.fn(() => ({ code: '' })),
 }));
-jest.mock(`../../src/transformers/coffeescript`, () => ({
-  transformer: jest.fn(() => ({ code: '' })),
+vi.mock(`../../src/transformers/coffeescript`, () => ({
+  transformer: vi.fn(() => ({ code: '' })),
 }));
-jest.mock(`../../src/transformers/scss`, () => ({
-  transformer: jest.fn(() => ({ code: '' })),
+vi.mock(`../../src/transformers/scss`, () => ({
+  transformer: vi.fn(() => ({ code: '' })),
 }));
-jest.mock(`../../src/transformers/less`, () => ({
-  transformer: jest.fn(() => ({ code: '' })),
+vi.mock(`../../src/transformers/less`, () => ({
+  transformer: vi.fn(() => ({ code: '' })),
 }));
-jest.mock(`../../src/transformers/stylus`, () => ({
-  transformer: jest.fn(() => ({ code: '' })),
+vi.mock(`../../src/transformers/stylus`, () => ({
+  transformer: vi.fn(() => ({ code: '' })),
 }));
-jest.mock(`../../src/transformers/postcss`, () => ({
-  transformer: jest.fn(() => ({ code: '' })),
+vi.mock(`../../src/transformers/postcss`, () => ({
+  transformer: vi.fn(() => ({ code: '' })),
 }));
-jest.mock(`../../src/transformers/globalStyle`, () => ({
-  transformer: jest.fn(() => ({ code: '' })),
+vi.mock(`../../src/transformers/globalStyle`, () => ({
+  transformer: vi.fn(() => ({ code: '' })),
 }));
 
 afterAll(() => {
-  jest.resetAllMocks();
+  vi.resetAllMocks();
 });
 
 describe(`sourcemap generation`, () => {

@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { coffeescript } from '../../src';
 import { getFixtureContent, preprocess } from '../utils';
 

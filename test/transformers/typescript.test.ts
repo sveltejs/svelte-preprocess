@@ -1,5 +1,6 @@
 import { resolve } from 'path';
 import { compile } from 'svelte/compiler';
+import { describe, it, expect } from 'vitest';
 import sveltePreprocess from '../../src';
 import { loadTsconfig } from '../../src/transformers/typescript';
 import {

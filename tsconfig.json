@@ -10,7 +10,7 @@
     "declaration": true,
     "skipLibCheck": true,
     "types": ["jest", "node"],
-    "outDir": "dist",
+    "outDir": "dist"
   },
   "include": ["**/*.ts"],
   "exclude": ["node_modules/**/*", "dist", "examples"]

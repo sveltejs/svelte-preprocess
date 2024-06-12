@@ -1,5 +1,5 @@
 import { resolve } from 'path';
-
+import { describe, it, expect, afterEach } from 'vitest';
 import sveltePreprocess from '../../src';
 import {
   preprocess,
@@ -25,7 +25,9 @@ const REMOTE_JS = [
 ];
 
 describe('external files', () => {
-  afterEach(warnSpy.mockClear);
+  afterEach(() => {
+    warnSpy.mockClear();
+  });
 
   it('should insert external file content and add as deps', async () => {
     const code = `<template src="./fixtures/template.html"></template>

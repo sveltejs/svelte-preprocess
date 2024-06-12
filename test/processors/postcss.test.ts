@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { postcss } from '../../src';
 import { CSS_PATTERN, preprocess, spyConsole } from '../utils';
 

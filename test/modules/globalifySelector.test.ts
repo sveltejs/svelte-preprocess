@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { globalifySelector } from '../../src/modules/globalifySelector';
 
 describe('globalifySelector', () => {

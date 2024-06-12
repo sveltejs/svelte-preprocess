@@ -1,5 +1,6 @@
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
+import { vi, afterAll, afterEach } from 'vitest';
 
 import {
   compile as svelteCompile,
@@ -42,9 +43,9 @@ export const getFixtureContent = (file: string) =>
   readFileSync(exports.getFixturePath(file)).toString().trim();
 
 export function spyConsole({ silent = true } = {}) {
-  const warnSpy = jest.spyOn(global.console, 'warn');
-  const errorSpy = jest.spyOn(global.console, 'error');
-  const logSpy = jest.spyOn(global.console, 'log');
+  const warnSpy = vi.spyOn(global.console, 'warn');
+  const errorSpy = vi.spyOn(global.console, 'error');
+  const logSpy = vi.spyOn(global.console, 'log');
 
   if (silent) {
     warnSpy.mockImplementation(() => {});

@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import sveltePreprocess from '../../src';
 import { preprocess } from '../utils';
 
@@ -16,8 +17,8 @@ const BABEL_CONFIG = {
   ],
 };
 
-beforeAll(() => jest.setTimeout(10000));
-afterAll(() => jest.setTimeout(5000));
+// beforeAll(() => jest.setTimeout(10000));
+// afterAll(() => jest.setTimeout(5000));
 
 describe('transformer - babel', () => {
   it('transpiles with babel', async () => {
