@@ -107,20 +107,14 @@ describe('options', () => {
     expect(preprocessed.toString?.()).toContain('div{}');
   });
 
-  it('should NOT preprocess preserved languages', async () => {
-    const input = `<div></div><script lang="ld+json">{"json":true}</script>`;
-    const opts = sveltePreprocess({
-      preserve: ['ld+json'],
-      aliases: [['ld+json', 'structuredData']],
-      structuredData() {
-        return { code: '', map: '' };
-      },
-    });
+  it('should NOT preprocess unrecognized languages', async () => {
+    const input = `<div></div><script type="ld+json">{"json":true}</script>`;
+    const opts = sveltePreprocess();
 
     const preprocessed = await preprocess(input, opts);
 
     expect(preprocessed.toString?.()).toContain(
-      `<script lang="ld+json">{"json":true}</script>`,
+      `<script type="ld+json">{"json":true}</script>`,
     );
   });
 
