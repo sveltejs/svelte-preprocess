@@ -27,7 +27,7 @@ const transformer: Transformer<Options.Stylus> = ({
       // istanbul ignore next
       if (err) reject(err);
       if (style.sourcemap?.sources) {
-        style.sourcemap.sources = style.sourcemap.sources.map((source) =>
+        style.sourcemap.sources = style.sourcemap.sources.map((source: any) =>
           path.resolve(source),
         );
       }

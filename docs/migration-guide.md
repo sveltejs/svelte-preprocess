@@ -95,4 +95,5 @@ In `v4`, your TypeScript code will only be transpiled into JavaScript, with no t
 
 - Svelte 4 or higher is required now
 - Node 18 or higher is required now
-- When using TypeScript, the minimum required version is now 5.0, `"verbatimModuleSyntax": true` is now required in your `tsconfig.json`, and the mixed imports transpiler was removed
+- When using TypeScript, the minimum required version is now 5.0, `"verbatimModuleSyntax": true` is now required in your `tsconfig.json`, and the mixed imports transpiler (`handleMixedImports`) was removed
+- The `preserve` option was removed as it's obsolete

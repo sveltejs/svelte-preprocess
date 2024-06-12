@@ -1,20 +1,31 @@
-## [5.1.4](https://github.com/sveltejs/svelte-preprocess/compare/v5.1.3...v5.1.4) (2024-04-16)
+# [6.0.0](https://github.com/sveltejs/svelte-preprocess/compare/v5.1.4...v6.0.0) (2024-06-12)
 
+### BREAKING CHANGES
+
+- remove TS mixed imports support, require TS 5.0 or higher
+- remove `preserve` option as it's unnecessary
+- require Svelte 4+, Node 18+
+- add exports map
 
 ### Bug Fixes
 
-* remove pnpm version restriction ([#629](https://github.com/sveltejs/svelte-preprocess/issues/629)) ([2713b82](https://github.com/sveltejs/svelte-preprocess/commit/2713b82d80cd6d40c1c12cebe31c4d25882bec13))
+- adjust globalifySelector to not split selectors with parentheses. ([#632](https://github.com/sveltejs/svelte-preprocess/issues/632)) ([c435ebd](https://github.com/sveltejs/svelte-preprocess/commit/c435ebd633b9b5d461e8256b748a9f6b28680965)), closes [#501](https://github.com/sveltejs/svelte-preprocess/issues/501)
+- fix: allow TS filename to be undefined, fixes [#488](https://github.com/sveltejs/svelte-preprocess/issues/488)
+- fix: adjust Svelte compiler type import
+- fix: remove pug types and magic-string from dependencies
+- chore: bump peer deps, fixes [#553](https://github.com/sveltejs/svelte-preprocess/issues/553)
 
+## [5.1.4](https://github.com/sveltejs/svelte-preprocess/compare/v5.1.3...v5.1.4) (2024-04-16)
 
+### Bug Fixes
+
+- remove pnpm version restriction ([#629](https://github.com/sveltejs/svelte-preprocess/issues/629)) ([2713b82](https://github.com/sveltejs/svelte-preprocess/commit/2713b82d80cd6d40c1c12cebe31c4d25882bec13))
 
 ## [5.1.3](https://github.com/sveltejs/svelte-preprocess/compare/v5.1.2...v5.1.3) (2023-12-18)
 
-
 ### Bug Fixes
 
-* sass dependency list referencing source file in win32 ([#621](https://github.com/sveltejs/svelte-preprocess/issues/621)) ([209312f](https://github.com/sveltejs/svelte-preprocess/commit/209312fe258fc1dc5eb6f0d81937c6962ca8bafc))
-
-
+- sass dependency list referencing source file in win32 ([#621](https://github.com/sveltejs/svelte-preprocess/issues/621)) ([209312f](https://github.com/sveltejs/svelte-preprocess/commit/209312fe258fc1dc5eb6f0d81937c6962ca8bafc))
 
 ## [5.1.2](https://github.com/sveltejs/svelte-preprocess/compare/v5.1.1...v5.1.2) (2023-12-12)
 
