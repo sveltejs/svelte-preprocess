@@ -1,5 +1,6 @@
 import detectIndent from 'detect-indent';
 import pug from 'pug';
+import lex from 'pug-lexer';
 
 import type { Transformer, Options } from '../types';
 
@@ -68,7 +69,18 @@ const transformer: Transformer<Options.Pug> = async ({
   };
 
   const { type: indentationType } = detectIndent(content);
-  const input = `${GET_MIXINS(indentationType ?? 'space')}\n${content}`;
+  let input = `${GET_MIXINS(indentationType ?? 'space')}\n${content}`;
+  const tokens = lex(input);
+  const extendsToken = tokens.find((token) => token.type === 'extends');
+
+  if (extendsToken) {
+    const lines = input.split('\n');
+    const [extendsLine] = lines.splice(extendsToken.loc.start.line - 1, 1);
+
+    lines.unshift(extendsLine);
+    input = lines.join('\n');
+  }
+
   const compiled = pug.compile(
     input,
     pugOptions,
