@@ -1,3 +1,9 @@
+## [6.0.1](https://github.com/sveltejs/svelte-preprocess/compare/v5.1.4...v6.0.1) (2024-06-14)
+
+### Bug Fixes
+
+- deprecate default export in favor of named export ([#641](https://github.com/sveltejs/svelte-preprocess/issues/641)) ([a43de10](https://github.com/sveltejs/svelte-preprocess/commit/a43de107846a5fe943b6d3910ac369e0dfca1ba1)), closes [#591](https://github.com/sveltejs/svelte-preprocess/issues/591)
+
 # [6.0.0](https://github.com/sveltejs/svelte-preprocess/compare/v5.1.4...v6.0.0) (2024-06-12)
 
 ### BREAKING CHANGES
