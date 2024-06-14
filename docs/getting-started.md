@@ -43,7 +43,7 @@ Let's use `svelte-preprocess` in [auto-preprocessing mode](/docs/preprocessing.m
 
 ```diff
 import svelte from 'rollup-plugin-svelte'
-+ import sveltePreprocess from 'svelte-preprocess';
++ import { sveltePreprocess } from 'svelte-preprocess';
 
 const production = !process.env.ROLLUP_WATCH
 
@@ -88,7 +88,7 @@ After the installation is complete, we still need to configure our PostCSS optio
 
 ```diff
 import svelte from 'rollup-plugin-svelte'
-import sveltePreprocess from 'svelte-preprocess';
+import { sveltePreprocess } from 'svelte-preprocess';
 + import typescript from '@rollup/plugin-typescript';
 
 const production = !process.env.ROLLUP_WATCH
@@ -126,9 +126,7 @@ export default {
 And we're done! Our components can now be written as:
 
 ```html
-<template lang="pug">
-  h1 {name}
-</template>
+<template lang="pug"> h1 {name} </template>
 
 <script lang="ts">
   export let name: string = 'world';
@@ -140,6 +138,7 @@ And we're done! Our components can now be written as:
   }
 </style>
 ```
+
 ### 3.1 Prepending content
 
 Now we're in need of a SCSS file to hold some variables. Let's assume it's created at `src/styles/variables.scss`.
@@ -153,7 +152,7 @@ As in any SCSS project, we could just `@use './path/to/variables.scss`, but that
 
 ```diff
 import svelte from 'rollup-plugin-svelte'
-import sveltePreprocess from 'svelte-preprocess';
+import { sveltePreprocess } from 'svelte-preprocess';
 
 export default {
   input: 'src/main.js',
@@ -192,9 +191,7 @@ export default {
 Voila! We can now reference a variable from our file without having to explicitly import it.
 
 ```html
-<template lang="pug">
-  h1 {name}
-</template>
+<template lang="pug"> h1 {name} </template>
 
 <script lang="ts">
   export let name: string = 'world';

@@ -34,7 +34,7 @@ In auto preprocessing mode, `svelte-preprocess` automatically uses the respectiv
 
 ```js
 import svelte from 'rollup-plugin-svelte'
-import sveltePreprocess from 'svelte-preprocess'
+import { sveltePreprocess } from 'svelte-preprocess'
 
 export default {
   plugins: [
@@ -49,7 +49,7 @@ As `svelte-preprocess` is just a Svelte preprocessor like any other, it's also p
 
 ```js
 import svelte from 'rollup-plugin-svelte'
-import sveltePreprocess from 'svelte-preprocess'
+import { sveltePreprocess } from 'svelte-preprocess'
 
 export default {
   plugins: [
@@ -79,7 +79,7 @@ Alongside the options above, you can also configure options of specific preproce
 
 ```js
 import svelte from 'rollup-plugin-svelte';
-import sveltePreprocess from 'svelte-preprocess';
+import { sveltePreprocess } from 'svelte-preprocess';
 
 export default {
   plugins: [
@@ -110,7 +110,7 @@ It's also possible to create custom preprocessors, taking advantage of the autom
 
 ```js
 import svelte from 'rollup-plugin-svelte';
-import sveltePreprocess from 'svelte-preprocess';
+import { sveltePreprocess } from 'svelte-preprocess';
 
 export default {
   plugins: [
@@ -146,7 +146,7 @@ To integrate `esbuild` with `svelte-preprocess` we can override the default Type
 
 ```js
 import svelte from 'rollup-plugin-svelte';
-import sveltePreprocess from 'svelte-preprocess';
+import { sveltePreprocess } from 'svelte-preprocess';
 import { transformSync } from 'esbuild';
 
 export default {
@@ -332,9 +332,7 @@ button.big(type="button" disabled "{...slide.props}") Send
 Becomes:
 
 ```svelte
-<button class="big" type="button" disabled {...slide.props}>
-  Send
-</button>
+<button class="big" type="button" disabled {...slide.props}> Send </button>
 ```
 
 **Svelte Element directives:**
@@ -477,7 +475,7 @@ Allowing to write your component like:
 And the result, with a `NODE_ENV = 'production'` would be:
 
 ```svelte
-{#if "production" !== 'development'}
+{#if 'production' !== 'development'}
   <h1>Production environment!</h1>
 {/if}
 ```

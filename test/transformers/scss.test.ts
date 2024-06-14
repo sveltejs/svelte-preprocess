@@ -3,7 +3,7 @@
 
 import { resolve } from 'path';
 import { describe, it, expect } from 'vitest';
-import sveltePreprocess from '../../src';
+import { sveltePreprocess } from '../../src';
 import { preprocess } from '../utils';
 import { transformer } from '../../src/transformers/scss';
 

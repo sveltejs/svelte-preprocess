@@ -5,7 +5,7 @@ import { prepareContent } from '../modules/prepareContent';
 import type { PreprocessorGroup, Options } from '../types';
 
 /** Adapted from https://github.com/TehShrike/svelte-preprocess-postcss */
-export default (options?: Options.Postcss): PreprocessorGroup => ({
+const postcss = (options?: Options.Postcss): PreprocessorGroup => ({
   async style(svelteFile) {
     const { transformer } = await import('../transformers/postcss');
     let { content, filename, attributes, dependencies } =
@@ -27,3 +27,6 @@ export default (options?: Options.Postcss): PreprocessorGroup => ({
     };
   },
 });
+
+export { postcss };
+export default postcss;

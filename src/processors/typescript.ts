@@ -4,7 +4,7 @@ import { prepareContent } from '../modules/prepareContent';
 
 import type { Options, PreprocessorGroup } from '../types';
 
-export default (options?: Options.Typescript): PreprocessorGroup => ({
+const typescript = (options?: Options.Typescript): PreprocessorGroup => ({
   async script(svelteFile) {
     const { transformer } = await import('../transformers/typescript');
     let { content, markup, filename, attributes, lang, dependencies } =
@@ -30,3 +30,8 @@ export default (options?: Options.Typescript): PreprocessorGroup => ({
     };
   },
 });
+
+// both for backwards compat with old svelte-preprocess versions
+// (was only default export once, now is named export because of transpilation causing node not to detect the named exports of 'svelte-preprocess' otherwise)
+export default typescript;
+export { typescript };

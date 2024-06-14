@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterAll } from 'vitest';
-import sveltePreprocess from '../../src';
+import { sveltePreprocess } from '../../src';
 import { preprocess } from '../utils';
 import { transformer as babelTransformer } from '../../src/transformers/babel';
 import { transformer as coffeeTransformer } from '../../src/transformers/coffeescript';
