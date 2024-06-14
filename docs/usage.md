@@ -22,12 +22,12 @@ Write the config in ESM style when you have `"type": "module"` in your `package.
 
 ```js
 // svelte.config.js
-import preprocess from 'svelte-preprocess';
+import { sveltePreprocess } from 'svelte-preprocess';
 
-/** 
+/**
  * This will add autocompletion if you're working with SvelteKit
- * 
- * @type {import('@sveltejs/kit').Config} 
+ *
+ * @type {import('@sveltejs/kit').Config}
  */
 const config = {
   preprocess: preprocess({
@@ -43,7 +43,7 @@ Write the config in CommonJS style when you don't have `"type": "module"` in you
 
 ```js
 // svelte.config.js
-const sveltePreprocess = require('svelte-preprocess');
+const { sveltePreprocess } = require('svelte-preprocess');
 module.exports = {
   preprocess: sveltePreprocess({
     // ...svelte-preprocess options
@@ -52,7 +52,6 @@ module.exports = {
 };
 ```
 
-
 _Tip: this file can be imported in your bundle config instead of having multiple svelte configurations lying around._
 
 ## With `rollup-plugin-svelte`
@@ -60,7 +59,7 @@ _Tip: this file can be imported in your bundle config instead of having multiple
 ```js
 // rollup.config.js
 import svelte from 'rollup-plugin-svelte';
-import sveltePreprocess from 'svelte-preprocess'
+import { sveltePreprocess } from 'svelte-preprocess'
 import { scss, coffeescript, pug } from 'svelte-preprocess'
 
 export default {
@@ -117,7 +116,7 @@ export default {
 
 ```js
 // ...
-import sveltePreprocess from 'svelte-preprocess';
+import { sveltePreprocess } from 'svelte-preprocess';
 
 const preprocess = sveltePreprocess({
   postcss: true,

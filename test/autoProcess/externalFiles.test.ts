@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 import { describe, it, expect, afterEach } from 'vitest';
-import sveltePreprocess from '../../src';
+import { sveltePreprocess } from '../../src';
 import {
   preprocess,
   getFixtureContent,

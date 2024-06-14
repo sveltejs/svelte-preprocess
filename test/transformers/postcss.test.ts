@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 import { resolve } from 'path';
 import { test, expect, vi } from 'vitest';
-import sveltePreprocess from '../../src';
+import { sveltePreprocess } from '../../src';
 import { preprocess, spyConsole } from '../utils';
 import { transformer } from '../../src/transformers/postcss';
 

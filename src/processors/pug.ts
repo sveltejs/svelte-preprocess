@@ -3,7 +3,7 @@ import { transformMarkup } from '../modules/markup';
 
 import type { Options, PreprocessorGroup } from '../types/index';
 
-export default (options?: Options.Pug): PreprocessorGroup => ({
+const pug = (options?: Options.Pug): PreprocessorGroup => ({
   async markup({ content, filename }) {
     const { transformer } = await import('../transformers/pug');
 
@@ -18,3 +18,8 @@ export default (options?: Options.Pug): PreprocessorGroup => ({
     return transformMarkup({ content, filename }, transformer, options);
   },
 });
+
+// both for backwards compat with old svelte-preprocess versions
+// (was only default export once, now is named export because of transpilation causing node not to detect the named exports of 'svelte-preprocess' otherwise)
+export default pug;
+export { pug };

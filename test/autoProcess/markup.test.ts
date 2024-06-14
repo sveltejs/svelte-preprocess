@@ -1,5 +1,5 @@
 import { describe, it, expect, test } from 'vitest';
-import sveltePreprocess from '../../src';
+import { sveltePreprocess } from '../../src';
 import { preprocess, getFixtureContent, doesCompileThrow } from '../utils';
 
 const EXPECTED_MARKUP = getFixtureContent('template.html');

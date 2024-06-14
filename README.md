@@ -41,10 +41,10 @@ Writing your own preprocessor for, i.e SCSS is easy enough, but it can be cumber
 It is recommended to use with `svelte.config.js` file, located at the project root. For other usage, please refer to [usage documentation](#usage-documentation).
 
 ```js
-import preprocess from 'svelte-preprocess';
+import { sveltePreprocess } from 'svelte-preprocess';
 
 const config = {
-  preprocess: preprocess({ ... })
+  preprocess: sveltePreprocess({ ... })
 }
 
 export default config;
@@ -121,9 +121,9 @@ _**Note**: needs PostCSS to be installed._
 For example, with `@babel/preset-env` your config could be:
 
 ```js
-import preprocess from 'svelte-preprocess'
+import { sveltePreprocess } from 'svelte-preprocess'
   ...
-  preprocess: preprocess({
+  preprocess: sveltePreprocess({
     babel: {
       presets: [
         [
@@ -169,7 +169,7 @@ Which, in a production environment, would turn
 into
 
 ```svelte
-{#if "production" !== 'development'}
+{#if 'production' !== 'development'}
   <h1>Production environment!</h1>
 {/if}
 ```
