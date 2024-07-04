@@ -84,9 +84,6 @@
     "typescript": "^5.0.2",
     "vitest": "^1.6.0"
   },
-  "dependencies": {
-    "detect-indent": "^6.1.0"
-  },
   "peerDependencies": {
     "@babel/core": "^7.10.2",
     "coffeescript": "^2.5.1",
