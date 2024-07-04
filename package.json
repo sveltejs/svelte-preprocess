@@ -85,8 +85,7 @@
     "vitest": "^1.6.0"
   },
   "dependencies": {
-    "detect-indent": "^6.1.0",
-    "strip-indent": "^3.0.0"
+    "detect-indent": "^6.1.0"
   },
   "peerDependencies": {
     "@babel/core": "^7.10.2",

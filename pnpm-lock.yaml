@@ -11,9 +11,6 @@ importers:
       detect-indent:
         specifier: ^6.1.0
         version: 6.1.0
-      strip-indent:
-        specifier: ^3.0.0
-        version: 3.0.0
     devDependencies:
       '@babel/core':
         specifier: ^7.23.6
