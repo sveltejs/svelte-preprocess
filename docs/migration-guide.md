@@ -9,6 +9,7 @@
   - [Executing some function before preprocessing](#executing-some-function-before-preprocessing)
   - [Defining preprocessor properties](#defining-preprocessor-properties)
   - [Type-checking components](#type-checking-components)
+- [From `v5` to `v6`](#from-v5-to-v6)
 
 <!-- /code_chunk_output -->
 
