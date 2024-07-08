@@ -12,7 +12,7 @@ import {
 import type { Processed } from '../../src/types';
 import type { Diagnostic } from 'typescript';
 
-spyConsole({ silent: true });
+spyConsole({ silent: false });
 
 const EXPECTED_SCRIPT = getFixtureContent('script.js');
 
@@ -202,6 +202,23 @@ describe('transformer - typescript', () => {
       expect(code).not.toContain('async function doIt');
       expect(code).not.toContain('&&=');
       expect(code).not.toContain('||=');
+    });
+
+    it('should remove customConditions option if necessary to prevent config error', async () => {
+      const opts = sveltePreprocess({
+        typescript: {
+          tsconfigFile: false,
+          compilerOptions: {
+            // we force a different module resolution in our transformer which
+            // would fail if we wouldn't also remove the customConditions
+            moduleResolution: 'NodeNext',
+            customConditions: ['development'],
+          },
+        },
+      });
+      const preprocessed = await preprocess(template, opts);
+
+      expect(preprocessed.toString?.()).toContain('export var hello');
     });
   });
 });

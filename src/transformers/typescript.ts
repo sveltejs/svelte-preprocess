@@ -60,12 +60,17 @@ function getCompilerOptions({
 
   const compilerOptions: CompilerOptions = {
     target: ts.ScriptTarget.ES2015,
-    ...(convertedCompilerOptions as CompilerOptions),
+    ...convertedCompilerOptions,
     // force module(resolution) to esnext and a compatible moduleResolution. Reason:
     // transpileModule treats NodeNext as CommonJS because it doesn't read the package.json.
     // Also see https://github.com/microsoft/TypeScript/issues/53022 (the filename workaround doesn't work).
     module: ts.ModuleKind.ESNext,
-    moduleResolution: ts.ModuleResolutionKind.Node10,
+    moduleResolution:
+      convertedCompilerOptions.moduleResolution ===
+      ts.ModuleResolutionKind.Bundler
+        ? ts.ModuleResolutionKind.Bundler
+        : ts.ModuleResolutionKind.Node10,
+    customConditions: undefined, // fails when using an invalid moduleResolution combination which could happen when we force moduleResolution to Node10
     allowNonTsExtensions: true,
     // Clear outDir since it causes source map issues when the files aren't actually written to disk.
     outDir: undefined,
@@ -141,7 +146,10 @@ export function loadTsconfig(
   compilerOptionsJSON: any,
   filename: string,
   tsOptions: Options.Typescript,
-) {
+): {
+  options: ts.CompilerOptions;
+  errors: ts.Diagnostic[];
+} {
   if (typeof tsOptions.tsconfigFile === 'boolean') {
     return { errors: [], options: compilerOptionsJSON };
   }
