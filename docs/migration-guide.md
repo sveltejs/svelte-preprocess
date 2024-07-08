@@ -96,7 +96,8 @@ In `v4`, your TypeScript code will only be transpiled into JavaScript, with no t
 
 - Svelte 4 or higher is required now
 - Node 18 or higher is required now
-- When using TypeScript, the minimum required version is now 5.0, `"verbatimModuleSyntax": true` is now required in your `tsconfig.json`, and the mixed imports transpiler (`handleMixedImports`) was removed
+- When using TypeScript, the minimum required version is now 5.0
+- When using TypeScript, `"verbatimModuleSyntax": true` is now required in your `tsconfig.json` (instead of the deprecated `preserveValueImports` and `importsNotUsedAsValues` options). As a consequence, the mixed imports transpiler (`handleMixedImports`) was removed from the TypeScript preprocessor. This means that you now need to specify for each import if it's a type or value import. For example instead of `import { value, Type } from 'somewhere'` you now need to write `import { value, type Type } from 'somewhere'`
 - The `preserve` option was removed as it's obsolete
 - The default export is deprecated in favor of its new named export:
 
