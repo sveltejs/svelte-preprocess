@@ -47,12 +47,15 @@ function getCompilerOptions({
   options: Options.Typescript;
   basePath: string;
 }): CompilerOptions {
-  const inputOptions = options.compilerOptions ?? {};
+  const inputOptions = ts.convertCompilerOptionsFromJson(
+    options.compilerOptions ?? {},
+    basePath,
+  );
 
   const { errors, options: convertedCompilerOptions } =
     options.tsconfigFile !== false || options.tsconfigDirectory
       ? loadTsconfig(inputOptions, filename, options)
-      : ts.convertCompilerOptionsFromJson(inputOptions, basePath);
+      : inputOptions;
 
   if (errors.length) {
     throw new Error(formatDiagnostics(errors, basePath));
@@ -79,8 +82,16 @@ function getCompilerOptions({
   if (!warned_verbatim && !compilerOptions.verbatimModuleSyntax) {
     warned_verbatim = true;
     console.warn(
+      '\x1b[1m%s\x1b[0m',
       'The TypeScript option verbatimModuleSyntax is now required when using Svelte files with lang="ts". Please add it to your tsconfig.json.',
     );
+    // best effort to still add it, if possible, in case no config was found whatsoever
+    if (
+      Object.keys(inputOptions.options).length === 0 &&
+      convertedCompilerOptions === inputOptions.options
+    ) {
+      compilerOptions.verbatimModuleSyntax = true;
+    }
   }
 
   if (
@@ -143,7 +154,10 @@ function transpileTs({
 }
 
 export function loadTsconfig(
-  compilerOptionsJSON: any,
+  fallback: {
+    options: ts.CompilerOptions;
+    errors: ts.Diagnostic[];
+  },
   filename: string,
   tsOptions: Options.Typescript,
 ): {
@@ -151,7 +165,7 @@ export function loadTsconfig(
   errors: ts.Diagnostic[];
 } {
   if (typeof tsOptions.tsconfigFile === 'boolean') {
-    return { errors: [], options: compilerOptionsJSON };
+    return fallback;
   }
 
   let basePath = process.cwd();
@@ -164,7 +178,7 @@ export function loadTsconfig(
     ts.findConfigFile(fileDirectory, ts.sys.fileExists);
 
   if (!tsconfigFile) {
-    return { errors: [], options: compilerOptionsJSON };
+    return fallback;
   }
 
   tsconfigFile = isAbsolute(tsconfigFile)
@@ -193,7 +207,7 @@ export function loadTsconfig(
     config,
     ts.sys,
     basePath,
-    compilerOptionsJSON,
+    fallback.options,
     tsconfigFile,
   );
 
