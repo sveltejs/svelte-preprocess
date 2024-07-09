@@ -22,7 +22,7 @@ export function prepareContent({
 }
 
 /** Get the shortest leading whitespace from lines in a string */
-function minIndent (s: string) {
+function minIndent(s: string) {
   const match = s.match(/^[ \t]*(?=\S)/gm);
 
   if (!match) {
