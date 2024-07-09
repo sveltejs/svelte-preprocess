@@ -30,7 +30,7 @@ function minIndent (s: string) {
   }
 
   return match.reduce((r, a) => Math.min(r, a.length), Infinity);
-};
+}
 
 /** Strip leading whitespace from each line in a string */
 function stripIndent(s: string) {
