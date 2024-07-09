@@ -1,3 +1,12 @@
+## [6.0.2](https://github.com/sveltejs/svelte-preprocess/compare/v6.0.1...v6.0.2) (2024-07-09)
+
+
+### Bug Fixes
+
+* remove customConditions tsconfig option ([#648](https://github.com/sveltejs/svelte-preprocess/issues/648)) ([afb80ae](https://github.com/sveltejs/svelte-preprocess/commit/afb80ae3fa1cafcf5293c1ab274e99b1966c632f)), closes [#646](https://github.com/sveltejs/svelte-preprocess/issues/646)
+
+
+
 ## [6.0.1](https://github.com/sveltejs/svelte-preprocess/compare/v5.1.4...v6.0.1) (2024-06-14)
 
 ### Bug Fixes
