@@ -83,18 +83,16 @@ const transformer: Transformer<Options.GlobalStyle> = async ({
     map: options?.sourceMap ? { prev: map } : false,
   });
 
+  if (attributes?.global) {
+    const { global, ...rest } = attributes;
+
+    attributes = rest;
+  }
+
   return {
     code: css,
     map: newMap,
-    attributes:
-      attributes &&
-      Object.keys(attributes).reduce((acc: any, key) => {
-        if (key !== 'global') {
-          acc[key] = attributes[key];
-        }
-
-        return acc;
-      }, {}),
+    attributes,
   };
 };
 

@@ -70,5 +70,6 @@ export const getTagInfo = async ({
 
 export const removeSrcAttribute = (attributes: Record<string, any>) => {
   const { src, ...rest } = attributes;
+
   return rest;
 };
