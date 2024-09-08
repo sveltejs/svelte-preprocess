@@ -47,7 +47,15 @@ mixin const(expression)
 %_| {@const !{expression}}
 
 mixin debug(variables)
-%_| {@debug !{variables}}`.replace(
+%_| {@debug !{variables}}
+
+mixin snippet(expression)
+%_| {#snippet !{expression}}
+%_block
+%_| {/snippet}
+
+mixin render(expression)
+%_| {@render !{expression}}`.replace(
     /%_/g,
     indentationType === 'tab' ? '\t' : '  ',
   );
