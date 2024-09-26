@@ -1,5 +1,5 @@
 import { concat } from '../modules/utils';
-import { getTagInfo } from '../modules/tagInfo';
+import { getTagInfo, removeSrcAttribute } from '../modules/tagInfo';
 import { prepareContent } from '../modules/prepareContent';
 
 import type { PreprocessorGroup, Options } from '../types';
@@ -22,6 +22,7 @@ const babel = (options?: Options.Babel): PreprocessorGroup => ({
 
     return {
       ...transformed,
+      attributes: removeSrcAttribute(transformed.attributes || attributes),
       dependencies: concat(dependencies, transformed.dependencies),
     };
   },

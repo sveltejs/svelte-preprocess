@@ -83,7 +83,17 @@ const transformer: Transformer<Options.GlobalStyle> = async ({
     map: options?.sourceMap ? { prev: map } : false,
   });
 
-  return { code: css, map: newMap };
+  if (attributes?.global) {
+    const { global, ...rest } = attributes;
+
+    attributes = rest;
+  }
+
+  return {
+    code: css,
+    map: newMap,
+    attributes,
+  };
 };
 
 export { transformer };

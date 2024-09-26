@@ -123,8 +123,9 @@ export default {
         /** Add a custom language preprocessor */
         potatoLanguage({ content, filename, attributes }) {
           const { code, map } = require('potato-language').render(content);
+          const { src, ...cleanedAttributes } = attributes;
 
-          return { code, map };
+          return { code, map, attributes: cleanedAttributes };
         },
       }),
     }),

@@ -1,4 +1,4 @@
-import { getTagInfo } from '../modules/tagInfo';
+import { getTagInfo, removeSrcAttribute } from '../modules/tagInfo';
 import { concat } from '../modules/utils';
 import { prepareContent } from '../modules/prepareContent';
 
@@ -31,6 +31,7 @@ const stylus = (options?: Options.Stylus): PreprocessorGroup => ({
 
     return {
       ...transformed,
+      attributes: removeSrcAttribute(transformed.attributes || attributes),
       dependencies: concat(dependencies, transformed.dependencies),
     };
   },
