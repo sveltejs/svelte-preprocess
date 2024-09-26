@@ -1,3 +1,13 @@
+## [6.0.3](https://github.com/sveltejs/svelte-preprocess/compare/v6.0.2...v6.0.3) (2024-09-26)
+
+
+### Bug Fixes
+
+* add pug mixins to support svelte-5 syntax ([#654](https://github.com/sveltejs/svelte-preprocess/issues/654)) ([9d49f3d](https://github.com/sveltejs/svelte-preprocess/commit/9d49f3d1e15f702fab1b9facccb2153d05eb725d))
+* ignore sass deprecation warning ([#657](https://github.com/sveltejs/svelte-preprocess/issues/657)) ([9b54325](https://github.com/sveltejs/svelte-preprocess/commit/9b5432540b6683f556ff1f6cf92ae41b4fc3bcb4)), closes [#656](https://github.com/sveltejs/svelte-preprocess/issues/656)
+
+
+
 ## [6.0.2](https://github.com/sveltejs/svelte-preprocess/compare/v6.0.1...v6.0.2) (2024-07-09)
 
 
