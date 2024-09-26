@@ -33,16 +33,24 @@ const tildeImporter: LegacySyncImporter = (url, prev) => {
   return { contents };
 };
 
+const infoRegex = /dart-sass\s(\d+)\.(\d+)\.(\d+)/;
+
 const transformer: Transformer<Options.Sass> = async ({
   content,
   filename,
   options = {},
 }) => {
-  const { renderSync } = await import('sass');
+  const { renderSync, info } = await import('sass');
 
   const { prependData, ...restOptions } = options;
+  const match = info.match(infoRegex) ?? [0, 0, 0, 0];
+  const [_, major, minor] = match.map(Number);
   const sassOptions: LegacyStringOptions<'sync'> = {
     ...restOptions,
+    silenceDeprecations:
+      major >= 1 && minor >= 79
+        ? ['legacy-js-api', ...(restOptions.silenceDeprecations || [])]
+        : undefined,
     includePaths: getIncludePaths(filename, options.includePaths),
     sourceMap: true,
     sourceMapEmbed: false,
