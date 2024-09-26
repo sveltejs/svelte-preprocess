@@ -50,7 +50,7 @@ const transformer: Transformer<Options.Sass> = async ({
     silenceDeprecations:
       major >= 1 && minor >= 79
         ? ['legacy-js-api', ...(restOptions.silenceDeprecations || [])]
-        : undefined,
+        : restOptions.silenceDeprecations,
     includePaths: getIncludePaths(filename, options.includePaths),
     sourceMap: true,
     sourceMapEmbed: false,
