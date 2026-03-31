@@ -1,9 +1,8 @@
 {
   "compilerOptions": {
-    "strict": true,
     "sourceMap": false,
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "node16",
+    "moduleResolution": "node16",
     "esModuleInterop": true,
     "target": "es2018",
     "lib": ["es2018"],

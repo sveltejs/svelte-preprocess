@@ -6,7 +6,7 @@ import type { PreprocessorGroup, Options } from '../types';
 
 const babel = (options?: Options.Babel): PreprocessorGroup => ({
   async script(svelteFile) {
-    const { transformer } = await import('../transformers/babel');
+    const { transformer } = await import('../transformers/babel.js');
 
     let { content, filename, dependencies, attributes } =
       await getTagInfo(svelteFile);

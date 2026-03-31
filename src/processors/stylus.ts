@@ -6,7 +6,7 @@ import type { Options, PreprocessorGroup } from '../types';
 
 const stylus = (options?: Options.Stylus): PreprocessorGroup => ({
   async style(svelteFile) {
-    const { transformer } = await import('../transformers/stylus');
+    const { transformer } = await import('../transformers/stylus.js');
     let { content, filename, attributes, lang, dependencies } =
       await getTagInfo(svelteFile);
 

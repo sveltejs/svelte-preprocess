@@ -3,7 +3,7 @@ import type { PreprocessorGroup } from '../types';
 const globalStyle = (): PreprocessorGroup => {
   return {
     async style({ content, attributes, filename }) {
-      const { transformer } = await import('../transformers/globalStyle');
+      const { transformer } = await import('../transformers/globalStyle.js');
 
       if (!attributes.global) {
         return { code: content };

@@ -2,7 +2,7 @@ import type { PreprocessorGroup, Options } from '../types';
 
 const replace = (options: Options.Replace): PreprocessorGroup => ({
   async markup({ content, filename }) {
-    const { transformer } = await import('../transformers/replace');
+    const { transformer } = await import('../transformers/replace.js');
 
     return transformer({ content, filename, options });
   },

@@ -6,7 +6,7 @@ import type { PreprocessorGroup, Options } from '../types';
 
 const less = (options?: Options.Less): PreprocessorGroup => ({
   async style(svelteFile) {
-    const { transformer } = await import('../transformers/less');
+    const { transformer } = await import('../transformers/less.js');
     let { content, filename, attributes, lang, dependencies } =
       await getTagInfo(svelteFile);
 
