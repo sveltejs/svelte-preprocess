@@ -64,9 +64,6 @@ function getCompilerOptions({
   const compilerOptions: CompilerOptions = {
     target: ts.ScriptTarget.ES2015,
     ...convertedCompilerOptions,
-    // force module(resolution) to esnext and a compatible moduleResolution. Reason:
-    // transpileModule treats NodeNext as CommonJS because it doesn't read the package.json.
-    // Also see https://github.com/microsoft/TypeScript/issues/53022 (the filename workaround doesn't work).
     module:
       convertedCompilerOptions.moduleResolution ===
       ts.ModuleResolutionKind.Bundler
