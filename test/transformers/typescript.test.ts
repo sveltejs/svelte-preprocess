@@ -139,7 +139,9 @@ describe('transformer - typescript', () => {
 
       const { code } = await preprocess(tpl, opts);
 
-      expect(code).toBe(`<script lang="ts" context="module"></script>`);
+      expect(code).toBe(
+        `<script lang="ts" context="module">export {};\n</script>`,
+      );
     });
 
     it('should produce sourcemap', async () => {

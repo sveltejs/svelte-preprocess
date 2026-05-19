@@ -67,12 +67,16 @@ function getCompilerOptions({
     // force module(resolution) to esnext and a compatible moduleResolution. Reason:
     // transpileModule treats NodeNext as CommonJS because it doesn't read the package.json.
     // Also see https://github.com/microsoft/TypeScript/issues/53022 (the filename workaround doesn't work).
-    module: ts.ModuleKind.ESNext,
+    module:
+      convertedCompilerOptions.moduleResolution ===
+      ts.ModuleResolutionKind.Bundler
+        ? ts.ModuleKind.ESNext
+        : ts.ModuleKind.NodeNext,
     moduleResolution:
       convertedCompilerOptions.moduleResolution ===
       ts.ModuleResolutionKind.Bundler
         ? ts.ModuleResolutionKind.Bundler
-        : ts.ModuleResolutionKind.Node10,
+        : ts.ModuleResolutionKind.NodeNext,
     customConditions: undefined, // fails when using an invalid moduleResolution combination which could happen when we force moduleResolution to Node10
     allowNonTsExtensions: true,
     // Clear outDir since it causes source map issues when the files aren't actually written to disk.
