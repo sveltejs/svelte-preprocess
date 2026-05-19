@@ -74,7 +74,7 @@ function getCompilerOptions({
       ts.ModuleResolutionKind.Bundler
         ? ts.ModuleResolutionKind.Bundler
         : ts.ModuleResolutionKind.NodeNext,
-    customConditions: undefined, // fails when using an invalid moduleResolution combination which could happen when we force moduleResolution to Node16
+    customConditions: undefined,
     allowNonTsExtensions: true,
     // Clear outDir since it causes source map issues when the files aren't actually written to disk.
     outDir: undefined,
