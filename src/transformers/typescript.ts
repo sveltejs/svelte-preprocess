@@ -71,12 +71,12 @@ function getCompilerOptions({
       convertedCompilerOptions.moduleResolution ===
       ts.ModuleResolutionKind.Bundler
         ? ts.ModuleKind.ESNext
-        : ts.ModuleKind.Node16,
+        : ts.ModuleKind.NodeNext,
     moduleResolution:
       convertedCompilerOptions.moduleResolution ===
       ts.ModuleResolutionKind.Bundler
         ? ts.ModuleResolutionKind.Bundler
-        : ts.ModuleResolutionKind.Node16,
+        : ts.ModuleResolutionKind.NodeNext,
     customConditions: undefined, // fails when using an invalid moduleResolution combination which could happen when we force moduleResolution to Node16
     allowNonTsExtensions: true,
     // Clear outDir since it causes source map issues when the files aren't actually written to disk.

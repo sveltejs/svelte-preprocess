@@ -81,7 +81,7 @@
     "stylus": "^0.55.0",
     "sugarss": "^4.0.0",
     "svelte": "^4.0.0",
-    "typescript": "^6.0.2",
+    "typescript": "^6.0.0",
     "vitest": "^1.6.0"
   },
   "peerDependencies": {
