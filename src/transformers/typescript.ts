@@ -3,6 +3,8 @@ import ts from 'typescript';
 import { throwTypescriptError } from '../modules/errors';
 import type { Transformer, Options } from '../types';
 
+const isTypeScript6 = ts.version.startsWith('6');
+
 type CompilerOptions = ts.CompilerOptions;
 
 /**
@@ -64,15 +66,21 @@ function getCompilerOptions({
   const compilerOptions: CompilerOptions = {
     target: ts.ScriptTarget.ES2015,
     ...convertedCompilerOptions,
-    // force module(resolution) to esnext and a compatible moduleResolution. Reason:
-    // transpileModule treats NodeNext as CommonJS because it doesn't read the package.json.
-    // Also see https://github.com/microsoft/TypeScript/issues/53022 (the filename workaround doesn't work).
-    module: ts.ModuleKind.ESNext,
+    // For TypeScript 5.x, force module(resolution) to esnext and a compatible moduleResolution.
+    // Reason: transpileModule treats NodeNext as CommonJS because it doesn't read the package.json.
+    module:
+      !isTypeScript6 ||
+      convertedCompilerOptions.moduleResolution ===
+        ts.ModuleResolutionKind.Bundler
+        ? ts.ModuleKind.ESNext
+        : ts.ModuleKind.NodeNext,
     moduleResolution:
       convertedCompilerOptions.moduleResolution ===
       ts.ModuleResolutionKind.Bundler
         ? ts.ModuleResolutionKind.Bundler
-        : ts.ModuleResolutionKind.Node10,
+        : isTypeScript6
+          ? ts.ModuleResolutionKind.NodeNext
+          : ts.ModuleResolutionKind.Node10,
     customConditions: undefined, // fails when using an invalid moduleResolution combination which could happen when we force moduleResolution to Node10
     allowNonTsExtensions: true,
     // Clear outDir since it causes source map issues when the files aren't actually written to disk.

@@ -5,7 +5,7 @@ import type { Options, PreprocessorGroup } from '../types/index';
 
 const pug = (options?: Options.Pug): PreprocessorGroup => ({
   async markup({ content, filename }) {
-    const { transformer } = await import('../transformers/pug');
+    const { transformer } = await import('../transformers/pug.js');
 
     content = prepareContent({
       options: {

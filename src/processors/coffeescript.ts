@@ -6,7 +6,7 @@ import type { PreprocessorGroup, Options } from '../types';
 
 const coffeescript = (options?: Options.Coffeescript): PreprocessorGroup => ({
   async script(svelteFile) {
-    const { transformer } = await import('../transformers/coffeescript');
+    const { transformer } = await import('../transformers/coffeescript.js');
 
     let { content, filename, attributes, lang, dependencies } =
       await getTagInfo(svelteFile);

@@ -7,7 +7,7 @@ import type { PreprocessorGroup, Options } from '../types';
 /** Adapted from https://github.com/TehShrike/svelte-preprocess-postcss */
 const postcss = (options?: Options.Postcss): PreprocessorGroup => ({
   async style(svelteFile) {
-    const { transformer } = await import('../transformers/postcss');
+    const { transformer } = await import('../transformers/postcss.js');
     let { content, filename, attributes, dependencies } =
       await getTagInfo(svelteFile);
 

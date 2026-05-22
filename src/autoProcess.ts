@@ -58,7 +58,7 @@ export function sveltePreprocess(
   {
     aliases,
     markupTagName = 'template',
-    sourceMap = process?.env?.NODE_ENV === 'development' ?? false,
+    sourceMap = process?.env?.NODE_ENV === 'development' || false,
     ...rest
   } = {} as AutoPreprocessOptions,
 ): AutoPreprocessGroup {

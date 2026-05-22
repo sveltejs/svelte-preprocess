@@ -6,7 +6,7 @@ import type { PreprocessorGroup, Options } from '../types';
 
 const scss = (options?: Options.Sass): PreprocessorGroup => ({
   async style(svelteFile) {
-    const { transformer } = await import('../transformers/scss');
+    const { transformer } = await import('../transformers/scss.js');
     let { content, filename, attributes, lang, alias, dependencies } =
       await getTagInfo(svelteFile);
 
