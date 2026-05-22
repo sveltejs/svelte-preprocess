@@ -29,7 +29,7 @@
   "engines": {
     "node": ">= 18.0.0"
   },
-  "packageManager": "pnpm@9.3.0",
+  "packageManager": "pnpm@10.33.4+sha512.1c67b3b359b2d408119ba1ed289f34b8fc3c6873412bec6fd264fbdc82489e510fcbecb9ce9d22dae7f3b76269d8441046014bdca53b9979cd7a561ad631b800",
   "volta": {
     "node": "20.10.0"
   },
@@ -48,7 +48,9 @@
     "patch": "npm version patch -m 'chore(release): %s'",
     "minor": "npm version minor -m 'chore(release): %s'",
     "major": "npm version major -m 'chore(release): %s'",
-    "prepublishOnly": "pnpm test && pnpm build"
+    "prepublishOnly": "pnpm test && pnpm build",
+    "changeset:version": "changeset version && git add --all",
+    "changeset:publish": "changeset publish"
   },
   "commitlint": {
     "extends": [
@@ -58,10 +60,12 @@
   "devDependencies": {
     "@babel/core": "^7.23.6",
     "@babel/preset-env": "^7.23.6",
+    "@changesets/cli": "^2.29.8",
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
     "@kiwi/eslint-config": "^2.0.2",
     "@kiwi/prettier-config": "^2.0.2",
+    "@svitejs/changesets-changelog-github-compact": "^1.1.0",
     "@types/babel__core": "^7.20.5",
     "@types/node": "^18.0.0",
     "@types/pug": "^2.0.6",
@@ -76,6 +80,7 @@
     "postcss-easy-import": "^4.0.0",
     "postcss-load-config": "^3.1.4",
     "prettier": "^3.3.2",
+    "prettier-plugin-svelte": "^3",
     "pug": "^3.0.2",
     "sass": "^1.79.3",
     "stylus": "^0.55.0",
