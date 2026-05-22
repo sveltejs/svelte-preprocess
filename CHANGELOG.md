@@ -1,10 +1,10 @@
-## [6.0.3](https://github.com/sveltejs/svelte-preprocess/compare/v6.0.2...v6.0.3) (2024-09-26)
-
 ## 6.0.4
 
 ### Patch Changes
 
 - fix: support TypeScript 6 ([#675](https://github.com/sveltejs/svelte-preprocess/pull/675))
+
+## [6.0.3](https://github.com/sveltejs/svelte-preprocess/compare/v6.0.2...v6.0.3) (2024-09-26)
 
 ### Bug Fixes
 
