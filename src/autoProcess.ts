@@ -42,7 +42,9 @@ export const transform = async (
   }
 
   // todo: maybe add a try-catch here looking for module-not-found errors
-  const { transformer } = await import(/* @vite-ignore */ `./transformers/${name}.js`);
+  const { transformer } = await import(
+    /* @vite-ignore */ `./transformers/${name}.js`
+  );
 
   return transformer({
     content,
