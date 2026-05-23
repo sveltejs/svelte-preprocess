@@ -2,4 +2,4 @@
 'svelte-preprocess': patch
 ---
 
-fix: correctly import transformer during automatic processing
+fix: correctly import transformer when automatically processing with TypeScript 6
