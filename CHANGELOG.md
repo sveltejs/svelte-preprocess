@@ -1,3 +1,9 @@
+## 6.0.5
+
+### Patch Changes
+
+- fix: correctly import transformer when automatically processing with TypeScript 6 ([#680](https://github.com/sveltejs/svelte-preprocess/pull/680))
+
 ## 6.0.4
 
 ### Patch Changes
