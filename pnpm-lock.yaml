@@ -7,6 +7,13 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@ampproject/remapping':
+        specifier: ^2.3.0
+        version: 2.3.0
+      magic-string:
+        specifier: ^0.30.10
+        version: 0.30.10
     devDependencies:
       '@babel/core':
         specifier: ^7.23.6
@@ -23,6 +30,9 @@ importers:
       '@commitlint/config-conventional':
         specifier: ^11.0.0
         version: 11.0.0
+      '@jridgewell/trace-mapping':
+        specifier: ^0.3.25
+        version: 0.3.25
       '@kiwi/eslint-config':
         specifier: ^2.0.2
         version: 2.4.0(eslint@8.57.0)(jest@29.7.0(@types/node@18.19.34))(prettier@3.3.2)(svelte@4.2.18)(typescript@6.0.3)

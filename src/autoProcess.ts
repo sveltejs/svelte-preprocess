@@ -1,3 +1,5 @@
+import remapping from '@ampproject/remapping';
+import MagicString from 'magic-string';
 import { hasDepInstalled, concat, setProp } from './modules/utils';
 import { getTagInfo } from './modules/tagInfo';
 import {
@@ -9,7 +11,7 @@ import {
   isAliasOf,
 } from './modules/language';
 import { prepareContent } from './modules/prepareContent';
-import { transformMarkup } from './modules/markup';
+import { createTagRegex, transformMarkup } from './modules/markup';
 
 import type {
   AutoPreprocessGroup,
@@ -165,6 +167,8 @@ export function sveltePreprocess(
   const markupTransformer = getTransformerTo('markup', 'html');
 
   const markup: PreprocessorGroup['markup'] = async ({ content, filename }) => {
+    let replacementMap: Processed['map'];
+
     if (transformers.replace) {
       const transformed = await transform('replace', transformers.replace, {
         content,
@@ -173,13 +177,60 @@ export function sveltePreprocess(
       });
 
       content = transformed.code;
+      replacementMap = transformed.map;
     }
 
-    return transformMarkup({ content, filename }, markupTransformer, {
-      // we only pass the markupTagName because the rest of options
-      // is fetched internally by the `markupTransformer`
-      markupTagName,
-    });
+    const transformed = await transformMarkup(
+      { content, filename },
+      markupTransformer,
+      {
+        // we only pass the markupTagName because the rest of options
+        // is fetched internally by the `markupTransformer`
+        markupTagName,
+      },
+    );
+
+    if (!replacementMap || transformed.map) return transformed;
+    if (transformed.code === content) {
+      return { ...transformed, map: replacementMap };
+    }
+
+    // transformMarkup removes an optional <template> wrapper. Map that removal
+    // before tracing positions through the replacement map.
+    const match = content.match(createTagRegex(markupTagName));
+
+    if (match?.index != null && match[2] != null) {
+      const openingEnd = match[0].indexOf('>') + 1;
+      const closingStart = match[0].lastIndexOf('</');
+      const before = content.slice(0, match.index);
+      const after = content.slice(match.index + match[0].length);
+
+      if (transformed.code === before + match[2] + after) {
+        const magicString = new MagicString(content);
+
+        magicString.remove(
+          match.index + closingStart,
+          match.index + match[0].length,
+        );
+        magicString.remove(match.index, match.index + openingEnd);
+
+        const wrapperMap = magicString.generateMap({
+          source: filename ?? 'input.svelte',
+          includeContent: true,
+          hires: true,
+        });
+
+        return {
+          ...transformed,
+          map: remapping(
+            [wrapperMap.toString(), JSON.stringify(replacementMap)],
+            () => null,
+          ),
+        };
+      }
+    }
+
+    return transformed;
   };
 
   const script: PreprocessorGroup['script'] = async ({
