@@ -63,6 +63,7 @@
     "@changesets/cli": "^2.29.8",
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
+    "@jridgewell/trace-mapping": "^0.3.25",
     "@kiwi/eslint-config": "^2.0.2",
     "@kiwi/prettier-config": "^2.0.2",
     "@svitejs/changesets-changelog-github-compact": "^1.1.0",
@@ -133,5 +134,9 @@
     "typescript": {
       "optional": true
     }
+  },
+  "dependencies": {
+    "@ampproject/remapping": "^2.3.0",
+    "magic-string": "^0.30.10"
   }
 }
