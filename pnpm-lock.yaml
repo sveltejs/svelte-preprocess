@@ -87,8 +87,8 @@ importers:
         specifier: ^0.55.0
         version: 0.55.0
       sugarss:
-        specifier: ^4.0.0
-        version: 4.0.1(postcss@8.4.38)
+        specifier: ^5.0.0
+        version: 5.0.2(postcss@8.4.38)
       svelte:
         specifier: ^4.0.0
         version: 4.2.18
@@ -97,7 +97,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@18.19.34)(less@3.13.1)(sass@1.79.3)(stylus@0.55.0)(sugarss@4.0.1(postcss@8.4.38))
+        version: 1.6.0(@types/node@18.19.34)(less@3.13.1)(sass@1.79.3)(stylus@0.55.0)(sugarss@5.0.2(postcss@8.4.38))
 
 packages:
 
@@ -4010,9 +4010,9 @@ packages:
     resolution: {integrity: sha512-MuzIIVRSbc8XxHH7FjkvWqkIcr1BvoMZoR/oFuAJDlh7VSaNJzrB4uJ38GRQa+mWjLXODAMzeDe0xi9GYbGwnw==}
     hasBin: true
 
-  sugarss@4.0.1:
-    resolution: {integrity: sha512-WCjS5NfuVJjkQzK10s8WOBY+hhDxxNt/N6ZaGwxFZ+wN3/lKKFSaaKUNecULcTTvE4urLcKaZFQD8vO0mOZujw==}
-    engines: {node: '>=12.0'}
+  sugarss@5.0.2:
+    resolution: {integrity: sha512-30Zt7tXECUXZbVRmmo/2+90UMl/mD8gBrNeRozE/6Gp2uEktD01m/hVFRrTsgg7Ca2ZmW68HX40aZ23byUiwdg==}
+    engines: {node: '>=18.0'}
     peerDependencies:
       postcss: ^8.3.3
 
@@ -9332,7 +9332,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  sugarss@4.0.1(postcss@8.4.38):
+  sugarss@5.0.2(postcss@8.4.38):
     dependencies:
       postcss: 8.4.38
 
@@ -9581,13 +9581,13 @@ snapshots:
       spdx-correct: 3.2.0
       spdx-expression-parse: 3.0.1
 
-  vite-node@1.6.0(@types/node@18.19.34)(less@3.13.1)(sass@1.79.3)(stylus@0.55.0)(sugarss@4.0.1(postcss@8.4.38)):
+  vite-node@1.6.0(@types/node@18.19.34)(less@3.13.1)(sass@1.79.3)(stylus@0.55.0)(sugarss@5.0.2(postcss@8.4.38)):
     dependencies:
       cac: 6.7.14
       debug: 4.3.5
       pathe: 1.1.2
       picocolors: 1.0.1
-      vite: 5.2.13(@types/node@18.19.34)(less@3.13.1)(sass@1.79.3)(stylus@0.55.0)(sugarss@4.0.1(postcss@8.4.38))
+      vite: 5.2.13(@types/node@18.19.34)(less@3.13.1)(sass@1.79.3)(stylus@0.55.0)(sugarss@5.0.2(postcss@8.4.38))
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -9598,7 +9598,7 @@ snapshots:
       - supports-color
       - terser
 
-  vite@5.2.13(@types/node@18.19.34)(less@3.13.1)(sass@1.79.3)(stylus@0.55.0)(sugarss@4.0.1(postcss@8.4.38)):
+  vite@5.2.13(@types/node@18.19.34)(less@3.13.1)(sass@1.79.3)(stylus@0.55.0)(sugarss@5.0.2(postcss@8.4.38)):
     dependencies:
       esbuild: 0.20.2
       postcss: 8.4.38
@@ -9609,9 +9609,9 @@ snapshots:
       less: 3.13.1
       sass: 1.79.3
       stylus: 0.55.0
-      sugarss: 4.0.1(postcss@8.4.38)
+      sugarss: 5.0.2(postcss@8.4.38)
 
-  vitest@1.6.0(@types/node@18.19.34)(less@3.13.1)(sass@1.79.3)(stylus@0.55.0)(sugarss@4.0.1(postcss@8.4.38)):
+  vitest@1.6.0(@types/node@18.19.34)(less@3.13.1)(sass@1.79.3)(stylus@0.55.0)(sugarss@5.0.2(postcss@8.4.38)):
     dependencies:
       '@vitest/expect': 1.6.0
       '@vitest/runner': 1.6.0
@@ -9630,8 +9630,8 @@ snapshots:
       strip-literal: 2.1.0
       tinybench: 2.8.0
       tinypool: 0.8.4
-      vite: 5.2.13(@types/node@18.19.34)(less@3.13.1)(sass@1.79.3)(stylus@0.55.0)(sugarss@4.0.1(postcss@8.4.38))
-      vite-node: 1.6.0(@types/node@18.19.34)(less@3.13.1)(sass@1.79.3)(stylus@0.55.0)(sugarss@4.0.1(postcss@8.4.38))
+      vite: 5.2.13(@types/node@18.19.34)(less@3.13.1)(sass@1.79.3)(stylus@0.55.0)(sugarss@5.0.2(postcss@8.4.38))
+      vite-node: 1.6.0(@types/node@18.19.34)(less@3.13.1)(sass@1.79.3)(stylus@0.55.0)(sugarss@5.0.2(postcss@8.4.38))
       why-is-node-running: 2.2.2
     optionalDependencies:
       '@types/node': 18.19.34
