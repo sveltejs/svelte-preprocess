@@ -56,6 +56,35 @@ describe('transformer - scss', () => {
     `);
   });
 
+  it('resolves relative @use and @forward from tilde imports', async () => {
+    const template = `<style lang="scss">@use '~@scss-package/nested/main.scss'; div { font-weight: main.$weight; }</style>`;
+
+    const preprocessed = await preprocess(template, sveltePreprocess());
+
+    expect(preprocessed.toString?.()).toMatchInlineSnapshot(`
+      "<style lang="scss">div {
+        color: pink;
+      }
+
+      div {
+        font-weight: bold;
+      }</style>"
+    `);
+    expect(preprocessed.dependencies?.sort()).toEqual(
+      ['main.scss', '_colors.scss', '_weight.scss']
+        .map((file) =>
+          resolve(
+            __dirname,
+            '..',
+            'node_modules',
+            '@scss-package/nested',
+            file,
+          ),
+        )
+        .sort(),
+    );
+  });
+
   it('returns the source map and removes sourceMappingURL from code', async () => {
     const content = `
 $color:red;

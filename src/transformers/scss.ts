@@ -30,7 +30,7 @@ const tildeImporter: LegacySyncImporter = (url, prev) => {
 
   const contents = readFileSync(foundPath).toString();
 
-  return { contents };
+  return { contents, file: foundPath };
 };
 
 const infoRegex = /dart-sass\s(\d+)\.(\d+)\.(\d+)/;
